@@ -1,0 +1,57 @@
+{
+	"formatVersion": 1,
+	"appVersion": "0.38.2",
+	"files": [
+		{
+			"isClone": false,
+			"noteId": "qXAQhWRFZRBG",
+			"notePath": [
+				"qXAQhWRFZRBG"
+			],
+			"title": "The ELF Format",
+			"notePosition": 10,
+			"prefix": null,
+			"isExpanded": 0,
+			"type": "text",
+			"mime": "text/html",
+			"attributes": [
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "bQip7HPDSkuc",
+					"isInheritable": false,
+					"position": 2
+				}
+			],
+			"format": "markdown",
+			"dataFileName": "The ELF Format.md",
+			"dirFileName": "The ELF Format",
+			"children": [
+				{
+					"isClone": false,
+					"noteId": "bQip7HPDSkuc",
+					"notePath": [
+						"qXAQhWRFZRBG",
+						"bQip7HPDSkuc"
+					],
+					"title": "image.png",
+					"notePosition": 0,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/png",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "image.png"
+				}
+			]
+		}
+	]
+}

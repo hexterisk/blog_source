@@ -12,7 +12,6 @@ weight: 10
 categories: ["Practical Binary Analysis"]
 ---
 
-# The ELF Format
 ELF binaries really consist of only four types of components: 
 
 1.  Executable Header

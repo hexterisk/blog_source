@@ -73,8 +73,7 @@ Large unstructured heaps of disassembled instructions are nearly impossible to a
 ### Control Flow Graphs:
 
 ![](/Disassembly_and_Binary_Analysis_Fundamentals/1_image.png)
-
-CFG as seen in IDA Pro
+_CFG as seen in IDA Pro_
 
 *   **Control Flow Graphs** (**CFGs**) offer a convenient graphical representation of the code structure, which makes it easy to understand a function’s structure.
 *   CFGs represent the code inside a function as a set of code blocks, called **basic blocks**, connected by **branch edges**, shown here as arrows. A basic block is a sequence of instructions, where the first instruction is the only entry point (the only instruction targeted by any jump in the binary), and the last instruction is the only exit point (the only instruction in the sequence that may jump to another basic block).
@@ -83,8 +82,7 @@ CFG as seen in IDA Pro
 ### Call Graphs:
 
 ![](/Disassembly_and_Binary_Analysis_Fundamentals/2_image.png)
-
-CFGs and connections between functions (left) and the corresponding call graph (right).
+_CFGs and connections between functions (left) and the corresponding call graph (right)._
 
 *   Call graphs show you which functions may call each other. They show the relationship between call sites and functions.
 *   They often omit indirect call edges because it’s infeasible to accurately figure out which functions may be called by a given indirect call site.
@@ -163,8 +161,7 @@ A flow-insensitive version of this analysis would simply determine that x may co
 *   The context is usually limited as large contexts make flow-sensitive analysis computationally expensive. For instance, the analysis may only compute results for contexts of five (or any number of) consecutive functions instead of complete paths of indefinite length.
 
 ![](/Disassembly_and_Binary_Analysis_Fundamentals/3_image.png)
-
-Context-sensitive versus context-insensitive indirect call analysis.
+_Context-sensitive versus context-insensitive indirect call analysis._
 
 A context-insensitive indirect call analysis concludes that the indirect call in channel\_handler could target any function pointer in either the channel\_pre table (passed in from channel\_prepare\_select) or the channel\_post table (passed in from channel\_after\_select). Effectively, it concludes that the set of possible targets is the union of all the possible sets in any path through the program ➊. In contrast, the context-sensitive analysis determines a different target set for each possible context of preceding calls. If channel\_handler was invoked by channel\_prepare\_select, then the only valid targets are those in the channel\_pre table that it passes to channel\_handler ➋. On the other hand, if channel\_handler was called from channel\_after\_select, then only the targets in channel\_post are possible ➌. Context length is 1.
 
@@ -177,8 +174,7 @@ A binary analysis that looks at control-flow properties.
 #### Loop Detection:
 
 ![](/Disassembly_and_Binary_Analysis_Fundamentals/4_image.png)
-
-A CFG and the corresponding dominance tree.
+_A CFG and the corresponding dominance tree._
 
 *   Loops are an interesting target for optimization.
 *   From a security perspective, analyzing loops is useful because vulnerabilities such as buffer overflows tend to occur in loops.
@@ -201,8 +197,7 @@ A binary analysis that looks at data flow–oriented properties.
 *   Reaching definitions analysis is usually applied at the CFG level, though it can also be used interprocedurally. 
 
 ![](/Disassembly_and_Binary_Analysis_Fundamentals/5_image.png)
-
-Gen and kill sets for a basic block.
+_Gen and kill sets for a basic block._
 
 *   The analysis starts by considering for each individual basic block which definitions the block generates and which it kills. This is usually expressed by computing a gen and kill set for each basic block. After computing each basic block’s gen and kill sets, you have a local solution that tells you which data definitions each basic block generates and kills. You can compute a global solution that tells you which definitions (from anywhere in the CFG) can reach the start of a basic block and which can still be alive after the basic block. 
 *   The set of definitions reaching B is the union of all sets of definitions leaving other basic blocks that precede B. The set of definitions leaving a basic block B is denoted as out\[B\] and defined as follows: out\[B\] = gen\[B\] ∪ (in\[B\] − kill\[B\])
@@ -211,8 +206,7 @@ Gen and kill sets for a basic block.
 #### Use-Def Chains:
 
 ![](/Disassembly_and_Binary_Analysis_Fundamentals/6_image.png)
-
-Use-def chains.
+_Use-def chains._
 
 *   Tell you at each point in the program where a variable is used, where that variable may have been defined.
 *   Used in decompilation: they allow the decompiler to track where a value used in a conditional jump was compared. This way, the decompiler can take a cmp x,5 and je (jump if equal) instruction and merge them into a higher-level expression like if(x == 5). 

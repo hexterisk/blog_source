@@ -29,8 +29,7 @@ categories: ["Practical Binary Analysis"]
 ## Injecting a Code Section:
 
 !["code_injection"](/Simple_Code_Injection_Techniques_for_ELF/image.png)
-
-Replacing .note.ABI-tag with an injected code section.
+_Replacing .note.ABI-tag with an injected code section._
 
 Step ➊ is to add a new section to an ELF binary, you first inject the bytes that the section will contain by appending them to the end of the binary. Next, you create a section header ➋ and a program header ➌ for the injected section. The program header table is usually located right after the executable header ➍, thus overwrite an existing program header instead of adding an extra one to prevent shifting of all the sections and headers that come after it.
 

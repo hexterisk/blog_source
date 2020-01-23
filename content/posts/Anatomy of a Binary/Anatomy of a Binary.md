@@ -29,7 +29,7 @@ return 0;
 ```
 
 !["compilation_process"](/Anatomy_of_a_Binary/1_image.png)
-**The C Compilation Process**
+_The C Compilation Process_
 
 ### Preprocessing:
 
@@ -198,7 +198,7 @@ Num:	Value 				Size 	Type 	Bind 	Vis 		Ndx 	Name
 ## Loading and Executing a Binary:
 
 !["binary_dissection"](/Anatomy_of_a_Binary/image.png)
-**Loading an ELF binary on a Linux-based system**
+_Loading an ELF binary on a Linux-based system_
 
 *   A binary’s representation in memory does not necessarily correspond one-to-one with its on-disk representation, like collapsing a string of zeros to a single one to save space, and re-expand while loading into the memory.
 *   A new process is setup for the program to run in, including a virtual address space. Subsequently, the operating system maps an interpreter into the process’s virtual memory to load the binary and perform the necessary relocations. On Linux, the interpreter is typically a shared library called _**ld-linux.so**_. On Windows, the interpreter functionality is implemented as part of _**ntdll.dll**_. After loading the interpreter, the kernel transfers control to it, and the interpreter begins its work in user space.

@@ -20,7 +20,7 @@ ELF binaries really consist of only four types of components: 
 4.  Section Headers, one per section (optional)
 
 !["binary_structure"](/The_ELF_Format/1_image.png)
-**64-bit ELF binary structure**
+_64-bit ELF binary structure_
 
 ## Executable Header:
 
@@ -143,7 +143,7 @@ O (extra OS processing required) o (OS specific), p (processor specific)
 Many of the relocations are typically not done right away when the binary is loaded but are deferred until the first reference to the unresolved location is actually made. This is known as L**azy Binding**. It ensures that the dynamic linker never needlessly wastes time on relocations; it only performs those relocations that are truly needed at runtime.
 
 !["elf_format"](/The_ELF_Format/image.png)
-**Lazy Binding**
+_Lazy Binding_
 
 *   Linker can be forced to perform all relocations right away by exporting an environment variable called **LD\_BIND\_NOW**, done when the application calls for real-time performance guarantees.
 

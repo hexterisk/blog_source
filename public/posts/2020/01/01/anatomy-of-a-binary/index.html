@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:hexterisk]">
+<meta name="description" content="The C Compilation Process  Compilation is the process of translating human readable source code into machine code that the processor can execute. Binary Code is the machine code that systems execute. Binary Executable Files, or Binaries, store the executable binary program, that is, the code and data belonging to each program.  #include &amp;lt;stdio.h&amp;gt;#define FORMAT_STRING &amp;#34;%s&amp;#34;#define MESSAGE &amp;#34;Hello, world!\n&amp;#34;int main(int argc, char *argv[]) {printf(FORMAT_STRING, MESSAGE);return 0;}The C Compilation Process" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/01/01/anatomy-of-a-binary/" />
+
+
+    <title>
+        
+            Anatomy of a Binary: Pwn the world.  — A noob&#39;s attempt at blogging.
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://hexterisk.tech/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.tech/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.tech/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.tech/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.tech/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.tech/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.tech/blog/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Anatomy of a Binary">
+<meta itemprop="description" content="The C Compilation Process  Compilation is the process of translating human readable source code into machine code that the processor can execute. Binary Code is the machine code that systems execute. Binary Executable Files, or Binaries, store the executable binary program, that is, the code and data belonging to each program.  #include &lt;stdio.h&gt;#define FORMAT_STRING &#34;%s&#34;#define MESSAGE &#34;Hello, world!\n&#34;int main(int argc, char *argv[]) {printf(FORMAT_STRING, MESSAGE);return 0;}The C Compilation Process">
+<meta itemprop="datePublished" content="2020-01-01T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-01-01T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1302">
+<meta itemprop="image" content="https://hexterisk.tech/blog"/>
+
+
+
+<meta itemprop="keywords" content="binary,rev,reversing,c," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hexterisk.tech/blog"/>
+
+<meta name="twitter:title" content="Anatomy of a Binary"/>
+<meta name="twitter:description" content="The C Compilation Process  Compilation is the process of translating human readable source code into machine code that the processor can execute. Binary Code is the machine code that systems execute. Binary Executable Files, or Binaries, store the executable binary program, that is, the code and data belonging to each program.  #include &lt;stdio.h&gt;#define FORMAT_STRING &#34;%s&#34;#define MESSAGE &#34;Hello, world!\n&#34;int main(int argc, char *argv[]) {printf(FORMAT_STRING, MESSAGE);return 0;}The C Compilation Process"/>
+
+
+
+    <meta property="article:section" content="Practical Binary Analysis" />
+
+
+
+    <meta property="article:published_time" content="2020-01-01 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://hexterisk.tech/blog/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$cd ~/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://hexterisk.tech/blog/about/">About</a></li><li><a href="https://hexterisk.tech/blog/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>7 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://hexterisk.tech/blog/posts/2020/01/01/anatomy-of-a-binary/">Anatomy of a Binary</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <h2 id="the-c-compilation-process">The C Compilation Process</h2>
+<ul>
+<li>Compilation is the process of translating human readable source code into machine code that the processor can execute.</li>
+<li><strong>Binary Code</strong> is the machine code that systems execute.</li>
+<li><strong>Binary Executable Files</strong>, or <strong>Binaries</strong>,  store the executable binary program, that is, the code and data belonging to each program.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#define FORMAT_STRING &#34;%s&#34;
+</span><span style="color:#75715e">#define MESSAGE &#34;Hello, world!\n&#34;
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+printf(FORMAT_STRING, MESSAGE);
+<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p><img src="https://hexterisk.tech/blog/Anatomy_of_a_Binary/1_image.png" alt="&ldquo;compilation_process&rdquo;">
+<em>The C Compilation Process</em></p>
+<h3 id="preprocessing">Preprocessing</h3>
+<ul>
+<li>Expands macros(<em>#define</em>) and <em>#include</em> directives into pure C code.</li>
+<li>Every <em>#include</em> directive, the header is copied in its entirety.</li>
+<li>Every <em>#define</em> directive is fully expanded everywhere it is used.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#960050;background-color:#1e0010">$</span> gcc <span style="color:#f92672">-</span>E <span style="color:#f92672">-</span>P compilation_example.c
+
+<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">long</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> size_t;
+<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> __u_char;
+<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">short</span> <span style="color:#66d9ef">int</span> __u_short;
+<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> __u_int;
+<span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> <span style="color:#66d9ef">int</span> __u_long;
+<span style="color:#75715e">/* ... */</span>
+<span style="color:#66d9ef">extern</span> <span style="color:#66d9ef">int</span> sys_nerr;
+<span style="color:#66d9ef">extern</span> <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">const</span> sys_errlist[];
+<span style="color:#66d9ef">extern</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">fileno</span> (FILE <span style="color:#f92672">*</span>__stream) __attribute__ ((__nothrow__ , __leaf__)) ;
+<span style="color:#66d9ef">extern</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">fileno_unlocked</span> (FILE <span style="color:#f92672">*</span>__stream) __attribute__ ((__nothrow__ , __leaf__)) ;
+<span style="color:#66d9ef">extern</span> FILE <span style="color:#f92672">*</span><span style="color:#a6e22e">popen</span> (<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>__command, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>__modes) ;
+<span style="color:#66d9ef">extern</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">pclose</span> (FILE <span style="color:#f92672">*</span>__stream);
+<span style="color:#66d9ef">extern</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ctermid</span> (<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>__s) __attribute__ ((__nothrow__ , __leaf__));
+<span style="color:#66d9ef">extern</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">flockfile</span> (FILE <span style="color:#f92672">*</span>__stream) __attribute__ ((__nothrow__ , __leaf__));
+<span style="color:#66d9ef">extern</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">ftrylockfile</span> (FILE <span style="color:#f92672">*</span>__stream) __attribute__ ((__nothrow__ , __leaf__)) ;
+<span style="color:#66d9ef">extern</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">funlockfile</span> (FILE <span style="color:#f92672">*</span>__stream) __attribute__ ((__nothrow__ , __leaf__));
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[]) {
+printf(<span style="color:#e6db74">&#34;%s&#34;</span>, <span style="color:#e6db74">&#34;Hello, world!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><h3 id="compilation">Compilation</h3>
+<ul>
+<li>Takes the preprocessed code and translates it into assembly language.</li>
+<li>Most compilers also perform heavy optimization in this phase, typically configurable as an optimization level through command line switches such as options <em>-O0</em> through <em>-O3</em> in gcc.</li>
+<li>Compilation phase produce assembly language and not machine code because it’s better to instead have a language dedicated compiler that emits generic assembly code and have a single universal assembler that can handle the final translation of assembly to machine code for every language.</li>
+<li>Output of the compilation phase is an <strong>assembly file</strong>, which is in reasonably human-readable form, with symbolic information intact.</li>
+<li>All references are purely symbolic.</li>
+<li>Compilers use an optimization called <strong>dead code elimination</strong> to find instances of code that can never be reached in practice so that they can omit such useless code in the compiled binary.</li>
+<li>Each source code file corresponds to one assembly file.</li>
+<li>Takes <em><strong>.c</strong></em> file as input and produces <em><strong>.s</strong></em> assembly file.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#960050;background-color:#1e0010">$</span> gcc <span style="color:#f92672">-</span>S <span style="color:#f92672">-</span>masm<span style="color:#f92672">=</span>intel compilation_example.c
+<span style="color:#960050;background-color:#1e0010">$</span> cat compilation_example.s
+
+.file <span style="color:#e6db74">&#34;compilation_example.c&#34;</span>
+.intel_syntax noprefix
+.section .rodata
+.LC0:
+.string <span style="color:#e6db74">&#34;Hello, world!&#34;</span>
+.text
+.globl main
+.type main, <span style="color:#960050;background-color:#1e0010">@</span>function
+main:
+.LFB0:
+.cfi_startproc
+push rbp
+.cfi_def_cfa_offset <span style="color:#ae81ff">16</span>
+.cfi_offset <span style="color:#ae81ff">6</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">16</span>
+mov rbp, rsp
+.cfi_def_cfa_register <span style="color:#ae81ff">6</span>
+sub rsp, <span style="color:#ae81ff">16</span>
+mov DWORD PTR [rbp<span style="color:#f92672">-</span><span style="color:#ae81ff">4</span>], edi
+mov QWORD PTR [rbp<span style="color:#f92672">-</span><span style="color:#ae81ff">16</span>], rsi
+mov edi, OFFSET FLAT:.LC0
+call puts
+mov eax, <span style="color:#ae81ff">0</span>
+leave
+.cfi_def_cfa <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>
+ret
+.cfi_endproc
+.LFE0:
+.size main, .<span style="color:#f92672">-</span>main
+.ident <span style="color:#e6db74">&#34;GCC: (Ubuntu 5.4.0-6ubuntu1~16.04.4) 5.4.0 20160609&#34;</span>
+.section .note.GNU<span style="color:#f92672">-</span>stack,<span style="color:#e6db74">&#34;&#34;</span>,<span style="color:#960050;background-color:#1e0010">@</span>progbits
+</code></pre></div><h3 id="assembly">Assembly</h3>
+<ul>
+<li>Takes assembly files as input and produces <strong>object files</strong> (<strong>modules</strong>) as output.</li>
+<li>Each assembly file corresponds to one object file.</li>
+<li>Object files contain machine instructions that are in principle executable by the processor.</li>
+<li>Takes .c file as input and produces .o object file.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#960050;background-color:#1e0010">$</span> gcc <span style="color:#f92672">-</span>c compilation_example.c
+<span style="color:#960050;background-color:#1e0010">$</span> file compilation_example.o
+compilation_example.o: ELF <span style="color:#ae81ff">64</span><span style="color:#f92672">-</span>bit LSB relocatable, x86<span style="color:#f92672">-</span><span style="color:#ae81ff">64</span>, version <span style="color:#ae81ff">1</span> (SYSV), not stripped
+</code></pre></div><ul>
+<li><strong>Relocatable Files</strong> can be placed at any position in the memory. It&rsquo;s an indication of the file being an object/module. It&rsquo;s important since object files are compiled independently from each other and assembler has no way to know the order to link them into. Making them relocatable allows them to be linked in any order to construct a complete executable.</li>
+<li>Object files contain <strong>Relocation Symbols</strong> that specify how function and variable references must be resolved. References that rely on a relocation symbol, such as an object file referencing one if its own functions/variables by absolute address, are known as <strong>Symbolic References</strong>.</li>
+</ul>
+<h3 id="linking">Linking</h3>
+<ul>
+<li>Links together all object files together to form a single coherent executable, which will be loaded at a particular memory address.</li>
+<li>Can incorporate an additional optimization pass called <strong>link-time optimization</strong> (<strong>LTO</strong>).</li>
+<li>Linker resolves all symbolic references now that the arrangement of modules is known after linking.</li>
+<li>Static libraries are merged into the executable allowing all references to be resolved entirely. Symbolic references to dynamic libraries are left unresolved even in the final executable (will be resolved during execution).</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#960050;background-color:#1e0010">$</span> gcc compilation_example.c
+<span style="color:#960050;background-color:#1e0010">$</span> file a.out
+a.out: ELF <span style="color:#ae81ff">64</span><span style="color:#f92672">-</span>bit LSB executable, x86<span style="color:#f92672">-</span><span style="color:#ae81ff">64</span>, version <span style="color:#ae81ff">1</span> (SYSV), dynamically linked, interpreter <span style="color:#f92672">/</span>lib64<span style="color:#f92672">/</span>ld<span style="color:#f92672">-</span>linux<span style="color:#f92672">-</span>x86<span style="color:#f92672">-</span><span style="color:#ae81ff">64.</span>so<span style="color:#ae81ff">.2</span>, <span style="color:#66d9ef">for</span> GNU<span style="color:#f92672">/</span>Linux <span style="color:#ae81ff">2.6.32</span>, BuildID[sha1]<span style="color:#f92672">=</span>d0e23ea731bce9de65619cadd58b14ecd8c015c7, not stripped
+
+<span style="color:#960050;background-color:#1e0010">$</span> .<span style="color:#f92672">/</span>a.out
+Hello, world<span style="color:#f92672">!</span>
+</code></pre></div><h2 id="symbols-and-stripped-binaries">Symbols and Stripped Binaries</h2>
+<ul>
+<li><strong>Symbols</strong> keep track of symbolic names and records which binary code and data correspond to. They provide a mapping from high-level names to address and size. This information is required by linker.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#960050;background-color:#1e0010">$</span> readelf <span style="color:#f92672">--</span>syms a.out
+
+Symbol table <span style="color:#960050;background-color:#1e0010">&#39;</span>.dynsym<span style="color:#960050;background-color:#1e0010">&#39;</span> contains <span style="color:#ae81ff">4</span> entries:
+Num: 	Value 				Size 	Type 	Bind 	Vis 	Ndx 	Name
+<span style="color:#ae81ff">0</span><span style="color:#f92672">:</span> 		<span style="color:#ae81ff">0000000000000000</span> 	<span style="color:#ae81ff">0</span> 		NOTYPE  LOCAL 	DEFAULT UND
+<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span> 		<span style="color:#ae81ff">0000000000000000</span> 	<span style="color:#ae81ff">0</span> 		FUNC 	GLOBAL	DEFAULT UND 	puts<span style="color:#960050;background-color:#1e0010">@</span>GLIBC_2<span style="color:#ae81ff">.2.5</span> (<span style="color:#ae81ff">2</span>)
+<span style="color:#ae81ff">2</span><span style="color:#f92672">:</span> 		<span style="color:#ae81ff">0000000000000000</span> 	<span style="color:#ae81ff">0</span> 		FUNC 	GLOBAL 	DEFAULT UND 	__libc_start_main<span style="color:#960050;background-color:#1e0010">@</span>GLIBC_2<span style="color:#ae81ff">.2.5</span> (<span style="color:#ae81ff">2</span>)
+<span style="color:#ae81ff">3</span><span style="color:#f92672">:</span> 		<span style="color:#ae81ff">0000000000000000</span> 	<span style="color:#ae81ff">0</span> 		NOTYPE 	WEAK 	DEFAULT UND 	__gmon_start__
+
+Symbol table <span style="color:#960050;background-color:#1e0010">&#39;</span>.symtab<span style="color:#960050;background-color:#1e0010">&#39;</span> contains <span style="color:#ae81ff">67</span> entries:
+Num: 	Value 				Size 	Type 	Bind 	Vis 	Ndx 	Name
+...
+<span style="color:#ae81ff">56</span><span style="color:#f92672">:</span> 	<span style="color:#ae81ff">0000000000601030</span> 	<span style="color:#ae81ff">0</span> 		OBJECT 	GLOBAL 	HIDDEN 	<span style="color:#ae81ff">25</span> 		__dso_handle
+<span style="color:#ae81ff">57</span><span style="color:#f92672">:</span> 	<span style="color:#ae81ff">00000000004005</span>d0 	<span style="color:#ae81ff">4</span> 		OBJECT 	GLOBAL 	DEFAULT <span style="color:#ae81ff">16</span> 		_IO_stdin_used
+<span style="color:#ae81ff">58</span><span style="color:#f92672">:</span> 	<span style="color:#ae81ff">0000000000400550</span> 	<span style="color:#ae81ff">101</span> 	FUNC 	GLOBAL 	DEFAULT <span style="color:#ae81ff">14</span> 		__libc_csu_init
+<span style="color:#ae81ff">59</span><span style="color:#f92672">:</span> 	<span style="color:#ae81ff">0000000000601040</span> 	<span style="color:#ae81ff">0</span> 		NOTYPE 	GLOBAL 	DEFAULT <span style="color:#ae81ff">26</span> 		_end
+<span style="color:#ae81ff">60</span><span style="color:#f92672">:</span> 	<span style="color:#ae81ff">0000000000400430</span> 	<span style="color:#ae81ff">42</span> 		FUNC 	GLOBAL 	DEFAULT <span style="color:#ae81ff">14</span> 		_start
+<span style="color:#ae81ff">61</span><span style="color:#f92672">:</span> 	<span style="color:#ae81ff">000000000060103</span><span style="color:#ae81ff">8</span> 	<span style="color:#ae81ff">0</span> 		NOTYPE 	GLOBAL 	DEFAULT <span style="color:#ae81ff">26</span> 		__bss_start
+<span style="color:#ae81ff">62</span><span style="color:#f92672">:</span> 	<span style="color:#ae81ff">0000000000400526</span> 	<span style="color:#ae81ff">32</span> 		FUNC 	GLOBAL 	DEFAULT <span style="color:#ae81ff">14</span> 		main
+<span style="color:#ae81ff">63</span><span style="color:#f92672">:</span> 	<span style="color:#ae81ff">0000000000000000</span> 	<span style="color:#ae81ff">0</span> 		NOTYPE 	WEAK 	DEFAULT UND 	_Jv_RegisterClasses
+<span style="color:#ae81ff">64</span><span style="color:#f92672">:</span> 	<span style="color:#ae81ff">000000000060103</span><span style="color:#ae81ff">8</span> 	<span style="color:#ae81ff">0</span> 		OBJECT 	GLOBAL 	HIDDEN 	<span style="color:#ae81ff">25</span> 		__TMC_END__
+<span style="color:#ae81ff">65</span><span style="color:#f92672">:</span> 	<span style="color:#ae81ff">0000000000000000</span> 	<span style="color:#ae81ff">0</span> 		NOTYPE 	WEAK 	DEFAULT UND 	_ITM_registerTMCloneTable
+<span style="color:#ae81ff">66</span><span style="color:#f92672">:</span> 	<span style="color:#ae81ff">00000000004003</span>c8 	<span style="color:#ae81ff">0</span> 		FUNC 	GLOBAL 	DEFAULT <span style="color:#ae81ff">11</span> 		_init
+</code></pre></div><ul>
+<li>Focusing on ‘main’, we can see it will be loaded at address ‘0x400526’ when the binary is loaded into memory and it&rsquo;s size is 32bytes. ‘FUNC’ shows that we are dealing with a function symbol.</li>
+<li>Debugging symbols are typically generated in <strong>DWARF</strong> format for ELF binaries (usually embedded inside) and <strong>PDB</strong> (<strong>Microsoft Portable Debugging</strong>) format for PE binaries (separate file).</li>
+</ul>
+<h3 id="stripped-binaries">Stripped Binaries</h3>
+<ul>
+<li>On stripping a binary, only a few symbols are left in the <em><strong>.dynsym</strong> symbol table</em>. These are used to resolve dynamic dependencies (such as references to dynamic libraries) when the binary is loaded into memory, but they’re not much use when disassembling.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#960050;background-color:#1e0010">$</span> strip <span style="color:#f92672">--</span>strip<span style="color:#f92672">-</span>all a.out
+<span style="color:#960050;background-color:#1e0010">$</span> file a.out
+
+a.out: ELF <span style="color:#ae81ff">64</span><span style="color:#f92672">-</span>bit LSB executable, x86<span style="color:#f92672">-</span><span style="color:#ae81ff">64</span>, version <span style="color:#ae81ff">1</span> (SYSV), dynamically linked, interpreter <span style="color:#f92672">/</span>lib64<span style="color:#f92672">/</span>ld<span style="color:#f92672">-</span>linux<span style="color:#f92672">-</span>x86<span style="color:#f92672">-</span><span style="color:#ae81ff">64.</span>so<span style="color:#ae81ff">.2</span>, <span style="color:#66d9ef">for</span> GNU<span style="color:#f92672">/</span>Linux <span style="color:#ae81ff">2.6.32</span>, BuildID[sha1]<span style="color:#f92672">=</span>d0e23ea731bce9de65619cadd58b14ecd8c015c7, stripped
+
+<span style="color:#960050;background-color:#1e0010">$</span> readelf <span style="color:#f92672">--</span>syms a.out
+
+Symbol table <span style="color:#960050;background-color:#1e0010">&#39;</span>.dynsym<span style="color:#960050;background-color:#1e0010">&#39;</span> contains <span style="color:#ae81ff">4</span> entries:
+Num:	Value 				Size 	Type 	Bind 	Vis 		Ndx 	Name
+<span style="color:#ae81ff">0</span><span style="color:#f92672">:</span> 		<span style="color:#ae81ff">0000000000000000</span> 	<span style="color:#ae81ff">0</span> 		NOTYPE 	LOCAL 	DEFAULT 	UND
+<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span> 		<span style="color:#ae81ff">0000000000000000</span> 	<span style="color:#ae81ff">0</span> 		FUNC 	GLOBAL 	DEFAULT 	UND 	puts<span style="color:#960050;background-color:#1e0010">@</span>GLIBC_2<span style="color:#ae81ff">.2.5</span> (<span style="color:#ae81ff">2</span>)
+<span style="color:#ae81ff">2</span><span style="color:#f92672">:</span> 		<span style="color:#ae81ff">0000000000000000</span> 	<span style="color:#ae81ff">0</span> 		FUNC 	GLOBAL 	DEFAULT 	UND 	__libc_start_main<span style="color:#960050;background-color:#1e0010">@</span>GLIBC_2<span style="color:#ae81ff">.2.5</span> (<span style="color:#ae81ff">2</span>)
+<span style="color:#ae81ff">3</span><span style="color:#f92672">:</span> 		<span style="color:#ae81ff">0000000000000000</span> 	<span style="color:#ae81ff">0</span> 		NOTYPE 	WEAK 	DEFAULT 	UND 	__gmon_start__
+</code></pre></div><h2 id="loading-and-executing-a-binary">Loading and Executing a Binary</h2>
+<p><img src="https://hexterisk.tech/blog/Anatomy_of_a_Binary/image.png" alt="&ldquo;binary_dissection&rdquo;">
+<em>Loading an ELF binary on a Linux-based system</em></p>
+<ul>
+<li>A binary’s representation in memory does not necessarily correspond one-to-one with its on-disk representation, like collapsing a string of zeros to a single one to save space, and re-expand while loading into the memory.</li>
+<li>A new process is setup for the program to run in, including a virtual address space. Subsequently, the operating system maps an interpreter into the process’s virtual memory to load the binary and perform the necessary relocations. On Linux, the interpreter is typically a shared library called <em><strong>ld-linux.so</strong></em>. On Windows, the interpreter functionality is implemented as part of <em><strong>ntdll.dll</strong></em>. After loading the interpreter, the kernel transfers control to it, and the interpreter begins its work in user space.</li>
+<li>The interpreter then maps the dynamic libraries required into the virtual address space (using <em><strong>mmap</strong></em> or an equivalent function) and then resolves any relocations left in the binary’s code sections to fill in the correct addresses for references to the dynamic libraries.</li>
+<li>Linux ELF binaries come with a special section called <strong>.interp</strong> that specifies the path to the interpreter.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#960050;background-color:#1e0010">$</span> readelf <span style="color:#f92672">-</span>p .interp a.out
+
+String dump of section <span style="color:#960050;background-color:#1e0010">&#39;</span>.interp<span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#f92672">:</span>
+[ <span style="color:#ae81ff">0</span>] <span style="color:#f92672">/</span>lib64<span style="color:#f92672">/</span>ld<span style="color:#f92672">-</span>linux<span style="color:#f92672">-</span>x86<span style="color:#f92672">-</span><span style="color:#ae81ff">64.</span>so<span style="color:#ae81ff">.2</span>
+</code></pre></div>
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/rev">rev</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/reversing">reversing</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/c">c</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1302 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-01-01 05:30 &#43;0530</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://hexterisk.tech/blog/posts/2020/01/02/the-elf-format/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">The ELF Format</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            
+                <span><a href="https://hexterisk.tech/blog">Bhanupratap Singh &copy; 2020</a></span>
+            
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>    
+            <p><a href="http://www.catb.org/hacker-emblem/" style="font-size: 1.4rem; margin-bottom: -1.0rem;"> .</a></p>
+            <p><a href="http://www.catb.org/hacker-emblem/" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></p>
+        </div> 
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://hexterisk.tech/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

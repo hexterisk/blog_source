@@ -1,0 +1,200 @@
+{
+	"formatVersion": 1,
+	"appVersion": "0.40.4",
+	"files": [
+		{
+			"isClone": false,
+			"noteId": "nRWE7eUQMZwR",
+			"notePath": [
+				"nRWE7eUQMZwR"
+			],
+			"title": "Set 5",
+			"notePosition": 50,
+			"prefix": null,
+			"isExpanded": 0,
+			"type": "text",
+			"mime": "text/html",
+			"attributes": [
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/sets/4/challenges/33",
+					"isInheritable": false,
+					"position": 1
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/sets/5/challenges/34",
+					"isInheritable": false,
+					"position": 2
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/sets/5/challenges/35",
+					"isInheritable": false,
+					"position": 3
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/sets/5/challenges/36",
+					"isInheritable": false,
+					"position": 4
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/sets/5/challenges/37",
+					"isInheritable": false,
+					"position": 5
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/sets/5/challenges/38",
+					"isInheritable": false,
+					"position": 6
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/sets/5/challenges/39",
+					"isInheritable": false,
+					"position": 7
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/sets/5/challenges/40",
+					"isInheritable": false,
+					"position": 8
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange",
+					"isInheritable": false,
+					"position": 10
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://en.wikipedia.org/wiki/Multiplicative_group_of_integers_modulo_n",
+					"isInheritable": false,
+					"position": 12
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://en.wikipedia.org/wiki/Prime_number",
+					"isInheritable": false,
+					"position": 13
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://en.wikipedia.org/wiki/Primitive_root_modulo_n",
+					"isInheritable": false,
+					"position": 14
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://en.wikipedia.org/wiki/Alice_and_Bob",
+					"isInheritable": false,
+					"position": 15
+				},
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "NAdyVdR1IwtA",
+					"isInheritable": false,
+					"position": 16
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://en.wikipedia.org/wiki/Secure_Remote_Password_protocol",
+					"isInheritable": false,
+					"position": 17
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm",
+					"isInheritable": false,
+					"position": 18
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://simple.wikipedia.org/wiki/RSA_algorithm",
+					"isInheritable": false,
+					"position": 19
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://crypto.stanford.edu/pbc/notes/numbertheory/crt.html",
+					"isInheritable": false,
+					"position": 20
+				}
+			],
+			"format": "markdown",
+			"dataFileName": "Set 5.md",
+			"dirFileName": "Set 5",
+			"children": [
+				{
+					"isClone": false,
+					"noteId": "iil31vvMzMq9",
+					"notePath": [
+						"nRWE7eUQMZwR",
+						"iil31vvMzMq9"
+					],
+					"title": "image.png",
+					"notePosition": 0,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/jpg",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "image.png"
+				},
+				{
+					"isClone": false,
+					"noteId": "NAdyVdR1IwtA",
+					"notePath": [
+						"nRWE7eUQMZwR",
+						"NAdyVdR1IwtA"
+					],
+					"title": "image.png",
+					"notePosition": 10,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/jpg",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "1_image.png"
+				}
+			]
+		}
+	]
+}

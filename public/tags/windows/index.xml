@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>windows on Pwn the world.</title>
+    <link>https://hexterisk.tech/blog/tags/windows/</link>
+    <description>Recent content in windows on Pwn the world.</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Wed, 08 Jan 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hexterisk.tech/blog/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Dynamic Taint Analysis</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/08/dynamic-taint-analysis/</link>
+      <pubDate>Wed, 08 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/08/dynamic-taint-analysis/</guid>
+      <description>DTA (Dynamic Taint Analysis), also called DFT (Data Flow Tracking), Taint Tracking, or simply Taint Analysis, is a program analysis technique that allows you to determine the influence that a selected program state has on other parts of the program state. Taint any data that a program receives from the network, track that data, and raise an alert if it affects the program counter.
+ Indicate a control-flow hijacking attack. Implemented on top of a dynamic binary instrumentation platform.</description>
+    </item>
+    
+    <item>
+      <title>Binary Instrumentation</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/07/binary-instrumentation/</link>
+      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/07/binary-instrumentation/</guid>
+      <description>Inserting new code at any point in an existing binary to observe or modify the binary’s behavior in some way is called instrumenting the binary. The point where you add new code is called the instrumentation point, and the added code is called instrumentation code.
+Tradeoffs of Dynamic and Static Binary Instrumentation.
+Static Binary Instrumentation Static Binary Instrumentation works by disassembling a binary and then adding instrumentation code where needed and storing the updated binary permanently on disk.</description>
+    </item>
+    
+    <item>
+      <title>Basic Binary Analysis</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/04/basic-binary-analysis/</link>
+      <pubDate>Sat, 04 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/04/basic-binary-analysis/</guid>
+      <description>System Call Trace strace can be used to investigate system call behavior. In some cases, you may want to attach strace to a running process. To do this, you need to use the -p pid option, where pid is the process ID of the process you want to attach to.
+$ strace ./ctf show_me_the_flag➊ execve(&amp;#34;./ctf&amp;#34;, [&amp;#34;./ctf&amp;#34;, &amp;#34;show_me_the_flag&amp;#34;], [/* 73 vars */]) = 0brk(NULL) = 0x1053000access(&amp;#34;/etc/ld.so.nohwcap&amp;#34;, F_OK) = -1 ENOENT (No such file or directory)mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f703477e000access(&amp;#34;/etc/ld.</description>
+    </item>
+    
+    <item>
+      <title>The PE Format</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/03/the-pe-format/</link>
+      <pubDate>Fri, 03 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/03/the-pe-format/</guid>
+      <description>PE is a modified version of the Common Object File Format (COFF), thus also referred to as PE/COFF. The 64-bit version of PE is called PE32+. The structure is defined in WinNT.h, which is included in the Microsoft Windows Software Developer Kit.  PE32+ binary structure
+ An MS-DOS header is included for backward compatibility. Thus it can also be interpreted as an MS-DOS binary. The main function of the MS-DOS header is to describe how to load and execute an MS-DOS stub, which comes right after the MSDOS header.</description>
+    </item>
+    
+  </channel>
+</rss>

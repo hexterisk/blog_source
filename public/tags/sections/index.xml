@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>sections on Pwn the world.</title>
+    <link>https://hexterisk.tech/blog/tags/sections/</link>
+    <description>Recent content in sections on Pwn the world.</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Thu, 02 Jan 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hexterisk.tech/blog/tags/sections/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>The ELF Format</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/02/the-elf-format/</link>
+      <pubDate>Thu, 02 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/02/the-elf-format/</guid>
+      <description>ELF binaries really consist of only four types of components:  Executable Header Program Headers (optional) Sections Section Headers, one per section (optional)  64-bit ELF binary structure
+Executable Header  Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata. Format of executable header: /usr/include/elf.h  typedef struct {unsigned char e_ident[16]; /* Magic number and other info */uint16_t e_type; /* Object file type */uint16_t e_machine; /* Architecture */uint32_t e_version; /* Object file version */uint64_t e_entry; /* Entry point virtual address */uint64_t e_phoff; /* Program header table file offset */uint64_t e_shoff; /* Section header table file offset */uint32_t e_flags; /* Processor-specific flags */uint16_t e_ehsize; /* ELF header size in bytes */uint16_t e_phentsize; /* Program header table entry size */uint16_t e_phnum; /* Program header table entry count */uint16_t e_shentsize; /* Section header table entry size */uint16_t e_shnum; /* Section header table entry count */uint16_t e_shstrndx; /* Section header string table index */} Elf64_Ehdr;Section Headers  The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called Sections.</description>
+    </item>
+    
+  </channel>
+</rss>

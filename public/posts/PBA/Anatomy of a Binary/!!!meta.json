@@ -1,0 +1,81 @@
+{
+	"formatVersion": 1,
+	"appVersion": "0.38.2",
+	"files": [
+		{
+			"isClone": false,
+			"noteId": "VrkVJkk4rClv",
+			"notePath": [
+				"VrkVJkk4rClv"
+			],
+			"title": "Anatomy of a Binary",
+			"notePosition": 0,
+			"prefix": null,
+			"isExpanded": 0,
+			"type": "text",
+			"mime": "text/html",
+			"attributes": [
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "eMhAIrUorn5O",
+					"isInheritable": false,
+					"position": 27
+				}
+			],
+			"format": "markdown",
+			"dataFileName": "Anatomy of a Binary.md",
+			"dirFileName": "Anatomy of a Binary",
+			"children": [
+				{
+					"isClone": false,
+					"noteId": "bunwNgVlz8x0",
+					"notePath": [
+						"VrkVJkk4rClv",
+						"bunwNgVlz8x0"
+					],
+					"title": "image.png",
+					"notePosition": 0,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/png",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "image.png"
+				},
+				{
+					"isClone": false,
+					"noteId": "eMhAIrUorn5O",
+					"notePath": [
+						"VrkVJkk4rClv",
+						"eMhAIrUorn5O"
+					],
+					"title": "image.png",
+					"notePosition": 90,
+					"prefix": null,
+					"isExpanded": 1,
+					"type": "image",
+					"mime": "image/png",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "1_image.png"
+				}
+			]
+		}
+	]
+}

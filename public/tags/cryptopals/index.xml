@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cryptopals on Pwn the world.</title>
+    <link>https://hexterisk.tech/blog/tags/cryptopals/</link>
+    <description>Recent content in Cryptopals on Pwn the world.</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Tue, 07 Jan 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hexterisk.tech/blog/tags/cryptopals/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Set 1</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/07/set-1/</link>
+      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/07/set-1/</guid>
+      <description>Challenge 1: Convert hex to base64 Link
+ The string:
+49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f697 36f6e6f7573206d757368726f6f6d
+Should produce:
+SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t
+So go ahead and make that happen.
+You&amp;rsquo;ll need to use this code for the rest of the exercises.
+ Data, essentially raw bytes/binary (0, 1), can be represented in various forms and formats as required. These representations may be used for simply the presentation of data, or may be required by some protocol so as to prevent misinterpretation of data.</description>
+    </item>
+    
+    <item>
+      <title>Set 2</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/07/set-2/</link>
+      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/07/set-2/</guid>
+      <description>Challenge 9: Implement PKCS#7 padding Link
+ A block cipher transforms a fixed-sized block (usually 8 or 16 bytes) of plaintext into ciphertext. But we almost never want to transform a single block; we encrypt irregularly-sized messages.
+One way we account for irregularly-sized messages is by padding, creating a plaintext that is an even multiple of the blocksize. The most popular padding scheme is called PKCS#7.
+So: pad any block to a specific block length, by appending the number of bytes of padding to the end of the block.</description>
+    </item>
+    
+    <item>
+      <title>Set 3</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/07/set-3/</link>
+      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/07/set-3/</guid>
+      <description>Challenge 17: The CBC padding oracle Link
+ This is the best-known attack on modern block-cipher cryptography.
+Combine your padding code and your CBC code to write two functions.
+The first function should select at random one of the following 10 strings:
+MDAwMDAwTm93IHRoYXQgdGhlIHBhcnR5IGlzIGp1bXBpbmc=
+MDAwMDAxV2l0aCB0aGUgYmFzcyBraWNrZWQgaW4gYW5kIHRoZSBWZWdhJ3MgYXJlIHB1bXBpbic=
+MDAwMDAyUXVpY2sgdG8gdGhlIHBvaW50LCB0byB0aGUgcG9pbnQsIG5vIGZha2luZw==
+MDAwMDAzQ29va2luZyBNQydzIGxpa2UgYSBwb3VuZCBvZiBiYWNvbg==
+MDAwMDA0QnVybmluZyAnZW0sIGlmIHlvdSBhaW4ndCBxdWljayBhbmQgbmltYmxl
+MDAwMDA1SSBnbyBjcmF6eSB3aGVuIEkgaGVhciBhIGN5bWJhbA==
+MDAwMDA2QW5kIGEgaGlnaCBoYXQgd2l0aCBhIHNvdXBlZCB1cCB0ZW1wbw==
+MDAwMDA3SSdtIG9uIGEgcm9sbCwgaXQncyB0aW1lIHRvIGdvIHNvbG8=
+MDAwMDA4b2xsaW4nIGluIG15IGZpdmUgcG9pbnQgb2g=
+MDAwMDA5aXRoIG15IHJhZy10b3AgZG93biBzbyBteSBoYWlyIGNhbiBibG93
+&amp;hellip; generate a random AES key (which it should save for all future encryptions), pad the string out to the 16-byte AES block size and CBC-encrypt it under that key, providing the caller the ciphertext and IV.</description>
+    </item>
+    
+    <item>
+      <title>Set 4</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/07/set-4/</link>
+      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/07/set-4/</guid>
+      <description>Challenge 25: Break &amp;ldquo;random access read/write&amp;rdquo; AES CTR Link
+ Back to CTR. Encrypt the recovered plaintext from this file (the ECB exercise) under CTR with a random key (for this exercise the key should be unknown to you, but hold on to it).
+Now, write the code that allows you to &amp;ldquo;seek&amp;rdquo; into the ciphertext, decrypt, and re-encrypt with different plaintext. Expose this as a function, like, &amp;ldquo;edit(ciphertext, key, offset, newtext)&amp;quot;.</description>
+    </item>
+    
+    <item>
+      <title>Set 5</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/07/set-5/</link>
+      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/07/set-5/</guid>
+      <description>Challenge 33: Implement Diffie-Hellman Link
+ For one of the most important algorithms in cryptography this exercise couldn&amp;rsquo;t be a whole lot easier.
+Set a variable &amp;ldquo;p&amp;rdquo; to 37 and &amp;ldquo;g&amp;rdquo; to 5. This algorithm is so easy I&amp;rsquo;m not even going to explain it. Just do what I do.
+Generate &amp;ldquo;a&amp;rdquo;, a random number mod 37. Now generate &amp;ldquo;A&amp;rdquo;, which is &amp;ldquo;g&amp;rdquo; raised to the &amp;ldquo;a&amp;rdquo; power mode 37 &amp;mdash; A = (g**a) % p.</description>
+    </item>
+    
+    <item>
+      <title>Set 6</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/07/set-6/</link>
+      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/07/set-6/</guid>
+      <description>Challenge 41: Implement unpadded message recovery oracle Link
+ Nate Lawson says we should stop calling it &amp;ldquo;RSA padding&amp;rdquo; and start calling it &amp;ldquo;RSA armoring&amp;rdquo;. Here&amp;rsquo;s why.
+Imagine a web application, again with the Javascript encryption, taking RSA-encrypted messages which (again: Javascript) aren&amp;rsquo;t padded before encryption at all.
+You can submit an arbitrary RSA blob and the server will return plaintext. But you can&amp;rsquo;t submit the same message twice: let&amp;rsquo;s say the server keeps hashes of previous messages for some liveness interval, and that the message has an embedded timestamp: ** {</description>
+    </item>
+    
+  </channel>
+</rss>

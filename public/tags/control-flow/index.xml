@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>control flow on Pwn the world.</title>
+    <link>https://hexterisk.tech/blog/tags/control-flow/</link>
+    <description>Recent content in control flow on Pwn the world.</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Sun, 05 Jan 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hexterisk.tech/blog/tags/control-flow/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Disassembly and Binary Analysis Fundamentals</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/05/disassembly-and-binary-analysis-fundamentals/</link>
+      <pubDate>Sun, 05 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/05/disassembly-and-binary-analysis-fundamentals/</guid>
+      <description>##Static Disassembly
+When people say disassembly, they usually mean static disassembly, which involves extracting the instructions from a binary without executing it.
+Linear Disassembly Disassembly desynchronization due to inline data interpreted as code. The instruction where the disassembly resynchronizes is shaded gray.
+ It iterates through all code segments in a binary, decoding all bytes consecutively and parsing them into a list of instructions. Many simple disassemblers, including objdump, use this approach.</description>
+    </item>
+    
+  </channel>
+</rss>

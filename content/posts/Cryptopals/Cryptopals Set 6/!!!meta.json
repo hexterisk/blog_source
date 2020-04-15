@@ -1,0 +1,114 @@
+{
+	"formatVersion": 1,
+	"appVersion": "0.40.4",
+	"files": [
+		{
+			"isClone": false,
+			"noteId": "XJLJyelp5070",
+			"notePath": [
+				"XJLJyelp5070"
+			],
+			"title": "Set 6",
+			"notePosition": 60,
+			"prefix": null,
+			"isExpanded": 1,
+			"type": "text",
+			"mime": "text/html",
+			"attributes": [
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/sets/6/challenges/41",
+					"isInheritable": false,
+					"position": 1
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/sets/6/challenges/42",
+					"isInheritable": false,
+					"position": 2
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/sets/6/challenges/43",
+					"isInheritable": false,
+					"position": 3
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/sets/6/challenges/44",
+					"isInheritable": false,
+					"position": 4
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/static/challenge-data/44.txt",
+					"isInheritable": false,
+					"position": 5
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/sets/6/challenges/45",
+					"isInheritable": false,
+					"position": 6
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/sets/6/challenges/46",
+					"isInheritable": false,
+					"position": 7
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/sets/6/challenges/47",
+					"isInheritable": false,
+					"position": 8
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://lmgtfy.com/?q=%22Chosen+ciphertext+attacks+against+protocols+based+on+the+RSA+encryption+standard%22",
+					"isInheritable": false,
+					"position": 9
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://cryptopals.com/sets/6/challenges/48",
+					"isInheritable": false,
+					"position": 10
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://en.wikipedia.org/wiki/Digital_Signature_Algorithm",
+					"isInheritable": false,
+					"position": 11
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "https://crypto.stackexchange.com/questions/11053/rsa-least-significant-bit-oracle-attack",
+					"isInheritable": false,
+					"position": 13
+				},
+				{
+					"type": "label",
+					"name": "externalLink",
+					"value": "http://archiv.infsec.ethz.ch/education/fs08/secsem/Bleichenbacher98.pdf",
+					"isInheritable": false,
+					"position": 14
+				}
+			],
+			"format": "markdown",
+			"dataFileName": "Set 6.md"
+		}
+	]
+}

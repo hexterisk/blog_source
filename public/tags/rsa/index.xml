@@ -6,33 +6,33 @@
     <description>Recent content in RSA on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Tue, 07 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 10 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hexterisk.tech/blog/tags/rsa/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Set 5</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/07/set-5/</link>
-      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/01/07/set-5/</guid>
-      <description>Challenge 33: Implement Diffie-Hellman Link
- For one of the most important algorithms in cryptography this exercise couldn&amp;rsquo;t be a whole lot easier.
-Set a variable &amp;ldquo;p&amp;rdquo; to 37 and &amp;ldquo;g&amp;rdquo; to 5. This algorithm is so easy I&amp;rsquo;m not even going to explain it. Just do what I do.
-Generate &amp;ldquo;a&amp;rdquo;, a random number mod 37. Now generate &amp;ldquo;A&amp;rdquo;, which is &amp;ldquo;g&amp;rdquo; raised to the &amp;ldquo;a&amp;rdquo; power mode 37 &amp;mdash; A = (g**a) % p.</description>
-    </item>
-    
-    <item>
       <title>Set 6</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/07/set-6/</link>
-      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
+      <link>https://hexterisk.tech/blog/posts/2020/04/10/set-6/</link>
+      <pubDate>Fri, 10 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/01/07/set-6/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/04/10/set-6/</guid>
       <description>Challenge 41: Implement unpadded message recovery oracle Link
  Nate Lawson says we should stop calling it &amp;ldquo;RSA padding&amp;rdquo; and start calling it &amp;ldquo;RSA armoring&amp;rdquo;. Here&amp;rsquo;s why.
 Imagine a web application, again with the Javascript encryption, taking RSA-encrypted messages which (again: Javascript) aren&amp;rsquo;t padded before encryption at all.
 You can submit an arbitrary RSA blob and the server will return plaintext. But you can&amp;rsquo;t submit the same message twice: let&amp;rsquo;s say the server keeps hashes of previous messages for some liveness interval, and that the message has an embedded timestamp: ** {</description>
+    </item>
+    
+    <item>
+      <title>Set 5</title>
+      <link>https://hexterisk.tech/blog/posts/2020/04/02/set-5/</link>
+      <pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/04/02/set-5/</guid>
+      <description>Challenge 33: Implement Diffie-Hellman Link
+ For one of the most important algorithms in cryptography this exercise couldn&amp;rsquo;t be a whole lot easier.
+Set a variable &amp;ldquo;p&amp;rdquo; to 37 and &amp;ldquo;g&amp;rdquo; to 5. This algorithm is so easy I&amp;rsquo;m not even going to explain it. Just do what I do.
+Generate &amp;ldquo;a&amp;rdquo;, a random number mod 37. Now generate &amp;ldquo;A&amp;rdquo;, which is &amp;ldquo;g&amp;rdquo; raised to the &amp;ldquo;a&amp;rdquo; power mode 37 &amp;mdash; A = (g**a) % p.</description>
     </item>
     
   </channel>

@@ -188,28 +188,28 @@ Create a directory for the database to be stored in on the server/local machine.
 </code></pre>
 <p>An example <code>docker-compose.yml</code> file is shown. It can be tailored according to requirement.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">version</span>: <span style="color:#e6db74">&#34;3.6&#34;</span>
-services:
-	mongo:
+<span style="color:#66d9ef">services</span>:
+	<span style="color:#66d9ef">mongo</span>:
 		<span style="color:#66d9ef">image</span>: mongo
 		<span style="color:#66d9ef">container_name</span>: mongo_database
-	ports:
+	<span style="color:#66d9ef">ports</span>:
 		- <span style="color:#e6db74">&#34;1337:27017&#34;</span>
-	volumes:
+	<span style="color:#66d9ef">volumes</span>:
 		- ./db/data-volume:/data/db
 		- <span style="color:#e6db74">&#34;$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/&#34;</span>
 	<span style="color:#66d9ef">command</span>: mongod
-	environment:
+	<span style="color:#66d9ef">environment</span>:
   		- MONGO_INITDB_ROOT_USERNAME_FILE=/run/secrets/mongo_admin_user
   		- MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/mongo_admin_password
-	secrets:
+	<span style="color:#66d9ef">secrets</span>:
   		- mongo_admin_password
   		- mongo_admin_user
-volumes:
-	data-volume:
-secrets:
-	mongo_admin_user:
+<span style="color:#66d9ef">volumes</span>:
+	<span style="color:#66d9ef">data-volume</span>:
+<span style="color:#66d9ef">secrets</span>:
+	<span style="color:#66d9ef">mongo_admin_user</span>:
       		<span style="color:#66d9ef">file</span>: ./secrets/mongo_admin_user
-	mongo_admin_password:
+	<span style="color:#66d9ef">mongo_admin_password</span>:
       		<span style="color:#66d9ef">file</span>: ./secrets/mongo_admin_password
 </code></pre></div><ul>
 <li>Volumes:
@@ -285,6 +285,13 @@ echo <span style="color:#e6db74">&#34;Mongo users created.&#34;</span>
 
                 <div class="pagination__buttons">
                     
+                        <span class="button previous">
+                            <a href="https://hexterisk.tech/blog/posts/2020/03/20/set-1/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Set 1</span>
+                            </a>
+                        </span>
+                    
 
                     
                         <span class="button next">
@@ -315,9 +322,17 @@ echo <span style="color:#e6db74">&#34;Mongo users created.&#34;</span>
     <div class="footer__inner">
         <div class="footer__content">
             <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
-            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>    
-            <p><a href="http://www.catb.org/hacker-emblem/" style="font-size: 1.4rem; margin-bottom: -1.0rem;"> .</a></p>
-            <p><a href="http://www.catb.org/hacker-emblem/" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></p>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content" style="margin-bottom: -0.8rem;">
+            <span><a style="text-decoration: none;" href="http://www.catb.org/hacker-emblem/"> .</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span><a style="text-decoration: none;"  href="http://www.catb.org/hacker-emblem/" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></span>
         </div> 
     </div>
 </footer>

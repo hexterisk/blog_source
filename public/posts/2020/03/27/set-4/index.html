@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:hexterisk]">
+<meta name="description" content="Challenge 25: Break &amp;ldquo;random access read/write&amp;rdquo; AES CTR Link
+ Back to CTR. Encrypt the recovered plaintext from this file (the ECB exercise) under CTR with a random key (for this exercise the key should be unknown to you, but hold on to it).
+Now, write the code that allows you to &amp;ldquo;seek&amp;rdquo; into the ciphertext, decrypt, and re-encrypt with different plaintext. Expose this as a function, like, &amp;ldquo;edit(ciphertext, key, offset, newtext)&amp;quot;." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/03/27/set-4/" />
+
+
+    <title>
+        
+            Set 4: Pwn the world.  — A noob&#39;s attempt at blogging.
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://hexterisk.tech/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.tech/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.tech/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.tech/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.tech/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.tech/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.tech/blog/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Set 4">
+<meta itemprop="description" content="Challenge 25: Break &ldquo;random access read/write&rdquo; AES CTR Link
+ Back to CTR. Encrypt the recovered plaintext from this file (the ECB exercise) under CTR with a random key (for this exercise the key should be unknown to you, but hold on to it).
+Now, write the code that allows you to &ldquo;seek&rdquo; into the ciphertext, decrypt, and re-encrypt with different plaintext. Expose this as a function, like, &ldquo;edit(ciphertext, key, offset, newtext)&quot;.">
+<meta itemprop="datePublished" content="2020-03-27T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-03-27T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="5091">
+<meta itemprop="image" content="https://hexterisk.tech/blog"/>
+
+
+
+<meta itemprop="keywords" content="Matasano,cryptography,SHA-1,MAC,IV,CTR,xor,CBC,AES,pad,bit-flipping," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hexterisk.tech/blog"/>
+
+<meta name="twitter:title" content="Set 4"/>
+<meta name="twitter:description" content="Challenge 25: Break &ldquo;random access read/write&rdquo; AES CTR Link
+ Back to CTR. Encrypt the recovered plaintext from this file (the ECB exercise) under CTR with a random key (for this exercise the key should be unknown to you, but hold on to it).
+Now, write the code that allows you to &ldquo;seek&rdquo; into the ciphertext, decrypt, and re-encrypt with different plaintext. Expose this as a function, like, &ldquo;edit(ciphertext, key, offset, newtext)&quot;."/>
+
+
+
+    <meta property="article:section" content="Cryptopals" />
+
+
+
+    <meta property="article:published_time" content="2020-03-27 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://hexterisk.tech/blog/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$cd ~/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://hexterisk.tech/blog/about/">About</a></li><li><a href="https://hexterisk.tech/blog/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>24 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://hexterisk.tech/blog/posts/2020/03/27/set-4/">Set 4</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <h3 id="challenge-25-break-random-access-readwrite-aes-ctr">Challenge 25: Break &ldquo;random access read/write&rdquo; AES CTR</h3>
+<p><a href="https://cryptopals.com/sets/4/challenges/25">Link</a></p>
+<blockquote>
+<p>Back to CTR. Encrypt the recovered plaintext from <a href="https://cryptopals.com/static/challenge-data/25.txt">this file</a> (the ECB exercise) under CTR with a random key (for this exercise the key should be unknown to you, but hold on to it).</p>
+<p>Now, write the code that allows you to &ldquo;seek&rdquo; into the ciphertext, decrypt, and re-encrypt with different plaintext. Expose this as a function, like, <em>&ldquo;edit(ciphertext, key, offset, newtext)&quot;</em>.</p>
+<p>Imagine the &ldquo;edit&rdquo; function was exposed to attackers by means of an API call that didn&rsquo;t reveal the key or the original plaintext; the attacker has the ciphertext and controls the offset and &ldquo;new text&rdquo;.</p>
+<p>Recover the original plaintext.</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Imports</span>
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> base64
+<span style="color:#f92672">import</span> itertools
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Given</span>
+data <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;25.txt&#34;</span>, <span style="color:#e6db74">&#34;r&#34;</span>)<span style="color:#f92672">.</span>read()
+</code></pre></div><p>We have already established the fact that xoring multiple strings with the same keystream is a very bad idea.</p>
+<p>Now, the fact that CTR allows us to seek into the ciphertext, we can use it to our advantage to manipulate the ciphertext. We can encrypt our own text with the same keystream and then replace the bytes at the indices specified to be modified/overwritten.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">edit</span>(ciphertext: bytes, key: bytes, offset: int, newtext: bytes, nonce: int) <span style="color:#f92672">-&gt;</span> bytes:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Seek into the ciphertext at the given offset and edit the ciphertext to add the newtext&#39;s cipher at the offset.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    keystream <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;&#34;</span>
+    <span style="color:#75715e"># Obtain the keystream used to encrypt in the AES CTR Mode.</span>
+    <span style="color:#75715e"># Encrypting newtext to be inserted at offset requires CTR keystream at that offset too.</span>
+    stream <span style="color:#f92672">=</span> CTR_keystream_generator(key, nonce)
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> itertools<span style="color:#f92672">.</span>islice(stream, offset, offset<span style="color:#f92672">+</span>len(newtext)):
+        keystream <span style="color:#f92672">+=</span> i<span style="color:#f92672">.</span>to_bytes(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;big&#34;</span>)
+    
+    <span style="color:#75715e"># Get the cipher for newtext.</span>
+    append_cipher <span style="color:#f92672">=</span> xor_bytes(newtext, keystream)
+    
+    <span style="color:#75715e"># Append the cipher of newtext to original cipher.</span>
+    result <span style="color:#f92672">=</span> ciphertext[:offset] <span style="color:#f92672">+</span> append_cipher
+    <span style="color:#66d9ef">if</span> len(result) <span style="color:#f92672">&lt;</span> len(ciphertext):
+        <span style="color:#66d9ef">return</span> result <span style="color:#f92672">+</span> ciphertext[len(result):]
+    <span style="color:#66d9ef">return</span> result
+</code></pre></div><p>Test the edit function.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">random_key <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>urandom(<span style="color:#ae81ff">16</span>)
+nonce <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+
+plaintext <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;hello there&#34;</span>
+cipher <span style="color:#f92672">=</span> CTR(plaintext, random_key, nonce)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Original text:&#34;</span>, CTR(cipher, random_key, nonce)<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#34;utf-8&#34;</span>))
+edited_cipher <span style="color:#f92672">=</span> edit(cipher, random_key, <span style="color:#ae81ff">4</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;####&#34;</span>, nonce)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Edited text:&#34;</span>, CTR(edited_cipher, random_key, nonce)<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#34;utf-8&#34;</span>))
+</code></pre></div><p><code>Original text: hello there</code><br>
+<code>Edited text: hell####ere</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># If you give text as \x00 it gives out keystream, xors keystream with 0 and thus can decode keystream </span>
+<span style="color:#75715e"># by using offset as 0.</span>
+recovered_bytes <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64decode(data)
+
+random_key <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>urandom(<span style="color:#ae81ff">16</span>)
+nonce <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+
+ciphertext <span style="color:#f92672">=</span> CTR(recovered_bytes, random_key, nonce)
+recovered_keystream <span style="color:#f92672">=</span> edit(ciphertext, random_key, <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span>len(ciphertext), nonce)
+deciphered_bytes <span style="color:#f92672">=</span> xor_bytes(ciphertext, recovered_keystream)
+</code></pre></div>
+
+<div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
+
+
+<h3 id="challenge-26-ctr-bitflipping">Challenge 26: CTR bitflipping</h3>
+<p><a href="https://cryptopals.com/sets/4/challenges/26">Link</a></p>
+<blockquote>
+<p>There are people in the world that believe that CTR resists bit flipping attacks of the kind to which CBC mode is susceptible.<br>
+Re-implement <a href="https://cryptopals.com/sets/2/challenges/16">the CBC bitflipping exercise from earlier</a> to use CTR mode instead of CBC mode. Inject an &ldquo;admin=true&rdquo; token.</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Imports</span>
+<span style="color:#f92672">import</span> os
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Given</span>
+prepend_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;comment1=cooking%20MCs;userdata=&#34;</span>
+append_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;;comment2=</span><span style="color:#e6db74">%20li</span><span style="color:#e6db74">ke%20a%20pound</span><span style="color:#e6db74">%20o</span><span style="color:#e6db74">f%20bacon&#34;</span>
+</code></pre></div><p>Function to prepend the URL encoded string to text and encrypt it with CTR.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">encryptor</span>(text: bytes, key: bytes, nonce: int) <span style="color:#f92672">-&gt;</span> bytes:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Prepends the string to given text and encrypts with CTR.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    plaintext <span style="color:#f92672">=</span>  (prepend_string<span style="color:#f92672">.</span>encode() <span style="color:#f92672">+</span> text <span style="color:#f92672">+</span> append_string<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;;&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&#34;;&#34;&#39;</span>)<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;=&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&#34;=&#34;&#39;</span>)
+    ciphertext <span style="color:#f92672">=</span> CTR(plaintext, key, nonce)
+    <span style="color:#66d9ef">return</span> ciphertext
+</code></pre></div><p>Function to decrypt the cipihertext and check if &ldquo;admin=true&rdquo; is present.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">decryptor</span>(byte_string: bytes, random_key: bytes, nonce: int) <span style="color:#f92672">-&gt;</span> bool:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Decrypts the ciphertext via AES CTR Mode and checks if admin is set to true.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    decrypted_string <span style="color:#f92672">=</span> CTR(byte_string, random_key, nonce)
+    <span style="color:#66d9ef">if</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;;admin=true;&#39;</span> <span style="color:#f92672">in</span> decrypted_string:
+        <span style="color:#66d9ef">return</span> True
+    <span style="color:#66d9ef">else</span>:
+        <span style="color:#66d9ef">return</span> False
+</code></pre></div><p>We find out the common prefix length so as to get the length of the prepended string. We then seek to the index where our inserted text starts, we flip the bits through the xor operation and modify the ciphertext so that when it is decrypted, it reads “admin=true” somewhere in it.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">target_bytes <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;;admin=true;&#34;</span>
+random_key <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>urandom(<span style="color:#ae81ff">16</span>)
+nonce <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+
+modified_string <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;&#34;</span>
+
+<span style="color:#75715e"># we take out prefix length and then combine the recovered</span>
+<span style="color:#75715e"># keystream from that offset onwards with inut text to produce</span>
+<span style="color:#75715e"># the required string</span>
+prefix_length <span style="color:#f92672">=</span> len(os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>commonprefix([encryptor(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;AAAA&#39;</span>, random_key, nonce), encryptor(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&#39;</span>, random_key, nonce)]))
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Prefix length: &#34;</span>, prefix_length)
+
+dummy_input <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;heytheremama&#34;</span>
+ciphertext <span style="color:#f92672">=</span> encryptor(dummy_input, random_key, nonce)
+null_cipher <span style="color:#f92672">=</span> encryptor(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span>len(ciphertext), random_key, nonce)
+recovered_keystream <span style="color:#f92672">=</span> null_cipher[prefix_length:len(ciphertext)]
+
+injected_bytes <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;&#34;</span>
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(target_bytes)):
+    injected_bytes <span style="color:#f92672">+=</span> (target_bytes[i] <span style="color:#f92672">^</span> recovered_keystream[i])<span style="color:#f92672">.</span>to_bytes(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;big&#34;</span>)
+
+modified_ciphertext <span style="color:#f92672">=</span> ciphertext[:prefix_length] <span style="color:#f92672">+</span> injected_bytes <span style="color:#f92672">+</span> ciphertext[prefix_length <span style="color:#f92672">+</span> len(injected_bytes):]
+</code></pre></div><p><code>Prefix length:  38</code></p>
+
+
+<div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
+
+
+<h3 id="challenge-27-recover-the-key-from-cbc-with-ivkey">Challenge 27: Recover the key from CBC with IV=Key</h3>
+<p><a href="https://cryptopals.com/sets/4/challenges/27">Link</a></p>
+<blockquote>
+<p>Take your code from the CBC exercise and modify it so that it repurposes the key for CBC encryption as the IV.<br>
+Applications sometimes use the key as an IV on the auspices that both the sender and the receiver have to know the key already, and can save some space by using it as both a key and an IV.<br>
+Using the key as an IV is insecure; an attacker that can modify ciphertext in flight can get the receiver to decrypt a value that will reveal the key.<br>
+The CBC code from exercise 16 encrypts a URL string. Verify each byte of the plaintext for ASCII compliance (ie, look for high-ASCII values). Noncompliant messages should raise an exception or return an error that includes the decrypted plaintext (this happens all the time in real systems, for what it&rsquo;s worth).<br>
+Use your code to encrypt a message that is at least 3 blocks long:<br>
+<strong>AES-CBC(P_1, P_2, P_3) -&gt; C_1, C_2, C_3</strong><br>
+Modify the message (you are now the attacker):<br>
+<strong>C_1, C_2, C_3 -&gt; C_1, 0, C_1</strong><br>
+Decrypt the message (you are now the receiver) and raise the appropriate error if high-ASCII is found.<br>
+As the attacker, recovering the plaintext from the error, extract the key:<br>
+<strong>P&rsquo;_1 XOR P&rsquo;_3</strong></p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Imports</span>
+<span style="color:#f92672">import</span> os
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Given</span>
+prepend_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;comment1=cooking%20MCs;userdata=&#34;</span>
+append_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;;comment2=</span><span style="color:#e6db74">%20li</span><span style="color:#e6db74">ke%20a%20pound</span><span style="color:#e6db74">%20o</span><span style="color:#e6db74">f%20bacon&#34;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">check_ascii_compliance</span>(plaintext: bytes) <span style="color:#f92672">-&gt;</span> bool:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Returns true if all the characters of plaintext are ASCII compliant (ie are in the ASCII table).
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    <span style="color:#66d9ef">return</span> all(c <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">128</span> <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> plaintext)
+</code></pre></div><p>NOTE: The specifications of this function are to be paid attention to. The attack is only possible if the oracle gives a feedback on the decrypted bytes being ASCII compliant, as well as returning the decrypted bytes if they aren&rsquo;t.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">encryptor</span>(text: bytes, IV: bytes, key: bytes) <span style="color:#f92672">-&gt;</span> bytes:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Encrypts the text with AES CBC Mode.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    plaintext <span style="color:#f92672">=</span> text<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;;&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&#34;;&#34;&#39;</span>)<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;=&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&#34;=&#34;&#39;</span>)
+    ciphertext <span style="color:#f92672">=</span> AES_CBC_encrypt(PKCS7_pad(plaintext, len(key)), IV, key)
+    <span style="color:#66d9ef">return</span> ciphertext
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">decryptor</span>(byte_string: bytes, IV: bytes, key: bytes) <span style="color:#f92672">-&gt;</span> bool:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Decrypts the ciphertext via AES CBC Mode and checks if all characters are ASCII.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    decrypted_string <span style="color:#f92672">=</span> AES_CBC_decrypt(byte_string, IV, key)
+    <span style="color:#66d9ef">print</span>(len(decrypted_string), decrypted_string)
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> check_ascii_compliance(decrypted_string):
+        <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(decrypted_string)
+</code></pre></div><p>Given K(key) = IV, and that we&rsquo;re in control of the cipher blocks being sent for decryption,</p>
+<p>    ⇨ P¹ = Decrypt(C¹) ⊕ K </p>
+<p>Here, since we know the plaintext and the ciphertext, if we get the intermediate state of decryption of C¹ block (ie Decrypt(C¹)), we can xor it with P¹ to get the K.</p>
+<p>Now, feeding C¹ as the (i-1)th block for decryption to a random block Cⁱ, we get:</p>
+<p>    ⇨ Pⁱ⁺¹ = Decrypt(C¹) ⊕ Cⁱ</p>
+<p>If Cⁱ = 0,</p>
+<p>    ⇨ Pⁱ⁺¹ = Decrypt(C¹), which would give us the intermediate state of decryption of C¹ block (ie Decrypt(C¹)).</p>
+<p>Therefore, the attack is crafted as follows:</p>
+<ol>
+<li>Pick a ciphertext block to focus on. Call it C¹ for simplicity.</li>
+<li>Send C¹ || 0 || C1 to the decryption oracle.</li>
+<li>Compute the key as K = P¹ ⊕ C¹.</li>
+</ol>
+<p>Now, since the oracle checks the output for ASCII compliance, and in fact does send us the supposedly decrypted bytes when it&rsquo;s non-ASCII compliant, we can thus receive the key as it gets decrypted. If the decrypted bytes happens to pass the ASCII check, pick a different cipher block to begin with.</p>
+<p><img src="https://hexterisk.tech/blog/Cryptopals_Set_4/image.png" alt="&ldquo;CBC_decryption&rdquo;">
+<em>AES CBC Decryption (3 blocks).</em></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">keysize <span style="color:#f92672">=</span> <span style="color:#ae81ff">16</span>
+random_key <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>urandom(keysize)
+IV <span style="color:#f92672">=</span> random_key
+
+plaintext <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;lorem=ipsum;test=fun;padding=dull&#34;</span>
+ciphertext <span style="color:#f92672">=</span> encryptor(plaintext, IV, random_key)
+c1 <span style="color:#f92672">=</span> ciphertext[:keysize]
+c2 <span style="color:#f92672">=</span> ciphertext[keysize:<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>keysize]
+c3 <span style="color:#f92672">=</span> ciphertext[<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>keysize:]
+
+<span style="color:#66d9ef">try</span>:
+    decryptor(c1 <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">16</span> <span style="color:#f92672">+</span> c1, IV, random_key)
+<span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+    decrypted_string <span style="color:#f92672">=</span> str(e)<span style="color:#f92672">.</span>encode()
+    p1 <span style="color:#f92672">=</span> decrypted_string[:keysize]
+    p3 <span style="color:#f92672">=</span> decrypted_string[<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>keysize:]
+    decrypted_key <span style="color:#f92672">=</span> xor_bytes(p1, p3)
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;&gt; Key found to be:&#34;</span>, decrypted_key)
+</code></pre></div><p><code>57 b'lorem&quot;=&quot;ipsum&quot;;&quot;W\xc3\x9b\xc3\xb8]\xc3\x95;l=|}W`VK\xc2\xb1(;h\xc2\x86\x06uL\xc3\xacV\xc3\x87\xc2\x97~:4\xc3\x88\x00l'</code><br>
+<code>&gt; Key found to be: b'\x1aET2.\x1d\x0e\x11aZPEH\x19P^'</code></p>
+
+
+<div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
+
+
+<h3 id="challenge-28-implement-a-sha-1-keyed-mac">Challenge 28: Implement a SHA-1 keyed MAC</h3>
+<p><a href="https://cryptopals.com/sets/4/challenges/28">Link</a></p>
+<blockquote>
+<p>Find a SHA-1 implementation in the language you code in.<br>
+Write a function to authenticate a message under a secret key by using a secret-prefix MAC, which is simply:<br>
+<strong>SHA1(key || message)</strong><br>
+Verify that you cannot tamper with the message without breaking the MAC you&rsquo;ve produced, and that you can&rsquo;t produce a new MAC without knowing the secret key.</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Imports</span>
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> struct
+<span style="color:#f92672">import</span> hashlib
+</code></pre></div><p><strong>MAC</strong> (<strong>Message Authentication Code</strong>) works towards an integrity/authenticity check for a message. It can be computed on the sender&rsquo;s side, and sent with the message. The receiver, on reception of the message, can compute it and verify it with the MAC received to verify that the message is authentic, and hasn&rsquo;t been tampered with.</p>
+<p>The implementation of the function is as follows:</p>
+<p>SHA-1 works on 512 bit blocks. For a given input message <em>m</em>, it first appends some bits (at least 65, at most 576) so that the total length is a multiple of 512. Let&rsquo;s call <em>p</em> the added bits (that&rsquo;s the padding). The padded message is now <em>m||p</em> and is processed in the form of 512-bit blocks. It uses an internal <a href="https://stackedit.io/%5Bhttps://en.wikipedia.org/wiki/One-way_compression_function">compression function</a> (traditional name because it transforms two fixed-length inputs, the message and the key, into a fixed-length output, the MAC) and maintains a <strong>running state</strong> consisting of five 32-bit words. The compression function takes as input two values of 160 bits(the running state) and 512 bits(the padded message block), respectively, and outputs 160 bits(final MAC). The processing goes like this:</p>
+<ul>
+<li>The running state is initialized to a fixed, conventional value (which is given in the <a href="http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf">SHA-1 specification</a>).</li>
+<li>For each input block, the compression function is evaluated, with as input the current running state, and the input block; the output of the function is the new running state.</li>
+<li>The running state after processing the last block is the hash output.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">left_rotate</span>(value: int, shift: int) <span style="color:#f92672">-&gt;</span> int:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Returns value left-rotated by shift bits. In other words, performs a circular shift to the left.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    <span style="color:#66d9ef">return</span> ((value <span style="color:#f92672">&lt;&lt;</span> shift) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>) <span style="color:#f92672">|</span> (value <span style="color:#f92672">&gt;&gt;</span> (<span style="color:#ae81ff">32</span> <span style="color:#f92672">-</span> shift))
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sha1</span>(message: bytes, ml<span style="color:#f92672">=</span>None, h0<span style="color:#f92672">=</span><span style="color:#ae81ff">0x67452301</span>, h1<span style="color:#f92672">=</span><span style="color:#ae81ff">0xEFCDAB89</span>, h2<span style="color:#f92672">=</span><span style="color:#ae81ff">0x98BADCFE</span>, h3<span style="color:#f92672">=</span><span style="color:#ae81ff">0x10325476</span>, h4<span style="color:#f92672">=</span><span style="color:#ae81ff">0xC3D2E1F0</span>) <span style="color:#f92672">-&gt;</span> bytes:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Returns a string containing the SHA1 hash of the input message. This is a pure python 3 SHA1
+</span><span style="color:#e6db74">    implementation, written starting from the SHA1 pseudo-code on Wikipedia.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    
+    <span style="color:#75715e"># Pre-processing:</span>
+    <span style="color:#66d9ef">if</span> ml <span style="color:#f92672">is</span> None:
+        ml <span style="color:#f92672">=</span> len(message) <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>
+
+    message <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x80</span><span style="color:#e6db74">&#39;</span>
+    <span style="color:#66d9ef">while</span> (len(message) <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">%</span> <span style="color:#ae81ff">512</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">448</span>:
+        message <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>
+
+    message <span style="color:#f92672">+=</span> struct<span style="color:#f92672">.</span>pack(<span style="color:#e6db74">&#39;&gt;Q&#39;</span>, ml)
+
+    <span style="color:#75715e"># Process the message in successive 512-bit chunks:</span>
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(message), <span style="color:#ae81ff">64</span>):
+
+        <span style="color:#75715e"># Break chunk into sixteen 32-bit big-endian integers w[i]</span>
+        w <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> <span style="color:#ae81ff">80</span>
+        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>):
+            w[j] <span style="color:#f92672">=</span> struct<span style="color:#f92672">.</span>unpack(<span style="color:#e6db74">&#39;&gt;I&#39;</span>, message[i <span style="color:#f92672">+</span> j <span style="color:#f92672">*</span> <span style="color:#ae81ff">4</span>:i <span style="color:#f92672">+</span> j <span style="color:#f92672">*</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">4</span>])[<span style="color:#ae81ff">0</span>]
+
+        <span style="color:#75715e"># Extend the sixteen 32-bit integers into eighty 32-bit integers:</span>
+        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>, <span style="color:#ae81ff">80</span>):
+            w[j] <span style="color:#f92672">=</span> left_rotate(w[j <span style="color:#f92672">-</span> <span style="color:#ae81ff">3</span>] <span style="color:#f92672">^</span> w[j <span style="color:#f92672">-</span> <span style="color:#ae81ff">8</span>] <span style="color:#f92672">^</span> w[j <span style="color:#f92672">-</span> <span style="color:#ae81ff">14</span>] <span style="color:#f92672">^</span> w[j <span style="color:#f92672">-</span> <span style="color:#ae81ff">16</span>], <span style="color:#ae81ff">1</span>)
+
+        <span style="color:#75715e"># Initialize hash value for this chunk:</span>
+        a <span style="color:#f92672">=</span> h0
+        b <span style="color:#f92672">=</span> h1
+        c <span style="color:#f92672">=</span> h2
+        d <span style="color:#f92672">=</span> h3
+        e <span style="color:#f92672">=</span> h4
+
+        <span style="color:#75715e"># Main loop</span>
+        <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">80</span>):
+            <span style="color:#66d9ef">if</span> j <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">19</span>:
+                f <span style="color:#f92672">=</span> d <span style="color:#f92672">^</span> (b <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; (c <span style="color:#f92672">^</span> d))
+                k <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x5A827999</span>
+            <span style="color:#66d9ef">elif</span> <span style="color:#ae81ff">20</span> <span style="color:#f92672">&lt;=</span> j <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">39</span>:
+                f <span style="color:#f92672">=</span> b <span style="color:#f92672">^</span> c <span style="color:#f92672">^</span> d
+                k <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x6ED9EBA1</span>
+            <span style="color:#66d9ef">elif</span> <span style="color:#ae81ff">40</span> <span style="color:#f92672">&lt;=</span> j <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">59</span>:
+                f <span style="color:#f92672">=</span> (b <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; c) <span style="color:#f92672">|</span> (d <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; (b <span style="color:#f92672">|</span> c))
+                k <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x8F1BBCDC</span>
+            <span style="color:#66d9ef">else</span>:
+                f <span style="color:#f92672">=</span> b <span style="color:#f92672">^</span> c <span style="color:#f92672">^</span> d
+                k <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xCA62C1D6</span>
+
+            temp <span style="color:#f92672">=</span> left_rotate(a, <span style="color:#ae81ff">5</span>) <span style="color:#f92672">+</span> f <span style="color:#f92672">+</span> e <span style="color:#f92672">+</span> k <span style="color:#f92672">+</span> w[j] <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>
+            e <span style="color:#f92672">=</span> d
+            d <span style="color:#f92672">=</span> c
+            c <span style="color:#f92672">=</span> left_rotate(b, <span style="color:#ae81ff">30</span>)
+            b <span style="color:#f92672">=</span> a
+            a <span style="color:#f92672">=</span> temp
+
+        <span style="color:#75715e"># Add this chunk&#39;s hash to result so far:</span>
+        h0 <span style="color:#f92672">=</span> (h0 <span style="color:#f92672">+</span> a) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>
+        h1 <span style="color:#f92672">=</span> (h1 <span style="color:#f92672">+</span> b) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>
+        h2 <span style="color:#f92672">=</span> (h2 <span style="color:#f92672">+</span> c) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>
+        h3 <span style="color:#f92672">=</span> (h3 <span style="color:#f92672">+</span> d) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>
+        h4 <span style="color:#f92672">=</span> (h4 <span style="color:#f92672">+</span> e) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>
+
+    <span style="color:#75715e"># Produce the final hash value (big-endian) as a 160 bit number, hex formatted:</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">%08x%08x%08x%08x%08x</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">%</span> (h0, h1, h2, h3, h4)
+</code></pre></div><p>The function works on producing the MAC based on SHA-1.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sha1_mac</span>(key: bytes, message: bytes) <span style="color:#f92672">-&gt;</span> bytes:
+    <span style="color:#66d9ef">return</span> sha1(key <span style="color:#f92672">+</span> message)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">keysize <span style="color:#f92672">=</span> <span style="color:#ae81ff">16</span>
+random_key <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>urandom(keysize)
+message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;This is a message to test that our implementation of the SHA1 MAC works properly.&#34;</span>
+
+hashed <span style="color:#f92672">=</span> sha1_mac(random_key, message<span style="color:#f92672">.</span>encode())
+
+<span style="color:#75715e"># Verify that I implemented SHA1 correctly</span>
+h <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha1(random_key <span style="color:#f92672">+</span> message<span style="color:#f92672">.</span>encode())
+</code></pre></div>
+
+<div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
+
+
+<h3 id="challenge-29-break-a-sha-1-keyed-mac-using-length-extension">Challenge 29: Break a SHA-1 keyed MAC using length extension</h3>
+<p><a href="https://cryptopals.com/sets/4/challenges/29">Link</a></p>
+<blockquote>
+<p>Secret-prefix SHA-1 MACs are trivially breakable.<br>
+The attack on secret-prefix SHA1 relies on the fact that you can take the ouput of SHA-1 and use it as a new starting point for SHA-1, thus taking an arbitrary SHA-1 hash and &ldquo;feeding it more data&rdquo;.<br>
+Since the key precedes the data in secret-prefix, any additional data you feed the SHA-1 hash in this fashion will appear to have been hashed with the secret key.<br>
+To carry out the attack, you&rsquo;ll need to account for the fact that SHA-1 is &ldquo;padded&rdquo; with the bit-length of the message; your forged message will need to include that padding. We call this &ldquo;glue padding&rdquo;. The final message you actually forge will be:<br>
+<strong>SHA1(key || original-message || glue-padding || new-message)</strong><br>
+(where the final padding on the whole constructed message is implied)<br>
+Note that to generate the glue padding, you&rsquo;ll need to know the original bit length of the message; the message itself is known to the attacker, but the secret key isn&rsquo;t, so you&rsquo;ll need to guess at it.<br>
+This sounds more complicated than it is in practice.<br>
+To implement the attack, first write the function that computes the MD padding of an arbitrary message and verify that you&rsquo;re generating the same padding that your SHA-1 implementation is using. This should take you 5-10 minutes.<br>
+Now, take the SHA-1 secret-prefix MAC of the message you want to forge &mdash; this is just a SHA-1 hash &mdash; and break it into 32 bit SHA-1 registers (SHA-1 calls them &ldquo;a&rdquo;, &ldquo;b&rdquo;, &ldquo;c&rdquo;, &amp;c).<br>
+Modify your SHA-1 implementation so that callers can pass in new values for &ldquo;a&rdquo;, &ldquo;b&rdquo;, &ldquo;c&rdquo; &amp;c (they normally start at magic numbers). With the registers &ldquo;fixated&rdquo;, hash the additional data you want to forge.<br>
+Using this attack, generate a secret-prefix MAC under a secret key (choose a random word from /usr/share/dict/words or something) of the string:<br>
+<strong>&ldquo;comment1=cooking%20MCs;userdata=foo;comment2=%20like%20a%20pound%20of%20bacon&rdquo;</strong><br>
+Forge a variant of this message that ends with &ldquo;;admin=true&rdquo;.</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Imports</span>
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> struct
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Given</span>
+message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;comment1=cooking%20MCs;userdata=foo;comment2=</span><span style="color:#e6db74">%20li</span><span style="color:#e6db74">ke%20a%20pound</span><span style="color:#e6db74">%20o</span><span style="color:#e6db74">f%20bacon&#34;</span>
+payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;;admin=true&#34;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Generating a pseudo random key, to be run only once.</span>
+key <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>urandom(<span style="color:#ae81ff">16</span>)
+</code></pre></div><p>The padding function makes sure that the message received is sent in the form of a padded message. Since the last 64 bits of the block are reserved for the length of the message, the message is made sure to be (padded) upto 448 bits.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">md_pad</span>(message: bytes) <span style="color:#f92672">-&gt;</span> bytes:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Pads the message in accordance with SHA1 padding.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    ml <span style="color:#f92672">=</span> len(message) <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>
+    message <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x80</span><span style="color:#e6db74">&#39;</span>
+    <span style="color:#66d9ef">while</span> (len(message) <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>) <span style="color:#f92672">%</span> <span style="color:#ae81ff">512</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">448</span>:
+        message <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span>
+
+    message <span style="color:#f92672">+=</span> struct<span style="color:#f92672">.</span>pack(<span style="color:#e6db74">&#39;&gt;Q&#39;</span>, ml)
+    <span style="color:#66d9ef">return</span> message
+    
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">validate</span>(modified_message: bytes, new_md: bytes) <span style="color:#f92672">-&gt;</span> bool:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Verifies the MAC.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    <span style="color:#66d9ef">if</span> sha1_mac(key, modified_message) <span style="color:#f92672">==</span> new_md:
+        <span style="color:#66d9ef">return</span> True
+    <span style="color:#66d9ef">return</span> False
+</code></pre></div><p>From the implementation, we know that the value returned from SHA1 is <em>(H0 &laquo; 128) | (H1 &laquo; 96) | (H2 &laquo; 64) | (H3 &laquo; 32) | H4</em>.</p>
+<p>The output can therefore be dissolved back into <em>H0</em>, <em>H1</em>, <em>H2</em>, <em>H3</em>, and <em>H4</em>. These values are then used to instantiate a new SHA-1 oracle, and this new oracle can resume computation from this point on.</p>
+<p>Now, when we get the hash <em>h</em> for a message <em>m</em>, we can compute the padding <em>p</em> applied to it. Let&rsquo;s assume that we know <em>m</em> and we want to compute has for a message <em>m&rsquo;</em>. A padding <em>p&rsquo;</em> will be in order. The final message comes out to be <em>m||p||m'||p&rsquo;</em>. Since <em>m||p</em> is already 512 bits, <em>m'||p&rsquo;</em> will be computed in it&rsquo;s own block. But wait, what if we already have the intermediary state between the blocks of <em>m||p</em> and <em>m'||p&rsquo;</em> ? We could just resume the computation of <em>m'||p&rsquo;</em> and just ignore the <em>m||p</em>. Well we do have the intermediary state. It&rsquo;s the hash of <em>m||p</em>. Therefore, we could just use the hash of any random message, and use it&rsquo;s value to sign any message we want to, and it would have a valid MAC. The implications of this are major. It makes forgery really easy and straight forward. </p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sha1_length_extension_attack</span>(message: bytes, original_md: bytes, payload: bytes) <span style="color:#f92672">-&gt;</span> (bytes, bytes):
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Perform the SHA1 length extension attack.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    <span style="color:#66d9ef">for</span> key_length <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">20</span>):
+        h <span style="color:#f92672">=</span> struct<span style="color:#f92672">.</span>unpack(<span style="color:#e6db74">&#39;&gt;5I&#39;</span>, bytes<span style="color:#f92672">.</span>fromhex(original_md))
+        modified_message <span style="color:#f92672">=</span> md_pad(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span><span style="color:#f92672">*</span>key_length <span style="color:#f92672">+</span> message)[key_length:] <span style="color:#f92672">+</span> payload
+        new_md <span style="color:#f92672">=</span> sha1(payload, (len(modified_message) <span style="color:#f92672">+</span> key_length)<span style="color:#f92672">*</span><span style="color:#ae81ff">8</span>, h[<span style="color:#ae81ff">0</span>], h[<span style="color:#ae81ff">1</span>], h[<span style="color:#ae81ff">2</span>], h[<span style="color:#ae81ff">3</span>], h[<span style="color:#ae81ff">4</span>])
+        <span style="color:#66d9ef">if</span> validate(modified_message, new_md):
+            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;&gt; Length extension attack successful.&#34;</span>)
+            <span style="color:#66d9ef">return</span> modified_message, new_md
+            <span style="color:#66d9ef">break</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">original_md <span style="color:#f92672">=</span> sha1_mac(key, message<span style="color:#f92672">.</span>encode())
+modified_message, new_md <span style="color:#f92672">=</span> sha1_length_extension_attack(message<span style="color:#f92672">.</span>encode(), original_md, payload)
+</code></pre></div><p><code>&gt; Length extension attack successful.</code></p>
+
+
+<div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
+
+
+<h3 id="challenge-30-break-an-md4-keyed-mac-using-length-extension">Challenge 30: Break an MD4 keyed MAC using length extension</h3>
+<p><a href="https://cryptopals.com/sets/4/challenges/30">Link</a></p>
+<blockquote>
+<p>Second verse, same as the first, but use MD4 instead of SHA-1. Having done this attack once against SHA-1, the MD4 variant should take much less time; mostly just the time you&rsquo;ll spend Googling for an implementation of MD4.</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Imports</span>
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> struct
+<span style="color:#f92672">import</span> binascii
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Given</span>
+message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;comment1=cooking%20MCs;userdata=foo;comment2=</span><span style="color:#e6db74">%20li</span><span style="color:#e6db74">ke%20a%20pound</span><span style="color:#e6db74">%20o</span><span style="color:#e6db74">f%20bacon&#34;</span>
+payload <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;;admin=true&#34;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Generating a pseudo random key, to be run only once.</span>
+key <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>urandom(<span style="color:#ae81ff">16</span>)
+</code></pre></div><p>There are four internal state variables - A, B, C, D, each 32 bits. These are initialized to:</p>
+<p><code>word A: 01 23 45 67</code><br>
+<code>word B: 89 ab cd ef</code><br>
+<code>word C: fe dc ba 98</code><br>
+<code>word D: 76 54 32 10</code></p>
+<p>We also use a table of 64 values generated from the <em>sine</em> function, <em>self.k</em>.</p>
+<p>For each chunk, which is 512 bits, we unpack into 16 words of 32-bits.</p>
+<p>Then, we do 64 transforms, split into four rounds. each transform taking: an incrementing-by-one index into the <em>sin table</em>, a function <em>f</em> specific to the round, a <em>lrot</em> value, and an index into our array of 16 words.</p>
+<p>At the end of each transform, the values are updated as follows:</p>
+<p><em>a, b, c, d = d, x &amp;</em> <em>0xffffffff</em>_, b, c_</p>
+<p>where <em>x</em> is the result of the transform.</p>
+<p>The message digest produced as output is the concat of <em>A</em>, <em>B</em>, <em>C</em>, <em>D</em>, and it is 128 bits, or 16-bytes in length.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MD4</span>:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    This implementation resembles the one of the Wikipedia pseudo-code.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    
+    buf <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0x00</span>] <span style="color:#f92672">*</span> <span style="color:#ae81ff">64</span>
+
+    _F <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> self, x, y, z: ((x <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; y) <span style="color:#f92672">|</span> (<span style="color:#f92672">~</span>x <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; z))
+    _G <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> self, x, y, z: ((x <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; y) <span style="color:#f92672">|</span> (x <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; z) <span style="color:#f92672">|</span> (y <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; z))
+    _H <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> self, x, y, z: (x <span style="color:#f92672">^</span> y <span style="color:#f92672">^</span> z)
+
+    <span style="color:#66d9ef">def</span> __init__(self: object, message: bytes, ml<span style="color:#f92672">=</span>None, A<span style="color:#f92672">=</span><span style="color:#ae81ff">0x67452301</span>, B<span style="color:#f92672">=</span><span style="color:#ae81ff">0xefcdab89</span>, C<span style="color:#f92672">=</span><span style="color:#ae81ff">0x98badcfe</span>, D<span style="color:#f92672">=</span><span style="color:#ae81ff">0x10325476</span>):
+        self<span style="color:#f92672">.</span>A, self<span style="color:#f92672">.</span>B, self<span style="color:#f92672">.</span>C, self<span style="color:#f92672">.</span>D <span style="color:#f92672">=</span> A, B, C, D
+
+        <span style="color:#66d9ef">if</span> ml <span style="color:#f92672">is</span> None:
+            ml <span style="color:#f92672">=</span> len(message) <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>
+        length <span style="color:#f92672">=</span> struct<span style="color:#f92672">.</span>pack(<span style="color:#e6db74">&#39;&lt;Q&#39;</span>, ml)
+
+        <span style="color:#66d9ef">while</span> len(message) <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">64</span>:
+            self<span style="color:#f92672">.</span>_handle(message[:<span style="color:#ae81ff">64</span>])
+            message <span style="color:#f92672">=</span> message[<span style="color:#ae81ff">64</span>:]
+
+        message <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x80</span><span style="color:#e6db74">&#39;</span>
+        message <span style="color:#f92672">+=</span> bytes((<span style="color:#ae81ff">56</span> <span style="color:#f92672">-</span> len(message) <span style="color:#f92672">%</span> <span style="color:#ae81ff">64</span>) <span style="color:#f92672">%</span> <span style="color:#ae81ff">64</span>)
+        message <span style="color:#f92672">+=</span> length
+
+        <span style="color:#66d9ef">while</span> len(message):
+            self<span style="color:#f92672">.</span>_handle(message[:<span style="color:#ae81ff">64</span>])
+            message <span style="color:#f92672">=</span> message[<span style="color:#ae81ff">64</span>:]
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_handle</span>(self: object, chunk: bytes):
+        X <span style="color:#f92672">=</span> list(struct<span style="color:#f92672">.</span>unpack(<span style="color:#e6db74">&#39;&lt;&#39;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;I&#39;</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">16</span>, chunk))
+        A, B, C, D <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>A, self<span style="color:#f92672">.</span>B, self<span style="color:#f92672">.</span>C, self<span style="color:#f92672">.</span>D
+
+        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>):
+            k <span style="color:#f92672">=</span> i
+            <span style="color:#66d9ef">if</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+                A <span style="color:#f92672">=</span> left_rotate((A <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_F(B, C, D) <span style="color:#f92672">+</span> X[k]) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>, <span style="color:#ae81ff">3</span>)
+            <span style="color:#66d9ef">elif</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+                D <span style="color:#f92672">=</span> left_rotate((D <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_F(A, B, C) <span style="color:#f92672">+</span> X[k]) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>, <span style="color:#ae81ff">7</span>)
+            <span style="color:#66d9ef">elif</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>:
+                C <span style="color:#f92672">=</span> left_rotate((C <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_F(D, A, B) <span style="color:#f92672">+</span> X[k]) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>, <span style="color:#ae81ff">11</span>)
+            <span style="color:#66d9ef">elif</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span>:
+                B <span style="color:#f92672">=</span> left_rotate((B <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_F(C, D, A) <span style="color:#f92672">+</span> X[k]) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>, <span style="color:#ae81ff">19</span>)
+
+        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>):
+            k <span style="color:#f92672">=</span> (i <span style="color:#f92672">//</span> <span style="color:#ae81ff">4</span>) <span style="color:#f92672">+</span> (i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">4</span>
+            <span style="color:#66d9ef">if</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+                A <span style="color:#f92672">=</span> left_rotate((A <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_G(B, C, D) <span style="color:#f92672">+</span> X[k] <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x5a827999</span>) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>, <span style="color:#ae81ff">3</span>)
+            <span style="color:#66d9ef">elif</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+                D <span style="color:#f92672">=</span> left_rotate((D <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_G(A, B, C) <span style="color:#f92672">+</span> X[k] <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x5a827999</span>) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>, <span style="color:#ae81ff">5</span>)
+            <span style="color:#66d9ef">elif</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>:
+                C <span style="color:#f92672">=</span> left_rotate((C <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_G(D, A, B) <span style="color:#f92672">+</span> X[k] <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x5a827999</span>) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>, <span style="color:#ae81ff">9</span>)
+            <span style="color:#66d9ef">elif</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span>:
+                B <span style="color:#f92672">=</span> left_rotate((B <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_G(C, D, A) <span style="color:#f92672">+</span> X[k] <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x5a827999</span>) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>, <span style="color:#ae81ff">13</span>)
+
+        order <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">14</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">13</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">11</span>, <span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">15</span>]
+        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>):
+            k <span style="color:#f92672">=</span> order[i]
+            <span style="color:#66d9ef">if</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+                A <span style="color:#f92672">=</span> left_rotate((A <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_H(B, C, D) <span style="color:#f92672">+</span> X[k] <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x6ed9eba1</span>) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>, <span style="color:#ae81ff">3</span>)
+            <span style="color:#66d9ef">elif</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+                D <span style="color:#f92672">=</span> left_rotate((D <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_H(A, B, C) <span style="color:#f92672">+</span> X[k] <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x6ed9eba1</span>) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>, <span style="color:#ae81ff">9</span>)
+            <span style="color:#66d9ef">elif</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span>:
+                C <span style="color:#f92672">=</span> left_rotate((C <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_H(D, A, B) <span style="color:#f92672">+</span> X[k] <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x6ed9eba1</span>) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>, <span style="color:#ae81ff">11</span>)
+            <span style="color:#66d9ef">elif</span> i <span style="color:#f92672">%</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span>:
+                B <span style="color:#f92672">=</span> left_rotate((B <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_H(C, D, A) <span style="color:#f92672">+</span> X[k] <span style="color:#f92672">+</span> <span style="color:#ae81ff">0x6ed9eba1</span>) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>, <span style="color:#ae81ff">15</span>)
+
+        self<span style="color:#f92672">.</span>A <span style="color:#f92672">=</span> (self<span style="color:#f92672">.</span>A <span style="color:#f92672">+</span> A) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>
+        self<span style="color:#f92672">.</span>B <span style="color:#f92672">=</span> (self<span style="color:#f92672">.</span>B <span style="color:#f92672">+</span> B) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>
+        self<span style="color:#f92672">.</span>C <span style="color:#f92672">=</span> (self<span style="color:#f92672">.</span>C <span style="color:#f92672">+</span> C) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>
+        self<span style="color:#f92672">.</span>D <span style="color:#f92672">=</span> (self<span style="color:#f92672">.</span>D <span style="color:#f92672">+</span> D) <span style="color:#f92672">&amp;</span>amp;amp;amp;amp;amp;amp; <span style="color:#ae81ff">0xffffffff</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">digest</span>(self: object) <span style="color:#f92672">-&gt;</span> bytes:
+        <span style="color:#66d9ef">return</span> struct<span style="color:#f92672">.</span>pack(<span style="color:#e6db74">&#39;&lt;4I&#39;</span>, self<span style="color:#f92672">.</span>A, self<span style="color:#f92672">.</span>B, self<span style="color:#f92672">.</span>C, self<span style="color:#f92672">.</span>D)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">hex_digest</span>(self: object) <span style="color:#f92672">-&gt;</span> bytes:
+        <span style="color:#66d9ef">return</span> binascii<span style="color:#f92672">.</span>hexlify(self<span style="color:#f92672">.</span>digest())<span style="color:#f92672">.</span>decode()
+</code></pre></div><p>The padding scheme is very similar to SHA-1 — the only difference being that the length is added on as big-endian packed instead of little-endian packed.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">md_pad</span>(message: bytes) <span style="color:#f92672">-&gt;</span> bytes:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Pads the given message the same way the pre-processing of the MD4 algorithm does.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    ml <span style="color:#f92672">=</span> len(message) <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>
+
+    message <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x80</span><span style="color:#e6db74">&#39;</span>
+    message <span style="color:#f92672">+=</span> bytes((<span style="color:#ae81ff">56</span> <span style="color:#f92672">-</span> len(message) <span style="color:#f92672">%</span> <span style="color:#ae81ff">64</span>) <span style="color:#f92672">%</span> <span style="color:#ae81ff">64</span>)
+    message <span style="color:#f92672">+=</span> struct<span style="color:#f92672">.</span>pack(<span style="color:#e6db74">&#39;&lt;Q&#39;</span>, ml)
+
+    <span style="color:#66d9ef">return</span> message
+    
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">validate</span>(modified_message: bytes, new_md: bytes) <span style="color:#f92672">-&gt;</span> bool:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Verifies if the padding is correct.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    <span style="color:#66d9ef">if</span> MD4(modified_message)<span style="color:#f92672">.</span>hex_digest() <span style="color:#f92672">==</span> new_md:
+        <span style="color:#66d9ef">return</span> True
+    <span style="color:#66d9ef">return</span> False
+</code></pre></div><p>We follow the same approach as the previous question: initialising a new instance of the oracle with an already existing, valid state derived from a valid hash.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">md4_length_extension_attack</span>(message: bytes, original_md: bytes, payload: bytes) <span style="color:#f92672">-&gt;</span> bytes:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Performs the length extension attack on an MD4.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    <span style="color:#66d9ef">for</span> key_length <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">20</span>):
+        h <span style="color:#f92672">=</span> struct<span style="color:#f92672">.</span>unpack(<span style="color:#e6db74">&#39;&lt;4I&#39;</span>, bytes<span style="color:#f92672">.</span>fromhex(original_md))
+        modified_message <span style="color:#f92672">=</span> md_pad(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;A&#39;</span><span style="color:#f92672">*</span>key_length <span style="color:#f92672">+</span> message)[key_length:] <span style="color:#f92672">+</span> payload
+        new_md <span style="color:#f92672">=</span> MD4(payload, (len(modified_message) <span style="color:#f92672">+</span> key_length)<span style="color:#f92672">*</span><span style="color:#ae81ff">8</span>, h[<span style="color:#ae81ff">0</span>], h[<span style="color:#ae81ff">1</span>], h[<span style="color:#ae81ff">2</span>], h[<span style="color:#ae81ff">3</span>])<span style="color:#f92672">.</span>hex_digest()
+        <span style="color:#66d9ef">if</span> validate(modified_message, new_md):
+            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;&gt; Length extension attack successful.&#34;</span>)
+            <span style="color:#66d9ef">return</span> modified_message, new_md
+            <span style="color:#66d9ef">break</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">original_md <span style="color:#f92672">=</span> MD4(message<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>hex_digest()
+modified_message, new_md <span style="color:#f92672">=</span> md4_length_extension_attack(message<span style="color:#f92672">.</span>encode(), original_md, payload)
+</code></pre></div><p><code>&gt; Length extension attack successful.</code></p>
+
+
+<div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
+
+
+<h3 id="challenge-31-implement-and-break-hmac-sha1-with-an-artificial-timing-leak">Challenge 31: Implement and break HMAC-SHA1 with an artificial timing leak</h3>
+<p><a href="https://cryptopals.com/sets/4/challenges/31">Link</a></p>
+<blockquote>
+<p>The psuedocode on Wikipedia should be enough. HMAC is very easy.<br>
+Using the web framework of your choosing (Sinatra, web.py, whatever), write a tiny application that has a URL that takes a &ldquo;file&rdquo; argument and a &ldquo;signature&rdquo; argument, like so:<br>
+<strong>http://localhost:9000/test?file=foo&amp;signature=46b4ec586117154dacd49d664e5d63fdc88efb51</strong><br>
+Have the server generate an HMAC key, and then verify that the &ldquo;signature&rdquo; on incoming requests is valid for &ldquo;file&rdquo;, using the &ldquo;==&rdquo; operator to compare the valid MAC for a file with the &ldquo;signature&rdquo; parameter (in other words, verify the HMAC the way any normal programmer would verify it).<br>
+Write a function, call it &ldquo;insecure_compare&rdquo;, that implements the == operation by doing byte-at-a-time comparisons with early exit (ie, return false at the first non-matching byte).<br>
+In the loop for &ldquo;insecure_compare&rdquo;, add a 50ms sleep (sleep 50ms after each byte).<br>
+Use your &ldquo;insecure_compare&rdquo; function to verify the HMACs on incoming requests, and test that the whole contraption works. Return a 500 if the MAC is invalid, and a 200 if it&rsquo;s OK.<br>
+Using the timing leak in this application, write a program that discovers the valid MAC for any file.</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Imports</span>
+<span style="color:#f92672">import</span> os
+<span style="color:#f92672">import</span> web
+<span style="color:#f92672">import</span> json
+<span style="color:#f92672">import</span> time
+<span style="color:#f92672">import</span> hashlib
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Given</span>
+delay <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.05</span>
+</code></pre></div><p><a href="https://en.wikipedia.org/wiki/HMAC">HMAC</a> (<strong>keyed-Hash Message Authentication Code</strong> or <strong>Hash-based Message Authentication Code</strong>) is a specific type of MAC devised in order to overcome the broken approach used to generate MACs. Any cryptographic hash function, such as SHA-256, may be used in the calculation of an HMAC; the resulting MAC algorithm is termed <strong>HMAC-X</strong>, where X is the hash function used (e.g. HMAC-SHA256).</p>
+<p>HMAC uses the key to derive two internal keys - inner and outer. It makes two passes to compute the final hash. The first pass uses the inner key and the message to produce an internal state(hash), and the second pass uses this state and the outer key to produce the final hash. Thus the algorithm provides better immunity against length extension attacks.</p>
+<p>NOTE: HMAC does not encrypt the message. It&rsquo;s sole purpose is to provide an integrity check functionality. The message therefore (encrypted or not) must be sent with the HMAC hash. Parties with the secret key will hash the message again themselves, and if it is authentic, the received and computed hashes will match.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HMAC</span>:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Computes the HMAC for the hash function given at the time of initialisation.
+</span><span style="color:#e6db74">    This implementation resembles the one of the Wikipedia pseudo-code.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    
+    <span style="color:#66d9ef">def</span> __init__(self: object, random_key: bytes, hash_func: callable):
+        self<span style="color:#f92672">.</span>hash_func <span style="color:#f92672">=</span> hash_func
+        self<span style="color:#f92672">.</span>block_size <span style="color:#f92672">=</span> hash_func()<span style="color:#f92672">.</span>block_size
+
+        <span style="color:#66d9ef">if</span> len(random_key) <span style="color:#f92672">&gt;</span> self<span style="color:#f92672">.</span>block_size:
+            self<span style="color:#f92672">.</span>key <span style="color:#f92672">=</span> hash_func(random_key)<span style="color:#f92672">.</span>digest()
+        <span style="color:#66d9ef">elif</span> len(random_key) <span style="color:#f92672">&lt;</span> self<span style="color:#f92672">.</span>block_size:
+            self<span style="color:#f92672">.</span>key <span style="color:#f92672">=</span> random_key <span style="color:#f92672">+</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">*</span> (self<span style="color:#f92672">.</span>block_size<span style="color:#f92672">-</span>len(random_key))
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">compute</span>(self: object, message: bytes) <span style="color:#f92672">-&gt;</span> bytes:
+        o_key_pad <span style="color:#f92672">=</span> xor_bytes(self<span style="color:#f92672">.</span>key, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x5c</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">*</span> self<span style="color:#f92672">.</span>block_size)
+        i_key_pad <span style="color:#f92672">=</span> xor_bytes(self<span style="color:#f92672">.</span>key, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x36</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">*</span> self<span style="color:#f92672">.</span>block_size)
+        
+        inner_hash <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>hash_func(i_key_pad <span style="color:#f92672">+</span> message)<span style="color:#f92672">.</span>digest()
+        
+        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>hash_func(o_key_pad <span style="color:#f92672">+</span> inner_hash)<span style="color:#f92672">.</span>hexdigest()
+</code></pre></div><p>I used web.py to create the server.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">urls <span style="color:#f92672">=</span> (
+    <span style="color:#e6db74">&#39;/hello&#39;</span>, <span style="color:#e6db74">&#39;Hello&#39;</span>,
+    <span style="color:#e6db74">&#39;/test&#39;</span>, <span style="color:#e6db74">&#39;Hash&#39;</span>
+)
+
+app <span style="color:#f92672">=</span> web<span style="color:#f92672">.</span>application(urls, globals())
+
+HMAC_obj <span style="color:#f92672">=</span> HMAC(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;YELLOW_SUBMARINE&#34;</span>, hashlib<span style="color:#f92672">.</span>sha1)
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Hello</span>:        
+    
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">GET</span>(self):
+        params <span style="color:#f92672">=</span> web<span style="color:#f92672">.</span>input()
+        name <span style="color:#f92672">=</span> params<span style="color:#f92672">.</span>name
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> name:
+            name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;World&#39;</span>
+            
+        string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Hello, &#34;</span> <span style="color:#f92672">+</span> name <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;!&#34;</span>
+        <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;name&#34;</span> : string}
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Hash</span>:
+    
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_insecure_compare</span>(self, hash1, hash2, delay):
+        <span style="color:#66d9ef">for</span> b1, b2 <span style="color:#f92672">in</span> zip(hash1, hash2):
+            <span style="color:#66d9ef">if</span> b1 <span style="color:#f92672">!=</span> b2:
+                <span style="color:#66d9ef">return</span> False
+            time<span style="color:#f92672">.</span>sleep(delay)
+        <span style="color:#66d9ef">return</span> True
+    
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">GET</span>(self):
+        <span style="color:#66d9ef">global</span> HMAC_obj
+        params <span style="color:#f92672">=</span> web<span style="color:#f92672">.</span>input()
+        file <span style="color:#f92672">=</span> params<span style="color:#f92672">.</span>file
+        signature <span style="color:#f92672">=</span> params<span style="color:#f92672">.</span>signature
+        delay <span style="color:#f92672">=</span> params<span style="color:#f92672">.</span>delay
+        
+        hmac <span style="color:#f92672">=</span> HMAC_obj<span style="color:#f92672">.</span>compute(file<span style="color:#f92672">.</span>encode())
+        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>_insecure_compare(hmac<span style="color:#f92672">.</span>encode(), signature<span style="color:#f92672">.</span>encode(), float(delay)):
+            <span style="color:#66d9ef">return</span> web<span style="color:#f92672">.</span>HTTPError(<span style="color:#ae81ff">200</span>)
+        <span style="color:#66d9ef">else</span>:
+            <span style="color:#66d9ef">return</span> web<span style="color:#f92672">.</span>HTTPError(<span style="color:#ae81ff">500</span>)
+</code></pre></div><p>Test the web server.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">response1 <span style="color:#f92672">=</span> app<span style="color:#f92672">.</span>request(<span style="color:#e6db74">&#34;/hello?name=&#34;</span>)
+<span style="color:#66d9ef">print</span>(response1<span style="color:#f92672">.</span>data)
+
+response2 <span style="color:#f92672">=</span> app<span style="color:#f92672">.</span>request(<span style="color:#e6db74">&#34;/hello?name=hexterisk&#34;</span>)
+<span style="color:#66d9ef">print</span>(json<span style="color:#f92672">.</span>loads(response2<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#34;utf-8&#34;</span>)<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;&#39;&#34;</span>,<span style="color:#e6db74">&#39;&#34;&#39;</span>)))
+</code></pre></div><p><code>b&quot;{'name': 'Hello, World!'}&quot;</code><br>
+<code>{'name': 'Hello, hexterisk!'}</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">filename <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;foo&#34;</span>
+signature <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;274b7c4d98605fcf739a0bf9237551623f415fb8&#34;</span>
+response <span style="color:#f92672">=</span> app<span style="color:#f92672">.</span>request(<span style="color:#e6db74">&#34;/test?delay=&#34;</span> <span style="color:#f92672">+</span> str(delay) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&amp;amp;amp;amp;amp;amp;amp;file=&#34;</span> <span style="color:#f92672">+</span> filename <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&amp;amp;amp;amp;amp;amp;amp;signature=&#34;</span> <span style="color:#f92672">+</span> signature)
+<span style="color:#66d9ef">print</span>(response)
+
+signature <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;8c80a95a8e72b3e822a13924553351a433e267d8&#34;</span>
+response <span style="color:#f92672">=</span> app<span style="color:#f92672">.</span>request(<span style="color:#e6db74">&#34;/test?delay=&#34;</span> <span style="color:#f92672">+</span> str(delay) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&amp;amp;amp;amp;amp;amp;amp;file=&#34;</span> <span style="color:#f92672">+</span> filename <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&amp;amp;amp;amp;amp;amp;amp;signature=&#34;</span> <span style="color:#f92672">+</span> signature)
+<span style="color:#66d9ef">print</span>(response)
+</code></pre></div><p><code>&lt;Storage {'status': 500, 'headers': {}, 'header_items': [], 'data': b'500'}&gt;</code><br>
+<code>&lt;Storage {'status': 200, 'headers': {}, 'header_items': [], 'data': b'200'}&gt;</code></p>
+<p><img src="https://hexterisk.tech/blog/Cryptopals_Set_4/1_image.png" alt="&ldquo;timing_attack&rdquo;">
+<em>Classical timing attack.</em></p>
+<p>It&rsquo;s a classical timing attack. We brute force all the bytes of the hash by judging the response time. Every byte check causes some delay. If for some byte the response comes back with a little more delay than all others, then it&rsquo;s clear that this byte triggered the byte check for the next byte, and thus this byte was guessed correctly. Slowly the whole signature is built this way.</p>
+<p>The function produces a 160-bit (20-byte) hash value known as a message digest, typically rendered as a hexadecimal number, 40 digits long.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">signature <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+<span style="color:#75715e"># We go for twice the size because hexadecimal byte is 2 digits long.</span>
+<span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(hashlib<span style="color:#f92672">.</span>sha1()<span style="color:#f92672">.</span>digest_size <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>):
+    
+    times <span style="color:#f92672">=</span> []
+    <span style="color:#75715e"># This loop goes over all 16 hexadecimal bytes.</span>
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>):
+        start <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
+        response <span style="color:#f92672">=</span> app<span style="color:#f92672">.</span>request(<span style="color:#e6db74">&#34;/test?delay=&#34;</span> <span style="color:#f92672">+</span> str(delay) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&amp;amp;amp;amp;amp;amp;amp;file=&#34;</span> <span style="color:#f92672">+</span> filename <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&amp;amp;amp;amp;amp;amp;amp;signature=&#34;</span> <span style="color:#f92672">+</span> signature <span style="color:#f92672">+</span> hex(i)[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>])
+        finish <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
+        times<span style="color:#f92672">.</span>append(finish <span style="color:#f92672">-</span> start)
+    signature <span style="color:#f92672">+=</span> hex(times<span style="color:#f92672">.</span>index(max(times)))[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;&gt; Discovered signature:&#34;</span>, signature)    
+    response <span style="color:#f92672">=</span> app<span style="color:#f92672">.</span>request(<span style="color:#e6db74">&#34;/test?delay=&#34;</span> <span style="color:#f92672">+</span> str(delay) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&amp;amp;amp;amp;amp;amp;amp;file=&#34;</span> <span style="color:#f92672">+</span> filename <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&amp;amp;amp;amp;amp;amp;amp;signature=&#34;</span> <span style="color:#f92672">+</span> signature <span style="color:#f92672">+</span> hex(i)[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>])
+    <span style="color:#66d9ef">if</span> response<span style="color:#f92672">.</span>status <span style="color:#f92672">==</span> <span style="color:#ae81ff">200</span>:
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;&gt; Brute force successful.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&gt; Signature:&#34;</span>, signature)
+    <span style="color:#66d9ef">else</span>:
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Brute force failed.&#34;</span>)
+</code></pre></div><p><code>&gt; Discovered signature: 8</code><br>
+<code>&gt; Discovered signature: 8c</code><br>
+<code>&gt; Discovered signature: 8c8</code><br>
+<code>&gt; Discovered signature: 8c80</code><br>
+<code>&gt; Discovered signature: 8c80a</code><br>
+<code>&gt; Discovered signature: 8c80a9</code><br>
+<code>&gt; Discovered signature: 8c80a95</code><br>
+<code>&gt; Discovered signature: 8c80a95a</code><br>
+<code>&gt; Discovered signature: 8c80a95a8</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e7</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e8</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e82</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a1</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a1392</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a139245</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a1392455</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a139245533</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a1392455335</code><br>
+<code>&gt; Discovered signature:  8c80a95a8e72b3e822a13924553351</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a4</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a43</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a433</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a433e</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a433e2</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a433e26</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a433e267</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a433e267d</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a433e267d8</code><br>
+<code>&gt; Brute force successful.</code><br>
+<code>&gt; Signature: 8c80a95a8e72b3e822a13924553351a433e267d8</code></p>
+
+
+<div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
+
+
+<h3 id="challenge-32-break-hmac-sha1-with-a-slightly-less-artificial-timing-leak">Challenge 32: Break HMAC-SHA1 with a slightly less artificial timing leak</h3>
+<p><a href="https://cryptopals.com/sets/4/challenges/32">Link</a></p>
+<blockquote>
+<p>Reduce the sleep in your &ldquo;insecure_compare&rdquo; until your previous solution breaks. (Try 5ms to start.) Now break it again.</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">    <span style="color:#75715e"># Given</span>
+    delay <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.005</span>
+    HMAC_obj <span style="color:#f92672">=</span> HMAC(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;YELLOW_SUBMARINE&#34;</span>, hashlib<span style="color:#f92672">.</span>sha1)
+    file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;foo&#34;</span>
+</code></pre></div><p>The question is same as the previous one, the only difference being that the delay has been made smaller.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">signature <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+<span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(hashlib<span style="color:#f92672">.</span>sha1()<span style="color:#f92672">.</span>digest_size <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>):
+<span style="color:#75715e"># We go for twice the size because hexadecimal byte is 2 digits long.</span>
+    times <span style="color:#f92672">=</span> []
+    <span style="color:#75715e"># This loop goes over all 16 hexadecimal bytes.</span>
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">16</span>):
+        runtime <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+        <span style="color:#75715e"># Introduced more rounds so the time difference is prominent</span>
+        <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">20</span>):
+            start <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
+            response <span style="color:#f92672">=</span> app<span style="color:#f92672">.</span>request(<span style="color:#e6db74">&#34;/test?delay=&#34;</span> <span style="color:#f92672">+</span> str(delay) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&amp;amp;amp;amp;amp;amp;amp;file=&#34;</span> <span style="color:#f92672">+</span> filename <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&amp;amp;amp;amp;amp;amp;amp;signature=&#34;</span> <span style="color:#f92672">+</span> signature <span style="color:#f92672">+</span> hex(i)[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>])
+            finish <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
+            runtime <span style="color:#f92672">+=</span> finish <span style="color:#f92672">-</span> start
+        times<span style="color:#f92672">.</span>append(runtime)
+    signature <span style="color:#f92672">+=</span> hex(times<span style="color:#f92672">.</span>index(max(times)))[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;&gt; Discovered signature:&#34;</span>, signature)
+
+response <span style="color:#f92672">=</span> app<span style="color:#f92672">.</span>request(<span style="color:#e6db74">&#34;/test?delay=&#34;</span> <span style="color:#f92672">+</span> str(delay) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&amp;amp;amp;amp;amp;amp;amp;file=&#34;</span> <span style="color:#f92672">+</span> filename <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&amp;amp;amp;amp;amp;amp;amp;signature=&#34;</span> <span style="color:#f92672">+</span> signature <span style="color:#f92672">+</span> hex(i)[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>])
+<span style="color:#66d9ef">if</span> response<span style="color:#f92672">.</span>status <span style="color:#f92672">==</span> <span style="color:#ae81ff">200</span>:
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;&gt; Brute force successful.</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&gt; Signature:&#34;</span>, signature)
+<span style="color:#66d9ef">else</span>:
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Brute force failed.&#34;</span>)
+</code></pre></div><p><code>&gt; Discovered signature: 8</code><br>
+<code>&gt; Discovered signature: 8c</code><br>
+<code>&gt; Discovered signature: 8c8</code><br>
+<code>&gt; Discovered signature: 8c80</code><br>
+<code>&gt; Discovered signature: 8c80a</code><br>
+<code>&gt; Discovered signature: 8c80a9</code><br>
+<code>&gt; Discovered signature: 8c80a95</code><br>
+<code>&gt; Discovered signature: 8c80a95a</code><br>
+<code>&gt; Discovered signature: 8c80a95a8</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e7</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e8</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e82</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a1</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a1392</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a139245</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a1392455</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a139245533</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a1392455335</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a4</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a43</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a433</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a433e</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a433e2</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a433e26</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a433e267</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a433e267d</code><br>
+<code>&gt; Discovered signature: 8c80a95a8e72b3e822a13924553351a433e267d8</code><br>
+<code>&gt; Brute force successful.</code><br>
+<code>&gt; Signature: 8c80a95a8e72b3e822a13924553351a433e267d8</code></p>
+
+
+<div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
+
+
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/matasano">Matasano</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/cryptography">cryptography</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/sha-1">SHA-1</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/mac">MAC</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/iv">IV</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/ctr">CTR</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/xor">xor</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/cbc">CBC</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/aes">AES</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/pad">pad</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/bit-flipping">bit-flipping</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>5091 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-03-27 05:30 &#43;0530</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://hexterisk.tech/blog/posts/2020/04/02/set-5/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Set 5</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://hexterisk.tech/blog/posts/2020/03/23/set-3/">
+                                <span class="button__text">Set 3</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            
+                <span><a href="https://hexterisk.tech/blog">Bhanupratap Singh &copy; 2020</a></span>
+            
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content" style="margin-bottom: -0.8rem;">
+            <span><a style="text-decoration: none;" href="http://www.catb.org/hacker-emblem/"> .</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span><a style="text-decoration: none;"  href="http://www.catb.org/hacker-emblem/" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></span>
+        </div> 
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://hexterisk.tech/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

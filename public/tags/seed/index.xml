@@ -6,17 +6,17 @@
     <description>Recent content in seed on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Tue, 07 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 23 Mar 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hexterisk.tech/blog/tags/seed/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Set 3</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/07/set-3/</link>
-      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
+      <link>https://hexterisk.tech/blog/posts/2020/03/23/set-3/</link>
+      <pubDate>Mon, 23 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/01/07/set-3/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/03/23/set-3/</guid>
       <description>Challenge 17: The CBC padding oracle Link
  This is the best-known attack on modern block-cipher cryptography.
 Combine your padding code and your CBC code to write two functions.

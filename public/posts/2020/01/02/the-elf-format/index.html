@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="author" content="map[name:hexterisk]">
 <meta name="description" content="ELF binaries really consist of only four types of components:  Executable Header Program Headers (optional) Sections Section Headers, one per section (optional)  64-bit ELF binary structure
-Executable Header  Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata. Format of executable header: /usr/include/elf.h  typedef struct {unsigned char e_ident[16]; /* Magic number and other info */uint16_t e_type; /* Object file type */uint16_t e_machine; /* Architecture */uint32_t e_version; /* Object file version */uint64_t e_entry; /* Entry point virtual address */uint64_t e_phoff; /* Program header table file offset */uint64_t e_shoff; /* Section header table file offset */uint32_t e_flags; /* Processor-specific flags */uint16_t e_ehsize; /* ELF header size in bytes */uint16_t e_phentsize; /* Program header table entry size */uint16_t e_phnum; /* Program header table entry count */uint16_t e_shentsize; /* Section header table entry size */uint16_t e_shnum; /* Section header table entry count */uint16_t e_shstrndx; /* Section header string table index */} Elf64_Ehdr;Section Headers  The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called Sections." />
+Executable Header  Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata. Format of executable header: /usr/include/elf.h  typedef struct { unsigned char e_ident[16]; /* Magic number and other info */ uint16_t e_type; /* Object file type */ uint16_t e_machine; /* Architecture */ uint32_t e_version; /* Object file version */ uint64_t e_entry; /* Entry point virtual address */ uint64_t e_phoff; /* Program header table file offset */ uint64_t e_shoff; /* Section header table file offset */ uint32_t e_flags; /* Processor-specific flags */ uint16_t e_ehsize; /* ELF header size in bytes */ uint16_t e_phentsize; /* Program header table entry size */ uint16_t e_phnum; /* Program header table entry count */ uint16_t e_shentsize; /* Section header table entry size */ uint16_t e_shnum; /* Section header table entry count */ uint16_t e_shstrndx; /* Section header string table index */ } Elf64_Ehdr; Section Headers  The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called Sections." />
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
@@ -42,7 +42,7 @@ Executable Header  Every ELF file starts with an executable header, which is jus
 
 <meta itemprop="name" content="The ELF Format">
 <meta itemprop="description" content="ELF binaries really consist of only four types of components:  Executable Header Program Headers (optional) Sections Section Headers, one per section (optional)  64-bit ELF binary structure
-Executable Header  Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata. Format of executable header: /usr/include/elf.h  typedef struct {unsigned char e_ident[16]; /* Magic number and other info */uint16_t e_type; /* Object file type */uint16_t e_machine; /* Architecture */uint32_t e_version; /* Object file version */uint64_t e_entry; /* Entry point virtual address */uint64_t e_phoff; /* Program header table file offset */uint64_t e_shoff; /* Section header table file offset */uint32_t e_flags; /* Processor-specific flags */uint16_t e_ehsize; /* ELF header size in bytes */uint16_t e_phentsize; /* Program header table entry size */uint16_t e_phnum; /* Program header table entry count */uint16_t e_shentsize; /* Section header table entry size */uint16_t e_shnum; /* Section header table entry count */uint16_t e_shstrndx; /* Section header string table index */} Elf64_Ehdr;Section Headers  The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called Sections.">
+Executable Header  Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata. Format of executable header: /usr/include/elf.h  typedef struct { unsigned char e_ident[16]; /* Magic number and other info */ uint16_t e_type; /* Object file type */ uint16_t e_machine; /* Architecture */ uint32_t e_version; /* Object file version */ uint64_t e_entry; /* Entry point virtual address */ uint64_t e_phoff; /* Program header table file offset */ uint64_t e_shoff; /* Section header table file offset */ uint32_t e_flags; /* Processor-specific flags */ uint16_t e_ehsize; /* ELF header size in bytes */ uint16_t e_phentsize; /* Program header table entry size */ uint16_t e_phnum; /* Program header table entry count */ uint16_t e_shentsize; /* Section header table entry size */ uint16_t e_shnum; /* Section header table entry count */ uint16_t e_shstrndx; /* Section header string table index */ } Elf64_Ehdr; Section Headers  The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called Sections.">
 <meta itemprop="datePublished" content="2020-01-02T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-01-02T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="2686">
@@ -55,7 +55,7 @@ Executable Header  Every ELF file starts with an executable header, which is jus
 
 <meta name="twitter:title" content="The ELF Format"/>
 <meta name="twitter:description" content="ELF binaries really consist of only four types of components:  Executable Header Program Headers (optional) Sections Section Headers, one per section (optional)  64-bit ELF binary structure
-Executable Header  Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata. Format of executable header: /usr/include/elf.h  typedef struct {unsigned char e_ident[16]; /* Magic number and other info */uint16_t e_type; /* Object file type */uint16_t e_machine; /* Architecture */uint32_t e_version; /* Object file version */uint64_t e_entry; /* Entry point virtual address */uint64_t e_phoff; /* Program header table file offset */uint64_t e_shoff; /* Section header table file offset */uint32_t e_flags; /* Processor-specific flags */uint16_t e_ehsize; /* ELF header size in bytes */uint16_t e_phentsize; /* Program header table entry size */uint16_t e_phnum; /* Program header table entry count */uint16_t e_shentsize; /* Section header table entry size */uint16_t e_shnum; /* Section header table entry count */uint16_t e_shstrndx; /* Section header string table index */} Elf64_Ehdr;Section Headers  The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called Sections."/>
+Executable Header  Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata. Format of executable header: /usr/include/elf.h  typedef struct { unsigned char e_ident[16]; /* Magic number and other info */ uint16_t e_type; /* Object file type */ uint16_t e_machine; /* Architecture */ uint32_t e_version; /* Object file version */ uint64_t e_entry; /* Entry point virtual address */ uint64_t e_phoff; /* Program header table file offset */ uint64_t e_shoff; /* Section header table file offset */ uint32_t e_flags; /* Processor-specific flags */ uint16_t e_ehsize; /* ELF header size in bytes */ uint16_t e_phentsize; /* Program header table entry size */ uint16_t e_phnum; /* Program header table entry count */ uint16_t e_shentsize; /* Section header table entry size */ uint16_t e_shnum; /* Section header table entry count */ uint16_t e_shstrndx; /* Section header string table index */ } Elf64_Ehdr; Section Headers  The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called Sections."/>
 
 
 
@@ -440,9 +440,17 @@ Segment Sections...
     <div class="footer__inner">
         <div class="footer__content">
             <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
-            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>    
-            <p><a href="http://www.catb.org/hacker-emblem/" style="font-size: 1.4rem; margin-bottom: -1.0rem;"> .</a></p>
-            <p><a href="http://www.catb.org/hacker-emblem/" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></p>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content" style="margin-bottom: -0.8rem;">
+            <span><a style="text-decoration: none;" href="http://www.catb.org/hacker-emblem/"> .</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span><a style="text-decoration: none;"  href="http://www.catb.org/hacker-emblem/" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></span>
         </div> 
     </div>
 </footer>

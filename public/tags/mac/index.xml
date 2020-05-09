@@ -6,17 +6,17 @@
     <description>Recent content in MAC on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Tue, 07 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 27 Mar 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hexterisk.tech/blog/tags/mac/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Set 4</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/07/set-4/</link>
-      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
+      <link>https://hexterisk.tech/blog/posts/2020/03/27/set-4/</link>
+      <pubDate>Fri, 27 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/01/07/set-4/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/03/27/set-4/</guid>
       <description>Challenge 25: Break &amp;ldquo;random access read/write&amp;rdquo; AES CTR Link
  Back to CTR. Encrypt the recovered plaintext from this file (the ECB exercise) under CTR with a random key (for this exercise the key should be unknown to you, but hold on to it).
 Now, write the code that allows you to &amp;ldquo;seek&amp;rdquo; into the ciphertext, decrypt, and re-encrypt with different plaintext. Expose this as a function, like, &amp;ldquo;edit(ciphertext, key, offset, newtext)&amp;quot;.</description>

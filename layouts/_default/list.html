@@ -1,0 +1,51 @@
+{{ define "main" }}
+    <main class="posts">
+		{{ $val := lower .Title }}
+        <h1>{{ .Title }}</h1>
+        {{- if .Content }}
+            <div class="content">{{ .Content }}</div>
+        {{- end }}
+        
+		{{- if eq .Title "Posts" }}
+			{{- range $taxonomyname, $taxonomy := .Site.Taxonomies }}
+			    {{ if eq "categories" $taxonomyname }}
+		  	        {{ range $key, $value := $taxonomy }}
+		        	    <div class="posts-group">
+			            <div class="post-year">{{ $key }}</div>
+					<ul class="posts-list">
+		                	    {{- range .Pages }}
+		                            <li class="post-item">
+		                                <a href="{{.Permalink}}">
+		                                <span class="post-title">{{.Title}}</span>
+		                                <span class="post-day">{{ if .Site.Params.dateformShort }}{{ .Date.Format .Site.Params.dateformShort }}{{ else }}{{ .Date.Format "Jan 2"}}{{ end }}</span>
+		                                </a>
+		                            </li>
+		                        {{- end }}
+		                        </ul>
+		                    </div>
+		                {{ end }}
+				{{ end }}
+            {{- end }}
+        {{- else }}
+			{{- range $taxonomyname, $taxonomy := .Site.Taxonomies }}
+				{{ range $key, $value := $taxonomy }}
+					{{- if eq $val $key }}
+				    	    <div class="posts-group">
+					        <div class="post-year">{{ $key }}</div>
+						<ul class="posts-list">
+				            	    {{- range .Pages }}
+				                        <li class="post-item">
+				                            <a href="{{.Permalink}}">
+				                            <span class="post-title">{{.Title}}</span>
+				                            <span class="post-day">{{ if .Site.Params.dateformShort }}{{ .Date.Format .Site.Params.dateformShort }}{{ else }}{{ .Date.Format "Jan 2"}}{{ end }}</span>
+				                            </a>
+				                        </li>
+				                    {{- end }}
+				                    </ul>
+				                </div>
+				            {{ end }}
+					{{ end }}
+		        {{- end }}
+		{{- end }}
+	</main>
+{{ end }}

@@ -1,13 +1,13 @@
 ---
 author:
   name: "hexterisk"
-date: 2020-01-07
+date: 2020-04-10
 linktitle: Set 6
 type:
 - post
 - posts
 title: Set 6
-tags: ["Cryptopals", "Matasano", "cryptography", "DSA", "RSA", "Bleichenbacher", "nonce", "xor", "e=3", "PKCS#1", "oracle", "PKCS1.5"]
+tags: ["Matasano", "cryptography", "DSA", "RSA", "Bleichenbacher", "nonce", "xor", "e=3", "PKCS#1", "oracle", "PKCS1.5"]
 weight: 10
 categories: ["Cryptopals"]
 ---
@@ -63,8 +63,7 @@ class RSA_server(RSA):
 
 This attack focuses on a particular property of RSA: homorphism. The output(ciphertext) of an RSA encryption engine is a number, and therefore any operation carried out on this is reflected on the plaintext produced when we decrypt this ciphertext, and thus preserves the original state of the plaintext.
 
-Once we obtain a ciphertext, we can ask the oracle to decrypt multiples of ciphertext( ie  2 \* ciphertext_,_ 3 _\*_ ciphertext_,_ …n \* ciphertext where n is an integer). We can then use the result of these decryptions to obtain the original plaintext by just dividing the scaling factor for the respective ciphertexts.
-
+Once we obtain a ciphertext, we can ask the oracle to decrypt multiples of ciphertext( ie _2 \* ciphertext_, _3 \* ciphertext_, …_n \* ciphertext_ where _n_ is an integer). We can then use the result of these decryptions to obtain the original plaintext by just dividing the scaling factor for the respective ciphertexts.
 
 ```python
 def unpadded_message_recovery(ciphertext: bytes, rsa_server: object) -> bytes:
@@ -94,8 +93,6 @@ ciphertext = rsa_server.encrypt(plaintext.encode())
 {{< rawhtml >}}
 <div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
 {{< /rawhtml >}}
-
-
 
 ### Challenge 42: Bleichenbacher's e=3 RSA Attack
 [Link](https://cryptopals.com/sets/6/challenges/42)
@@ -133,9 +130,9 @@ NOTE: The attack works specifically for e = 3, as mentioned in the question itse
 
 PKCS#1 v1.5 says that the hash of the message to be signed has to be encoded in the form like: `00 01 FF FF ... FF FF 00 ASN.1 HASH` 
 
- The signature generation goes like: mᵈ mod N
+The signature generation goes like: _mᵈ mod N_
 
-While, the signature verification goes like: (mᵈ)ᵉ = m mod N
+While, the signature verification goes like: _(mᵈ)ᵉ = m mod N_
 
 Numbers have to be in big endian because cubing takes place, and interferes with the bit manipulation.
 
@@ -207,8 +204,6 @@ else:
 {{< rawhtml >}}
 <div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
 {{< /rawhtml >}}
-
-
 
 ### Challenge 43: DSA key recovery from nonce
 [Link](https://cryptopals.com/sets/6/challenges/43)
@@ -370,7 +365,7 @@ assert dsa.verify_signature(signature[0], signature[1], b"Hello World!")
 ```
 Looking at the equation used during signature(r, s) generation:
 
- _s = (mod\_inverse(k, self.q) \* (self.H(message) + self.x \* r)) % self.q_
+_s = (mod\_inverse(k, self.q) \* (self.H(message) + self.x \* r)) % self.q_
 
 It can be rearranged for all the known variables to be on the right, and the unknown (private key x) to be on the left.
 
@@ -435,8 +430,6 @@ else:
 {{< rawhtml >}}
 <div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
 {{< /rawhtml >}}
-
-
 
 ### Challenge 44: DSA nonce recovery from repeated nonce
 [Link](https://cryptopals.com/sets/6/challenges/44)
@@ -510,8 +503,6 @@ hashlib.sha1(hex(recovered_x)[2:].encode()).hexdigest()
 {{< rawhtml >}}
 <div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
 {{< /rawhtml >}}
-
-
 
 ### Challenge 45: DSA parameter tampering
 [Link](https://cryptopals.com/sets/6/challenges/45)
@@ -749,9 +740,6 @@ plaintext = parity_attack(byte_string, RSA(1024))
 <div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
 {{< /rawhtml >}}
 
-
-
-
 ### Challenge 47: Bleichenbacher's PKCS 1.5 Padding Oracle (Simple Case)
 [Link](https://cryptopals.com/sets/6/challenges/47)
 
@@ -962,8 +950,6 @@ recovered_plaintext = padding_oracle_attack(c, rsa)
 {{< rawhtml >}}
 <div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
 {{< /rawhtml >}}
-
-
 
 ### Challenge 48: Bleichenbacher's PKCS 1.5 Padding Oracle (Complete Case)
 [Link](https://cryptopals.com/sets/6/challenges/48)

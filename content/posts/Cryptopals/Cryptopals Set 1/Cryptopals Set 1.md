@@ -1,13 +1,13 @@
 ---
 author:
   name: "hexterisk"
-date: 2020-01-07
+date: 2020-03-20
 linktitle: Set 1
 type:
 - post
 - posts
 title: Set 1
-tags: ["Cryptopals", "Matasano", "cryptography", "AES", "ECB", "xor", "base64"]
+tags: ["Matasano", "cryptography", "AES", "ECB", "xor", "base64"]
 weight: 10
 categories: ["Cryptopals"]
 ---

@@ -6,10 +6,28 @@
     <description>Recent content in Categories on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Wed, 22 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 09 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hexterisk.tech/blog/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Pentesting</title>
+      <link>https://hexterisk.tech/blog/categories/pentesting/</link>
+      <pubDate>Sat, 09 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/categories/pentesting/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cryptopals</title>
+      <link>https://hexterisk.tech/blog/categories/cryptopals/</link>
+      <pubDate>Fri, 10 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/categories/cryptopals/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Dev-Ops</title>
@@ -26,15 +44,6 @@
       <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/categories/practical-binary-analysis/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Cryptopals</title>
-      <link>https://hexterisk.tech/blog/categories/cryptopals/</link>
-      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/categories/cryptopals/</guid>
       <description></description>
     </item>
     

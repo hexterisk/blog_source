@@ -1,0 +1,22 @@
+{
+	"formatVersion": 1,
+	"appVersion": "0.38.2",
+	"files": [
+		{
+			"isClone": false,
+			"noteId": "hCR26GsoJ8uY",
+			"notePath": [
+				"hCR26GsoJ8uY"
+			],
+			"title": "Trace Analysis",
+			"notePosition": 30,
+			"prefix": null,
+			"isExpanded": 0,
+			"type": "text",
+			"mime": "text/html",
+			"attributes": [],
+			"format": "markdown",
+			"dataFileName": "Basic Binary Analysis.md"
+		}
+	]
+}

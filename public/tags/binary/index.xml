@@ -27,6 +27,17 @@ Output of netdiscover.
     </item>
     
     <item>
+      <title>Constraint Solvers and Z3</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/09/constraint-solvers-and-z3/</link>
+      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/09/constraint-solvers-and-z3/</guid>
+      <description>A constraint solver must be versatile, that is, it should be able to act as an:
+ Interpreter: Given the input, solve for the output of the equation. Inverter: Given the output, solve for the input of the equation. Synthesizer: Act as both Interpreter and Inverter.  Formulating Programs Assume a formula 𝑆ₚ(𝑥, 𝑦) which holds if and only if program P(x) outputs value y such that
+Program: f(𝑥) { return 𝑥 + 𝑥 }</description>
+    </item>
+    
+    <item>
       <title>Principles of Symbolic Execution</title>
       <link>https://hexterisk.tech/blog/posts/2020/01/09/principles-of-symbolic-execution/</link>
       <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
@@ -34,6 +45,16 @@ Output of netdiscover.
       <guid>https://hexterisk.tech/blog/posts/2020/01/09/principles-of-symbolic-execution/</guid>
       <description>Symbolic Execution, or symbex, is a software analysis technique that expresses program state in terms of logical formulas that you can automatically reason about to answer complex questions about a program’s behavior. Can automatically increase the code coverage of dynamic analyses by generating new inputs that lead to unexplored program paths. Apply it sparingly and carefully because of scalability issues.
  Symbex executes (or emulates) an application with symbolic values.  Symbolic values represent a domain covering possible concrete values, represented by symbols like φ.</description>
+    </item>
+    
+    <item>
+      <title>Stack and it&#39;s Frames</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/09/stack-and-its-frames/</link>
+      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/09/stack-and-its-frames/</guid>
+      <description>Stack is a data structure, and means exactly what it&amp;rsquo;s name says - a stack(of objects). It is mainly characterized by pushing and popping operations. You push items onto the stack, and then pop those items off. A stack is therefore a LIFO(last in, first out) structure. Memory for functions, local variables, and flow control is stored in the stack.
+Stack Layout The stack grows from higher addresses to lower addresses.</description>
     </item>
     
     <item>
@@ -58,6 +79,15 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
     </item>
     
     <item>
+      <title>Binary Obfuscation</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/07/binary-obfuscation/</link>
+      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/07/binary-obfuscation/</guid>
+      <description>The main aim of Binary Obfuscation is to hinder the process of static analysis of a binary. Renaming the symbols(variables and functions) of a binary implies that the clues as to what data a variable holds or what task a function performs that could be obtained from their names, are lost. This makes it a little harder for the analysts to keep a track of all the symbols without documenting them.</description>
+    </item>
+    
+    <item>
       <title>Simple Code Injection Techniques for ELF</title>
       <link>https://hexterisk.tech/blog/posts/2020/01/06/simple-code-injection-techniques-for-elf/</link>
       <pubDate>Mon, 06 Jan 2020 00:00:00 +0000</pubDate>
@@ -79,42 +109,13 @@ Linear Disassembly Disassembly desynchronization due to inline data interpreted 
     </item>
     
     <item>
-      <title>Basic Binary Analysis</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/04/basic-binary-analysis/</link>
+      <title>Trace Analysis</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/04/trace-analysis/</link>
       <pubDate>Sat, 04 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/01/04/basic-binary-analysis/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/01/04/trace-analysis/</guid>
       <description>System Call Trace strace can be used to investigate system call behavior. In some cases, you may want to attach strace to a running process. To do this, you need to use the -p pid option, where pid is the process ID of the process you want to attach to.
 $ strace ./ctf show_me_the_flag ➊ execve(&amp;#34;./ctf&amp;#34;, [&amp;#34;./ctf&amp;#34;, &amp;#34;show_me_the_flag&amp;#34;], [/* 73 vars */]) = 0 brk(NULL) = 0x1053000 access(&amp;#34;/etc/ld.so.nohwcap&amp;#34;, F_OK) = -1 ENOENT (No such file or directory) mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f703477e000 access(&amp;#34;/etc/ld.</description>
-    </item>
-    
-    <item>
-      <title>The PE Format</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/03/the-pe-format/</link>
-      <pubDate>Fri, 03 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/01/03/the-pe-format/</guid>
-      <description>PE is a modified version of the Common Object File Format (COFF), thus also referred to as PE/COFF. The 64-bit version of PE is called PE32+. The structure is defined in WinNT.h, which is included in the Microsoft Windows Software Developer Kit.  PE32+ binary structure
- An MS-DOS header is included for backward compatibility. Thus it can also be interpreted as an MS-DOS binary. The main function of the MS-DOS header is to describe how to load and execute an MS-DOS stub, which comes right after the MSDOS header.</description>
-    </item>
-    
-    <item>
-      <title>The ELF Format</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/02/the-elf-format/</link>
-      <pubDate>Thu, 02 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/01/02/the-elf-format/</guid>
-      <description>ELF binaries really consist of only four types of components:  Executable Header Program Headers (optional) Sections Section Headers, one per section (optional)  64-bit ELF binary structure
-Executable Header  Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata. Format of executable header: /usr/include/elf.h  typedef struct { unsigned char e_ident[16]; /* Magic number and other info */ uint16_t e_type; /* Object file type */ uint16_t e_machine; /* Architecture */ uint32_t e_version; /* Object file version */ uint64_t e_entry; /* Entry point virtual address */ uint64_t e_phoff; /* Program header table file offset */ uint64_t e_shoff; /* Section header table file offset */ uint32_t e_flags; /* Processor-specific flags */ uint16_t e_ehsize; /* ELF header size in bytes */ uint16_t e_phentsize; /* Program header table entry size */ uint16_t e_phnum; /* Program header table entry count */ uint16_t e_shentsize; /* Section header table entry size */ uint16_t e_shnum; /* Section header table entry count */ uint16_t e_shstrndx; /* Section header string table index */ } Elf64_Ehdr; Section Headers  The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called Sections.</description>
-    </item>
-    
-    <item>
-      <title>Anatomy of a Binary</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/01/anatomy-of-a-binary/</link>
-      <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/01/01/anatomy-of-a-binary/</guid>
-      <description>The C Compilation Process  Compilation is the process of translating human readable source code into machine code that the processor can execute. Binary Code is the machine code that systems execute. Binary Executable Files, or Binaries, store the executable binary program, that is, the code and data belonging to each program.  #include &amp;lt;stdio.h&amp;gt;#define FORMAT_STRING &amp;#34;%s&amp;#34; #define MESSAGE &amp;#34;Hello, world!\n&amp;#34;  int main(int argc, char *argv[]) { printf(FORMAT_STRING, MESSAGE); return 0; } The C Compilation Process</description>
     </item>
     
   </channel>

@@ -1,0 +1,181 @@
+{
+	"formatVersion": 1,
+	"appVersion": "0.40.3",
+	"files": [
+		{
+			"isClone": false,
+			"noteId": "0pPnCdOOLRFI",
+			"notePath": [
+				"0pPnCdOOLRFI"
+			],
+			"title": "Binary Instrumentation",
+			"notePosition": 60,
+			"prefix": null,
+			"isExpanded": 0,
+			"type": "text",
+			"mime": "text/html",
+			"attributes": [
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "yFWETEKeOHaK",
+					"isInheritable": false,
+					"position": 1
+				},
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "hbd26BNlvfc9",
+					"isInheritable": false,
+					"position": 2
+				},
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "CM9l6UQGZDWo",
+					"isInheritable": false,
+					"position": 3
+				},
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "bdSnBc5OEoce",
+					"isInheritable": false,
+					"position": 4
+				},
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "I4NBpuiHLT3E",
+					"isInheritable": false,
+					"position": 5
+				}
+			],
+			"format": "markdown",
+			"dataFileName": "Binary Instrumentation.md",
+			"dirFileName": "Binary Instrumentation",
+			"children": [
+				{
+					"isClone": false,
+					"noteId": "yFWETEKeOHaK",
+					"notePath": [
+						"0pPnCdOOLRFI",
+						"yFWETEKeOHaK"
+					],
+					"title": "image.png",
+					"notePosition": 0,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/jpg",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "image.png"
+				},
+				{
+					"isClone": false,
+					"noteId": "hbd26BNlvfc9",
+					"notePath": [
+						"0pPnCdOOLRFI",
+						"hbd26BNlvfc9"
+					],
+					"title": "image.png",
+					"notePosition": 10,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/jpg",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "1_image.png"
+				},
+				{
+					"isClone": false,
+					"noteId": "CM9l6UQGZDWo",
+					"notePath": [
+						"0pPnCdOOLRFI",
+						"CM9l6UQGZDWo"
+					],
+					"title": "image.png",
+					"notePosition": 20,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/jpg",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "2_image.png"
+				},
+				{
+					"isClone": false,
+					"noteId": "bdSnBc5OEoce",
+					"notePath": [
+						"0pPnCdOOLRFI",
+						"bdSnBc5OEoce"
+					],
+					"title": "image.png",
+					"notePosition": 30,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/png",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "3_image.png"
+				},
+				{
+					"isClone": false,
+					"noteId": "I4NBpuiHLT3E",
+					"notePath": [
+						"0pPnCdOOLRFI",
+						"I4NBpuiHLT3E"
+					],
+					"title": "image.png",
+					"notePosition": 40,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/jpg",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "4_image.png"
+				}
+			]
+		}
+	]
+}

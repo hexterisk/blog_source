@@ -17,10 +17,11 @@
       <pubDate>Fri, 10 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/posts/2020/04/10/set-6/</guid>
-      <description>Challenge 41: Implement unpadded message recovery oracle Link
+      <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
+Challenge 41: Implement unpadded message recovery oracle Link
  Nate Lawson says we should stop calling it &amp;ldquo;RSA padding&amp;rdquo; and start calling it &amp;ldquo;RSA armoring&amp;rdquo;. Here&amp;rsquo;s why.
 Imagine a web application, again with the Javascript encryption, taking RSA-encrypted messages which (again: Javascript) aren&amp;rsquo;t padded before encryption at all.
-You can submit an arbitrary RSA blob and the server will return plaintext. But you can&amp;rsquo;t submit the same message twice: let&amp;rsquo;s say the server keeps hashes of previous messages for some liveness interval, and that the message has an embedded timestamp: ** {</description>
+You can submit an arbitrary RSA blob and the server will return plaintext.</description>
     </item>
     
     <item>
@@ -29,10 +30,11 @@ You can submit an arbitrary RSA blob and the server will return plaintext. But y
       <pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/posts/2020/04/02/set-5/</guid>
-      <description>Challenge 33: Implement Diffie-Hellman Link
+      <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
+Challenge 33: Implement Diffie-Hellman Link
  For one of the most important algorithms in cryptography this exercise couldn&amp;rsquo;t be a whole lot easier.
 Set a variable &amp;ldquo;p&amp;rdquo; to 37 and &amp;ldquo;g&amp;rdquo; to 5. This algorithm is so easy I&amp;rsquo;m not even going to explain it. Just do what I do.
-Generate &amp;ldquo;a&amp;rdquo;, a random number mod 37. Now generate &amp;ldquo;A&amp;rdquo;, which is &amp;ldquo;g&amp;rdquo; raised to the &amp;ldquo;a&amp;rdquo; power mode 37 &amp;mdash; A = (g**a) % p.</description>
+Generate &amp;ldquo;a&amp;rdquo;, a random number mod 37.</description>
     </item>
     
   </channel>

@@ -5,10 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="author" content="map[name:hexterisk]">
-<meta name="description" content="Challenge 41: Implement unpadded message recovery oracle Link
+<meta name="description" content="Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
+Challenge 41: Implement unpadded message recovery oracle Link
  Nate Lawson says we should stop calling it &amp;ldquo;RSA padding&amp;rdquo; and start calling it &amp;ldquo;RSA armoring&amp;rdquo;. Here&amp;rsquo;s why.
 Imagine a web application, again with the Javascript encryption, taking RSA-encrypted messages which (again: Javascript) aren&amp;rsquo;t padded before encryption at all.
-You can submit an arbitrary RSA blob and the server will return plaintext. But you can&amp;rsquo;t submit the same message twice: let&amp;rsquo;s say the server keeps hashes of previous messages for some liveness interval, and that the message has an embedded timestamp: ** {" />
+You can submit an arbitrary RSA blob and the server will return plaintext." />
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
@@ -43,13 +44,14 @@ You can submit an arbitrary RSA blob and the server will return plaintext. But y
     <meta name="theme-color" content="#252627">
 
 <meta itemprop="name" content="Set 6">
-<meta itemprop="description" content="Challenge 41: Implement unpadded message recovery oracle Link
+<meta itemprop="description" content="Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
+Challenge 41: Implement unpadded message recovery oracle Link
  Nate Lawson says we should stop calling it &ldquo;RSA padding&rdquo; and start calling it &ldquo;RSA armoring&rdquo;. Here&rsquo;s why.
 Imagine a web application, again with the Javascript encryption, taking RSA-encrypted messages which (again: Javascript) aren&rsquo;t padded before encryption at all.
-You can submit an arbitrary RSA blob and the server will return plaintext. But you can&rsquo;t submit the same message twice: let&rsquo;s say the server keeps hashes of previous messages for some liveness interval, and that the message has an embedded timestamp: ** {">
+You can submit an arbitrary RSA blob and the server will return plaintext.">
 <meta itemprop="datePublished" content="2020-04-10T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-04-10T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="5833">
+<meta itemprop="wordCount" content="5849">
 <meta itemprop="image" content="https://hexterisk.tech/blog"/>
 
 
@@ -58,10 +60,11 @@ You can submit an arbitrary RSA blob and the server will return plaintext. But y
 <meta name="twitter:image" content="https://hexterisk.tech/blog"/>
 
 <meta name="twitter:title" content="Set 6"/>
-<meta name="twitter:description" content="Challenge 41: Implement unpadded message recovery oracle Link
+<meta name="twitter:description" content="Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
+Challenge 41: Implement unpadded message recovery oracle Link
  Nate Lawson says we should stop calling it &ldquo;RSA padding&rdquo; and start calling it &ldquo;RSA armoring&rdquo;. Here&rsquo;s why.
 Imagine a web application, again with the Javascript encryption, taking RSA-encrypted messages which (again: Javascript) aren&rsquo;t padded before encryption at all.
-You can submit an arbitrary RSA blob and the server will return plaintext. But you can&rsquo;t submit the same message twice: let&rsquo;s say the server keeps hashes of previous messages for some liveness interval, and that the message has an embedded timestamp: ** {"/>
+You can submit an arbitrary RSA blob and the server will return plaintext."/>
 
 
 
@@ -141,7 +144,8 @@ You can submit an arbitrary RSA blob and the server will return plaintext. But y
             
 
             <div class="post-content">
-                <h3 id="challenge-41-implement-unpadded-message-recovery-oracle">Challenge 41: Implement unpadded message recovery oracle</h3>
+                <p>Refer to this <a href="https://github.com/hexterisk/cryptopals-solutions">repository</a> for solution scripts and the IPython Notebook pertaining to the explanations here.</p>
+<h3 id="challenge-41-implement-unpadded-message-recovery-oracle">Challenge 41: Implement unpadded message recovery oracle</h3>
 <p><a href="https://cryptopals.com/sets/6/challenges/41">Link</a></p>
 <blockquote>
 <p>Nate Lawson says we should stop calling it &ldquo;RSA padding&rdquo; and start calling it &ldquo;RSA armoring&rdquo;. Here&rsquo;s why.<br>
@@ -1074,7 +1078,7 @@ recovered_plaintext <span style="color:#f92672">=</span> padding_oracle_attack(c
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/matasano">Matasano</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/cryptography">cryptography</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/dsa">DSA</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/rsa">RSA</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/bleichenbacher">Bleichenbacher</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/nonce">nonce</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/xor">xor</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/e3">e=3</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/pkcs#1">PKCS#1</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/oracle">oracle</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/pkcs1.5">PKCS1.5</a></span>
                 </p>
 
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>5833 Words</p>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>5849 Words</p>
 
             <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-04-10 05:30 &#43;0530</p>
         </div>

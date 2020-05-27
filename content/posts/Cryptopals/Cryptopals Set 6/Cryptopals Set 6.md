@@ -12,6 +12,8 @@ weight: 10
 categories: ["Cryptopals"]
 ---
 
+Refer to this [repository](https://github.com/hexterisk/cryptopals-solutions) for solution scripts and the IPython Notebook pertaining to the explanations here.
+
 ### Challenge 41: Implement unpadded message recovery oracle
 [Link](https://cryptopals.com/sets/6/challenges/41)
 

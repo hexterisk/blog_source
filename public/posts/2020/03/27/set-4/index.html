@@ -5,9 +5,10 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="author" content="map[name:hexterisk]">
-<meta name="description" content="Challenge 25: Break &amp;ldquo;random access read/write&amp;rdquo; AES CTR Link
+<meta name="description" content="Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
+Challenge 25: Break &amp;ldquo;random access read/write&amp;rdquo; AES CTR Link
  Back to CTR. Encrypt the recovered plaintext from this file (the ECB exercise) under CTR with a random key (for this exercise the key should be unknown to you, but hold on to it).
-Now, write the code that allows you to &amp;ldquo;seek&amp;rdquo; into the ciphertext, decrypt, and re-encrypt with different plaintext. Expose this as a function, like, &amp;ldquo;edit(ciphertext, key, offset, newtext)&amp;quot;." />
+Now, write the code that allows you to &amp;ldquo;seek&amp;rdquo; into the ciphertext, decrypt, and re-encrypt with different plaintext." />
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
@@ -42,12 +43,13 @@ Now, write the code that allows you to &amp;ldquo;seek&amp;rdquo; into the ciphe
     <meta name="theme-color" content="#252627">
 
 <meta itemprop="name" content="Set 4">
-<meta itemprop="description" content="Challenge 25: Break &ldquo;random access read/write&rdquo; AES CTR Link
+<meta itemprop="description" content="Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
+Challenge 25: Break &ldquo;random access read/write&rdquo; AES CTR Link
  Back to CTR. Encrypt the recovered plaintext from this file (the ECB exercise) under CTR with a random key (for this exercise the key should be unknown to you, but hold on to it).
-Now, write the code that allows you to &ldquo;seek&rdquo; into the ciphertext, decrypt, and re-encrypt with different plaintext. Expose this as a function, like, &ldquo;edit(ciphertext, key, offset, newtext)&quot;.">
+Now, write the code that allows you to &ldquo;seek&rdquo; into the ciphertext, decrypt, and re-encrypt with different plaintext.">
 <meta itemprop="datePublished" content="2020-03-27T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-03-27T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="5091">
+<meta itemprop="wordCount" content="5107">
 <meta itemprop="image" content="https://hexterisk.tech/blog"/>
 
 
@@ -56,9 +58,10 @@ Now, write the code that allows you to &ldquo;seek&rdquo; into the ciphertext, d
 <meta name="twitter:image" content="https://hexterisk.tech/blog"/>
 
 <meta name="twitter:title" content="Set 4"/>
-<meta name="twitter:description" content="Challenge 25: Break &ldquo;random access read/write&rdquo; AES CTR Link
+<meta name="twitter:description" content="Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
+Challenge 25: Break &ldquo;random access read/write&rdquo; AES CTR Link
  Back to CTR. Encrypt the recovered plaintext from this file (the ECB exercise) under CTR with a random key (for this exercise the key should be unknown to you, but hold on to it).
-Now, write the code that allows you to &ldquo;seek&rdquo; into the ciphertext, decrypt, and re-encrypt with different plaintext. Expose this as a function, like, &ldquo;edit(ciphertext, key, offset, newtext)&quot;."/>
+Now, write the code that allows you to &ldquo;seek&rdquo; into the ciphertext, decrypt, and re-encrypt with different plaintext."/>
 
 
 
@@ -138,7 +141,8 @@ Now, write the code that allows you to &ldquo;seek&rdquo; into the ciphertext, d
             
 
             <div class="post-content">
-                <h3 id="challenge-25-break-random-access-readwrite-aes-ctr">Challenge 25: Break &ldquo;random access read/write&rdquo; AES CTR</h3>
+                <p>Refer to this <a href="https://github.com/hexterisk/cryptopals-solutions">repository</a> for solution scripts and the IPython Notebook pertaining to the explanations here.</p>
+<h3 id="challenge-25-break-random-access-readwrite-aes-ctr">Challenge 25: Break &ldquo;random access read/write&rdquo; AES CTR</h3>
 <p><a href="https://cryptopals.com/sets/4/challenges/25">Link</a></p>
 <blockquote>
 <p>Back to CTR. Encrypt the recovered plaintext from <a href="https://cryptopals.com/static/challenge-data/25.txt">this file</a> (the ECB exercise) under CTR with a random key (for this exercise the key should be unknown to you, but hold on to it).</p>
@@ -924,7 +928,7 @@ response <span style="color:#f92672">=</span> app<span style="color:#f92672">.</
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/matasano">Matasano</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/cryptography">cryptography</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/sha-1">SHA-1</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/mac">MAC</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/iv">IV</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/ctr">CTR</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/xor">xor</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/cbc">CBC</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/aes">AES</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/pad">pad</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/bit-flipping">bit-flipping</a></span>
                 </p>
 
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>5091 Words</p>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>5107 Words</p>
 
             <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-03-27 05:30 &#43;0530</p>
         </div>

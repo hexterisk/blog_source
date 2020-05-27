@@ -12,6 +12,17 @@
     
     
     <item>
+      <title>Constraint Solvers and Z3</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/09/constraint-solvers-and-z3/</link>
+      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/09/constraint-solvers-and-z3/</guid>
+      <description>A constraint solver must be versatile, that is, it should be able to act as an:
+ Interpreter: Given the input, solve for the output of the equation. Inverter: Given the output, solve for the input of the equation. Synthesizer: Act as both Interpreter and Inverter.  Formulating Programs Assume a formula 𝑆ₚ(𝑥, 𝑦) which holds if and only if program P(x) outputs value y such that
+Program: f(𝑥) { return 𝑥 + 𝑥 }</description>
+    </item>
+    
+    <item>
       <title>Principles of Symbolic Execution</title>
       <link>https://hexterisk.tech/blog/posts/2020/01/09/principles-of-symbolic-execution/</link>
       <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
@@ -19,6 +30,16 @@
       <guid>https://hexterisk.tech/blog/posts/2020/01/09/principles-of-symbolic-execution/</guid>
       <description>Symbolic Execution, or symbex, is a software analysis technique that expresses program state in terms of logical formulas that you can automatically reason about to answer complex questions about a program’s behavior. Can automatically increase the code coverage of dynamic analyses by generating new inputs that lead to unexplored program paths. Apply it sparingly and carefully because of scalability issues.
  Symbex executes (or emulates) an application with symbolic values.  Symbolic values represent a domain covering possible concrete values, represented by symbols like φ.</description>
+    </item>
+    
+    <item>
+      <title>Stack and it&#39;s Frames</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/09/stack-and-its-frames/</link>
+      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/09/stack-and-its-frames/</guid>
+      <description>Stack is a data structure, and means exactly what it&amp;rsquo;s name says - a stack(of objects). It is mainly characterized by pushing and popping operations. You push items onto the stack, and then pop those items off. A stack is therefore a LIFO(last in, first out) structure. Memory for functions, local variables, and flow control is stored in the stack.
+Stack Layout The stack grows from higher addresses to lower addresses.</description>
     </item>
     
   </channel>

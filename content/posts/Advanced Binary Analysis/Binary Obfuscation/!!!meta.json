@@ -1,0 +1,295 @@
+{
+	"formatVersion": 1,
+	"appVersion": "0.42.1",
+	"files": [
+		{
+			"isClone": false,
+			"noteId": "KfBnUQRDR4lX",
+			"notePath": [
+				"KfBnUQRDR4lX"
+			],
+			"title": "Binary Obfuscation",
+			"notePosition": 30,
+			"prefix": null,
+			"isExpanded": 0,
+			"type": "text",
+			"mime": "text/html",
+			"attributes": [
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "kFn0ZFjr1TZ7",
+					"isInheritable": false,
+					"position": 2
+				},
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "KchQmXwxoaRE",
+					"isInheritable": false,
+					"position": 3
+				},
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "UnWUwSMi2RKn",
+					"isInheritable": false,
+					"position": 4
+				},
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "Kp5gdQ65ToJN",
+					"isInheritable": false,
+					"position": 7
+				},
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "j2nr7wxw88EG",
+					"isInheritable": false,
+					"position": 8
+				},
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "JNy4Qt7iESLg",
+					"isInheritable": false,
+					"position": 9
+				}
+			],
+			"format": "markdown",
+			"dataFileName": "Binary Obfuscation.md",
+			"dirFileName": "Binary Obfuscation",
+			"children": [
+				{
+					"isClone": false,
+					"noteId": "kFn0ZFjr1TZ7",
+					"notePath": [
+						"KfBnUQRDR4lX",
+						"kFn0ZFjr1TZ7"
+					],
+					"title": "cc5ac2e806cd2b62.gif",
+					"notePosition": 0,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/jpg",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "cc5ac2e806cd2b62.gif",
+							"isInheritable": false,
+							"position": 1
+						},
+						{
+							"type": "label",
+							"name": "imageUrl",
+							"value": "http://advanced-binary-analysis.gosec.co/img/cc5ac2e806cd2b62.gif",
+							"isInheritable": false,
+							"position": 2
+						}
+					],
+					"dataFileName": "cc5ac2e806cd2b62.gif"
+				},
+				{
+					"isClone": false,
+					"noteId": "KchQmXwxoaRE",
+					"notePath": [
+						"KfBnUQRDR4lX",
+						"KchQmXwxoaRE"
+					],
+					"title": "efa49547f45c2d7e.gif",
+					"notePosition": 10,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/gif",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "efa49547f45c2d7e.gif",
+							"isInheritable": false,
+							"position": 1
+						},
+						{
+							"type": "label",
+							"name": "imageUrl",
+							"value": "http://advanced-binary-analysis.gosec.co/img/efa49547f45c2d7e.gif",
+							"isInheritable": false,
+							"position": 2
+						}
+					],
+					"dataFileName": "efa49547f45c2d7e.gif"
+				},
+				{
+					"isClone": false,
+					"noteId": "UnWUwSMi2RKn",
+					"notePath": [
+						"KfBnUQRDR4lX",
+						"UnWUwSMi2RKn"
+					],
+					"title": "de138c9f51bad4b5.gif",
+					"notePosition": 20,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/jpg",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "de138c9f51bad4b5.gif",
+							"isInheritable": false,
+							"position": 1
+						},
+						{
+							"type": "label",
+							"name": "imageUrl",
+							"value": "http://advanced-binary-analysis.gosec.co/img/de138c9f51bad4b5.gif",
+							"isInheritable": false,
+							"position": 2
+						}
+					],
+					"dataFileName": "de138c9f51bad4b5.gif"
+				},
+				{
+					"isClone": false,
+					"noteId": "AsTGr8H2L3vY",
+					"notePath": [
+						"KfBnUQRDR4lX",
+						"AsTGr8H2L3vY"
+					],
+					"title": "c38e39a5a77fcbb3.png",
+					"notePosition": 30,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/png",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "c38e39a5a77fcbb3.png",
+							"isInheritable": false,
+							"position": 1
+						},
+						{
+							"type": "label",
+							"name": "imageUrl",
+							"value": "http://advanced-binary-analysis.gosec.co/img/c38e39a5a77fcbb3.png",
+							"isInheritable": false,
+							"position": 2
+						}
+					],
+					"dataFileName": "c38e39a5a77fcbb3.png"
+				},
+				{
+					"isClone": false,
+					"noteId": "9WM7jamX23U8",
+					"notePath": [
+						"KfBnUQRDR4lX",
+						"9WM7jamX23U8"
+					],
+					"title": "image.png",
+					"notePosition": 40,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/png",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "image.png"
+				},
+				{
+					"isClone": false,
+					"noteId": "Kp5gdQ65ToJN",
+					"notePath": [
+						"KfBnUQRDR4lX",
+						"Kp5gdQ65ToJN"
+					],
+					"title": "image.png",
+					"notePosition": 50,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/png",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "1_image.png"
+				},
+				{
+					"isClone": false,
+					"noteId": "j2nr7wxw88EG",
+					"notePath": [
+						"KfBnUQRDR4lX",
+						"j2nr7wxw88EG"
+					],
+					"title": "350577af599d101d.gif",
+					"notePosition": 60,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/gif",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "350577af599d101d.gif",
+							"isInheritable": false,
+							"position": 1
+						},
+						{
+							"type": "label",
+							"name": "imageUrl",
+							"value": "http://advanced-binary-analysis.gosec.co/img/350577af599d101d.gif",
+							"isInheritable": false,
+							"position": 2
+						}
+					],
+					"dataFileName": "350577af599d101d.gif"
+				},
+				{
+					"isClone": false,
+					"noteId": "JNy4Qt7iESLg",
+					"notePath": [
+						"KfBnUQRDR4lX",
+						"JNy4Qt7iESLg"
+					],
+					"title": "image.png",
+					"notePosition": 70,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/png",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "2_image.png"
+				}
+			]
+		}
+	]
+}

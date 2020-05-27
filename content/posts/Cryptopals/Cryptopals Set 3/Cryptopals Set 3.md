@@ -12,6 +12,8 @@ weight: 10
 categories: ["Cryptopals"]
 ---
 
+Refer to this [repository](https://github.com/hexterisk/cryptopals-solutions) for solution scripts and the IPython Notebook pertaining to the explanations here.
+
 ### Challenge 17: The CBC padding oracle
 [Link](https://cryptopals.com/sets/3/challenges/17)
 

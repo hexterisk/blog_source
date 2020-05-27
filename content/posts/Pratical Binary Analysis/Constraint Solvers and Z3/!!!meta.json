@@ -1,0 +1,150 @@
+{
+	"formatVersion": 1,
+	"appVersion": "0.42.1",
+	"files": [
+		{
+			"isClone": false,
+			"noteId": "rdXaUVWdjaR0",
+			"notePath": [
+				"rdXaUVWdjaR0"
+			],
+			"title": "Constraint Solvers and Z3",
+			"notePosition": 0,
+			"prefix": null,
+			"isExpanded": 0,
+			"type": "text",
+			"mime": "text/html",
+			"attributes": [
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "y0PcIPYQ9wWD",
+					"isInheritable": false,
+					"position": 1
+				},
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "l8RAhrOP0bHG",
+					"isInheritable": false,
+					"position": 2
+				},
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "YxlEBBkRYAO5",
+					"isInheritable": false,
+					"position": 6
+				},
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "101p4kSd7tuV",
+					"isInheritable": false,
+					"position": 7
+				}
+			],
+			"format": "markdown",
+			"dataFileName": "Constraint Solvers and Z3.md",
+			"dirFileName": "Constraint Solvers and Z3",
+			"children": [
+				{
+					"isClone": false,
+					"noteId": "y0PcIPYQ9wWD",
+					"notePath": [
+						"rdXaUVWdjaR0",
+						"y0PcIPYQ9wWD"
+					],
+					"title": "image.png",
+					"notePosition": 0,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/jpg",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "image.png"
+				},
+				{
+					"isClone": false,
+					"noteId": "l8RAhrOP0bHG",
+					"notePath": [
+						"rdXaUVWdjaR0",
+						"l8RAhrOP0bHG"
+					],
+					"title": "FireShot Capture 210 -  - homes.cs.washington.edu.png",
+					"notePosition": 10,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/jpg",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "FireShot Capture 210 -  - homes.cs.washington.edu.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "FireShot Capture 210 -  - homes.cs.washington.edu.png"
+				},
+				{
+					"isClone": false,
+					"noteId": "YxlEBBkRYAO5",
+					"notePath": [
+						"rdXaUVWdjaR0",
+						"YxlEBBkRYAO5"
+					],
+					"title": "FireShot Capture 210 -  - homes.cs.washington.edu.png",
+					"notePosition": 20,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/jpg",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "FireShot Capture 210 -  - homes.cs.washington.edu.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "1_FireShot Capture 210 -  - homes.cs.washington.edu.png"
+				},
+				{
+					"isClone": false,
+					"noteId": "101p4kSd7tuV",
+					"notePath": [
+						"rdXaUVWdjaR0",
+						"101p4kSd7tuV"
+					],
+					"title": "FireShot Capture 210 -  - homes.cs.washington.edu.png",
+					"notePosition": 30,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/jpg",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "FireShot Capture 210 -  - homes.cs.washington.edu.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "2_FireShot Capture 210 -  - homes.cs.washington.edu.png"
+				}
+			]
+		}
+	]
+}

@@ -17,7 +17,8 @@
       <pubDate>Mon, 23 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/posts/2020/03/23/set-3/</guid>
-      <description>Challenge 17: The CBC padding oracle Link
+      <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
+Challenge 17: The CBC padding oracle Link
  This is the best-known attack on modern block-cipher cryptography.
 Combine your padding code and your CBC code to write two functions.
 The first function should select at random one of the following 10 strings:

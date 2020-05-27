@@ -17,9 +17,10 @@
       <pubDate>Fri, 27 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/posts/2020/03/27/set-4/</guid>
-      <description>Challenge 25: Break &amp;ldquo;random access read/write&amp;rdquo; AES CTR Link
+      <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
+Challenge 25: Break &amp;ldquo;random access read/write&amp;rdquo; AES CTR Link
  Back to CTR. Encrypt the recovered plaintext from this file (the ECB exercise) under CTR with a random key (for this exercise the key should be unknown to you, but hold on to it).
-Now, write the code that allows you to &amp;ldquo;seek&amp;rdquo; into the ciphertext, decrypt, and re-encrypt with different plaintext. Expose this as a function, like, &amp;ldquo;edit(ciphertext, key, offset, newtext)&amp;quot;.</description>
+Now, write the code that allows you to &amp;ldquo;seek&amp;rdquo; into the ciphertext, decrypt, and re-encrypt with different plaintext.</description>
     </item>
     
     <item>
@@ -28,7 +29,8 @@ Now, write the code that allows you to &amp;ldquo;seek&amp;rdquo; into the ciphe
       <pubDate>Mon, 23 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/posts/2020/03/23/set-3/</guid>
-      <description>Challenge 17: The CBC padding oracle Link
+      <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
+Challenge 17: The CBC padding oracle Link
  This is the best-known attack on modern block-cipher cryptography.
 Combine your padding code and your CBC code to write two functions.
 The first function should select at random one of the following 10 strings:

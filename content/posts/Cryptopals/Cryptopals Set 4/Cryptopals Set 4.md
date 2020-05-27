@@ -11,6 +11,9 @@ tags: ["Matasano", "cryptography", "SHA-1", "MAC", "IV", "CTR", "xor", "CBC", "A
 weight: 10
 categories: ["Cryptopals"]
 ---
+
+Refer to this [repository](https://github.com/hexterisk/cryptopals-solutions) for solution scripts and the IPython Notebook pertaining to the explanations here.
+
 ### Challenge 25: Break "random access read/write" AES CTR
 [Link](https://cryptopals.com/sets/4/challenges/25)
 

@@ -48,7 +48,17 @@
   </url>
   
   <url>
+    <loc>https://hexterisk.tech/blog/posts/2020/01/09/constraint-solvers-and-z3/</loc>
+    <lastmod>2020-01-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://hexterisk.tech/blog/posts/2020/01/09/principles-of-symbolic-execution/</loc>
+    <lastmod>2020-01-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.tech/blog/posts/2020/01/09/stack-and-its-frames/</loc>
     <lastmod>2020-01-09T00:00:00+00:00</lastmod>
   </url>
   
@@ -63,6 +73,11 @@
   </url>
   
   <url>
+    <loc>https://hexterisk.tech/blog/posts/2020/01/07/binary-obfuscation/</loc>
+    <lastmod>2020-01-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://hexterisk.tech/blog/posts/2020/01/06/simple-code-injection-techniques-for-elf/</loc>
     <lastmod>2020-01-06T00:00:00+00:00</lastmod>
   </url>
@@ -73,7 +88,7 @@
   </url>
   
   <url>
-    <loc>https://hexterisk.tech/blog/posts/2020/01/04/basic-binary-analysis/</loc>
+    <loc>https://hexterisk.tech/blog/posts/2020/01/04/trace-analysis/</loc>
     <lastmod>2020-01-04T00:00:00+00:00</lastmod>
   </url>
   
@@ -373,6 +388,16 @@
   </url>
   
   <url>
+    <loc>https://hexterisk.tech/blog/categories/advanced-binary-analysis/</loc>
+    <lastmod>2020-01-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.tech/blog/categories/basic-binary-analysis/</loc>
+    <lastmod>2020-01-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://hexterisk.tech/blog/tags/constraints/</loc>
     <lastmod>2020-01-09T00:00:00+00:00</lastmod>
   </url>
@@ -449,6 +474,11 @@
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/instrumentation/</loc>
+    <lastmod>2020-01-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.tech/blog/tags/obfuscation/</loc>
     <lastmod>2020-01-07T00:00:00+00:00</lastmod>
   </url>
   

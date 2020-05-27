@@ -36,7 +36,7 @@ Given x, evaluate f(x).
 
 ⇨ 𝑦 ↦ 6
 
-##### Solver as a execution **Inverter**:
+##### Solver as an **Inverter**:
 
 Given f(x), find x.
 

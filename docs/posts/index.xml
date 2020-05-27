@@ -5346,7 +5346,7 @@ Program: f(𝑥) { return 𝑥 + 𝑥 }</description>
 <p>Given x, evaluate f(x).</p>
 <p>𝑆𝒻(𝑥, 𝑦) ∧ 𝑥 = 3</p>
 <p>⇨ 𝑦 ↦ 6</p>
-<h5 id="solver-as-a-execution-inverter">Solver as a execution <strong>Inverter</strong>:</h5>
+<h5 id="solver-as-an-inverter">Solver as an <strong>Inverter</strong>:</h5>
 <p>Given f(x), find x.</p>
 <p>𝑆𝒻(𝑥, 𝑦) ∧ 𝑦 = 6</p>
 <p>⇨ 𝑥 ↦ 3</p>

@@ -28,7 +28,7 @@ Assume a formula _𝑆ₚ(𝑥, 𝑦)_ which holds if and only if program _P(x)_
 
 Now, with the program represented as a formula, the solver can be versatile.
 
-##### Solver as an **Interpreter**:
+##### Solver as an  **Interpreter**:
 
 Given x, evaluate f(x).
 
@@ -36,7 +36,7 @@ Given x, evaluate f(x).
 
 ⇨ 𝑦 ↦ 6
 
-##### Solver as an **Inverter**:
+##### Solver as an  **Inverter**:
 
 Given f(x), find x.
 

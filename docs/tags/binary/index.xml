@@ -58,6 +58,16 @@ Stack Layout The stack grows from higher addresses to lower addresses.</descript
     </item>
     
     <item>
+      <title>Symbolic Execution and Angr</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/09/symbolic-execution-and-angr/</link>
+      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/09/symbolic-execution-and-angr/</guid>
+      <description>From a practical view point, Symbolic Execution is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
+Symbols Different values in a program(such as the user input) are substituted with Symbols(variables or placeholders). These symbols pertain to a domain full of values, allowing us to explore the program in a much more open form, basically “walking through the program” with a domain full of values(handled by any one of the constraint solving backends like Z3) instead of walking a fixed path due to a fixed hard-coded value/input.</description>
+    </item>
+    
+    <item>
       <title>Dynamic Taint Analysis</title>
       <link>https://hexterisk.tech/blog/posts/2020/01/08/dynamic-taint-analysis/</link>
       <pubDate>Wed, 08 Jan 2020 00:00:00 +0000</pubDate>
@@ -106,16 +116,6 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
 When people say disassembly, they usually mean static disassembly, which involves extracting the instructions from a binary without executing it.
 Linear Disassembly Disassembly desynchronization due to inline data interpreted as code. The instruction where the disassembly resynchronizes is shaded gray.
  It iterates through all code segments in a binary, decoding all bytes consecutively and parsing them into a list of instructions. Many simple disassemblers, including objdump, use this approach.</description>
-    </item>
-    
-    <item>
-      <title>Trace Analysis</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/04/trace-analysis/</link>
-      <pubDate>Sat, 04 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/01/04/trace-analysis/</guid>
-      <description>System Call Trace strace can be used to investigate system call behavior. In some cases, you may want to attach strace to a running process. To do this, you need to use the -p pid option, where pid is the process ID of the process you want to attach to.
-$ strace ./ctf show_me_the_flag ➊ execve(&amp;#34;./ctf&amp;#34;, [&amp;#34;./ctf&amp;#34;, &amp;#34;show_me_the_flag&amp;#34;], [/* 73 vars */]) = 0 brk(NULL) = 0x1053000 access(&amp;#34;/etc/ld.so.nohwcap&amp;#34;, F_OK) = -1 ENOENT (No such file or directory) mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f703477e000 access(&amp;#34;/etc/ld.</description>
     </item>
     
   </channel>

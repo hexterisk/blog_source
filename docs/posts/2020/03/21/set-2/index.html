@@ -775,7 +775,7 @@ The first function should take an arbitrary input string, prepend the string:<br
 <strong>&quot;;comment2=%20like%20a%20pound%20of%20bacon&rdquo;</strong><br>
 The function should quote out the &ldquo;;&rdquo; and &ldquo;=&rdquo; characters.<br>
 The function should then pad out the input to the 16-byte AES block length and encrypt it under the random AES key.<br>
-The second function should decrypt the string and look for the characters &ldquo;;admin=true;&rdquo; (or, equivalently, decrypt, split the string on &ldquo;;&quot;, convert each resulting string into 2-tuples, and look for the &ldquo;admin&rdquo; tuple).<br>
+The second function should decrypt the string and look for the characters &ldquo;;admin=true;&rdquo; (or, equivalently, decrypt, split the string on &ldquo;;&rdquo;, convert each resulting string into 2-tuples, and look for the &ldquo;admin&rdquo; tuple).<br>
 Return true or false based on whether the string exists.<br>
 If you&rsquo;ve written the first function properly, it should not be possible to provide user input to it that will generate the string the second function is looking for. We&rsquo;ll have to break the crypto to do that.<br>
 Instead, modify the ciphertext (without knowledge of the AES key) to accomplish this.<br>

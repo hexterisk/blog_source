@@ -128,7 +128,7 @@ Follow [archived docs](https://hexterisk.github.io/Z3Py-Archive/guide-examples.h
 
 Taking Z3 for a spin, let's tackle a well-known problem: Sudoku Solver.
 
-Read this [page](https://hexterisk.tech/Z3Py-Archive/Sudoku%20solver%20using%20Z3.html) implemented in this [IPython Notebook](https://github.com/hexterisk/Z3Py-Archive/blob/master/Sudoku%20solver%20using%20Z3.ipynb) for a comprehensive explanation on a Sudoku Solver.
+Read this [page](https://hexterisk.github.io/Z3Py-Archive/Sudoku%20solver%20using%20Z3.html) implemented in this [IPython Notebook](https://github.com/hexterisk/Z3Py-Archive/blob/master/Sudoku%20solver%20using%20Z3.ipynb) for a comprehensive explanation on a Sudoku Solver.
 
 Using Z3 for binary analysis, let's analyse a binary.
 

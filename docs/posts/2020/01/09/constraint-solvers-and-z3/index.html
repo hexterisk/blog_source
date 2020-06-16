@@ -47,7 +47,7 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }" />
 Program: f(𝑥) { return 𝑥 &#43; 𝑥 }">
 <meta itemprop="datePublished" content="2020-01-09T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-01-09T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="983">
+<meta itemprop="wordCount" content="1415">
 <meta itemprop="image" content="https://hexterisk.tech/blog"/>
 
 
@@ -123,7 +123,7 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }"/>
     <main class="post">
 
         <div class="post-info">
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>5 minutes
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>7 minutes
 
             
 
@@ -194,7 +194,43 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }"/>
 <p>SAT solvers are automatic and efficient. As a result, they are frequently used as the “engine” behind verification applications.</p>
 <h2 id="smt-solver">SMT Solver</h2>
 <p>The <strong>Satisfiability Modulo Theories</strong> problem is a decision problem for logical formulas with respect to combinations of background theories expressed in classical first-order logic with equality.</p>
-<p>SAT Solvers&rsquo; basic functionality depends on Boolean logic. Systems are usually designed and modeled at a higher level than the Boolean level and the translation to Boolean logic can be expensive. SMT Solvers therefore aim to create verification engines that can reason natively at a higher level of abstraction while retaining the efficiency of SAT Solvers. The language of SMT Solvers is therefore First-Order-Logic. The language includes the Boolean operations of Boolean logic, but instead of propositional variables, more complicated expressions involving constant, function, and predicate symbols are used. In other words, imagine an instance of the Boolean satisfiability problem (SAT) in which some of the binary variables are replaced by predicates over a suitable set of non-binary variables.</p>
+<ul>
+<li>Modular Theory implies that the solver is extensible with different theories.</li>
+</ul>
+<p>In simpler words, SMT Solvers are built on top of SAT solvers, and they are able to combine the powers of the SAT solver with other domain specific theory solvers(the extensible property comes in here) to solve NP complete problems. Thus, SMT Solvers rely on our ability to solve satisfiability problems, to take problems with boolean variables and constraints to tell us whether there is an assignment to these variables that satisfies that particular problem. A SAT Solver then tries random assignments and propagates them through the constraints. When it runs into a contradiction, it analyses the set of limitations that led to the contradiction and summarizes them into a new constraint so that the same problem can be avoided next time onwards.</p>
+<p>For example,</p>
+<p>say a stage is given, <em>x&gt;5 AND y&lt;5 AND (y&gt;x OR y&gt;2)</em></p>
+<p>SMT solver will divide it into domain specific theories.</p>
+<p>⇨ <em>|x&gt;5| AND |y&lt;5| AND (|y&gt;x| OR |y&gt;2|)</em>,    Linear Arithmetic Theory and Boolean Logic.</p>
+<p>⇨ <em>f1 AND f2 AND (f3 OR f4)</em></p>
+<p>And then hands it off to a SAT Solver, which will try to make this stage satisfiable.</p>
+<p>Let&rsquo;s say it comes up with the conclusion that making <em>f1</em>, <em>f2</em> and <em>f3</em> true will make it satisfiable.</p>
+<p>Then domain specific theory solvers (Linear Arithmetic Solver) solves <em>f1</em>, <em>f2</em> and <em>f3</em> so as to find inputs that make them satisfiable. Thus it becomes a purely linear arithmetic question now, with no boolean logic.</p>
+<p>This specific solver can imply different traditional techniques such as simplex methods to solve these systems for linear inequalities, etc. This solver quickly returns that this conclusion is unsatisfiable, and returns the result along with an explanation to the SAT solver (that <em>f1</em>, <em>f2</em> and <em>f3</em> are mutually exclusive). SAT Solver then remembers not to try that particular situtation anymore. It then comes up with the conclusion that making <em>f1</em>, <em>f2</em> and <em>f4</em> true will make the situation satisfiable. This time the specific solver returns satisfiable, thus bringing this situation to a “satisfiable” conclusion.</p>
+<p>Since systems are usually designed and modeled at a higher level than the Boolean level, the translation to Boolean logic can be expensive. SMT Solvers therefore aim to create verification engines that can reason natively at a higher level of abstraction while retaining the efficiency of SAT Solvers. The language of SMT Solvers is therefore First-Order-Logic. The language includes the Boolean operations of Boolean logic, but instead of propositional variables, more complicated expressions involving constant, function, and predicate symbols are used. In other words, imagine an instance of the Boolean satisfiability problem (SAT) in which some of the binary variables are replaced by predicates over a suitable set of non-binary variables.</p>
+<p>Some of the popular theories are:</p>
+<ul>
+<li>Bit Vector Theory
+<ul>
+<li>Using bit vectors of fixed bit width, such as 8bit vectors and 32bit vectors, as symbols.</li>
+</ul>
+</li>
+<li>Theory of Arrays
+<ul>
+<li>Used for a collection of objects where the size of an object is unknown beforehand, such as strings.</li>
+</ul>
+</li>
+<li>Theory of Integer Arithmetic
+<ul>
+<li>Symbols are limited to the integral domain.</li>
+</ul>
+</li>
+<li>Theory of Uninterpreted Functions
+<ul>
+<li>Within a formula, a call to a function is made, which we know nothing about, except the fact that it will always give the same output for a given input value, such as square root.</li>
+</ul>
+</li>
+</ul>
 <p>A very popular SMT Solver is Z3.</p>
 <h2 id="z3">Z3</h2>
 <p>Introducing the powers of <a href="https://github.com/Z3Prover/z3/wiki#background">Z3</a> in python, run <code>pip install z3-solver</code> to install it via pip.</p>
@@ -234,7 +270,7 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }"/>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/symbols">symbols</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/execution">execution</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/path">path</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/constraints">constraints</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/expression">expression</a></span>
                 </p>
 
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>983 Words</p>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1415 Words</p>
 
             <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-01-09 05:30 &#43;0530</p>
         </div>

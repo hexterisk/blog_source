@@ -114,7 +114,40 @@ SAT solvers are automatic and efficient. As a result, they are frequently used a
 
 The **Satisfiability Modulo Theories** problem is a decision problem for logical formulas with respect to combinations of background theories expressed in classical first-order logic with equality.
 
-SAT Solvers' basic functionality depends on Boolean logic. Systems are usually designed and modeled at a higher level than the Boolean level and the translation to Boolean logic can be expensive. SMT Solvers therefore aim to create verification engines that can reason natively at a higher level of abstraction while retaining the efficiency of SAT Solvers. The language of SMT Solvers is therefore First-Order-Logic. The language includes the Boolean operations of Boolean logic, but instead of propositional variables, more complicated expressions involving constant, function, and predicate symbols are used. In other words, imagine an instance of the Boolean satisfiability problem (SAT) in which some of the binary variables are replaced by predicates over a suitable set of non-binary variables.
+*   Modular Theory implies that the solver is extensible with different theories.
+
+In simpler words, SMT Solvers are built on top of SAT solvers, and they are able to combine the powers of the SAT solver with other domain specific theory solvers(the extensible property comes in here) to solve NP complete problems. Thus, SMT Solvers rely on our ability to solve satisfiability problems, to take problems with boolean variables and constraints to tell us whether there is an assignment to these variables that satisfies that particular problem. A SAT Solver then tries random assignments and propagates them through the constraints. When it runs into a contradiction, it analyses the set of limitations that led to the contradiction and summarizes them into a new constraint so that the same problem can be avoided next time onwards.
+
+For example,
+
+say a stage is given, _x>5 AND y<5 AND (y>x OR y>2)_
+
+SMT solver will divide it into domain specific theories.
+
+⇨ _|x>5| AND |y<5| AND (|y>x| OR |y>2|)_,    Linear Arithmetic Theory and Boolean Logic.
+
+⇨ _f1 AND f2 AND (f3 OR f4)_
+
+And then hands it off to a SAT Solver, which will try to make this stage satisfiable.
+
+Let's say it comes up with the conclusion that making _f1_, _f2_ and _f3_ true will make it satisfiable.
+
+Then domain specific theory solvers (Linear Arithmetic Solver) solves _f1_, _f2_ and _f3_ so as to find inputs that make them satisfiable. Thus it becomes a purely linear arithmetic question now, with no boolean logic.
+
+This specific solver can imply different traditional techniques such as simplex methods to solve these systems for linear inequalities, etc. This solver quickly returns that this conclusion is unsatisfiable, and returns the result along with an explanation to the SAT solver (that _f1_, _f2_ and _f3_ are mutually exclusive). SAT Solver then remembers not to try that particular situtation anymore. It then comes up with the conclusion that making _f1_, _f2_ and _f4_ true will make the situation satisfiable. This time the specific solver returns satisfiable, thus bringing this situation to a “satisfiable” conclusion.
+
+Since systems are usually designed and modeled at a higher level than the Boolean level, the translation to Boolean logic can be expensive. SMT Solvers therefore aim to create verification engines that can reason natively at a higher level of abstraction while retaining the efficiency of SAT Solvers. The language of SMT Solvers is therefore First-Order-Logic. The language includes the Boolean operations of Boolean logic, but instead of propositional variables, more complicated expressions involving constant, function, and predicate symbols are used. In other words, imagine an instance of the Boolean satisfiability problem (SAT) in which some of the binary variables are replaced by predicates over a suitable set of non-binary variables.
+
+Some of the popular theories are:
+
+*   Bit Vector Theory
+    *   Using bit vectors of fixed bit width, such as 8bit vectors and 32bit vectors, as symbols.
+*   Theory of Arrays
+    *   Used for a collection of objects where the size of an object is unknown beforehand, such as strings.
+*   Theory of Integer Arithmetic
+    *   Symbols are limited to the integral domain.
+*   Theory of Uninterpreted Functions
+    *   Within a formula, a call to a function is made, which we know nothing about, except the fact that it will always give the same output for a given input value, such as square root.
 
 A very popular SMT Solver is Z3.
 

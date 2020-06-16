@@ -12,7 +12,7 @@ weight: 10
 categories: ["Practical Binary Analysis"]
 ---
 
-From a practical view point, **Symbolic Execution** is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
+**Symbolic Execution** is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
 
 ## Symbols
 
@@ -23,6 +23,14 @@ Different values in a program(such as the user input) are substituted with **Sym
 The phrase “walking through the program” essentially means carrying out the set of instructions in the program. These set of instructions define a particular path, which when executed, brings the execution flow of the program to a particular state, unique to that path. An execution path, therefore, represents a possible execution of the program that begins somewhere and ends somewhere else.
 
 Checkout the [slides](https://blog.notso.pro/downloads/SymbolicExecution.pdf) for a practical viewpoint over symbolic execution.
+
+From a practical view point, the ability to reason (solve) large boolean functions makes symbolic execution possible. Programs and instructions are converted into formulae, and then these formulae are reasoned with to see if a particular path of execution is possible. However, testing all the paths of a binary can be cumbersome since the number of paths grow exponentially. Therefore, we solve problems that have a certain structure to them instead of completely random stuff such as random bitvectors or integers. We imply such techniques on something that one is confident about, so symbolic execution coming out to be undecidable or an ETA of time as large as the age of universe(literally) is pretty infrequent, although it does happen.
+
+Moreover, exponential path growth kept aside, one must consider the fact that each of these paths have exponentially growing inputs, which would take even longer. Therefore, the fact that we are fuzzing with a focus on paths rather than the user input itself makes sure we are better off.
+
+Another thing to consider is that a strategy often used at a branch is to take both branches, collect their respective events and merge in the end to make sure everything works fine. But that doesn't work well with modern, huge programs. So we usually prefer to do “one path at a time exploration”. that is, take a path, create a formula for it and find an input for it with a particular aim in mind such as satisfying some constraint, violating a property or causing a crash with an out of bounds err. If  this path doesn't achieve the aim, we try out a different path.
+
+The strategy of approach is chosen between “path by path” reasoning, “all paths at same time” reasoning or a set of heuristics to make a search traceable(pruning paths early in control flow graphs depending on their end result) would not necessarily make a huge difference to the outcome, but can make a huge difference to the efficiency of resources. Thus, an intelligible decision should be made to prevent path explosion. Some sort of random testing is done to explore initial set of paths, and the we can start looking at the paths in the neighborhood.
 
 ## Angr
 

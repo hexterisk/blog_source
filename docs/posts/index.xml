@@ -5387,7 +5387,43 @@ Program: f(𝑥) { return 𝑥 + 𝑥 }</description>
 <p>SAT solvers are automatic and efficient. As a result, they are frequently used as the “engine” behind verification applications.</p>
 <h2 id="smt-solver">SMT Solver</h2>
 <p>The <strong>Satisfiability Modulo Theories</strong> problem is a decision problem for logical formulas with respect to combinations of background theories expressed in classical first-order logic with equality.</p>
-<p>SAT Solvers&rsquo; basic functionality depends on Boolean logic. Systems are usually designed and modeled at a higher level than the Boolean level and the translation to Boolean logic can be expensive. SMT Solvers therefore aim to create verification engines that can reason natively at a higher level of abstraction while retaining the efficiency of SAT Solvers. The language of SMT Solvers is therefore First-Order-Logic. The language includes the Boolean operations of Boolean logic, but instead of propositional variables, more complicated expressions involving constant, function, and predicate symbols are used. In other words, imagine an instance of the Boolean satisfiability problem (SAT) in which some of the binary variables are replaced by predicates over a suitable set of non-binary variables.</p>
+<ul>
+<li>Modular Theory implies that the solver is extensible with different theories.</li>
+</ul>
+<p>In simpler words, SMT Solvers are built on top of SAT solvers, and they are able to combine the powers of the SAT solver with other domain specific theory solvers(the extensible property comes in here) to solve NP complete problems. Thus, SMT Solvers rely on our ability to solve satisfiability problems, to take problems with boolean variables and constraints to tell us whether there is an assignment to these variables that satisfies that particular problem. A SAT Solver then tries random assignments and propagates them through the constraints. When it runs into a contradiction, it analyses the set of limitations that led to the contradiction and summarizes them into a new constraint so that the same problem can be avoided next time onwards.</p>
+<p>For example,</p>
+<p>say a stage is given, <em>x&gt;5 AND y&lt;5 AND (y&gt;x OR y&gt;2)</em></p>
+<p>SMT solver will divide it into domain specific theories.</p>
+<p>⇨ <em>|x&gt;5| AND |y&lt;5| AND (|y&gt;x| OR |y&gt;2|)</em>,    Linear Arithmetic Theory and Boolean Logic.</p>
+<p>⇨ <em>f1 AND f2 AND (f3 OR f4)</em></p>
+<p>And then hands it off to a SAT Solver, which will try to make this stage satisfiable.</p>
+<p>Let&rsquo;s say it comes up with the conclusion that making <em>f1</em>, <em>f2</em> and <em>f3</em> true will make it satisfiable.</p>
+<p>Then domain specific theory solvers (Linear Arithmetic Solver) solves <em>f1</em>, <em>f2</em> and <em>f3</em> so as to find inputs that make them satisfiable. Thus it becomes a purely linear arithmetic question now, with no boolean logic.</p>
+<p>This specific solver can imply different traditional techniques such as simplex methods to solve these systems for linear inequalities, etc. This solver quickly returns that this conclusion is unsatisfiable, and returns the result along with an explanation to the SAT solver (that <em>f1</em>, <em>f2</em> and <em>f3</em> are mutually exclusive). SAT Solver then remembers not to try that particular situtation anymore. It then comes up with the conclusion that making <em>f1</em>, <em>f2</em> and <em>f4</em> true will make the situation satisfiable. This time the specific solver returns satisfiable, thus bringing this situation to a “satisfiable” conclusion.</p>
+<p>Since systems are usually designed and modeled at a higher level than the Boolean level, the translation to Boolean logic can be expensive. SMT Solvers therefore aim to create verification engines that can reason natively at a higher level of abstraction while retaining the efficiency of SAT Solvers. The language of SMT Solvers is therefore First-Order-Logic. The language includes the Boolean operations of Boolean logic, but instead of propositional variables, more complicated expressions involving constant, function, and predicate symbols are used. In other words, imagine an instance of the Boolean satisfiability problem (SAT) in which some of the binary variables are replaced by predicates over a suitable set of non-binary variables.</p>
+<p>Some of the popular theories are:</p>
+<ul>
+<li>Bit Vector Theory
+<ul>
+<li>Using bit vectors of fixed bit width, such as 8bit vectors and 32bit vectors, as symbols.</li>
+</ul>
+</li>
+<li>Theory of Arrays
+<ul>
+<li>Used for a collection of objects where the size of an object is unknown beforehand, such as strings.</li>
+</ul>
+</li>
+<li>Theory of Integer Arithmetic
+<ul>
+<li>Symbols are limited to the integral domain.</li>
+</ul>
+</li>
+<li>Theory of Uninterpreted Functions
+<ul>
+<li>Within a formula, a call to a function is made, which we know nothing about, except the fact that it will always give the same output for a given input value, such as square root.</li>
+</ul>
+</li>
+</ul>
 <p>A very popular SMT Solver is Z3.</p>
 <h2 id="z3">Z3</h2>
 <p>Introducing the powers of <a href="https://github.com/Z3Prover/z3/wiki#background">Z3</a> in python, run <code>pip install z3-solver</code> to install it via pip.</p>
@@ -5658,14 +5694,18 @@ Stack Layout The stack grows from higher addresses to lower addresses.</descript
             <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
             
             <guid>https://hexterisk.tech/blog/posts/2020/01/09/symbolic-execution-and-angr/</guid>
-            <description>From a practical view point, Symbolic Execution is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
+            <description>Symbolic Execution is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
 Symbols Different values in a program(such as the user input) are substituted with Symbols(variables or placeholders). These symbols pertain to a domain full of values, allowing us to explore the program in a much more open form, basically “walking through the program” with a domain full of values(handled by any one of the constraint solving backends like Z3) instead of walking a fixed path due to a fixed hard-coded value/input.</description>
-            <content type="html"><![CDATA[<p>From a practical view point, <strong>Symbolic Execution</strong> is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:</p>
+            <content type="html"><![CDATA[<p><strong>Symbolic Execution</strong> is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:</p>
 <h2 id="symbols">Symbols</h2>
 <p>Different values in a program(such as the user input) are substituted with <strong>Symbols</strong>(variables or placeholders). These symbols pertain to a domain full of values, allowing us to explore the program in a much more open form, basically “walking through the program” with a domain full of values(handled by any one of the constraint solving backends like Z3) instead of walking a fixed path due to a fixed hard-coded value/input.</p>
 <h2 id="execution-paths">Execution Paths</h2>
 <p>The phrase “walking through the program” essentially means carrying out the set of instructions in the program. These set of instructions define a particular path, which when executed, brings the execution flow of the program to a particular state, unique to that path. An execution path, therefore, represents a possible execution of the program that begins somewhere and ends somewhere else.</p>
 <p>Checkout the <a href="https://blog.notso.pro/downloads/SymbolicExecution.pdf">slides</a> for a practical viewpoint over symbolic execution.</p>
+<p>From a practical view point, the ability to reason (solve) large boolean functions makes symbolic execution possible. Programs and instructions are converted into formulae, and then these formulae are reasoned with to see if a particular path of execution is possible. However, testing all the paths of a binary can be cumbersome since the number of paths grow exponentially. Therefore, we solve problems that have a certain structure to them instead of completely random stuff such as random bitvectors or integers. We imply such techniques on something that one is confident about, so symbolic execution coming out to be undecidable or an ETA of time as large as the age of universe(literally) is pretty infrequent, although it does happen.</p>
+<p>Moreover, exponential path growth kept aside, one must consider the fact that each of these paths have exponentially growing inputs, which would take even longer. Therefore, the fact that we are fuzzing with a focus on paths rather than the user input itself makes sure we are better off.</p>
+<p>Another thing to consider is that a strategy often used at a branch is to take both branches, collect their respective events and merge in the end to make sure everything works fine. But that doesn&rsquo;t work well with modern, huge programs. So we usually prefer to do “one path at a time exploration”. that is, take a path, create a formula for it and find an input for it with a particular aim in mind such as satisfying some constraint, violating a property or causing a crash with an out of bounds err. If  this path doesn&rsquo;t achieve the aim, we try out a different path.</p>
+<p>The strategy of approach is chosen between “path by path” reasoning, “all paths at same time” reasoning or a set of heuristics to make a search traceable(pruning paths early in control flow graphs depending on their end result) would not necessarily make a huge difference to the outcome, but can make a huge difference to the efficiency of resources. Thus, an intelligible decision should be made to prevent path explosion. Some sort of random testing is done to explore initial set of paths, and the we can start looking at the paths in the neighborhood.</p>
 <h2 id="angr">Angr</h2>
 <p>I would highly recommend reading through the <a href="http://docs.angr.io/">Angr docs</a> for a comprehensive surface-level understanding of different classes and methods supported by Angr, with their usecases, as well as reading <a href="https://blog.notso.pro/2019-03-20-angr-introduction-part0/">Federico Lagrasta’s intorductory series on Angr</a>.</p>
 <p>Now, I&rsquo;d be amiss if I didn&rsquo;t highlight the fact that while Angr manages to be a stroke of brilliance, it isn&rsquo;t that tough. It&rsquo;s the lack of resources that proves to be overwhelming, especially with so many version changes. There are a lot of writeups you could read through, but that doesn&rsquo;t help much from an absolute beginner&rsquo;s point of view. Therefore, I intend to solve the CMU bomb binaries in order to learn Angr, and will be documenting the journey in the hopes that it would probably be useful to someone, someday.</p>

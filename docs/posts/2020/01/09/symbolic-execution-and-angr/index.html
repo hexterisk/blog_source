@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="author" content="map[name:hexterisk]">
-<meta name="description" content="From a practical view point, Symbolic Execution is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
+<meta name="description" content="Symbolic Execution is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
 Symbols Different values in a program(such as the user input) are substituted with Symbols(variables or placeholders). These symbols pertain to a domain full of values, allowing us to explore the program in a much more open form, basically “walking through the program” with a domain full of values(handled by any one of the constraint solving backends like Z3) instead of walking a fixed path due to a fixed hard-coded value/input." />
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
@@ -41,11 +41,11 @@ Symbols Different values in a program(such as the user input) are substituted wi
     <meta name="theme-color" content="#252627">
 
 <meta itemprop="name" content="Symbolic Execution and Angr">
-<meta itemprop="description" content="From a practical view point, Symbolic Execution is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
+<meta itemprop="description" content="Symbolic Execution is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
 Symbols Different values in a program(such as the user input) are substituted with Symbols(variables or placeholders). These symbols pertain to a domain full of values, allowing us to explore the program in a much more open form, basically “walking through the program” with a domain full of values(handled by any one of the constraint solving backends like Z3) instead of walking a fixed path due to a fixed hard-coded value/input.">
 <meta itemprop="datePublished" content="2020-01-09T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-01-09T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="2996">
+<meta itemprop="wordCount" content="3361">
 <meta itemprop="image" content="https://hexterisk.tech/blog"/>
 
 
@@ -54,7 +54,7 @@ Symbols Different values in a program(such as the user input) are substituted wi
 <meta name="twitter:image" content="https://hexterisk.tech/blog"/>
 
 <meta name="twitter:title" content="Symbolic Execution and Angr"/>
-<meta name="twitter:description" content="From a practical view point, Symbolic Execution is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
+<meta name="twitter:description" content="Symbolic Execution is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
 Symbols Different values in a program(such as the user input) are substituted with Symbols(variables or placeholders). These symbols pertain to a domain full of values, allowing us to explore the program in a much more open form, basically “walking through the program” with a domain full of values(handled by any one of the constraint solving backends like Z3) instead of walking a fixed path due to a fixed hard-coded value/input."/>
 
 
@@ -120,7 +120,7 @@ Symbols Different values in a program(such as the user input) are substituted wi
     <main class="post">
 
         <div class="post-info">
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>15 minutes
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>16 minutes
 
             
 
@@ -135,12 +135,16 @@ Symbols Different values in a program(such as the user input) are substituted wi
             
 
             <div class="post-content">
-                <p>From a practical view point, <strong>Symbolic Execution</strong> is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:</p>
+                <p><strong>Symbolic Execution</strong> is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:</p>
 <h2 id="symbols">Symbols</h2>
 <p>Different values in a program(such as the user input) are substituted with <strong>Symbols</strong>(variables or placeholders). These symbols pertain to a domain full of values, allowing us to explore the program in a much more open form, basically “walking through the program” with a domain full of values(handled by any one of the constraint solving backends like Z3) instead of walking a fixed path due to a fixed hard-coded value/input.</p>
 <h2 id="execution-paths">Execution Paths</h2>
 <p>The phrase “walking through the program” essentially means carrying out the set of instructions in the program. These set of instructions define a particular path, which when executed, brings the execution flow of the program to a particular state, unique to that path. An execution path, therefore, represents a possible execution of the program that begins somewhere and ends somewhere else.</p>
 <p>Checkout the <a href="https://blog.notso.pro/downloads/SymbolicExecution.pdf">slides</a> for a practical viewpoint over symbolic execution.</p>
+<p>From a practical view point, the ability to reason (solve) large boolean functions makes symbolic execution possible. Programs and instructions are converted into formulae, and then these formulae are reasoned with to see if a particular path of execution is possible. However, testing all the paths of a binary can be cumbersome since the number of paths grow exponentially. Therefore, we solve problems that have a certain structure to them instead of completely random stuff such as random bitvectors or integers. We imply such techniques on something that one is confident about, so symbolic execution coming out to be undecidable or an ETA of time as large as the age of universe(literally) is pretty infrequent, although it does happen.</p>
+<p>Moreover, exponential path growth kept aside, one must consider the fact that each of these paths have exponentially growing inputs, which would take even longer. Therefore, the fact that we are fuzzing with a focus on paths rather than the user input itself makes sure we are better off.</p>
+<p>Another thing to consider is that a strategy often used at a branch is to take both branches, collect their respective events and merge in the end to make sure everything works fine. But that doesn&rsquo;t work well with modern, huge programs. So we usually prefer to do “one path at a time exploration”. that is, take a path, create a formula for it and find an input for it with a particular aim in mind such as satisfying some constraint, violating a property or causing a crash with an out of bounds err. If  this path doesn&rsquo;t achieve the aim, we try out a different path.</p>
+<p>The strategy of approach is chosen between “path by path” reasoning, “all paths at same time” reasoning or a set of heuristics to make a search traceable(pruning paths early in control flow graphs depending on their end result) would not necessarily make a huge difference to the outcome, but can make a huge difference to the efficiency of resources. Thus, an intelligible decision should be made to prevent path explosion. Some sort of random testing is done to explore initial set of paths, and the we can start looking at the paths in the neighborhood.</p>
 <h2 id="angr">Angr</h2>
 <p>I would highly recommend reading through the <a href="http://docs.angr.io/">Angr docs</a> for a comprehensive surface-level understanding of different classes and methods supported by Angr, with their usecases, as well as reading <a href="https://blog.notso.pro/2019-03-20-angr-introduction-part0/">Federico Lagrasta’s intorductory series on Angr</a>.</p>
 <p>Now, I&rsquo;d be amiss if I didn&rsquo;t highlight the fact that while Angr manages to be a stroke of brilliance, it isn&rsquo;t that tough. It&rsquo;s the lack of resources that proves to be overwhelming, especially with so many version changes. There are a lot of writeups you could read through, but that doesn&rsquo;t help much from an absolute beginner&rsquo;s point of view. Therefore, I intend to solve the CMU bomb binaries in order to learn Angr, and will be documenting the journey in the hopes that it would probably be useful to someone, someday.</p>
@@ -388,7 +392,7 @@ Symbols Different values in a program(such as the user input) are substituted wi
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/symbols">symbols</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/execution">execution</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/path">path</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/constraints">constraints</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/expression">expression</a></span>
                 </p>
 
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2996 Words</p>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>3361 Words</p>
 
             <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-01-09 05:30 &#43;0530</p>
         </div>

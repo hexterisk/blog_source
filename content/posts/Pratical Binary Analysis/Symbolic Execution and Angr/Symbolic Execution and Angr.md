@@ -14,11 +14,11 @@ categories: ["Practical Binary Analysis"]
 
 **Symbolic Execution** is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
 
-## Symbols
+### Symbols
 
 Different values in a program(such as the user input) are substituted with **Symbols**(variables or placeholders). These symbols pertain to a domain full of values, allowing us to explore the program in a much more open form, basically “walking through the program” with a domain full of values(handled by any one of the constraint solving backends like Z3) instead of walking a fixed path due to a fixed hard-coded value/input.
 
-## Execution Paths
+### Execution Paths
 
 The phrase “walking through the program” essentially means carrying out the set of instructions in the program. These set of instructions define a particular path, which when executed, brings the execution flow of the program to a particular state, unique to that path. An execution path, therefore, represents a possible execution of the program that begins somewhere and ends somewhere else.
 

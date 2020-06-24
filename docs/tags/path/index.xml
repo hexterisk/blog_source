@@ -44,6 +44,16 @@ Instrumentation Code The technique requires injecting Instrumentation Code into 
     </item>
     
     <item>
+      <title>Source Code Instrumentation and LLVM</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/09/source-code-instrumentation-and-llvm/</link>
+      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/09/source-code-instrumentation-and-llvm/</guid>
+      <description>Source Code Instrumentation adds specific code meant for instrumentation/analysis, called Instrumentation Code, to the source files of the program under consideration. The source files are then compiled and executed. Since the instrumentation code is integrated into the binary itself, the output from the execution includes the dump of the instrumentation code which can then be used for further analysis and component testing.
+Intermediate Representations Representation of a program in a state that lies between the source code and the compiled binary(specifically, the assembly code).</description>
+    </item>
+    
+    <item>
       <title>Stack and it&#39;s Frames</title>
       <link>https://hexterisk.tech/blog/posts/2020/01/09/stack-and-its-frames/</link>
       <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>

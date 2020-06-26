@@ -49,6 +49,15 @@ Instrumentation Code The technique requires injecting Instrumentation Code into 
     </item>
     
     <item>
+      <title>Dynamic Taint Analysis and Pin</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/09/dynamic-taint-analysis-and-pin/</link>
+      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/09/dynamic-taint-analysis-and-pin/</guid>
+      <description>Dynamic Taint Analysis is a technique used to discover what part of memory or register are controllable by the some data we are interested, such as the user input, at a given program state. This is done by marking the interested data. There on after, any piece of data that comes in contact with the tainted data by any means, like getting computed from the tainted data, is tainted too, thus spreading the taint throughout the execution.</description>
+    </item>
+    
+    <item>
       <title>Principles of Symbolic Execution</title>
       <link>https://hexterisk.tech/blog/posts/2020/01/09/principles-of-symbolic-execution/</link>
       <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
@@ -89,13 +98,12 @@ Symbols Different values in a program(such as the user input) are substituted wi
     </item>
     
     <item>
-      <title>Dynamic Taint Analysis</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/08/dynamic-taint-analysis/</link>
+      <title>Taint Analysis</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/08/taint-analysis/</link>
       <pubDate>Wed, 08 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/01/08/dynamic-taint-analysis/</guid>
-      <description>DTA (Dynamic Taint Analysis), also called DFT (Data Flow Tracking), Taint Tracking, or simply Taint Analysis, is a program analysis technique that allows you to determine the influence that a selected program state has on other parts of the program state. Taint any data that a program receives from the network, track that data, and raise an alert if it affects the program counter.
- Indicate a control-flow hijacking attack. Implemented on top of a dynamic binary instrumentation platform.</description>
+      <guid>https://hexterisk.tech/blog/posts/2020/01/08/taint-analysis/</guid>
+      <description>Taint Analysis is a program analysis technique that allows you to determine the influence that a selected program state has on other parts of the program state. Taint any data that a program receives from the network, track that data, and raise an alert if it affects the program counter. If an operation uses the value of some tainted object, say X, to derive a value for another, say Y, then object Y becomes tainted.</description>
     </item>
     
     <item>
@@ -107,15 +115,6 @@ Symbols Different values in a program(such as the user input) are substituted wi
       <description>Inserting new code at any point in an existing binary to observe or modify the binary’s behavior in some way is called instrumenting the binary. The point where you add new code is called the instrumentation point, and the added code is called instrumentation code.
 Tradeoffs of Dynamic and Static Binary Instrumentation.
 Static Binary Instrumentation Static Binary Instrumentation works by disassembling a binary and then adding instrumentation code where needed and storing the updated binary permanently on disk.</description>
-    </item>
-    
-    <item>
-      <title>Binary Obfuscation</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/07/binary-obfuscation/</link>
-      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/01/07/binary-obfuscation/</guid>
-      <description>The main aim of Binary Obfuscation is to hinder the process of static analysis of a binary. Renaming the symbols(variables and functions) of a binary implies that the clues as to what data a variable holds or what task a function performs that could be obtained from their names, are lost. This makes it a little harder for the analysts to keep a track of all the symbols without documenting them.</description>
     </item>
     
   </channel>

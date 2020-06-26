@@ -1,0 +1,81 @@
+{
+	"formatVersion": 1,
+	"appVersion": "0.42.7",
+	"files": [
+		{
+			"isClone": false,
+			"noteId": "wjRUFsqYcIdI",
+			"notePath": [
+				"wjRUFsqYcIdI"
+			],
+			"title": "Dynamic Taint Analysis and Pin",
+			"notePosition": 40,
+			"prefix": null,
+			"isExpanded": 0,
+			"type": "text",
+			"mime": "text/html",
+			"attributes": [
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "lA6wv0E529Oh",
+					"isInheritable": false,
+					"position": 1
+				}
+			],
+			"format": "markdown",
+			"dataFileName": "Dynamic Taint Analysis and Pin.md",
+			"dirFileName": "Dynamic Taint Analysis and Pin",
+			"children": [
+				{
+					"isClone": false,
+					"noteId": "lA6wv0E529Oh",
+					"notePath": [
+						"wjRUFsqYcIdI",
+						"lA6wv0E529Oh"
+					],
+					"title": "image.png",
+					"notePosition": 0,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/jpg",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "image.png"
+				},
+				{
+					"isClone": false,
+					"noteId": "QQL7kBuH5WPK",
+					"notePath": [
+						"wjRUFsqYcIdI",
+						"QQL7kBuH5WPK"
+					],
+					"title": "image.png",
+					"notePosition": 10,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/jpg",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1
+						}
+					],
+					"dataFileName": "1_image.png"
+				}
+			]
+		}
+	]
+}

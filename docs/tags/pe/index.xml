@@ -12,13 +12,12 @@
     
     
     <item>
-      <title>Dynamic Taint Analysis</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/08/dynamic-taint-analysis/</link>
+      <title>Taint Analysis</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/08/taint-analysis/</link>
       <pubDate>Wed, 08 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/01/08/dynamic-taint-analysis/</guid>
-      <description>DTA (Dynamic Taint Analysis), also called DFT (Data Flow Tracking), Taint Tracking, or simply Taint Analysis, is a program analysis technique that allows you to determine the influence that a selected program state has on other parts of the program state. Taint any data that a program receives from the network, track that data, and raise an alert if it affects the program counter.
- Indicate a control-flow hijacking attack. Implemented on top of a dynamic binary instrumentation platform.</description>
+      <guid>https://hexterisk.tech/blog/posts/2020/01/08/taint-analysis/</guid>
+      <description>Taint Analysis is a program analysis technique that allows you to determine the influence that a selected program state has on other parts of the program state. Taint any data that a program receives from the network, track that data, and raise an alert if it affects the program counter. If an operation uses the value of some tainted object, say X, to derive a value for another, say Y, then object Y becomes tainted.</description>
     </item>
     
     <item>

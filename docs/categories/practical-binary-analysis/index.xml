@@ -34,6 +34,15 @@ Instrumentation Code The technique requires injecting Instrumentation Code into 
     </item>
     
     <item>
+      <title>Dynamic Taint Analysis and Pin</title>
+      <link>https://hexterisk.tech/blog/posts/2020/01/09/dynamic-taint-analysis-and-pin/</link>
+      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/01/09/dynamic-taint-analysis-and-pin/</guid>
+      <description>Dynamic Taint Analysis is a technique used to discover what part of memory or register are controllable by the some data we are interested, such as the user input, at a given program state. This is done by marking the interested data. There on after, any piece of data that comes in contact with the tainted data by any means, like getting computed from the tainted data, is tainted too, thus spreading the taint throughout the execution.</description>
+    </item>
+    
+    <item>
       <title>Source Code Instrumentation and LLVM</title>
       <link>https://hexterisk.tech/blog/posts/2020/01/09/source-code-instrumentation-and-llvm/</link>
       <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>

@@ -2,17 +2,25 @@
 author:
   name: "hexterisk"
 date: 2020-01-08
-linktitle: Dynamic Taint Analysis
+linktitle: Taint Analysis
 type:
 - post
 - posts
-title: Dynamic Taint Analysis
+title: Taint Analysis
 tags: ["binary", "rev", "reversing", "c", "pe", "windows", "taint", "DTA", "DFA", "source", "sink"]
 weight: 10
 categories: ["Advanced Binary Analysis"]
 ---
 
-**DTA (Dynamic Taint Analysis)**, also called **DFT** (**Data Flow Tracking)**, **Taint Tracking**, or simply **Taint Analysis**, is a program analysis technique that allows you to determine the influence that a selected program state has on other parts of the program state. Taint any data that a program receives from the network, track that data, and raise an alert if it affects the program counter.
+**Taint Analysis** is a program analysis technique that allows you to determine the influence that a selected program state has on other parts of the program state. Taint any data that a program receives from the network, track that data, and raise an alert if it affects the program counter. If an operation uses the value of some tainted object, say _X_, to derive a value for another, say _Y_, then object _Y_ becomes tainted. Object _X_ tainted the object _Y_. Taint Analysis can be classified into two types.
+
+### Static Taint Analysis
+
+The advantage of using static analysis is the fact that it provides better code coverage than dynamic analysis. On the other hand, the principal disadvantage of the static analysis is that it's not as accurate than the dynamic analysis - It cannot access the runtime information for example. We can't retrieve registers or memory values.
+
+### Dynamic Taint Analysis
+
+**DTA (Dynamic Taint Analysis)**, also called **DFT** (**Data Flow Tracking)**, **Taint Tracking**, 
 
 *   Indicate a control-flow hijacking attack.
 *   Implemented on top of a dynamic binary instrumentation platform.
@@ -52,12 +60,12 @@ The unit of information by which a DTA system tracks taint. An important factor 
 
 For example, taking white bytes as untainted and grey ones as tainted,
 
-!["bit"](/Dynamic_Taint_Analysis/image.png)
+!["bit"](/Taint_Analysis/image.png)
 _Bit-Granularity._
 
 All the bits in the first operand are tainted, while no bits are tainted in the second operand. Since this is a bitwise AND operation, if an attacker controls only the first input operand, then the only bit positions in the output that they can affect are those where the second operand has a 1. All other output bits will always be set to 0. Thus, only that one output bit is tainted.
 
-!["byte"](/Dynamic_Taint_Analysis/1_image.png)
+!["byte"](/Taint_Analysis/1_image.png)
 _Byte-Granularity._
 
 Byte-Granularity DTA system can’t consider each bit individually, the whole output is marked as tainted. The system simply sees a tainted input byte and a nonzero second operand and therefore concludes that an attacker could affect the output operand.
@@ -72,7 +80,7 @@ It may seem possible to store 255 different colors in 1 byte of taint informatio
 
 The taint policy of a DTA system describes how the system propagates taint and how it merges taint colors if multiple taint flows run together.
 
-!["propagation"](/Dynamic_Taint_Analysis/2_image.png)
+!["propagation"](/Taint_Analysis/2_image.png)
 
 Taint Propagation Examples for a Byte-Granularity DTA System with Two Colors, Red (R) and Blue (B).
 
@@ -97,7 +105,7 @@ An attacker who controls the loop condition cond can determine the value of _var
 
 Region of virtual memory allocated by the DTA system to keep track of the taint status of the rest of the memory. Typically, DTA systems also allocate a special structure in memory where they keep track of taint information for CPU registers. The structure of the shadow memory differs depending on the taint granularity and how many taint colors are supported.
 
-!["shadow"](/Dynamic_Taint_Analysis/3_image.png)
+!["shadow"](/Taint_Analysis/3_image.png)
 
 Shadow memory with byte-granularity and 1, 8, or 32 colors per byte.
 

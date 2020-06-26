@@ -58,6 +58,11 @@
   </url>
   
   <url>
+    <loc>https://hexterisk.tech/blog/posts/2020/01/09/dynamic-taint-analysis-and-pin/</loc>
+    <lastmod>2020-01-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://hexterisk.tech/blog/posts/2020/01/09/principles-of-symbolic-execution/</loc>
     <lastmod>2020-01-09T00:00:00+00:00</lastmod>
   </url>
@@ -78,7 +83,7 @@
   </url>
   
   <url>
-    <loc>https://hexterisk.tech/blog/posts/2020/01/08/dynamic-taint-analysis/</loc>
+    <loc>https://hexterisk.tech/blog/posts/2020/01/08/taint-analysis/</loc>
     <lastmod>2020-01-08T00:00:00+00:00</lastmod>
   </url>
   

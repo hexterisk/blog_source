@@ -9,7 +9,7 @@ type:
 title: Constraint Solvers and Z3
 tags: ["binary", "symbols", "execution", "path", "constraints", "expression"]
 weight: 10
-categories: ["Practical Binary Analysis"]
+categories: ["practical-binary-analysis"]
 ---
 
 A constraint solver must be versatile, that is, it should be able to act as an:

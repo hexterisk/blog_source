@@ -9,7 +9,7 @@ type:
 title: Stack and it's Frames
 tags: ["binary", "symbols", "execution", "path", "constraints", "expression"]
 weight: 10
-categories: ["Basic Binary Analysis"]
+categories: ["basic-binary-analysis"]
 ---
 
 **Stack** is a data structure, and means exactly what it's name says - a stack(of objects). It is mainly characterized by pushing and popping operations. You push items onto the stack, and then pop those items off. A stack is therefore a **LIFO**(last in, first out) structure. 

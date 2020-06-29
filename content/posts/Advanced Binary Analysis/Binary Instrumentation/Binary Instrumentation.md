@@ -9,7 +9,7 @@ type:
 title: Binary Instrumentation
 tags: ["binary", "rev", "reversing", "c", "pe", "windows", "instrumentation"]
 weight: 10
-categories: ["Advanced Binary Analysis"]
+categories: ["advanced-binary-analysis"]
 ---
 
 Inserting new code at any point in an existing binary to observe or modify the binary’s behavior in some way is called **instrumenting** the binary. The point where you add new code is called the **instrumentation point**, and the added code is called **instrumentation code**.

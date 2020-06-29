@@ -9,7 +9,7 @@ type:
 title: Anatomy of a Binary
 tags: ["binary", "rev", "reversing", "c"]
 weight: 10
-categories: ["Basic Binary Analysis"]
+categories: ["basic-binary-analysis"]
 ---
 
 ## The C Compilation Process

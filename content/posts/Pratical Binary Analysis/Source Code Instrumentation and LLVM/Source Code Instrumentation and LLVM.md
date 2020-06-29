@@ -9,7 +9,7 @@ type:
 title: Source Code Instrumentation and LLVM
 tags: ["binary", "symbols", "execution", "path", "constraints", "expression"]
 weight: 10
-categories: ["Practical Binary Analysis"]
+categories: ["practical-binary-analysis"]
 ---
 
 **Source Code Instrumentation** adds specific code meant for instrumentation/analysis, called **Instrumentation Code**, to the source files of the program under consideration. The source files are then compiled and executed. Since the instrumentation code is integrated into the binary itself, the output from the execution includes the dump of the instrumentation code which can then be used for further analysis and component testing.

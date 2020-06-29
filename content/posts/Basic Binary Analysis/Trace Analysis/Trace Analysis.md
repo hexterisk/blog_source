@@ -9,7 +9,7 @@ type:
 title: Trace Analysis
 tags: ["binary", "rev", "reversing", "c", "pe", "windows"]
 weight: 10
-categories: ["Basic Binary Analysis"]
+categories: ["basic-binary-analysis"]
 ---
 
 ## System Call Trace

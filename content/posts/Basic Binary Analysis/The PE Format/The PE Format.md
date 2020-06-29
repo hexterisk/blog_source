@@ -9,7 +9,7 @@ type:
 title: The PE Format
 tags: ["binary", "rev", "reversing", "c", "pe", "windows"]
 weight: 10
-categories: ["Basic Binary Analysis"]
+categories: ["basic-binary-analysis"]
 ---
 
 *   PE is a modified version of the **Common Object File Format** (**COFF**), thus also referred to as **PE/COFF**.

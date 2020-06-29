@@ -9,7 +9,7 @@ type:
 title: Disassembly and Binary Analysis Fundamentals
 tags: ["binary", "rev", "reversing", "c", "disassembly", "fuzzer", "symbol", "control flow"]
 weight: 10
-categories: ["Basic Binary Analysis"]
+categories: ["basic-binary-analysis"]
 ---
 
 ##Static Disassembly

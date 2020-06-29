@@ -9,7 +9,7 @@ type:
 title: Dynamic Binary Instrumentation and Pin
 tags: ["binary", "symbols", "execution", "path", "constraints", "expression"]
 weight: 10
-categories: ["Practical Binary Analysis"]
+categories: ["practical-binary-analysis"]
 ---
 
 **Dynamic Binary Instrumentation** is the process of monitoring or measuring a binary's execution and its behavior, such as resource usage, during runtime. It allows us to focus on specific parts of a binary for various purposes such as vulnerability analysis, dynamic tainting and state analysis.

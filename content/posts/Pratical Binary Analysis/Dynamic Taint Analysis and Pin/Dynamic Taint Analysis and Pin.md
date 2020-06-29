@@ -9,7 +9,7 @@ type:
 title: Dynamic Taint Analysis and Pin
 tags: ["binary", "symbols", "execution", "path", "constraints", "expression"]
 weight: 10
-categories: ["Practical Binary Analysis"]
+categories: ["practical-binary-analysis"]
 ---
 
 **Dynamic Taint Analysis** is a technique used to discover what part of memory or register are controllable by the some data we are interested, such as the user input, at a given program state. This is done by marking the interested data. There on after, any piece of data that comes in contact with the tainted data by any means, like getting computed from the tainted data, is tainted too, thus spreading the taint throughout the execution.

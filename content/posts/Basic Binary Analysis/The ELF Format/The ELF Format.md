@@ -9,7 +9,7 @@ type:
 title: The ELF Format
 tags: ["binary", "rev", "reversing", "c", "elf", "headers", "sections"]
 weight: 10
-categories: ["Basic Binary Analysis"]
+categories: ["basic-binary-analysis"]
 ---
 
 ELF binaries really consist of only four types of components: 

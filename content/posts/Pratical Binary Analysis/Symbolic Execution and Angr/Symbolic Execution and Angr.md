@@ -9,7 +9,7 @@ type:
 title: Symbolic Execution and Angr
 tags: ["binary", "symbols", "execution", "path", "constraints", "expression"]
 weight: 10
-categories: ["Practical Binary Analysis"]
+categories: ["practical-binary-analysis"]
 ---
 
 **Symbolic Execution** is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:

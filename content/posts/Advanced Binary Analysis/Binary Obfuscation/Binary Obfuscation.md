@@ -9,7 +9,7 @@ type:
 title: Binary Obfuscation
 tags: ["binary", "rev", "reversing", "obfuscation"]
 weight: 10
-categories: ["Advanced Binary Analysis"]
+categories: ["advanced-binary-analysis"]
 ---
 
 The main aim of **Binary Obfuscation** is to hinder the process of static analysis of a binary. 

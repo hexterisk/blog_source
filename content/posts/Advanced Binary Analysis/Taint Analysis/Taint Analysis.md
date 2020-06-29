@@ -9,7 +9,7 @@ type:
 title: Taint Analysis
 tags: ["binary", "rev", "reversing", "c", "pe", "windows", "taint", "DTA", "DFA", "source", "sink"]
 weight: 10
-categories: ["Advanced Binary Analysis"]
+categories: ["advanced-binary-analysis"]
 ---
 
 **Taint Analysis** is a program analysis technique that allows you to determine the influence that a selected program state has on other parts of the program state. Taint any data that a program receives from the network, track that data, and raise an alert if it affects the program counter. If an operation uses the value of some tainted object, say _X_, to derive a value for another, say _Y_, then object _Y_ becomes tainted. Object _X_ tainted the object _Y_. Taint Analysis can be classified into two types.

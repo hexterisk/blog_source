@@ -1,13 +1,13 @@
 ---
 author:
   name: "hexterisk"
-date: 2020-01-09
+date: 2020-06-07
 linktitle: Source Code Instrumentation and LLVM
 type:
 - post
 - posts
 title: Source Code Instrumentation and LLVM
-tags: ["binary", "symbols", "execution", "path", "constraints", "expression"]
+tags: ["binary", "source", "instrument", "llvm", "ir", "linear", "tuple", "stack", "three address code"]
 weight: 10
 categories: ["practical-binary-analysis"]
 ---
@@ -24,10 +24,12 @@ Moreover, it allows us to perform machine independent optimizations.
 
 Let's take a source code as an example.
 
-    while (x < 4 * y) {
-        x = y / 3 >> x;
-        if (y) print x - 3;
-    }
+```c
+while (x < 4 * y) {
+    x = y / 3 >> x;
+    if (y) print x - 3;
+}
+```
 
 It can be expressed in different IR formats.
 
@@ -46,7 +48,7 @@ Pseudo-code like format with varying levels of abstraction (such as sub types of
 
 Instruction-like entities consisting of an operator and zero to three arguments. Arguments can be literals, subroutine references, variables or temporaries.
 
-```C
+```c
 // Stored form				   // Rendered form
 (JUMP, L2)                          goto L2
 (LABEL, L1)                    L1:
@@ -65,7 +67,7 @@ Instruction-like entities consisting of an operator and zero to three arguments.
 
 Generally we recognize three levels of tuple sophistication. Let's take another source code as an example.
 
-```C
+```c
 double a[20][10];
 .
 .
@@ -83,7 +85,7 @@ for (int i = 0; i < n; i += di)
 *   No thought of registers.
 *   No concern for runtime systems.
 
-```C
+```c
 (COPY, 0, i)                        i := 0
 (LABEL, L1)                    L1:
 (JGE, i, n, L2)                     if i >= n goto L2
@@ -102,7 +104,7 @@ for (int i = 0; i < n; i += di)
 *   Break down data structure references to deal only with simple ints and floats.
 *   Great for architecture-independent optimizations.
 
-```C
+```c
 (COPY, 0, i)                        i := 0
 (LABEL, L1)                    L1:
 (JGE, i, n, L2)                     if i >= n goto L2
@@ -125,7 +127,7 @@ for (int i = 0; i < n; i += di)
 *   Intimately concerned with run-time storage management issues like stack frames and parameter passing mechanisms.
 *   For architecture dependent optimizations.
 
-```C
+```c
 (LDC, 0, r0)                        r0 := 0
 (LOAD, j, r1)                       r1 := j
 (LOAD, n, r2)                       r2 := n
@@ -149,7 +151,7 @@ for (int i = 0; i < n; i += di)
 
 Originally used for stack-based computers, and therefore use implicit names instead of explicit since explicit names take up space. It's simple to generate and execute.
 
-```C
+```c
     goto L2
 L1:
     load y
@@ -190,7 +192,7 @@ _z ← x - t_
 
 and then into assembly.
 
-```C
+```c
 load r1, y
 loadI r2, 2
 mult r3, r2, r1
@@ -214,7 +216,7 @@ A **Basic Block** is a:
 
 For example, the line code:
 
-```C
+```c
      goto L2
 L1:
      t0 := 3 >> x
@@ -243,7 +245,7 @@ It can generally be found in Fortran or C compilers.
 
 So, a pseudo-code of the form:
 
-```C
+```c
 x ← ...
 y ← ...
 while (x < k)
@@ -253,7 +255,7 @@ while (x < k)
 
 can be represented in SSA as:
 
-```C
+```c
     x0 ← ...
     y0 ← ...
     if (x0 > k) goto next
@@ -278,12 +280,12 @@ Use the following script to setup LLVM.
 Make sure you have the **clang** compiler installed.
 
 ```bash
-    git clone https://github.com/llvm/llvm-project.git
-    cd llvm-project
-    mkdir build
-    cd build
-    cmake -G "Unix Makefiles" -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_TARGET_ARCH=X86 -DCMAKE_BUILD_TYPE="Release" -DLLVM_BUILD_EXAMPLES=1 -DCLANG_BUILD_EXAMPLES=1 ../llvm/
-    cmake --build .
+git clone https://github.com/llvm/llvm-project.git
+cd llvm-project
+mkdir build
+cd build
+cmake -G "Unix Makefiles" -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_TARGET_ARCH=X86 -DCMAKE_BUILD_TYPE="Release" -DLLVM_BUILD_EXAMPLES=1 -DCLANG_BUILD_EXAMPLES=1 ../llvm/
+cmake --build .
 ```
 
 The LLVM IR can be displayed in two formats. Let the source code be in a file named _SOURCEFILE.cpp_.
@@ -329,7 +331,7 @@ The passes can achieve either of the two goals.
 
 Let's take a sample code to observe the difference between **pass by value** and **pass by pointers** at the IR level.
 
-```C
+```c
 // hello.cpp
 
 #include<stdio.h>
@@ -353,7 +355,7 @@ int main(){
 
 We get the IR to be
 
-```C
+```c
 ; ModuleID = 'hello.cpp'
 source_filename = "hello.cpp"
 target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128"
@@ -455,7 +457,7 @@ We'll create a simple C++ program to instrument. 
 
 Since printing statements is a cliché now, we'll do something different. Let's find loops and predict their number of iterations. It's a rudimentary approach full of loop holes, but works for naïve programs.
 
-```C
+```c
 // loop.cpp
 
 #include <iostream>
@@ -496,7 +498,7 @@ Make a directory named _CUSTOM\_DIR_ inside _PATH/llvm-project/llvm/lib/Transfor
 
 Let's write a function pass to collect the target stats. Make a file inside the newly formed folder. Let's say it's named _CUSTOM\_PASS.cpp_.
 
-```C
+```c
 // CUSTOM_PASS.cpp
 
 // PART 1
@@ -587,7 +589,7 @@ Run `PATH/llvm-project/llvm/build/bin/opt -load PATH/llvm-project/build/lib/LLVM
 
 The output from the instrumentation module is as follows.
 
-```C
+```c
 Function Name: __cxx_global_var_init
    Basic Blocks: 1
    Instructions: 3

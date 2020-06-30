@@ -1,7 +1,7 @@
 ---
 author:
   name: "hexterisk"
-date: 2020-01-05
+date: 2020-03-12
 linktitle: Disassembly and Binary Analysis Fundamentals
 type:
 - post

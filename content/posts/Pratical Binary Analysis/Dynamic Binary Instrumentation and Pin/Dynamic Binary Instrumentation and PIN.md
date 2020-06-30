@@ -1,13 +1,13 @@
 ---
 author:
   name: "hexterisk"
-date: 2020-01-09
+date: 2020-06-12
 linktitle: Dynamic Binary Instrumentation and Pin
 type:
 - post
 - posts
 title: Dynamic Binary Instrumentation and Pin
-tags: ["binary", "symbols", "execution", "path", "constraints", "expression"]
+tags: ["binary", "granularity", "trace", "img", "jit", "probe", "aslr", "bbl", "debugging"]
 weight: 10
 categories: ["practical-binary-analysis"]
 ---
@@ -159,7 +159,7 @@ We'll create a simple C++ program to instrument. 
 
 Since instruction counting is a cliché now, we'll do something different. Let's find loops and predict their number of iterations. It's a rudimentary approach full of loop holes, but works for naïve programs.
 
-```C
+```c
 // loop.cpp
 
 #include <iostream>
@@ -200,7 +200,7 @@ All the program does is call two functions with a loop each, at different types.
 
 Let's write a pintool to predict the loops.
 
-```C
+```c
 // loopcount.cpp
 
 #include <iostream>
@@ -353,7 +353,7 @@ The bound checking function, `CheckBounds`, checks if the instruction address is
 
 The finalizing function, `Fini`, is called right before the binary exits. It iterates through the map and prints all the instructions' address along with the number of times they were parsed, if they were parsed more than once. These could be loop conditionals.
 
-```C
+```c
 // Result of the instrumentation
 
 $ pin -t obj-intel64/loopcount.so -- ~/loop

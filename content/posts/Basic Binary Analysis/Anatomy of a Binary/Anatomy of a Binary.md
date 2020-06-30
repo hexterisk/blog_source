@@ -1,7 +1,7 @@
 ---
 author:
   name: "hexterisk"
-date: 2020-01-01
+date: 2020-02-28
 linktitle: Anatomy of a Binary
 type:
 - post

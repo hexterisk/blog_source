@@ -1,7 +1,7 @@
 ---
 author:
   name: "hexterisk"
-date: 2020-01-09
+date: 2020-04-20
 linktitle: Principles of Symbolic Execution
 type:
 - post
@@ -41,7 +41,7 @@ A solution (possible concrete values) to a constraint which can lead the concret
 
 Path constraints and symbolic state for all paths in the example function.
 
-```C
+```c
 ➊ x := int(argv[0]), y := int(argv[1])
 ➋ z := x + y
 ➌ if x >= 5:

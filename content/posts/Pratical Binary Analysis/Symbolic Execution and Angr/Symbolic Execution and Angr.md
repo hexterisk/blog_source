@@ -1,7 +1,7 @@
 ---
 author:
   name: "hexterisk"
-date: 2020-01-09
+date: 2020-06-03
 linktitle: Symbolic Execution and Angr
 type:
 - post

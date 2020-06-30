@@ -1,13 +1,13 @@
 ---
 author:
   name: "hexterisk"
-date: 2020-01-09
+date: 2020-06-16
 linktitle: Dynamic Taint Analysis and Pin
 type:
 - post
 - posts
 title: Dynamic Taint Analysis and Pin
-tags: ["binary", "symbols", "execution", "path", "constraints", "expression"]
+tags: ["binary", "dynamic", "taint", "pin", "dbi", "syscall"]
 weight: 10
 categories: ["practical-binary-analysis"]
 ---
@@ -35,7 +35,7 @@ We'll need the help of a DBI to retrieve information before and after each funct
 
 We'll write a simple C++ program that reads content from a file, sends it around two functions as transfers the data into different buffers and then prints the contents onto the console. The name of the source code file is _sample.cpp_.
 
-```C
+```c
 // sample.cpp
 
 #include <iostream>
@@ -79,7 +79,7 @@ Create an input file named _input.txt_, add some content to it. Create an output
 
 Let's write a Pintool to taint and track the input data, named _tool.cpp_.
 
-```C
+```c
 // tool.cpp
 
 #include "pin.H"

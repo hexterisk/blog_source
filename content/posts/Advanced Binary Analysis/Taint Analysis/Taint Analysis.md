@@ -1,7 +1,7 @@
 ---
 author:
   name: "hexterisk"
-date: 2020-01-08
+date: 2020-05-03
 linktitle: Taint Analysis
 type:
 - post
@@ -20,7 +20,7 @@ The advantage of using static analysis is the fact that it provides better code 
 
 ### Dynamic Taint Analysis
 
-**DTA (Dynamic Taint Analysis)**, also called **DFT** (**Data Flow Tracking)**, **Taint Tracking**, 
+**DTA (Dynamic Taint Analysis)**, also called **DFT** (**Data Flow Tracking)**, **Taint Tracking**,
 
 *   Indicate a control-flow hijacking attack.
 *   Implemented on top of a dynamic binary instrumentation platform.

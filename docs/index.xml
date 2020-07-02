@@ -6,10 +6,61 @@
     <description>Recent content on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Sat, 09 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 16 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hexterisk.tech/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dynamic Taint Analysis and Pin</title>
+      <link>https://hexterisk.tech/blog/posts/2020/06/16/dynamic-taint-analysis-and-pin/</link>
+      <pubDate>Tue, 16 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/06/16/dynamic-taint-analysis-and-pin/</guid>
+      <description>Dynamic Taint Analysis is a technique used to discover what part of memory or register are controllable by the some data we are interested, such as the user input, at a given program state. This is done by marking the interested data. There on after, any piece of data that comes in contact with the tainted data by any means, like getting computed from the tainted data, is tainted too, thus spreading the taint throughout the execution.</description>
+    </item>
+    
+    <item>
+      <title>Dynamic Binary Instrumentation and Pin</title>
+      <link>https://hexterisk.tech/blog/posts/2020/06/12/dynamic-binary-instrumentation-and-pin/</link>
+      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/06/12/dynamic-binary-instrumentation-and-pin/</guid>
+      <description>Dynamic Binary Instrumentation is the process of monitoring or measuring a binary&amp;rsquo;s execution and its behavior, such as resource usage, during runtime. It allows us to focus on specific parts of a binary for various purposes such as vulnerability analysis, dynamic tainting and state analysis.
+We will skip over Source Instrumentation since it requires source code of the application, which is pretty rare in real world scenarios.
+Instrumentation Code The technique requires injecting Instrumentation Code into a running binary.</description>
+    </item>
+    
+    <item>
+      <title>Source Code Instrumentation and LLVM</title>
+      <link>https://hexterisk.tech/blog/posts/2020/06/07/source-code-instrumentation-and-llvm/</link>
+      <pubDate>Sun, 07 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/06/07/source-code-instrumentation-and-llvm/</guid>
+      <description>Source Code Instrumentation adds specific code meant for instrumentation/analysis, called Instrumentation Code, to the source files of the program under consideration. The source files are then compiled and executed. Since the instrumentation code is integrated into the binary itself, the output from the execution includes the dump of the instrumentation code which can then be used for further analysis and component testing.
+Intermediate Representations Representation of a program in a state that lies between the source code and the compiled binary(specifically, the assembly code).</description>
+    </item>
+    
+    <item>
+      <title>Symbolic Execution and Angr</title>
+      <link>https://hexterisk.tech/blog/posts/2020/06/03/symbolic-execution-and-angr/</link>
+      <pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/06/03/symbolic-execution-and-angr/</guid>
+      <description>Symbolic Execution is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
+Symbols Different values in a program(such as the user input) are substituted with Symbols(variables or placeholders). These symbols pertain to a domain full of values, allowing us to explore the program in a much more open form, basically “walking through the program” with a domain full of values(handled by any one of the constraint solving backends like Z3) instead of walking a fixed path due to a fixed hard-coded value/input.</description>
+    </item>
+    
+    <item>
+      <title>Constraint Solvers and Z3</title>
+      <link>https://hexterisk.tech/blog/posts/2020/05/31/constraint-solvers-and-z3/</link>
+      <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/05/31/constraint-solvers-and-z3/</guid>
+      <description>A constraint solver must be versatile, that is, it should be able to act as an:
+ Interpreter: Given the input, solve for the output of the equation. Inverter: Given the output, solve for the input of the equation. Synthesizer: Act as both Interpreter and Inverter.  Formulating Programs Assume a formula 𝑆ₚ(𝑥, 𝑦) which holds if and only if program P(x) outputs value y such that
+Program: f(𝑥) { return 𝑥 + 𝑥 }</description>
+    </item>
     
     <item>
       <title>Serial 2</title>
@@ -42,117 +93,32 @@ Output of netdiscover.
     </item>
     
     <item>
-      <title>Set 6</title>
-      <link>https://hexterisk.tech/blog/posts/2020/04/10/set-6/</link>
-      <pubDate>Fri, 10 Apr 2020 00:00:00 +0000</pubDate>
+      <title>Taint Analysis</title>
+      <link>https://hexterisk.tech/blog/posts/2020/05/03/taint-analysis/</link>
+      <pubDate>Sun, 03 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/04/10/set-6/</guid>
-      <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
-Challenge 41: Implement unpadded message recovery oracle Link
- Nate Lawson says we should stop calling it &amp;ldquo;RSA padding&amp;rdquo; and start calling it &amp;ldquo;RSA armoring&amp;rdquo;. Here&amp;rsquo;s why.
-Imagine a web application, again with the Javascript encryption, taking RSA-encrypted messages which (again: Javascript) aren&amp;rsquo;t padded before encryption at all.
-You can submit an arbitrary RSA blob and the server will return plaintext.</description>
+      <guid>https://hexterisk.tech/blog/posts/2020/05/03/taint-analysis/</guid>
+      <description>Taint Analysis is a program analysis technique that allows you to determine the influence that a selected program state has on other parts of the program state. Taint any data that a program receives from the network, track that data, and raise an alert if it affects the program counter. If an operation uses the value of some tainted object, say X, to derive a value for another, say Y, then object Y becomes tainted.</description>
     </item>
     
     <item>
-      <title>Set 5</title>
-      <link>https://hexterisk.tech/blog/posts/2020/04/02/set-5/</link>
-      <pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate>
+      <title>Binary Obfuscation</title>
+      <link>https://hexterisk.tech/blog/posts/2020/04/28/binary-obfuscation/</link>
+      <pubDate>Tue, 28 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/04/02/set-5/</guid>
-      <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
-Challenge 33: Implement Diffie-Hellman Link
- For one of the most important algorithms in cryptography this exercise couldn&amp;rsquo;t be a whole lot easier.
-Set a variable &amp;ldquo;p&amp;rdquo; to 37 and &amp;ldquo;g&amp;rdquo; to 5. This algorithm is so easy I&amp;rsquo;m not even going to explain it. Just do what I do.
-Generate &amp;ldquo;a&amp;rdquo;, a random number mod 37.</description>
+      <guid>https://hexterisk.tech/blog/posts/2020/04/28/binary-obfuscation/</guid>
+      <description>The main aim of Binary Obfuscation is to hinder the process of static analysis of a binary. Renaming the symbols(variables and functions) of a binary implies that the clues as to what data a variable holds or what task a function performs that could be obtained from their names, are lost. This makes it a little harder for the analysts to keep a track of all the symbols without documenting them.</description>
     </item>
     
     <item>
-      <title>Set 4</title>
-      <link>https://hexterisk.tech/blog/posts/2020/03/27/set-4/</link>
-      <pubDate>Fri, 27 Mar 2020 00:00:00 +0000</pubDate>
+      <title>Binary Instrumentation</title>
+      <link>https://hexterisk.tech/blog/posts/2020/04/25/binary-instrumentation/</link>
+      <pubDate>Sat, 25 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/03/27/set-4/</guid>
-      <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
-Challenge 25: Break &amp;ldquo;random access read/write&amp;rdquo; AES CTR Link
- Back to CTR. Encrypt the recovered plaintext from this file (the ECB exercise) under CTR with a random key (for this exercise the key should be unknown to you, but hold on to it).
-Now, write the code that allows you to &amp;ldquo;seek&amp;rdquo; into the ciphertext, decrypt, and re-encrypt with different plaintext.</description>
-    </item>
-    
-    <item>
-      <title>Set 3</title>
-      <link>https://hexterisk.tech/blog/posts/2020/03/23/set-3/</link>
-      <pubDate>Mon, 23 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/03/23/set-3/</guid>
-      <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
-Challenge 17: The CBC padding oracle Link
- This is the best-known attack on modern block-cipher cryptography.
-Combine your padding code and your CBC code to write two functions.
-The first function should select at random one of the following 10 strings:
-MDAwMDAwTm93IHRoYXQgdGhlIHBhcnR5IGlzIGp1bXBpbmc=
-MDAwMDAxV2l0aCB0aGUgYmFzcyBraWNrZWQgaW4gYW5kIHRoZSBWZWdhJ3MgYXJlIHB1bXBpbic=
-MDAwMDAyUXVpY2sgdG8gdGhlIHBvaW50LCB0byB0aGUgcG9pbnQsIG5vIGZha2luZw==
-MDAwMDAzQ29va2luZyBNQydzIGxpa2UgYSBwb3VuZCBvZiBiYWNvbg==
-MDAwMDA0QnVybmluZyAnZW0sIGlmIHlvdSBhaW4ndCBxdWljayBhbmQgbmltYmxl
-MDAwMDA1SSBnbyBjcmF6eSB3aGVuIEkgaGVhciBhIGN5bWJhbA==
-MDAwMDA2QW5kIGEgaGlnaCBoYXQgd2l0aCBhIHNvdXBlZCB1cCB0ZW1wbw==
-MDAwMDA3SSdtIG9uIGEgcm9sbCwgaXQncyB0aW1lIHRvIGdvIHNvbG8=
-MDAwMDA4b2xsaW4nIGluIG15IGZpdmUgcG9pbnQgb2g=
-MDAwMDA5aXRoIG15IHJhZy10b3AgZG93biBzbyBteSBoYWlyIGNhbiBibG93
-&amp;hellip; generate a random AES key (which it should save for all future encryptions), pad the string out to the 16-byte AES block size and CBC-encrypt it under that key, providing the caller the ciphertext and IV.</description>
-    </item>
-    
-    <item>
-      <title>Set 2</title>
-      <link>https://hexterisk.tech/blog/posts/2020/03/21/set-2/</link>
-      <pubDate>Sat, 21 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/03/21/set-2/</guid>
-      <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
-Challenge 9: Implement PKCS#7 padding Link
- A block cipher transforms a fixed-sized block (usually 8 or 16 bytes) of plaintext into ciphertext. But we almost never want to transform a single block; we encrypt irregularly-sized messages.
-One way we account for irregularly-sized messages is by padding, creating a plaintext that is an even multiple of the blocksize.</description>
-    </item>
-    
-    <item>
-      <title>Set 1</title>
-      <link>https://hexterisk.tech/blog/posts/2020/03/20/set-1/</link>
-      <pubDate>Fri, 20 Mar 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/03/20/set-1/</guid>
-      <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
-Challenge 1: Convert hex to base64 Link
- The string:
-49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f697 36f6e6f7573206d757368726f6f6d
-Should produce:
-SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t
-So go ahead and make that happen.
-You&amp;rsquo;ll need to use this code for the rest of the exercises.
- Data, essentially raw bytes/binary (0, 1), can be represented in various forms and formats as required. These representations may be used for simply the presentation of data, or may be required by some protocol so as to prevent misinterpretation of data.</description>
-    </item>
-    
-    <item>
-      <title>Authenticated MongoDB Container</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/22/authenticated-mongodb-container/</link>
-      <pubDate>Wed, 22 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/01/22/authenticated-mongodb-container/</guid>
-      <description>Unsecured mongodb servers have been prime targets for hacks aimed at exaction of ransom in exchange of data. Therefore, authenticated mongo database server is now more of a necessity to ensure security of your database.
-There are two ways to setup an authenticated mongo server container.
-Manually Setup the container Pulling the mongo docker image from dockerhub as it doesn&amp;rsquo;t exist on server/local machine.
-Create a directory for the database to be stored in on the server/local machine.</description>
-    </item>
-    
-    <item>
-      <title>Constraint Solvers and Z3</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/09/constraint-solvers-and-z3/</link>
-      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/01/09/constraint-solvers-and-z3/</guid>
-      <description>A constraint solver must be versatile, that is, it should be able to act as an:
- Interpreter: Given the input, solve for the output of the equation. Inverter: Given the output, solve for the input of the equation. Synthesizer: Act as both Interpreter and Inverter.  Formulating Programs Assume a formula 𝑆ₚ(𝑥, 𝑦) which holds if and only if program P(x) outputs value y such that
-Program: f(𝑥) { return 𝑥 + 𝑥 }</description>
+      <guid>https://hexterisk.tech/blog/posts/2020/04/25/binary-instrumentation/</guid>
+      <description>Inserting new code at any point in an existing binary to observe or modify the binary’s behavior in some way is called instrumenting the binary. The point where you add new code is called the instrumentation point, and the added code is called instrumentation code.
+Tradeoffs of Dynamic and Static Binary Instrumentation.
+Static Binary Instrumentation Static Binary Instrumentation works by disassembling a binary and then adding instrumentation code where needed and storing the updated binary permanently on disk.</description>
     </item>
     
   </channel>

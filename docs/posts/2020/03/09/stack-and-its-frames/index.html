@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:hexterisk]">
+<meta name="description" content="Stack is a data structure, and means exactly what it&amp;rsquo;s name says - a stack(of objects). It is mainly characterized by pushing and popping operations. You push items onto the stack, and then pop those items off. A stack is therefore a LIFO(last in, first out) structure. Memory for functions, local variables, and flow control is stored in the stack.
+Stack Layout The stack grows from higher addresses to lower addresses." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/03/09/stack-and-its-frames/" />
+
+
+    <title>
+        
+            Stack and it&#39;s Frames: Pwn the world.  — A noob&#39;s attempt at blogging.
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://hexterisk.tech/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.tech/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.tech/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.tech/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.tech/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.tech/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.tech/blog/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Stack and it&#39;s Frames">
+<meta itemprop="description" content="Stack is a data structure, and means exactly what it&rsquo;s name says - a stack(of objects). It is mainly characterized by pushing and popping operations. You push items onto the stack, and then pop those items off. A stack is therefore a LIFO(last in, first out) structure. Memory for functions, local variables, and flow control is stored in the stack.
+Stack Layout The stack grows from higher addresses to lower addresses.">
+<meta itemprop="datePublished" content="2020-03-09T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-03-09T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1160">
+<meta itemprop="image" content="https://hexterisk.tech/blog"/>
+
+
+
+<meta itemprop="keywords" content="binary,symbols,execution,path,constraints,expression," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hexterisk.tech/blog"/>
+
+<meta name="twitter:title" content="Stack and it&#39;s Frames"/>
+<meta name="twitter:description" content="Stack is a data structure, and means exactly what it&rsquo;s name says - a stack(of objects). It is mainly characterized by pushing and popping operations. You push items onto the stack, and then pop those items off. A stack is therefore a LIFO(last in, first out) structure. Memory for functions, local variables, and flow control is stored in the stack.
+Stack Layout The stack grows from higher addresses to lower addresses."/>
+
+
+
+    <meta property="article:section" content="basic-binary-analysis" />
+
+
+
+    <meta property="article:published_time" content="2020-03-09 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://hexterisk.tech/blog/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$cd ~/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://hexterisk.tech/blog/about/">About</a></li><li><a href="https://hexterisk.tech/blog/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>6 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://hexterisk.tech/blog/posts/2020/03/09/stack-and-its-frames/">Stack and it&rsquo;s Frames</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <p><strong>Stack</strong> is a data structure, and means exactly what it&rsquo;s name says - a stack(of objects). It is mainly characterized by pushing and popping operations. You push items onto the stack, and then pop those items off. A stack is therefore a <strong>LIFO</strong>(last in, first out) structure. </p>
+<p>Memory for functions, local variables, and flow control is stored in the stack.</p>
+<h3 id="stack-layout">Stack Layout</h3>
+<p>The stack grows from higher addresses to lower addresses. This behavior can be categorized as <em>growing downwards</em> or <em>allocation in a top-down manner</em>. Therefore, top of the stack is actually the lower-most address being used by the stack at that moment.</p>
+<p><img src="https://hexterisk.tech/blog/Stack_and_it's_Frames/1Yz9K.gif" alt="why do structure&rsquo;s data members memory allocated from lower to &hellip;">
+<em>Stack growing downwards.</em></p>
+<p>Each time a function call is performed, a new <strong>Stack Frame</strong> is generated. A function maintains its own stack frame until it returns, at which time the caller’s stack frame is restored and execution is transferred back to the calling function.</p>
+<p><img src="https://hexterisk.tech/blog/Stack_and_it's_Frames/image.png" alt="&ldquo;stack&rdquo;">
+<em>Stack Layout (Reversed top-bottom for easy explanation).</em></p>
+<p>Calling conventions require parameters to be passed on the stack on x86. On x64, most calling conventions pass parameters through registers. For example, on Windows x64, there is only one calling convention and the fi rst four parameters are passed through  On Linux, the fi rst six parameters are passed on .</p>
+<h3 id="function-calls">Function Calls</h3>
+<p>When a function is called, the flow of code execution is transferred to a it&rsquo;s memory location. This transfer of flow has to be setup neatly so that if need be(which generally is the case), the current memory location can be returned to without anything going awry.</p>
+<p><strong>Function Prologue</strong> is executed as soon as the function is called. It consists of a few lines of code that are executed right at the beginning of the function that prepares the stack and the registers for use within this function.</p>
+<p><strong>Function Epilogue</strong> is executed when the function tries to return. It consists of a few lines of code that are executed right at the end of the function so as to restore the stack and registers to the state they were in before the function is called.</p>
+<h5 id="calling-conventions-for-x86">Calling Conventions for x86:</h5>
+<p>The x86 architecture requires all function arguments to be pushed on the stack before the function is called.</p>
+<p>Function Prologue:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm">    <span style="color:#a6e22e">push</span>  ebp         <span style="color:#75715e">; Save the stack-frame base pointer (of the calling function).</span>
+    <span style="color:#a6e22e">mov</span>   ebp, esp    <span style="color:#75715e">; Set the stack-frame base pointer to the current location on the stack.</span>
+    <span style="color:#a6e22e">sub</span>   esp, N      <span style="color:#75715e">; Grow the stack by N bytes to reserve space for local variables.</span>
+</code></pre></div><p>Function Epilogue:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm">    <span style="color:#a6e22e">mov</span>   esp, ebp    <span style="color:#75715e">; Put the stack pointer back where it was when this function was called.</span>
+    <span style="color:#a6e22e">pop</span>   ebp         <span style="color:#75715e">; Restore the calling function&#39;s stack frame.</span>
+    <span style="color:#a6e22e">ret</span>               <span style="color:#75715e">; Return to the calling function.</span>
+</code></pre></div><p> The <code>leave</code> instruction can be used in place of the first two instructions because it sets <code>ESP</code> to equal <code>EBP</code> and pops <code>EBP</code> off the stack.</p>
+<h5 id="calling-conventions-for-x64">Calling Conventions for x64:</h5>
+<p>The x64 architecture requires the first six function arguments to be set in registers in the following order: <code>RDI</code>, <code>RSI</code>, <code>RDX</code>, <code>RCX</code>, <code>R8</code>, and <code>R9</code>; the remaining are pushed on the stack from right to left.</p>
+<p>Disclaimer: Windows requires the first four function arguments to be set in registers in the following order: <code>RCX</code>, <code>RDX</code>, <code>R8</code>, and <code>R9</code>; the remaining are pushed on the stack from right to left.</p>
+<p>Function Prologue:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm">    <span style="color:#a6e22e">mov</span>    [rsp <span style="color:#f92672">+</span> <span style="color:#ae81ff">8</span>], rcx    <span style="color:#75715e">; Saves argument register in home-location.</span>
+    <span style="color:#a6e22e">push</span>   r15               <span style="color:#75715e">; Saves the volatile register r15.</span>
+    <span style="color:#a6e22e">push</span>   r14               <span style="color:#75715e">; Saves the volatile register r14.</span>
+    <span style="color:#a6e22e">push</span>   r13               <span style="color:#75715e">; Saves the volatile register r13.</span>
+    <span style="color:#a6e22e">sub</span>    rsp, N            <span style="color:#75715e">; Grow the stack by N bytes to reserve space for local variables.</span>
+    <span style="color:#a6e22e">lea</span>    r13, <span style="color:#ae81ff">128</span>[rsp]     <span style="color:#75715e">; Establish a frame pointer to point 128 bytes into the allocated space.</span>
+</code></pre></div><p>Function Epilogue:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm">    <span style="color:#a6e22e">lea</span>   rsp, <span style="color:#f92672">-</span><span style="color:#ae81ff">128</span>[r13]    <span style="color:#75715e">; Frame pointer&#39;s value is restored if it was used in the function.</span>
+        <span style="color:#75715e">; epilogue proper starts here</span>
+    <span style="color:#a6e22e">add</span>   rsp, N            <span style="color:#75715e">; Destroy the stack frame by pointing the stack pointer before the frame.</span>
+    <span style="color:#a6e22e">pop</span>   r13               <span style="color:#75715e">; Restore the volatile register r13.</span>
+    <span style="color:#a6e22e">pop</span>   r14               <span style="color:#75715e">; Restore the volatile register r14.</span>
+    <span style="color:#a6e22e">pop</span>   r15               <span style="color:#75715e">; Restore the volatile register r15.</span>
+    <span style="color:#a6e22e">ret</span>                     <span style="color:#75715e">; Return to the calling function.</span>
+</code></pre></div><p>Disclaimer:</p>
+<p>The only differences between the architectures x86 and x64 we are concerned with at the moment are:</p>
+<ul>
+<li>Calling conventions (discussed above)</li>
+<li>Names of the registers and their functions (factual, refer to documentations)</li>
+<li>Address length (x86: 32 bit, x64: 64bit)</li>
+</ul>
+<p>Since these differences have been tended to more or less, the following material is in reference to the x86 architecture since it&rsquo;s much more elaborate.</p>
+<h3 id="flow-of-control">Flow of Control:</h3>
+<ol>
+<li>Arguments are placed on the stack using <code>push</code> instructions.</li>
+<li>The function is called using <code>call memory_location</code>. This causes the current instruction address (that is, the contents of the <code>EIP</code> register) to be pushed onto the stack. This address will be used to return to the main code when the function is finished. When the function begins, <code>EIP</code> is set to <em>memory_location</em> (the start of the function).</li>
+<li>Through the use of a Function Prologue, space is allocated on the stack for local variables and <code>EBP</code> (the base pointer) is pushed onto the stack. This is done to save <code>EBP</code> for the calling function.</li>
+<li>The function performs its work.</li>
+<li>Through the use of a Function Epilogue, the stack is restored. <code>ESP</code> is adjusted to free the local variables, and <code>EBP</code> is restored so that the calling function can address its variables properly.</li>
+<li>The function returns by calling the <code>ret</code> instruction. This pops the return address off the stack and into <code>EIP</code>, so that the program will continue executing from where the original call was made.</li>
+<li>The stack is adjusted to remove the arguments that were sent, unless they’ll be used again later.</li>
+</ol>
+<h3 id="stack-and-frame-analysis">Stack and Frame Analysis</h3>
+<p><img src="https://hexterisk.tech/blog/Stack_and_it's_Frames/1_image.png" alt="&ldquo;stack_frame&rdquo;">
+<em>Individual stack frame (notice how addresses go from higher to lower from bottom to top).</em></p>
+<ul>
+<li><code>ESP</code> would point to the top of the stack, which is the memory address <code>0x12F02C</code>.
+<ul>
+<li>Whenever data is pushed onto the stack, ESP will be decreased. This is because it will grow towards a lower address.</li>
+<li>If the instruction <code>push eax</code> were executed, <code>ESP</code> would be decremented by four and would contain <code>0x12F028</code>, and the data contained in <code>EAX</code> would be copied to <code>0x12F028</code>.</li>
+<li>If the instruction <code>pop eax</code> were executed, the data at <code>0x12F028</code> would be moved into <code>EAX</code>, and then <code>ESP</code> would be incremented by four.</li>
+<li>Mind you, the value still remains there, it&rsquo;s just invalidated by the system since it is now not in use by the stack and is waiting for either to be overwritten or cleared.</li>
+</ul>
+</li>
+<li><code>EBP</code> would be set to <code>0x12F03C</code> throughout the duration of the function, so that the local variables and arguments can be referenced using it.</li>
+<li>The arguments that are pushed onto the stack before the call are shown at the bottom of the stack frame.</li>
+<li>Next, it contains the return address that is put on the stack automatically by the call instruction. The <code>old EBP</code> is next on the stack; this is the EBP from the caller’s stack frame.</li>
+</ul>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/symbols">symbols</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/execution">execution</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/path">path</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/constraints">constraints</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/expression">expression</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1160 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-03-09 05:30 &#43;0530</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://hexterisk.tech/blog/posts/2020/03/12/disassembly-and-binary-analysis-fundamentals/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Disassembly and Binary Analysis Fundamentals</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://hexterisk.tech/blog/posts/2020/03/03/the-pe-format/">
+                                <span class="button__text">The PE Format</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            
+                <span><a href="https://hexterisk.tech/blog">Bhanupratap Singh &copy; 2020</a></span>
+            
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content" style="margin-bottom: -0.8rem;">
+            <span><a style="text-decoration: none;" > .</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span><a style="text-decoration: none;" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></span>
+        </div> 
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://hexterisk.tech/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

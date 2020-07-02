@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:hexterisk]">
+<meta name="description" content="Dynamic Binary Instrumentation is the process of monitoring or measuring a binary&amp;rsquo;s execution and its behavior, such as resource usage, during runtime. It allows us to focus on specific parts of a binary for various purposes such as vulnerability analysis, dynamic tainting and state analysis.
+We will skip over Source Instrumentation since it requires source code of the application, which is pretty rare in real world scenarios.
+Instrumentation Code The technique requires injecting Instrumentation Code into a running binary." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/06/12/dynamic-binary-instrumentation-and-pin/" />
+
+
+    <title>
+        
+            Dynamic Binary Instrumentation and Pin: Pwn the world.  — A noob&#39;s attempt at blogging.
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://hexterisk.tech/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.tech/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.tech/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.tech/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.tech/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.tech/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.tech/blog/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Dynamic Binary Instrumentation and Pin">
+<meta itemprop="description" content="Dynamic Binary Instrumentation is the process of monitoring or measuring a binary&rsquo;s execution and its behavior, such as resource usage, during runtime. It allows us to focus on specific parts of a binary for various purposes such as vulnerability analysis, dynamic tainting and state analysis.
+We will skip over Source Instrumentation since it requires source code of the application, which is pretty rare in real world scenarios.
+Instrumentation Code The technique requires injecting Instrumentation Code into a running binary.">
+<meta itemprop="datePublished" content="2020-06-12T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-06-12T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="2251">
+<meta itemprop="image" content="https://hexterisk.tech/blog"/>
+
+
+
+<meta itemprop="keywords" content="binary,granularity,trace,img,jit,probe,aslr,bbl,debugging," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hexterisk.tech/blog"/>
+
+<meta name="twitter:title" content="Dynamic Binary Instrumentation and Pin"/>
+<meta name="twitter:description" content="Dynamic Binary Instrumentation is the process of monitoring or measuring a binary&rsquo;s execution and its behavior, such as resource usage, during runtime. It allows us to focus on specific parts of a binary for various purposes such as vulnerability analysis, dynamic tainting and state analysis.
+We will skip over Source Instrumentation since it requires source code of the application, which is pretty rare in real world scenarios.
+Instrumentation Code The technique requires injecting Instrumentation Code into a running binary."/>
+
+
+
+    <meta property="article:section" content="practical-binary-analysis" />
+
+
+
+    <meta property="article:published_time" content="2020-06-12 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://hexterisk.tech/blog/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$cd ~/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://hexterisk.tech/blog/about/">About</a></li><li><a href="https://hexterisk.tech/blog/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>11 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://hexterisk.tech/blog/posts/2020/06/12/dynamic-binary-instrumentation-and-pin/">Dynamic Binary Instrumentation and Pin</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <p><strong>Dynamic Binary Instrumentation</strong> is the process of monitoring or measuring a binary&rsquo;s execution and its behavior, such as resource usage, during runtime. It allows us to focus on specific parts of a binary for various purposes such as vulnerability analysis, dynamic tainting and state analysis.</p>
+<p>We will skip over Source Instrumentation since it requires source code of the application, which is pretty rare in real world scenarios.</p>
+<h3 id="instrumentation-code">Instrumentation Code</h3>
+<p>The technique requires injecting <strong>Instrumentation Code</strong> into a running binary. DBI Frameworks introduce a layer between the OS and the application, making this injected code completely transparent to the application we inject it in. We simply add hooks to parts of interest. These hooks intercept the instruction execution and transfers control to the instrumentation code, thus we can observe and modify the instructions of the program being instrumented, as it executes.</p>
+<h3 id="code-coverage">Code Coverage</h3>
+<p>High code coverage will most definitely require running the binary a lot of times. Since different types of input will trigger different paths of the binary, this section could particularly benefit from the help of fuzzers.</p>
+<h3 id="granularity">Granularity</h3>
+<p>There are different levels at which we can apply instrumentation.</p>
+<h5 id="bbl-basic-block">BBL: Basic Block</h5>
+<p>Sequence of instructions that is always entered at the top and exited at the bottom by a fall through and/or taken branch. If Pin detects a jump to an instruction in the middle of a bbl, it will create a new bbl beginning at the target.</p>
+<h5 id="trace-trace">TRACE: Trace</h5>
+<p>Sequence of instructions that is always entered at the top and may have multiple exits. If Pin detects a jump to an instruction in the middle of a trace, it will create a new trace beginning at the target.</p>
+<h5 id="img-image-of-the-binary">IMG: Image of the Binary</h5>
+<p>Image instrumentation lets the Pintool inspect and instrument an entire image, IMG, when it is first loaded. A Pintool can walk the sections(SEC) of the image, the routines(RTN) of a section, and the instructions(INS) of a routine.</p>
+<h3 id="performance">Performance</h3>
+<p>The impact/overhead on performance/runtime of the binary is dependent on many factors, but it will most definitely depend on the granularity of instrumentation, as well as the tasks performed by the instrumentation code. The execution will be delayed between each hook, for as long as the instrumentation code does its job.</p>
+<h3 id="use-cases">Use cases</h3>
+<ul>
+<li>Profiling for compiler optimization/performance profiling.
+<ul>
+<li>Instruction profiling</li>
+<li>Basic block count</li>
+<li>Value profile</li>
+</ul>
+</li>
+<li>Bug detection/Vulnerability identification/Exploit generation.
+<ul>
+<li>Find references to uninitialized and unallocated addresses</li>
+<li>Inspect arguments at a particular function call</li>
+<li>Inspect function pointers and return addresses</li>
+<li>Record &amp; replay</li>
+</ul>
+</li>
+<li>Architectural research.
+<ul>
+<li>Processor and cache simulation</li>
+<li>Trace collection</li>
+</ul>
+</li>
+</ul>
+<h2 id="pin">Pin</h2>
+<p>Pin is an instrumentation engine created by Intel. It comes packed with a JIT for x86 and x86_64.</p>
+<p><img src="https://hexterisk.tech/blog/Dynamic_Binary_Instrumentation_and_Pin/image.png" alt="&ldquo;arch&rdquo;">
+<em>Architecture overview.</em></p>
+<p>Visit <a href="https://software.intel.com/sites/landingpage/pintool/docs/81205/Pin/html/index.html">https://software.intel.com/sites/landingpage/pintool/docs/81205/Pin/html/index.html</a> for the documentation.</p>
+<p>It allows us to build instrumentation programs, or analysis tools, known as <strong>Pintools</strong>, that register hooks on events in the program.</p>
+<ul>
+<li><strong>Instrumentation Routines</strong> are called only on the first time when something happens.</li>
+<li><strong>Analysis Routines</strong> are called every time this object is reached.</li>
+<li><strong>Callbacks</strong> are called whenever a certain event happens.</li>
+</ul>
+<p>Pin has two modes:</p>
+<h5 id="jit-mode">JIT Mode</h5>
+<ul>
+<li>Pin creates a modified copy of the application on-the-fly.</li>
+<li>Original code never executes. The only code ever executed is the generated code.</li>
+<li>The original code is only used for reference.</li>
+<li>When generating code, Pin gives the user an opportunity to inject their own code (instrumentation).</li>
+</ul>
+<h5 id="probe-mode">Probe Mode</h5>
+<ul>
+<li>A method of using Pin to wrap or replace application functions with functions in the tool.</li>
+<li>A jump instruction (probe), which redirects the flow of control to the replacement function is placed at the start of the specified function.</li>
+<li>The bytes being overwritten are relocated, so that Pin can provide the replacement function with the address of the first relocated byte. This enables the replacement function to call the replaced (original) function.</li>
+<li>Probes can only be placed on RTN boundaries.</li>
+</ul>
+<h3 id="setup">Setup</h3>
+<ul>
+<li>Visit <a href="https://software.intel.com/content/www/us/en/develop/articles/pin-a-binary-instrumentation-tool-downloads.html">https://software.intel.com/content/www/us/en/develop/articles/pin-a-binary-instrumentation-tool-downloads.html</a> and download the package that suits your OS and CPU architecture.
+<ul>
+<li>I&rsquo;m on a linux machine running x86-64.</li>
+<li>The command I used: <code>wget https://software.intel.com/sites/landingpage/pintool/downloads/pin-3.13-98189-g60a6ef199-gcc-linux.tar.gz  -P /tmp/</code></li>
+<li>Using Pin 3.13(Kit 98189) in June 2020.</li>
+</ul>
+</li>
+<li>Untar the gzip into a folder named <code>pin-dir</code>.
+<ul>
+<li>Command Format: <code>mkdir pin-dir &amp;&amp; tar -zxvf PIN_GZIP -C pin-dir --strip-components=1</code>, where PIN_GZIP is the name of the downloaded gzip.</li>
+<li>The command I used: <code>mkdir pin-dir &amp;&amp; tar -zxvf pin-3.13-98189-g60a6ef199-gcc-linux.tar.gz -C pin-dir --strip-components=1</code></li>
+</ul>
+</li>
+<li>Move the tool folder to <code>/opt</code>.
+<ul>
+<li>Command: <code>sudo mv /tmp/pin-dir /opt/</code></li>
+</ul>
+</li>
+<li>Navigate inside the folder and compile all source files.
+<ul>
+<li>Find your CPU architecture by running <code>lscpu</code>.
+<ul>
+<li>if it is 64-bit, command: <code>cd /opt/pin-dir/source/tools &amp;&amp; make all</code></li>
+<li>If it is 32-bit, command: <code>cd /opt/pin-dir/source/tools &amp;&amp; make all TARGET=ia32</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Setup complete.</li>
+</ul>
+<h3 id="execution">Execution</h3>
+<p>Format: <code>./pin -t [full path to tool] -- [full path to app]</code></p>
+<p>The tools are made into shared libraries so that they can be loaded anywhere in the memory space of the Pined process at runtime, since dynamic binary instrumentation requires instrumentation code to be injected into the process at runtime.</p>
+<p>NOTE for Windows: </p>
+<ul>
+<li><em>.so</em> is the extension for shared objects in Linux, so if you&rsquo;re working on windows, swap it with <em>.dll</em> wherever you encounter it in the guide.</li>
+<li><em>/opt/pin-dir</em> would be replaced with whatever directory the Pin zipfile from Intel&rsquo;s site is extracted in.</li>
+<li>Visit <a href="https://rayanfam.com/topics/build-a-simple-pin-tool/">https://rayanfam.com/topics/build-a-simple-pin-tool/</a> for a more comprehensive guide.</li>
+</ul>
+<p>To execute a pre-made pintool (modify folder and path suffixes based on CPU architecture),</p>
+<ul>
+<li>Command: <code>./pin -t /opt/pin-dir/source/tools/ManualExamples/obj-intel64/PIN_TOOL.so – BINARY_PATH</code>, where PIN_TOOL is the tool to be used and BINARY_PATH is the path to the bianry to be isntrumented.</li>
+<li>Output can be found in the default file: <code>/opt/pin-dir/PIN_TOOL.out</code>, where PIN_TOOL is the name of the pintool executed.</li>
+</ul>
+<p>For example, if I want to run the <strong>inscount0</strong> pintool on a binary named <strong>calc</strong> located in my home folder, I would execute the command <code>./pin -t /opt/pin-dir/source/tools/ManualExamples/obj-intel64/inscount0.so – ~/calc</code>, and read the output by executing <code>cat /opt/pin-dir/inscount0.out</code>.</p>
+<p>To make your own pintool, let&rsquo;s setup a working directory first.</p>
+<ul>
+<li>
+<p>Make an empty directory inside the tools folder.</p>
+<ul>
+<li>Command: <code>/opt/pin-dir/source/tools/CUSTOM_DIR</code>, where CUSTOM_DIR is the name of the custom working directory.</li>
+<li>Copy <code>makefile</code>, command: <code>cp /opt/pin-dir/source/tool/ManualExamples/makefile /opt/pin-dir/source/tool/CUSTOM_DIR/</code>.</li>
+<li>Copy <code>makefile.rules</code>, command: <code>cp /opt/pin-dir/source/tool/ManualExamples/makefile.rules /opt/pin-dir/source/tool/CUSTOM_DIR/</code>.</li>
+<li>Edit <code>makefile.rules</code>.
+<ul>
+<li>There&rsquo;s a line beginning with the words <code>TEST_TOOL_ROOTS :=</code>, clear out all the names in front of the <code>:=</code>. Put the name of your tool in front of it later on to build it.</li>
+<li>Comment the last two lines. They are:</li>
+</ul>
+</li>
+</ul>
+<p>$(OBJDIR)divide_by_zero$(EXE_SUFFIX): divide_by_zero_$(OS_TYPE).c#
+$(APP_CC) $(APP_CXXFLAGS_NOOPT) $(COMP_EXE) $(APP_LDFLAGS_NOOPT) $(APP_LIBS)</p>
+</li>
+</ul>
+<p>Now we can build the tool.</p>
+<ul>
+<li>Write the tool&rsquo;s source code inside <code>CUSTOM_DIR</code>, say it&rsquo;s name be <code>CUSTOM_TOOL.CPP</code>.</li>
+<li>Add the name of the tool, namely <code>CUSTOM_TOOL</code>, in the <code>makefile.rules</code> as stipulated above.</li>
+<li>Execute the command: <code>make obj-intel64/CUSTOM_TOOL.so</code></li>
+<li>Now you can run this custom pintool just as a pre-made one, mind the change of directory.
+<ul>
+<li>Command: <code>./pin -t /opt/pin-dir/source/tools/CUSTOM_DIR/obj-intel64/CUSTOM_TOOL.so -- BINARY_PATH</code></li>
+</ul>
+</li>
+</ul>
+<p>Visit the documentation&rsquo;s main page and see under the heading ”Pin&rsquo;s makefile Infrastructure&rdquo; for a more comprehensive guide.</p>
+<h3 id="debugging">Debugging</h3>
+<p>Pintools can be debugged using the <code>-pause_tool</code> switch, followed by the number of seconds to wait until the debugger is attached to its process.</p>
+<h3 id="example">Example</h3>
+<p>We&rsquo;ll create a simple C++ program to instrument. </p>
+<p>Since instruction counting is a cliché now, we&rsquo;ll do something different. Let&rsquo;s find loops and predict their number of iterations. It&rsquo;s a rudimentary approach full of loop holes, but works for naïve programs.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// loop.cpp
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+using namespace std;
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">looper0</span>(<span style="color:#66d9ef">int</span> low, <span style="color:#66d9ef">int</span> high) {
+    <span style="color:#66d9ef">int</span> i, sum <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">for</span>(i <span style="color:#f92672">=</span> low; i <span style="color:#f92672">&lt;</span> high; i<span style="color:#f92672">++</span>)
+        sum <span style="color:#f92672">+=</span> i;
+    <span style="color:#66d9ef">return</span> sum;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">looper1</span>(<span style="color:#66d9ef">int</span> low, <span style="color:#66d9ef">int</span> high) {
+    <span style="color:#66d9ef">int</span> i, sum <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">for</span>(i <span style="color:#f92672">=</span> low; i <span style="color:#f92672">&lt;</span> high; i<span style="color:#f92672">++</span>)
+        sum <span style="color:#f92672">+=</span> i;
+    <span style="color:#66d9ef">return</span> sum;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+{
+    <span style="color:#66d9ef">int</span> sum;
+    
+    sum <span style="color:#f92672">=</span> looper0(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">250</span>);
+    sum <span style="color:#f92672">+=</span> looper1(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">250</span>);
+    sum <span style="color:#f92672">+=</span> looper0(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">250</span>);
+    
+    std<span style="color:#f92672">::</span>cout<span style="color:#f92672">&lt;&lt;</span>sum<span style="color:#f92672">&lt;&lt;</span>endl;
+    
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p>Compile the file by executing <code>g++ loop.cpp -o loop</code>.</p>
+<p>All the program does is call two functions with a loop each, at different types. So based on the source code, loop inside <code>looper0</code> should run 500times while the one in <code>looper1</code> should run 250 times.</p>
+<p>Let&rsquo;s write a pintool to predict the loops.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// loopcount.cpp
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;fstream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unordered_map&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iterator&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;pin.H&#34;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+using std<span style="color:#f92672">::</span>cerr;
+using std<span style="color:#f92672">::</span>endl;
+using std<span style="color:#f92672">::</span>ios;
+using std<span style="color:#f92672">::</span>string;
+
+<span style="color:#75715e">// Map to track loops
+</span><span style="color:#75715e"></span>std<span style="color:#f92672">::</span>unordered_map<span style="color:#f92672">&lt;</span>ADDRINT, <span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> u;
+
+<span style="color:#75715e">// Main Binary Image
+</span><span style="color:#75715e"></span>IMG MainBinary;
+
+<span style="color:#75715e">// Checks if the instruction comes from the binary being instrumented.
+</span><span style="color:#75715e"></span>BOOL <span style="color:#a6e22e">CheckBounds</span>(ADDRINT addr) {
+    <span style="color:#66d9ef">if</span>(addr <span style="color:#f92672">&lt;</span> IMG_HighAddress(MainBinary) <span style="color:#f92672">&amp;&amp;</span> addr <span style="color:#f92672">&gt;</span> IMG_LowAddress(MainBinary)){
+        <span style="color:#66d9ef">return</span> true;
+    }
+    <span style="color:#66d9ef">return</span> false;
+}
+
+VOID <span style="color:#a6e22e">Analyse</span>(ADDRINT addr, BOOL taken){
+    
+    <span style="color:#66d9ef">if</span>(CheckBounds(addr)) {
+
+        <span style="color:#75715e">// If the branch is not taken, then it follows the fall through, that is, reiteration.
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span>(<span style="color:#f92672">!</span>taken) {
+            <span style="color:#66d9ef">if</span> (u.find(addr) <span style="color:#f92672">==</span> u.end()){
+                u.insert({addr, <span style="color:#ae81ff">1</span>});
+            }
+            <span style="color:#66d9ef">else</span>{
+                <span style="color:#f92672">++</span>u[addr];
+            }
+        }
+    }
+}
+
+VOID <span style="color:#a6e22e">Instruction</span>(INS ins, VOID<span style="color:#f92672">*</span> v)
+{	
+    <span style="color:#66d9ef">if</span>(INS_IsBranch(ins) <span style="color:#f92672">&amp;&amp;</span> INS_HasFallThrough(ins)){
+        <span style="color:#75715e">// std::cout &lt;&lt; &#34;[+] Condition Branch encountered: &#34;&lt;&lt;INS_Disassemble(ins)&lt;&lt;endl;
+</span><span style="color:#75715e"></span>        INS_InsertCall(ins, IPOINT_BEFORE, (AFUNPTR)Analyse, IARG_INST_PTR, IARG_BRANCH_TAKEN, IARG_END);
+    }
+}
+
+VOID <span style="color:#a6e22e">Image</span>(IMG img, VOID<span style="color:#f92672">*</span> v)
+{
+    <span style="color:#66d9ef">if</span>(IMG_IsMainExecutable(img)){
+        MainBinary <span style="color:#f92672">=</span> img;
+
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;[*] Main Binary Image: &#34;</span> <span style="color:#f92672">&lt;&lt;</span> IMG_Name(img) <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;[+] Image limits 0x&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>hex <span style="color:#f92672">&lt;&lt;</span> IMG_LowAddress(img) <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; - 0x&#34;</span> <span style="color:#f92672">&lt;&lt;</span> IMG_HighAddress(img) <span style="color:#f92672">&lt;&lt;</span> endl;
+    }
+    <span style="color:#66d9ef">else</span> {
+        std<span style="color:#f92672">::</span>string name <span style="color:#f92672">=</span> IMG_Name(img);
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;[*] Image: &#34;</span> <span style="color:#f92672">&lt;&lt;</span> name <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+    }
+}
+
+<span style="color:#75715e">// This function is called when the application exits
+</span><span style="color:#75715e"></span>VOID <span style="color:#a6e22e">Fini</span>(INT32 code, VOID <span style="color:#f92672">*</span>v)
+{
+
+    <span style="color:#75715e">// Iterate and print keys and values of unordered_map
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span>( <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> n : u ) {
+        <span style="color:#66d9ef">if</span>(n.second <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>) {
+            printf(<span style="color:#e6db74">&#34;Loop condition encountered at: 0x%lX</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, n.first);
+            printf(<span style="color:#e6db74">&#34;Iterations: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, n.second);
+        }
+    }
+    
+    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;[+] End of analysis.&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span><span style="color:#f92672">*</span> argv[])
+{
+    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;[+] Initialising PIN...&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+    PIN_InitSymbols();
+    PIN_Init(argc, argv);
+
+    IMG_AddInstrumentFunction(Image, NULL);
+    INS_AddInstrumentFunction(Instruction, NULL);
+
+    PIN_AddFiniFunction(Fini, NULL);
+    
+    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;[+] Starting Instrumentation...&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+    PIN_StartProgram();
+    
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p>A bunch of methods and API calls need to be taken a look at.</p>
+<p>The main function, <code>main</code>, is responsible to get Pin ready and started.</p>
+<ul>
+<li><code>PIN_InitSymbols</code>:
+<ul>
+<li>Initializes the symbol table code. Pin does not read symbols unless this method is called.</li>
+</ul>
+</li>
+<li><code>PIN_Init</code>:
+<ul>
+<li>Initializes the PIN instrumentation engine. Takes the command line argument specifiers <code>argc</code> and <code>argv</code> as taken by <code>main</code> itself.</li>
+</ul>
+</li>
+<li><code>IMG_AddInstrumentFunction</code>:
+<ul>
+<li>Registers a callback to be made to the function passed in the parameter whenever a new image(library or a binary) is loaded.</li>
+</ul>
+</li>
+<li><code>INS_AddInstrumentFunction</code>:
+<ul>
+<li>Adds a function to instrument at instruction level granularity.</li>
+</ul>
+</li>
+<li><code>PIN_AddFiniFunction</code>:
+<ul>
+<li>Calls the specified function right before the application exits.</li>
+<li>Not an instrumentation routine.</li>
+<li>More than one can be present.</li>
+</ul>
+</li>
+<li><code>PIN_StartProgram</code>:
+<ul>
+<li>Starts executing the application, when Pin is in JIT mode(default setting).</li>
+</ul>
+</li>
+</ul>
+<p>The image instrumentation function, <code>Image</code>, prints all information about the images that get loaded during the course of execution.</p>
+<ul>
+<li><code>IMG_IsMainExecutable</code>:
+<ul>
+<li>Checks if the image is the binary being instrumented.</li>
+</ul>
+</li>
+<li><code>IMG_LowAddress</code>:
+<ul>
+<li>Fetches the lowest address of any code or data loaded by the image.</li>
+</ul>
+</li>
+<li><code>IMG_HighAddress</code>:
+<ul>
+<li>Fetches the highest address of any code or data loaded by the image.</li>
+<li>Address of the last byte loaded by the image.</li>
+</ul>
+</li>
+<li><code>IMG_Name</code>:
+<ul>
+<li>Fetches the name of the image.</li>
+</ul>
+</li>
+</ul>
+<p>The instrumentation function, <code>Instruction</code>, cycles through all instructions and registers a callback if the instruction is a branching one and has a fall through. This is a defining characteristic of a loop.</p>
+<ul>
+<li><code>INS_IsBranch</code>:
+<ul>
+<li>Checks if the instruction is a branch instruction.</li>
+</ul>
+</li>
+<li><code>INS_HasFallThrough</code>:
+<ul>
+<li>Checks if there is an instruction following the current one to follow a natural flow of execution if the branch is not taken.</li>
+</ul>
+</li>
+<li><code>INS_InsertCall</code>:
+<ul>
+<li>Inserts a call to the specified function.</li>
+<li>First argument is the instruction to be instrumented.</li>
+<li>Second argument is the position where the call is to be made, that is, before the instruction, after it or after branching.
+<ul>
+<li>IPOINT_BEFORE is always valid for all instructions.</li>
+<li>IPOINT_AFTER: is valid only when a fall-through exists (i.e. Calls and unconditional branches will fail).</li>
+<li>IPOINT_TAKEN_BRANCH: is invalid for non-branches.</li>
+</ul>
+</li>
+<li>Third argument contains the instrumentation code.</li>
+<li>The following arguments are the arguments needed by the instrumentation function.</li>
+<li>Last argument is always IARG_END.</li>
+</ul>
+</li>
+</ul>
+<p>The analysis function, <code>Analyse</code>, creates a map of all functions that we can suspect of being a loop.</p>
+<p>The bound checking function, <code>CheckBounds</code>, checks if the instruction address is between the bounds of the lowest and highest address of the main binary in memory, that is, makes sure the instruction being instrumented comes from the binary itself and not from any of the other images loaded.</p>
+<p>The finalizing function, <code>Fini</code>, is called right before the binary exits. It iterates through the map and prints all the instructions&rsquo; address along with the number of times they were parsed, if they were parsed more than once. These could be loop conditionals.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// Result of the instrumentation
+</span><span style="color:#75715e"></span>
+<span style="color:#960050;background-color:#1e0010">$</span> pin <span style="color:#f92672">-</span>t obj<span style="color:#f92672">-</span>intel64<span style="color:#f92672">/</span>loopcount.so <span style="color:#f92672">--</span> <span style="color:#f92672">~/</span>loop
+[<span style="color:#f92672">+</span>] Initialising PIN...
+[<span style="color:#f92672">+</span>] Starting Instrumentation...
+
+[<span style="color:#f92672">*</span>] Main Binary Image: <span style="color:#f92672">/</span>home<span style="color:#f92672">/</span>hexterisk<span style="color:#f92672">/</span>Work<span style="color:#f92672">/</span>pin<span style="color:#f92672">/</span>calc
+[<span style="color:#f92672">+</span>] Image limits <span style="color:#ae81ff">0x562fad148000</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">0x562fad14a1bf</span>
+[<span style="color:#f92672">*</span>] Image: <span style="color:#f92672">/</span>lib64<span style="color:#f92672">/</span>ld<span style="color:#f92672">-</span>linux<span style="color:#f92672">-</span>x86<span style="color:#f92672">-</span><span style="color:#ae81ff">64.</span>so<span style="color:#ae81ff">.2</span>
+[<span style="color:#f92672">*</span>] Image: [vdso]
+[<span style="color:#f92672">*</span>] Image: <span style="color:#f92672">/</span>usr<span style="color:#f92672">/</span>lib<span style="color:#f92672">/</span>libstdc<span style="color:#f92672">++</span>.so<span style="color:#ae81ff">.6</span>
+[<span style="color:#f92672">*</span>] Image: <span style="color:#f92672">/</span>usr<span style="color:#f92672">/</span>lib<span style="color:#f92672">/</span>libm.so<span style="color:#ae81ff">.6</span>
+[<span style="color:#f92672">*</span>] Image: <span style="color:#f92672">/</span>usr<span style="color:#f92672">/</span>lib<span style="color:#f92672">/</span>libgcc_s.so<span style="color:#ae81ff">.1</span>
+[<span style="color:#f92672">*</span>] Image: <span style="color:#f92672">/</span>usr<span style="color:#f92672">/</span>lib<span style="color:#f92672">/</span>libc.so<span style="color:#ae81ff">.6</span>
+<span style="color:#ae81ff">93375</span>
+Loop condition encountered at: <span style="color:#ae81ff">0x562FAD149186</span>
+Iterations: <span style="color:#ae81ff">500</span>
+Loop condition encountered at: <span style="color:#ae81ff">0x562FAD1491B6</span>
+Iterations: <span style="color:#ae81ff">250</span>
+[<span style="color:#f92672">+</span>] End of analysis.
+</code></pre></div><p>Since ASLR is on, the base address would be different. So we verify the offsets by looking at the disassembly.</p>
+<p><img src="https://hexterisk.tech/blog/Dynamic_Binary_Instrumentation_and_Pin/2020-06-22-022324-screenshot.png" alt="&ldquo;looper0&rdquo;">
+<em>looper0</em></p>
+<p>Notice the <code>jge</code> instrunction at the offset 0x1186.</p>
+<p><img src="https://hexterisk.tech/blog/Dynamic_Binary_Instrumentation_and_Pin/2020-06-22-022329-screenshot.png" alt="&ldquo;looper1&rdquo;">
+<em>looper1</em></p>
+<p>Notice the <code>jge</code> instruction at the offset 0x11B6.</p>
+<p>The offsets are in line with the output we got on the console via our pintool.</p>
+<p>Thus, the pintool was able to correctly classify the two loops with the correct number of iterations.</p>
+<p>All the above API methods have been introduced in order to give the reader an idea of how the Pin engine works and how it&rsquo;s working structure is. Browse the documentation, and you&rsquo;ll most probably find the method that best suits your need. If not, you could definitely come up with a hacky approach using combinations of available methods that</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/granularity">granularity</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/trace">trace</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/img">img</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/jit">jit</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/probe">probe</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/aslr">aslr</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/bbl">bbl</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/debugging">debugging</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2251 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-06-12 05:30 &#43;0530</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://hexterisk.tech/blog/posts/2020/06/16/dynamic-taint-analysis-and-pin/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Dynamic Taint Analysis and Pin</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://hexterisk.tech/blog/posts/2020/06/07/source-code-instrumentation-and-llvm/">
+                                <span class="button__text">Source Code Instrumentation and LLVM</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            
+                <span><a href="https://hexterisk.tech/blog">Bhanupratap Singh &copy; 2020</a></span>
+            
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content" style="margin-bottom: -0.8rem;">
+            <span><a style="text-decoration: none;" > .</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span><a style="text-decoration: none;" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></span>
+        </div> 
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://hexterisk.tech/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

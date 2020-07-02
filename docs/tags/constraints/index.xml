@@ -6,80 +6,50 @@
     <description>Recent content in constraints on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Thu, 09 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 03 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hexterisk.tech/blog/tags/constraints/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Constraint Solvers and Z3</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/09/constraint-solvers-and-z3/</link>
-      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
+      <title>Symbolic Execution and Angr</title>
+      <link>https://hexterisk.tech/blog/posts/2020/06/03/symbolic-execution-and-angr/</link>
+      <pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/01/09/constraint-solvers-and-z3/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/06/03/symbolic-execution-and-angr/</guid>
+      <description>Symbolic Execution is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
+Symbols Different values in a program(such as the user input) are substituted with Symbols(variables or placeholders). These symbols pertain to a domain full of values, allowing us to explore the program in a much more open form, basically “walking through the program” with a domain full of values(handled by any one of the constraint solving backends like Z3) instead of walking a fixed path due to a fixed hard-coded value/input.</description>
+    </item>
+    
+    <item>
+      <title>Constraint Solvers and Z3</title>
+      <link>https://hexterisk.tech/blog/posts/2020/05/31/constraint-solvers-and-z3/</link>
+      <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/05/31/constraint-solvers-and-z3/</guid>
       <description>A constraint solver must be versatile, that is, it should be able to act as an:
  Interpreter: Given the input, solve for the output of the equation. Inverter: Given the output, solve for the input of the equation. Synthesizer: Act as both Interpreter and Inverter.  Formulating Programs Assume a formula 𝑆ₚ(𝑥, 𝑦) which holds if and only if program P(x) outputs value y such that
 Program: f(𝑥) { return 𝑥 + 𝑥 }</description>
     </item>
     
     <item>
-      <title>Dynamic Binary Instrumentation and Pin</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/09/dynamic-binary-instrumentation-and-pin/</link>
-      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/01/09/dynamic-binary-instrumentation-and-pin/</guid>
-      <description>Dynamic Binary Instrumentation is the process of monitoring or measuring a binary&amp;rsquo;s execution and its behavior, such as resource usage, during runtime. It allows us to focus on specific parts of a binary for various purposes such as vulnerability analysis, dynamic tainting and state analysis.
-We will skip over Source Instrumentation since it requires source code of the application, which is pretty rare in real world scenarios.
-Instrumentation Code The technique requires injecting Instrumentation Code into a running binary.</description>
-    </item>
-    
-    <item>
-      <title>Dynamic Taint Analysis and Pin</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/09/dynamic-taint-analysis-and-pin/</link>
-      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/01/09/dynamic-taint-analysis-and-pin/</guid>
-      <description>Dynamic Taint Analysis is a technique used to discover what part of memory or register are controllable by the some data we are interested, such as the user input, at a given program state. This is done by marking the interested data. There on after, any piece of data that comes in contact with the tainted data by any means, like getting computed from the tainted data, is tainted too, thus spreading the taint throughout the execution.</description>
-    </item>
-    
-    <item>
       <title>Principles of Symbolic Execution</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/09/principles-of-symbolic-execution/</link>
-      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
+      <link>https://hexterisk.tech/blog/posts/2020/04/20/principles-of-symbolic-execution/</link>
+      <pubDate>Mon, 20 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/01/09/principles-of-symbolic-execution/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/04/20/principles-of-symbolic-execution/</guid>
       <description>Symbolic Execution, or symbex, is a software analysis technique that expresses program state in terms of logical formulas that you can automatically reason about to answer complex questions about a program’s behavior. Can automatically increase the code coverage of dynamic analyses by generating new inputs that lead to unexplored program paths. Apply it sparingly and carefully because of scalability issues.
  Symbex executes (or emulates) an application with symbolic values.  Symbolic values represent a domain covering possible concrete values, represented by symbols like φ.</description>
     </item>
     
     <item>
-      <title>Source Code Instrumentation and LLVM</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/09/source-code-instrumentation-and-llvm/</link>
-      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/01/09/source-code-instrumentation-and-llvm/</guid>
-      <description>Source Code Instrumentation adds specific code meant for instrumentation/analysis, called Instrumentation Code, to the source files of the program under consideration. The source files are then compiled and executed. Since the instrumentation code is integrated into the binary itself, the output from the execution includes the dump of the instrumentation code which can then be used for further analysis and component testing.
-Intermediate Representations Representation of a program in a state that lies between the source code and the compiled binary(specifically, the assembly code).</description>
-    </item>
-    
-    <item>
       <title>Stack and it&#39;s Frames</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/09/stack-and-its-frames/</link>
-      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
+      <link>https://hexterisk.tech/blog/posts/2020/03/09/stack-and-its-frames/</link>
+      <pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/01/09/stack-and-its-frames/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/03/09/stack-and-its-frames/</guid>
       <description>Stack is a data structure, and means exactly what it&amp;rsquo;s name says - a stack(of objects). It is mainly characterized by pushing and popping operations. You push items onto the stack, and then pop those items off. A stack is therefore a LIFO(last in, first out) structure. Memory for functions, local variables, and flow control is stored in the stack.
 Stack Layout The stack grows from higher addresses to lower addresses.</description>
-    </item>
-    
-    <item>
-      <title>Symbolic Execution and Angr</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/09/symbolic-execution-and-angr/</link>
-      <pubDate>Thu, 09 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/01/09/symbolic-execution-and-angr/</guid>
-      <description>Symbolic Execution is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
-Symbols Different values in a program(such as the user input) are substituted with Symbols(variables or placeholders). These symbols pertain to a domain full of values, allowing us to explore the program in a much more open form, basically “walking through the program” with a domain full of values(handled by any one of the constraint solving backends like Z3) instead of walking a fixed path due to a fixed hard-coded value/input.</description>
     </item>
     
   </channel>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:hexterisk]">
+<meta name="description" content="Bare-Metal Binary Modification  Modify an existing binary is by directly editing the bytes of a binary file in hexadecimal format, using a program like hexedit.  Use a disassembler to identify the code or data bytes to be changed and then use a hex editor to make the changes. Advantage: Simple and requires only basic tools. Any padding bytes, dead code (such as unused functions), or unused data, can be overwritten with something new." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/03/16/simple-code-injection-techniques-for-elf/" />
+
+
+    <title>
+        
+            Simple Code Injection Techniques for ELF: Pwn the world.  — A noob&#39;s attempt at blogging.
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://hexterisk.tech/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.tech/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.tech/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.tech/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.tech/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.tech/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.tech/blog/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Simple Code Injection Techniques for ELF">
+<meta itemprop="description" content="Bare-Metal Binary Modification  Modify an existing binary is by directly editing the bytes of a binary file in hexadecimal format, using a program like hexedit.  Use a disassembler to identify the code or data bytes to be changed and then use a hex editor to make the changes. Advantage: Simple and requires only basic tools. Any padding bytes, dead code (such as unused functions), or unused data, can be overwritten with something new.">
+<meta itemprop="datePublished" content="2020-03-16T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-03-16T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1047">
+<meta itemprop="image" content="https://hexterisk.tech/blog"/>
+
+
+
+<meta itemprop="keywords" content="binary,code,injection,elf,objdump,readelf,hijack," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hexterisk.tech/blog"/>
+
+<meta name="twitter:title" content="Simple Code Injection Techniques for ELF"/>
+<meta name="twitter:description" content="Bare-Metal Binary Modification  Modify an existing binary is by directly editing the bytes of a binary file in hexadecimal format, using a program like hexedit.  Use a disassembler to identify the code or data bytes to be changed and then use a hex editor to make the changes. Advantage: Simple and requires only basic tools. Any padding bytes, dead code (such as unused functions), or unused data, can be overwritten with something new."/>
+
+
+
+    <meta property="article:section" content="Basic Binary Analysis" />
+
+
+
+    <meta property="article:published_time" content="2020-03-16 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://hexterisk.tech/blog/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$cd ~/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://hexterisk.tech/blog/about/">About</a></li><li><a href="https://hexterisk.tech/blog/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>5 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://hexterisk.tech/blog/posts/2020/03/16/simple-code-injection-techniques-for-elf/">Simple Code Injection Techniques for ELF</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <h2 id="bare-metal-binary-modification">Bare-Metal Binary Modification</h2>
+<ul>
+<li>Modify an existing binary is by directly editing the bytes of a binary file in hexadecimal format, using a program like <em>hexedit</em>.
+<ul>
+<li>Use a disassembler to identify the code or data bytes to be changed and then use a hex editor to make the changes.</li>
+<li>Advantage: Simple and requires only basic tools. Any padding bytes, dead code (such as unused functions), or unused data, can be overwritten with something new.</li>
+<li>Disadvantage: Only allows in-place editing. Can change code or data bytes but not add anything new. Inserting a new byte causes all the bytes after it to shift to another address, which breaks references to the shifted bytes. It’s difficult (or even impossible) to correctly identify and fix all the broken references, because the relocation information needed for this is usually discarded after the linking phase.</li>
+<li>Works for cases like replacing malware&rsquo;s anti-debugging checks with nop.</li>
+<li><strong>Off-by-one</strong> bugs typically occur in loops when the programmer uses an erroneous loop condition that causes the loop to read or write one too few or one too many bytes.</li>
+</ul>
+</li>
+</ul>
+<h2 id="modifying-shared-library-behavior-using-ld_preload">Modifying Shared Library Behavior Using LD_PRELOAD</h2>
+<ul>
+<li><strong>LD_PRELOAD</strong> is an environment variable influencing the behavior of the dynamic linker. It allows you to specify one or more libraries for the linker to load before any other library, including standard system libraries such as libc.so. If a preloaded library contains a function with the same name as a function in a library loaded later, the first function is the one that will be used at runtime. This allows you to override library functions (even standard library functions like malloc or printf) with your own versions of those functions.</li>
+<li>The <strong>dlfcn.h</strong> header is often included when writing libraries for use with LD_PRELOAD because it provides the <strong>dlsym</strong> function.</li>
+</ul>
+<h2 id="injecting-a-code-section">Injecting a Code Section</h2>
+<p><img src="https://hexterisk.tech/blog/Simple_Code_Injection_Techniques_for_ELF/image.png" alt="&ldquo;code_injection&rdquo;">
+<em>Replacing .note.ABI-tag with an injected code section.</em></p>
+<p>Step ➊ is to add a new section to an ELF binary, you first inject the bytes that the section will contain by appending them to the end of the binary. Next, you create a section header ➋ and a program header ➌ for the injected section. The program header table is usually located right after the executable header ➍, thus overwrite an existing program header instead of adding an extra one to prevent shifting of all the sections and headers that come after it.</p>
+<ul>
+<li>You can always safely overwrite is the <strong>PT_NOTE header</strong>, which describes the PT_NOTE segment. The PT_NOTE segment encompasses sections that contain auxiliary information about the binary. If this information is missing, the loader simply assumes it’s a native binary.</li>
+</ul>
+<p>Step ➋ is overwriting one of the .note.* section headers to turn it into a header for the new code section (.injected). Choosing to overwrite the header for the .note.ABI-tag section, the sh_type is changed from SHT_NOTE to SHT_PROGBITS to denote that the header now describes a code section. Moreover, the sh_addr, sh_offset, and sh_size fields are changed to describe the location and size of the new .injected section instead of the now obsolete .note.ABI-tag section. Finally, the section alignment (sh_addralign) is changed to 16 bytes to ensure that the code will be properly aligned when loaded into memory, and the SHF_EXECINSTR flag is added to the sh_flags field to mark the section as executable.</p>
+<p>Step ➌ is where the PT_NOTE program header is changed by setting p_type to PT_LOAD to indicate that the header now describes a loadable segment instead of a PT_NOTE segment. This causes the loader to load the segment (which encompasses the new .injected section) into memory when the program starts.</p>
+<p>Step ➍ is redirecting the entry point (e_entry field in the ELF executable header), is made to point to an address in the new .injected section, instead of the original entry point, which is usually somewhere in .text. Done only if some code in the .injected section is to be run right at the start of the program.</p>
+<h2 id="calling-injected-code">Calling Injected Code</h2>
+<p>Injected code might be required to call at any instant during the execution of the binary. Following are the ways to call the injected code:</p>
+<h3 id="entry-point-modification">Entry Point Modification</h3>
+<p>Find entry point address via readelf and replace those bytes with the address of injected code via hex bytes editors or specific scripts.</p>
+<h3 id="hijacking-constructors-and-destructors">Hijacking Constructors and Destructors</h3>
+<p>ELF binaries compiled with gcc contain sections called .init_array and .fini_array, which contain pointers to a series of constructors and destructors, respectively. By overwriting one of these pointers, the injected code can be invoked before or after the binary’s main function, depending on which one is overwritten.</p>
+<h3 id="hijacking-got-entries">Hijacking GOT Entries</h3>
+<p>Use objdump to view the .got.plt section to find out the address stored in the GOT entry used by the PLT stub. This address is replaced by the address of the injected code. Can also be done at runtime since the .got.plt section is writable.</p>
+<h3 id="hijacking-plt-entries">Hijacking PLT Entries</h3>
+<p>Modify the PLT stub itself. Replace the indirect jmp instruction to a relative offset with a direct jmp instruction to the injected code inside the stub.</p>
+<h3 id="redirecting-direct-and-indirect-calls">Redirecting Direct and Indirect Calls</h3>
+<p>Use a disassembler to locate the calls to modify and then overwrite them, using a hex editor to replace them with calls to the injected function instead of the original.</p>
+<p>When redirecting an indirect call (as opposed to a direct one), the easiest way is to replace the indirect call with a direct one. However, this isn’t always possible since the encoding of the direct call may be longer than the encoding of the indirect call. In that case, you’ll first need to find the address of the indirectly called function that you want to replace, for instance, by using gdb to set a breakpoint on the indirect call instruction and inspecting the target address. Once you know the address of the function to replace, you can use objdump or a hex editor to search for the address in the binary’s .rodata section. If you’re lucky, this may reveal a function pointer containing the target address. You can then use a hex editor to overwrite this function pointer, setting it to the address of the injected code. If you’re unlucky, the function pointer may be computed in some way at runtime, requiring more complex hex editing to replace the computed target with the address of the injected function.</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/code">code</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/injection">injection</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/elf">elf</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/objdump">objdump</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/readelf">readelf</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/hijack">hijack</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1047 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-03-16 05:30 &#43;0530</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://hexterisk.tech/blog/posts/2020/03/20/set-1/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Set 1</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://hexterisk.tech/blog/posts/2020/03/12/disassembly-and-binary-analysis-fundamentals/">
+                                <span class="button__text">Disassembly and Binary Analysis Fundamentals</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            
+                <span><a href="https://hexterisk.tech/blog">Bhanupratap Singh &copy; 2020</a></span>
+            
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content" style="margin-bottom: -0.8rem;">
+            <span><a style="text-decoration: none;" > .</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span><a style="text-decoration: none;" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></span>
+        </div> 
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://hexterisk.tech/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

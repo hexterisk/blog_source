@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Sat, 09 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 16 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hexterisk.tech/blog/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,90 +14,90 @@
     <item>
       <title>binary</title>
       <link>https://hexterisk.tech/blog/tags/binary/</link>
-      <pubDate>Sat, 09 May 2020 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 16 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/tags/binary/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>penetration</title>
-      <link>https://hexterisk.tech/blog/tags/penetration/</link>
-      <pubDate>Sat, 09 May 2020 00:00:00 +0000</pubDate>
+      <title>dbi</title>
+      <link>https://hexterisk.tech/blog/tags/dbi/</link>
+      <pubDate>Tue, 16 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/tags/penetration/</guid>
+      <guid>https://hexterisk.tech/blog/tags/dbi/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>pentesting</title>
-      <link>https://hexterisk.tech/blog/tags/pentesting/</link>
-      <pubDate>Sat, 09 May 2020 00:00:00 +0000</pubDate>
+      <title>dynamic</title>
+      <link>https://hexterisk.tech/blog/tags/dynamic/</link>
+      <pubDate>Tue, 16 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/tags/pentesting/</guid>
+      <guid>https://hexterisk.tech/blog/tags/dynamic/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Serial2</title>
-      <link>https://hexterisk.tech/blog/tags/serial2/</link>
-      <pubDate>Sat, 09 May 2020 00:00:00 +0000</pubDate>
+      <title>pin</title>
+      <link>https://hexterisk.tech/blog/tags/pin/</link>
+      <pubDate>Tue, 16 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/tags/serial2/</guid>
+      <guid>https://hexterisk.tech/blog/tags/pin/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>testing</title>
-      <link>https://hexterisk.tech/blog/tags/testing/</link>
-      <pubDate>Sat, 09 May 2020 00:00:00 +0000</pubDate>
+      <title>syscall</title>
+      <link>https://hexterisk.tech/blog/tags/syscall/</link>
+      <pubDate>Tue, 16 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/tags/testing/</guid>
+      <guid>https://hexterisk.tech/blog/tags/syscall/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Vulnhub</title>
-      <link>https://hexterisk.tech/blog/tags/vulnhub/</link>
-      <pubDate>Sat, 09 May 2020 00:00:00 +0000</pubDate>
+      <title>taint</title>
+      <link>https://hexterisk.tech/blog/tags/taint/</link>
+      <pubDate>Tue, 16 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/tags/vulnhub/</guid>
+      <guid>https://hexterisk.tech/blog/tags/taint/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Serial1</title>
-      <link>https://hexterisk.tech/blog/tags/serial1/</link>
-      <pubDate>Fri, 08 May 2020 00:00:00 +0000</pubDate>
+      <title>aslr</title>
+      <link>https://hexterisk.tech/blog/tags/aslr/</link>
+      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/tags/serial1/</guid>
+      <guid>https://hexterisk.tech/blog/tags/aslr/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>vim</title>
-      <link>https://hexterisk.tech/blog/tags/vim/</link>
-      <pubDate>Fri, 08 May 2020 00:00:00 +0000</pubDate>
+      <title>bbl</title>
+      <link>https://hexterisk.tech/blog/tags/bbl/</link>
+      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/tags/vim/</guid>
+      <guid>https://hexterisk.tech/blog/tags/bbl/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Bleichenbacher</title>
-      <link>https://hexterisk.tech/blog/tags/bleichenbacher/</link>
-      <pubDate>Fri, 10 Apr 2020 00:00:00 +0000</pubDate>
+      <title>debugging</title>
+      <link>https://hexterisk.tech/blog/tags/debugging/</link>
+      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/tags/bleichenbacher/</guid>
+      <guid>https://hexterisk.tech/blog/tags/debugging/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>cryptography</title>
-      <link>https://hexterisk.tech/blog/tags/cryptography/</link>
-      <pubDate>Fri, 10 Apr 2020 00:00:00 +0000</pubDate>
+      <title>granularity</title>
+      <link>https://hexterisk.tech/blog/tags/granularity/</link>
+      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/tags/cryptography/</guid>
+      <guid>https://hexterisk.tech/blog/tags/granularity/</guid>
       <description></description>
     </item>
     

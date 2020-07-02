@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:hexterisk]">
+<meta name="description" content="Dynamic Taint Analysis is a technique used to discover what part of memory or register are controllable by the some data we are interested, such as the user input, at a given program state. This is done by marking the interested data. There on after, any piece of data that comes in contact with the tainted data by any means, like getting computed from the tainted data, is tainted too, thus spreading the taint throughout the execution." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/06/16/dynamic-taint-analysis-and-pin/" />
+
+
+    <title>
+        
+            Dynamic Taint Analysis and Pin: Pwn the world.  — A noob&#39;s attempt at blogging.
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://hexterisk.tech/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.tech/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.tech/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.tech/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.tech/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.tech/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.tech/blog/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Dynamic Taint Analysis and Pin">
+<meta itemprop="description" content="Dynamic Taint Analysis is a technique used to discover what part of memory or register are controllable by the some data we are interested, such as the user input, at a given program state. This is done by marking the interested data. There on after, any piece of data that comes in contact with the tainted data by any means, like getting computed from the tainted data, is tainted too, thus spreading the taint throughout the execution.">
+<meta itemprop="datePublished" content="2020-06-16T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-06-16T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1200">
+<meta itemprop="image" content="https://hexterisk.tech/blog"/>
+
+
+
+<meta itemprop="keywords" content="binary,dynamic,taint,pin,dbi,syscall," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hexterisk.tech/blog"/>
+
+<meta name="twitter:title" content="Dynamic Taint Analysis and Pin"/>
+<meta name="twitter:description" content="Dynamic Taint Analysis is a technique used to discover what part of memory or register are controllable by the some data we are interested, such as the user input, at a given program state. This is done by marking the interested data. There on after, any piece of data that comes in contact with the tainted data by any means, like getting computed from the tainted data, is tainted too, thus spreading the taint throughout the execution."/>
+
+
+
+    <meta property="article:section" content="practical-binary-analysis" />
+
+
+
+    <meta property="article:published_time" content="2020-06-16 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://hexterisk.tech/blog/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$cd ~/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://hexterisk.tech/blog/about/">About</a></li><li><a href="https://hexterisk.tech/blog/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>6 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://hexterisk.tech/blog/posts/2020/06/16/dynamic-taint-analysis-and-pin/">Dynamic Taint Analysis and Pin</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <p><strong>Dynamic Taint Analysis</strong> is a technique used to discover what part of memory or register are controllable by the some data we are interested, such as the user input, at a given program state. This is done by marking the interested data. There on after, any piece of data that comes in contact with the tainted data by any means, like getting computed from the tainted data, is tainted too, thus spreading the taint throughout the execution.</p>
+<p><img src="https://hexterisk.tech/blog/Dynamic_Taint_Analysis_and_Pin/image.png" alt="&ldquo;prop&rdquo;">
+<em>Taint propogration.</em></p>
+<p>Regions of interest are:</p>
+<ul>
+<li>Taint Sources: Program, or memory locations, where data of interest enter the system and subsequently get tagged.</li>
+<li>Taint Tracking: Process of propagating data tags according to program semantics.</li>
+<li>Taint Sinks: Program, or memory locations, where checks for tagged data can be made.</li>
+</ul>
+<p>Dynamic Taint Analysis requires a Dynamic Binary Instrumentation framework as a prerequisite. We&rsquo;ll use Intel Pin.</p>
+<h1 id="shadow-memory">Shadow Memory</h1>
+<p>It is the technique in which potentially every byte used by a program has a mirror byte during it&rsquo;s execution. These shadow bytes can be used to record information about their original counterparts, since these bytes are invisible to the program. We create a user shadow memory to mark all the addresses that can be tainted by the data in question.</p>
+<h1 id="example">Example</h1>
+<p>We&rsquo;ll need the help of a DBI to retrieve information before and after each function is called. We&rsquo;ll resort to using Pin to taint user input and track it through the execution of the binary.</p>
+<p>We&rsquo;ll write a simple C++ program that reads content from a file, sends it around two functions as transfers the data into different buffers and then prints the contents onto the console. The name of the source code file is <em>sample.cpp</em>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// sample.cpp
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;fcntl.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">foo1</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>temp, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>source){
+    
+    memcpy(temp, source, strlen(source));
+    <span style="color:#66d9ef">return</span>;
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">foo2</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>sink, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>temp){
+    
+    memcpy(sink, temp, strlen(temp));
+    <span style="color:#66d9ef">return</span> ;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> ac, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>av)
+{
+    <span style="color:#66d9ef">int</span> fd;
+    <span style="color:#66d9ef">char</span> source[<span style="color:#ae81ff">256</span>], sink[<span style="color:#ae81ff">256</span>], temp[<span style="color:#ae81ff">256</span>];
+
+    fd <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;./input.txt&#34;</span>, O_RDONLY);
+    read(fd, source, <span style="color:#ae81ff">256</span>), close(fd);
+
+    foo1(temp, source);
+    foo2(sink, temp);
+
+    fd <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;./output.txt&#34;</span>, O_WRONLY);
+    write(fd, sink, strlen(sink)), close(fd);
+
+    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> sink;
+
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p>Create an input file named <em>input.txt</em>, add some content to it. Create an output file named <em>output.txt</em>. The source code is pretty straightforward.</p>
+<p>Let&rsquo;s write a Pintool to taint and track the input data, named <em>tool.cpp</em>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// tool.cpp
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;pin.H&#34;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;asm/unistd.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;fstream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;list&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">/* bytes range tainted */</span>
+<span style="color:#66d9ef">struct</span> range
+{
+  UINT64 start;
+  UINT64 end;
+};
+
+std<span style="color:#f92672">::</span>list<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">struct</span> range<span style="color:#f92672">&gt;</span> bytesTainted;
+
+INT32 <span style="color:#a6e22e">Usage</span>()
+{
+    std<span style="color:#f92672">::</span>cerr <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Ex 1&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+}
+
+VOID <span style="color:#a6e22e">ReadMem</span>(UINT64 insAddr, std<span style="color:#f92672">::</span>string insDis, UINT64 memOp)
+{
+  std<span style="color:#f92672">::</span>list<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">struct</span> range<span style="color:#f92672">&gt;::</span>iterator i;
+  UINT64 addr <span style="color:#f92672">=</span> memOp;
+  
+  <span style="color:#66d9ef">for</span>(i <span style="color:#f92672">=</span> bytesTainted.begin(); i <span style="color:#f92672">!=</span> bytesTainted.end(); <span style="color:#f92672">++</span>i){
+      <span style="color:#66d9ef">if</span> (addr <span style="color:#f92672">&gt;=</span> i<span style="color:#f92672">-&gt;</span>start <span style="color:#f92672">&amp;&amp;</span> addr <span style="color:#f92672">&lt;</span> i<span style="color:#f92672">-&gt;</span>end){
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>hex <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;[READ in &#34;</span> <span style="color:#f92672">&lt;&lt;</span> addr <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;]</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&lt;&lt;</span> insAddr <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;: &#34;</span> <span style="color:#f92672">&lt;&lt;</span> insDis<span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+      }
+  } 
+}
+
+VOID <span style="color:#a6e22e">WriteMem</span>(UINT64 insAddr, std<span style="color:#f92672">::</span>string insDis, UINT64 memOp)
+{
+  std<span style="color:#f92672">::</span>list<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">struct</span> range<span style="color:#f92672">&gt;::</span>iterator i;
+  UINT64 addr <span style="color:#f92672">=</span> memOp;
+
+  <span style="color:#66d9ef">for</span>(i <span style="color:#f92672">=</span> bytesTainted.begin(); i <span style="color:#f92672">!=</span> bytesTainted.end(); <span style="color:#f92672">++</span>i){
+      <span style="color:#66d9ef">if</span> (addr <span style="color:#f92672">&gt;=</span> i<span style="color:#f92672">-&gt;</span>start <span style="color:#f92672">&amp;&amp;</span> addr <span style="color:#f92672">&lt;</span> i<span style="color:#f92672">-&gt;</span>end){
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>hex <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;[WRITE in &#34;</span> <span style="color:#f92672">&lt;&lt;</span> addr <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;]</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">&lt;&lt;</span> insAddr <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;: &#34;</span> <span style="color:#f92672">&lt;&lt;</span> insDis <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+      }
+  } 
+}
+
+VOID <span style="color:#a6e22e">Instruction</span>(INS ins, VOID <span style="color:#f92672">*</span>v)
+{
+  <span style="color:#66d9ef">if</span> (INS_MemoryOperandIsRead(ins, <span style="color:#ae81ff">0</span>) <span style="color:#f92672">&amp;&amp;</span> INS_OperandIsReg(ins, <span style="color:#ae81ff">0</span>)){
+    INS_InsertCall(
+        ins, IPOINT_BEFORE, (AFUNPTR)ReadMem,
+        IARG_ADDRINT, INS_Address(ins),
+        IARG_PTR, new std<span style="color:#f92672">::</span>string(INS_Disassemble(ins)),
+        IARG_MEMORYOP_EA, <span style="color:#ae81ff">0</span>,
+        IARG_END);
+  }
+  <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (INS_MemoryOperandIsWritten(ins, <span style="color:#ae81ff">0</span>)){
+    INS_InsertCall(
+        ins, IPOINT_BEFORE, (AFUNPTR)WriteMem,
+        IARG_ADDRINT, INS_Address(ins),
+        IARG_PTR, new std<span style="color:#f92672">::</span>string(INS_Disassemble(ins)),
+        IARG_MEMORYOP_EA, <span style="color:#ae81ff">0</span>,
+        IARG_END);
+  }
+}
+
+<span style="color:#66d9ef">static</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> lock;
+
+<span style="color:#75715e">#define TRICKS(){if (lock++ == 0)return;}
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">/* Taint from Syscalls */</span>
+VOID <span style="color:#a6e22e">Syscall_entry</span>(THREADID thread_id, CONTEXT <span style="color:#f92672">*</span>ctx, SYSCALL_STANDARD std, <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>v)
+{
+  <span style="color:#66d9ef">struct</span> range taint;
+
+  <span style="color:#75715e">/* Taint from read */</span>
+  <span style="color:#66d9ef">if</span> (PIN_GetSyscallNumber(ctx, std) <span style="color:#f92672">==</span> __NR_read){
+
+      TRICKS();
+
+      taint.start <span style="color:#f92672">=</span> static_cast<span style="color:#f92672">&lt;</span>UINT64<span style="color:#f92672">&gt;</span>((PIN_GetSyscallArgument(ctx, std, <span style="color:#ae81ff">1</span>)));
+      taint.end   <span style="color:#f92672">=</span> taint.start <span style="color:#f92672">+</span> static_cast<span style="color:#f92672">&lt;</span>UINT64<span style="color:#f92672">&gt;</span>((PIN_GetSyscallArgument(ctx, std, <span style="color:#ae81ff">2</span>)));
+      bytesTainted.push_back(taint);
+      std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;[TAINT]</span><span style="color:#ae81ff">\t\t\t</span><span style="color:#e6db74">bytes tainted from &#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>hex <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;0x&#34;</span> <span style="color:#f92672">&lt;&lt;</span> taint.start <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; to 0x&#34;</span> <span style="color:#f92672">&lt;&lt;</span> taint.end <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; (via read)&#34;</span><span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+  }
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[])
+{
+    <span style="color:#66d9ef">if</span>(PIN_Init(argc, argv)){
+        <span style="color:#66d9ef">return</span> Usage();
+    }
+    
+    PIN_SetSyntaxIntel();
+    PIN_AddSyscallEntryFunction(Syscall_entry, <span style="color:#ae81ff">0</span>);
+    INS_AddInstrumentFunction(Instruction, <span style="color:#ae81ff">0</span>);
+    PIN_StartProgram();
+    
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p>Some new methods have been used. I&rsquo;ll address them.</p>
+<p>The main function, <code>main</code>, is responsible to get Pin ready and started.</p>
+<ul>
+<li><code>PIN_AddSyscallEntryFunction</code>:
+<ul>
+<li>Registers a function to be called immediately before execution of a system call.</li>
+</ul>
+</li>
+</ul>
+<p>The pre-syscall handler function, <code>Syscall_entry</code>, checks if the syscall is a <em>read</em>, and taints the data accordingly. Uses a list where it inserts structured entries of starting and ending addresses</p>
+<ul>
+<li><code>PIN_GetSyscallNumber</code>:
+<ul>
+<li>Retrieves the syscall number, which is then checked against the number for <em>read</em>.</li>
+</ul>
+</li>
+<li><code>PIN_GetSyscallArgument</code>:
+<ul>
+<li>Get the value of the argument of the system call to be executed in the specified context. The change would generally be in the third argument, which is the ordinal number of the argument whose value is requested.</li>
+</ul>
+</li>
+</ul>
+<p>The instrumentation function, <code>Instruction</code>, cycles through all instructions and registers a callback depending on the instruction belonging to a <em>read</em> or <em>write</em> call.</p>
+<ul>
+<li><code>INS_MemoryOperandIsRead</code>:
+<ul>
+<li>Checks if memory operand <strong>memopIdx</strong> is read. It controls which memory operand to rewrite.</li>
+</ul>
+</li>
+<li><code>INS_OperandIsReg</code>:
+<ul>
+<li>Checks if this operand is a register.</li>
+</ul>
+</li>
+<li><code>INS_MemoryOperandIsWritten</code>:
+<ul>
+<li>Checks if memory operand <strong>memopIdx</strong> is written.</li>
+</ul>
+</li>
+</ul>
+<p>The analysis functions, <code>ReadMem</code> and <code>WriteMem</code>, simply iterates through the list of tainted addresses and prints the current instruction&rsquo;s address out if it&rsquo;s working with the tainted data or address. The first one checks if the accesses memory is in the tainted area, while the second one checks if the address being written to is in the tainted area.</p>
+<p>The output is as follows.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>TAINT<span style="color:#f92672">]</span>			bytes tainted from 0x7fffa28662e8 to 0x7fffa2866628 <span style="color:#f92672">(</span>via read<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>READ in 7fffa28662f0<span style="color:#f92672">]</span>	7f7b4c4965f4: movzx edx, byte ptr <span style="color:#f92672">[</span>r15+0x10<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa28662f8<span style="color:#f92672">]</span>	7f7b4c4966bd: movzx edi, word ptr <span style="color:#f92672">[</span>r15+0x18<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa2866320<span style="color:#f92672">]</span>	7f7b4c4966db: movzx ecx, word ptr <span style="color:#f92672">[</span>r15+0x40<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa2866308<span style="color:#f92672">]</span>	7f7b4c4966e0: mov r9, qword ptr <span style="color:#f92672">[</span>r15+0x28<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa2866460<span style="color:#f92672">]</span>	7f7b4c496741: mov rdx, qword ptr <span style="color:#f92672">[</span>rbx+0x20<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa2866470<span style="color:#f92672">]</span>	7f7b4c49674b: mov rax, qword ptr <span style="color:#f92672">[</span>rbx+0x30<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa2866448<span style="color:#f92672">]</span>	7f7b4c49675b: mov rcx, qword ptr <span style="color:#f92672">[</span>rbx+0x8<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa2866590<span style="color:#f92672">]</span>	7f7b4c4967c0: mov rax, qword ptr <span style="color:#f92672">[</span>r12<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa2866598<span style="color:#f92672">]</span>	7f7b4c4967c4: mov rcx, qword ptr <span style="color:#f92672">[</span>r12+0x8<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa2866470<span style="color:#f92672">]</span>	7f7b4c496990: mov rcx, qword ptr <span style="color:#f92672">[</span>rbx+0x30<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa2866590<span style="color:#f92672">]</span>	7f7b4c496994: mov eax, dword ptr <span style="color:#f92672">[</span>r12<span style="color:#f92672">]</span>
+.
+.
+.
+<span style="color:#f92672">[</span>READ in 7fffa2866558<span style="color:#f92672">]</span>	7f7b4c497570: mov edx, dword ptr <span style="color:#f92672">[</span>rbx<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa2866568<span style="color:#f92672">]</span>	7f7b4c4975a4: mov rdx, qword ptr <span style="color:#f92672">[</span>rbx+0x10<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa2866580<span style="color:#f92672">]</span>	7f7b4c4975b0: mov rdx, qword ptr <span style="color:#f92672">[</span>rbx+0x28<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa2866308<span style="color:#f92672">]</span>	7f7b4c497c82: mov rax, qword ptr <span style="color:#f92672">[</span>rdi+0x28<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa2866320<span style="color:#f92672">]</span>	7f7b4c497c8f: movzx edi, word ptr <span style="color:#f92672">[</span>rdi+0x40<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>WRITE in 7fffa2866620<span style="color:#f92672">]</span>	7f7b4c49921c: push rbp
+<span style="color:#f92672">[</span>WRITE in 7fffa2866618<span style="color:#f92672">]</span>	7f7b4c49921d: push rbx
+<span style="color:#f92672">[</span>TAINT<span style="color:#f92672">]</span>			bytes tainted from 0x7fffa28662c8 to 0x7fffa2866608 <span style="color:#f92672">(</span>via read<span style="color:#f92672">)</span>
+<span style="color:#f92672">[</span>READ in 7fffa28662d0<span style="color:#f92672">]</span>	7f7b4c4965f4: movzx edx, byte ptr <span style="color:#f92672">[</span>r15+0x10<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa28662d8<span style="color:#f92672">]</span>	7f7b4c4966bd: movzx edi, word ptr <span style="color:#f92672">[</span>r15+0x18<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa2866300<span style="color:#f92672">]</span>	7f7b4c4966db: movzx ecx, word ptr <span style="color:#f92672">[</span>r15+0x40<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa2866300<span style="color:#f92672">]</span>	7f7b4c4966db: movzx ecx, word ptr <span style="color:#f92672">[</span>r15+0x40<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa28662e8<span style="color:#f92672">]</span>	7f7b4c4966e0: mov r9, qword ptr <span style="color:#f92672">[</span>r15+0x28<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>READ in 7fffa28662e8<span style="color:#f92672">]</span>	7f7b4c4966e0: mov r9, qword ptr <span style="color:#f92672">[</span>r15+0x28<span style="color:#f92672">]</span>
+.
+.
+.
+<span style="color:#f92672">[</span>READ in 7fffa28665c8<span style="color:#f92672">]</span>	7f7b4c49a040: pop r13
+<span style="color:#f92672">[</span>READ in 7fffa28665c8<span style="color:#f92672">]</span>	7f7b4c49a040: pop r13
+<span style="color:#f92672">[</span>READ in 7fffa28665c8<span style="color:#f92672">]</span>	7f7b4c49a040: pop r13
+<span style="color:#f92672">[</span>READ in 7fffa28665d0<span style="color:#f92672">]</span>	7f7b4c49a042: pop r14
+<span style="color:#f92672">[</span>READ in 7fffa28665d0<span style="color:#f92672">]</span>	7f7b4c49a042: pop r14
+<span style="color:#f92672">[</span>READ in 7fffa28665d0<span style="color:#f92672">]</span>	7f7b4c49a042: pop r14
+<span style="color:#f92672">[</span>READ in 7fffa2866d20<span style="color:#f92672">]</span>	7f7b37d714e7: vpcmpeqb ymm1, ymm0, ymmword ptr <span style="color:#f92672">[</span>rdi<span style="color:#f92672">]</span>
+</code></pre></div><p>And there we have all the interactions with the tainted area.</p>
+<p>Credits for the guidance to NJU&rsquo;s SECLAB &ldquo;Software Security&rdquo; course.</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/dynamic">dynamic</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/taint">taint</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/pin">pin</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/dbi">dbi</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/syscall">syscall</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1200 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-06-16 05:30 &#43;0530</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://hexterisk.tech/blog/posts/2020/06/12/dynamic-binary-instrumentation-and-pin/">
+                                <span class="button__text">Dynamic Binary Instrumentation and Pin</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            
+                <span><a href="https://hexterisk.tech/blog">Bhanupratap Singh &copy; 2020</a></span>
+            
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content" style="margin-bottom: -0.8rem;">
+            <span><a style="text-decoration: none;" > .</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span><a style="text-decoration: none;" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></span>
+        </div> 
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://hexterisk.tech/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

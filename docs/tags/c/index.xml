@@ -6,26 +6,26 @@
     <description>Recent content in c on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Wed, 08 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 03 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hexterisk.tech/blog/tags/c/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Taint Analysis</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/08/taint-analysis/</link>
-      <pubDate>Wed, 08 Jan 2020 00:00:00 +0000</pubDate>
+      <link>https://hexterisk.tech/blog/posts/2020/05/03/taint-analysis/</link>
+      <pubDate>Sun, 03 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/01/08/taint-analysis/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/05/03/taint-analysis/</guid>
       <description>Taint Analysis is a program analysis technique that allows you to determine the influence that a selected program state has on other parts of the program state. Taint any data that a program receives from the network, track that data, and raise an alert if it affects the program counter. If an operation uses the value of some tainted object, say X, to derive a value for another, say Y, then object Y becomes tainted.</description>
     </item>
     
     <item>
       <title>Binary Instrumentation</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/07/binary-instrumentation/</link>
-      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
+      <link>https://hexterisk.tech/blog/posts/2020/04/25/binary-instrumentation/</link>
+      <pubDate>Sat, 25 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/01/07/binary-instrumentation/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/04/25/binary-instrumentation/</guid>
       <description>Inserting new code at any point in an existing binary to observe or modify the binary’s behavior in some way is called instrumenting the binary. The point where you add new code is called the instrumentation point, and the added code is called instrumentation code.
 Tradeoffs of Dynamic and Static Binary Instrumentation.
 Static Binary Instrumentation Static Binary Instrumentation works by disassembling a binary and then adding instrumentation code where needed and storing the updated binary permanently on disk.</description>
@@ -33,14 +33,43 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
     
     <item>
       <title>Disassembly and Binary Analysis Fundamentals</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/05/disassembly-and-binary-analysis-fundamentals/</link>
-      <pubDate>Sun, 05 Jan 2020 00:00:00 +0000</pubDate>
+      <link>https://hexterisk.tech/blog/posts/2020/03/12/disassembly-and-binary-analysis-fundamentals/</link>
+      <pubDate>Thu, 12 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/01/05/disassembly-and-binary-analysis-fundamentals/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/03/12/disassembly-and-binary-analysis-fundamentals/</guid>
       <description>##Static Disassembly
 When people say disassembly, they usually mean static disassembly, which involves extracting the instructions from a binary without executing it.
 Linear Disassembly Disassembly desynchronization due to inline data interpreted as code. The instruction where the disassembly resynchronizes is shaded gray.
  It iterates through all code segments in a binary, decoding all bytes consecutively and parsing them into a list of instructions. Many simple disassemblers, including objdump, use this approach.</description>
+    </item>
+    
+    <item>
+      <title>The PE Format</title>
+      <link>https://hexterisk.tech/blog/posts/2020/03/03/the-pe-format/</link>
+      <pubDate>Tue, 03 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/03/03/the-pe-format/</guid>
+      <description>PE is a modified version of the Common Object File Format (COFF), thus also referred to as PE/COFF. The 64-bit version of PE is called PE32+. The structure is defined in WinNT.h, which is included in the Microsoft Windows Software Developer Kit.  PE32+ binary structure
+ An MS-DOS header is included for backward compatibility. Thus it can also be interpreted as an MS-DOS binary. The main function of the MS-DOS header is to describe how to load and execute an MS-DOS stub, which comes right after the MSDOS header.</description>
+    </item>
+    
+    <item>
+      <title>The ELF Format</title>
+      <link>https://hexterisk.tech/blog/posts/2020/03/01/the-elf-format/</link>
+      <pubDate>Sun, 01 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/03/01/the-elf-format/</guid>
+      <description>ELF binaries really consist of only four types of components:  Executable Header Program Headers (optional) Sections Section Headers, one per section (optional)  64-bit ELF binary structure
+Executable Header  Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata. Format of executable header: /usr/include/elf.h  typedef struct { unsigned char e_ident[16]; /* Magic number and other info */ uint16_t e_type; /* Object file type */ uint16_t e_machine; /* Architecture */ uint32_t e_version; /* Object file version */ uint64_t e_entry; /* Entry point virtual address */ uint64_t e_phoff; /* Program header table file offset */ uint64_t e_shoff; /* Section header table file offset */ uint32_t e_flags; /* Processor-specific flags */ uint16_t e_ehsize; /* ELF header size in bytes */ uint16_t e_phentsize; /* Program header table entry size */ uint16_t e_phnum; /* Program header table entry count */ uint16_t e_shentsize; /* Section header table entry size */ uint16_t e_shnum; /* Section header table entry count */ uint16_t e_shstrndx; /* Section header string table index */ } Elf64_Ehdr; Section Headers  The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called Sections.</description>
+    </item>
+    
+    <item>
+      <title>Anatomy of a Binary</title>
+      <link>https://hexterisk.tech/blog/posts/2020/02/28/anatomy-of-a-binary/</link>
+      <pubDate>Fri, 28 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.tech/blog/posts/2020/02/28/anatomy-of-a-binary/</guid>
+      <description>The C Compilation Process  Compilation is the process of translating human readable source code into machine code that the processor can execute. Binary Code is the machine code that systems execute. Binary Executable Files, or Binaries, store the executable binary program, that is, the code and data belonging to each program.  #include &amp;lt;stdio.h&amp;gt;#define FORMAT_STRING &amp;#34;%s&amp;#34; #define MESSAGE &amp;#34;Hello, world!\n&amp;#34;  int main(int argc, char *argv[]) { printf(FORMAT_STRING, MESSAGE); return 0; } The C Compilation Process</description>
     </item>
     
     <item>
@@ -51,35 +80,6 @@ Linear Disassembly Disassembly desynchronization due to inline data interpreted 
       <guid>https://hexterisk.tech/blog/posts/2020/01/04/trace-analysis/</guid>
       <description>System Call Trace strace can be used to investigate system call behavior. In some cases, you may want to attach strace to a running process. To do this, you need to use the -p pid option, where pid is the process ID of the process you want to attach to.
 $ strace ./ctf show_me_the_flag ➊ execve(&amp;#34;./ctf&amp;#34;, [&amp;#34;./ctf&amp;#34;, &amp;#34;show_me_the_flag&amp;#34;], [/* 73 vars */]) = 0 brk(NULL) = 0x1053000 access(&amp;#34;/etc/ld.so.nohwcap&amp;#34;, F_OK) = -1 ENOENT (No such file or directory) mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f703477e000 access(&amp;#34;/etc/ld.</description>
-    </item>
-    
-    <item>
-      <title>The PE Format</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/03/the-pe-format/</link>
-      <pubDate>Fri, 03 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/01/03/the-pe-format/</guid>
-      <description>PE is a modified version of the Common Object File Format (COFF), thus also referred to as PE/COFF. The 64-bit version of PE is called PE32+. The structure is defined in WinNT.h, which is included in the Microsoft Windows Software Developer Kit.  PE32+ binary structure
- An MS-DOS header is included for backward compatibility. Thus it can also be interpreted as an MS-DOS binary. The main function of the MS-DOS header is to describe how to load and execute an MS-DOS stub, which comes right after the MSDOS header.</description>
-    </item>
-    
-    <item>
-      <title>The ELF Format</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/02/the-elf-format/</link>
-      <pubDate>Thu, 02 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/01/02/the-elf-format/</guid>
-      <description>ELF binaries really consist of only four types of components:  Executable Header Program Headers (optional) Sections Section Headers, one per section (optional)  64-bit ELF binary structure
-Executable Header  Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata. Format of executable header: /usr/include/elf.h  typedef struct { unsigned char e_ident[16]; /* Magic number and other info */ uint16_t e_type; /* Object file type */ uint16_t e_machine; /* Architecture */ uint32_t e_version; /* Object file version */ uint64_t e_entry; /* Entry point virtual address */ uint64_t e_phoff; /* Program header table file offset */ uint64_t e_shoff; /* Section header table file offset */ uint32_t e_flags; /* Processor-specific flags */ uint16_t e_ehsize; /* ELF header size in bytes */ uint16_t e_phentsize; /* Program header table entry size */ uint16_t e_phnum; /* Program header table entry count */ uint16_t e_shentsize; /* Section header table entry size */ uint16_t e_shnum; /* Section header table entry count */ uint16_t e_shstrndx; /* Section header string table index */ } Elf64_Ehdr; Section Headers  The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called Sections.</description>
-    </item>
-    
-    <item>
-      <title>Anatomy of a Binary</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/01/anatomy-of-a-binary/</link>
-      <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.tech/blog/posts/2020/01/01/anatomy-of-a-binary/</guid>
-      <description>The C Compilation Process  Compilation is the process of translating human readable source code into machine code that the processor can execute. Binary Code is the machine code that systems execute. Binary Executable Files, or Binaries, store the executable binary program, that is, the code and data belonging to each program.  #include &amp;lt;stdio.h&amp;gt;#define FORMAT_STRING &amp;#34;%s&amp;#34; #define MESSAGE &amp;#34;Hello, world!\n&amp;#34;  int main(int argc, char *argv[]) { printf(FORMAT_STRING, MESSAGE); return 0; } The C Compilation Process</description>
     </item>
     
   </channel>

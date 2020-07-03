@@ -1,7 +1,7 @@
 ---
 author:
   name: "hexterisk"
-date: 2020-06-12
+date: 2020-06-03
 linktitle: Dynamic Binary Instrumentation and Pin
 type:
 - post

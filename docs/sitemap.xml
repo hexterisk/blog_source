@@ -3,28 +3,28 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://hexterisk.tech/blog/posts/2020/06/16/dynamic-taint-analysis-and-pin/</loc>
-    <lastmod>2020-06-16T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hexterisk.tech/blog/posts/2020/06/12/dynamic-binary-instrumentation-and-pin/</loc>
+    <loc>https://hexterisk.tech/blog/posts/2020/06/12/dynamic-taint-analysis-and-pin/</loc>
     <lastmod>2020-06-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://hexterisk.tech/blog/posts/2020/06/07/source-code-instrumentation-and-llvm/</loc>
-    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hexterisk.tech/blog/posts/2020/06/03/symbolic-execution-and-angr/</loc>
+    <loc>https://hexterisk.tech/blog/posts/2020/06/03/dynamic-binary-instrumentation-and-pin/</loc>
     <lastmod>2020-06-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://hexterisk.tech/blog/posts/2020/05/31/constraint-solvers-and-z3/</loc>
-    <lastmod>2020-05-31T00:00:00+00:00</lastmod>
+    <loc>https://hexterisk.tech/blog/posts/2020/05/26/source-code-instrumentation-and-llvm/</loc>
+    <lastmod>2020-05-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.tech/blog/posts/2020/05/21/symbolic-execution-and-angr/</loc>
+    <lastmod>2020-05-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.tech/blog/posts/2020/05/15/constraint-solvers-and-z3/</loc>
+    <lastmod>2020-05-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -88,28 +88,33 @@
   </url>
   
   <url>
-    <loc>https://hexterisk.tech/blog/posts/2020/03/16/simple-code-injection-techniques-for-elf/</loc>
+    <loc>https://hexterisk.tech/blog/posts/2020/03/19/simple-code-injection-techniques-for-elf/</loc>
+    <lastmod>2020-03-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.tech/blog/posts/2020/03/16/disassembly-and-binary-analysis-fundamentals/</loc>
     <lastmod>2020-03-16T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://hexterisk.tech/blog/posts/2020/03/12/disassembly-and-binary-analysis-fundamentals/</loc>
-    <lastmod>2020-03-12T00:00:00+00:00</lastmod>
+    <loc>https://hexterisk.tech/blog/posts/2020/03/13/trace-analysis/</loc>
+    <lastmod>2020-03-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://hexterisk.tech/blog/posts/2020/03/09/stack-and-its-frames/</loc>
-    <lastmod>2020-03-09T00:00:00+00:00</lastmod>
+    <loc>https://hexterisk.tech/blog/posts/2020/03/10/stack-and-its-frames/</loc>
+    <lastmod>2020-03-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://hexterisk.tech/blog/posts/2020/03/03/the-pe-format/</loc>
+    <loc>https://hexterisk.tech/blog/posts/2020/03/06/the-pe-format/</loc>
+    <lastmod>2020-03-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.tech/blog/posts/2020/03/03/the-elf-format/</loc>
     <lastmod>2020-03-03T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hexterisk.tech/blog/posts/2020/03/01/the-elf-format/</loc>
-    <lastmod>2020-03-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -123,168 +128,163 @@
   </url>
   
   <url>
-    <loc>https://hexterisk.tech/blog/posts/2020/01/04/trace-analysis/</loc>
-    <lastmod>2020-01-04T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://hexterisk.tech/blog/tags/binary/</loc>
-    <lastmod>2020-06-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/categories/</loc>
-    <lastmod>2020-06-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/dbi/</loc>
-    <lastmod>2020-06-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/dynamic/</loc>
-    <lastmod>2020-06-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/pin/</loc>
-    <lastmod>2020-06-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/posts/</loc>
-    <lastmod>2020-06-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/categories/practical-binary-analysis/</loc>
-    <lastmod>2020-06-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/</loc>
-    <lastmod>2020-06-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/syscall/</loc>
-    <lastmod>2020-06-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/</loc>
-    <lastmod>2020-06-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/taint/</loc>
-    <lastmod>2020-06-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/aslr/</loc>
-    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/bbl/</loc>
-    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/debugging/</loc>
-    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/granularity/</loc>
-    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/img/</loc>
-    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/jit/</loc>
-    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/probe/</loc>
-    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/trace/</loc>
-    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/instrument/</loc>
-    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
+    <lastmod>2020-05-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/ir/</loc>
-    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
+    <lastmod>2020-05-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/linear/</loc>
-    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
+    <lastmod>2020-05-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/llvm/</loc>
-    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
+    <lastmod>2020-05-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/source/</loc>
-    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
+    <lastmod>2020-05-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/stack/</loc>
-    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
+    <lastmod>2020-05-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/three-address-code/</loc>
-    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
+    <lastmod>2020-05-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/tuple/</loc>
-    <lastmod>2020-06-07T00:00:00+00:00</lastmod>
+    <lastmod>2020-05-26T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/constraints/</loc>
-    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
+    <lastmod>2020-05-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/execution/</loc>
-    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
+    <lastmod>2020-05-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/expression/</loc>
-    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
+    <lastmod>2020-05-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/path/</loc>
-    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
+    <lastmod>2020-05-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/symbols/</loc>
-    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
+    <lastmod>2020-05-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -554,67 +554,67 @@
   
   <url>
     <loc>https://hexterisk.tech/blog/categories/basic-binary-analysis/</loc>
-    <lastmod>2020-03-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/code/</loc>
-    <lastmod>2020-03-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/elf/</loc>
-    <lastmod>2020-03-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/hijack/</loc>
-    <lastmod>2020-03-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/injection/</loc>
-    <lastmod>2020-03-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/objdump/</loc>
-    <lastmod>2020-03-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/readelf/</loc>
-    <lastmod>2020-03-16T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/control-flow/</loc>
-    <lastmod>2020-03-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-16T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/disassembly/</loc>
-    <lastmod>2020-03-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-16T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/fuzzer/</loc>
-    <lastmod>2020-03-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-16T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/symbol/</loc>
-    <lastmod>2020-03-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-16T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/headers/</loc>
-    <lastmod>2020-03-01T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://hexterisk.tech/blog/tags/sections/</loc>
-    <lastmod>2020-03-01T00:00:00+00:00</lastmod>
+    <lastmod>2020-03-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>

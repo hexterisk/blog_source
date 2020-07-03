@@ -13,7 +13,7 @@
 		        	    <div class="posts-group">
 			            <div class="post-year">{{ $key }}</div>
 					<ul class="posts-list">
-		                	    {{- range .Pages }}
+		                	    {{- range .Pages.ByDate }}
 		                            <li class="post-item">
 		                                <a href="{{.Permalink}}">
 		                                <span class="post-title">{{.Title}}</span>

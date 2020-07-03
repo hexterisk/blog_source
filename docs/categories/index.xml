@@ -6,7 +6,7 @@
     <description>Recent content in Categories on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Tue, 16 Jun 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 12 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hexterisk.tech/blog/categories/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>practical-binary-analysis</title>
       <link>https://hexterisk.tech/blog/categories/practical-binary-analysis/</link>
-      <pubDate>Tue, 16 Jun 2020 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/categories/practical-binary-analysis/</guid>
       <description></description>
@@ -50,7 +50,7 @@
     <item>
       <title>basic-binary-analysis</title>
       <link>https://hexterisk.tech/blog/categories/basic-binary-analysis/</link>
-      <pubDate>Mon, 16 Mar 2020 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/categories/basic-binary-analysis/</guid>
       <description></description>

@@ -32,23 +32,23 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
     </item>
     
     <item>
-      <title>The PE Format</title>
-      <link>https://hexterisk.tech/blog/posts/2020/03/03/the-pe-format/</link>
-      <pubDate>Tue, 03 Mar 2020 00:00:00 +0000</pubDate>
+      <title>Trace Analysis</title>
+      <link>https://hexterisk.tech/blog/posts/2020/03/13/trace-analysis/</link>
+      <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/03/03/the-pe-format/</guid>
-      <description>PE is a modified version of the Common Object File Format (COFF), thus also referred to as PE/COFF. The 64-bit version of PE is called PE32+. The structure is defined in WinNT.h, which is included in the Microsoft Windows Software Developer Kit.  PE32+ binary structure
- An MS-DOS header is included for backward compatibility. Thus it can also be interpreted as an MS-DOS binary. The main function of the MS-DOS header is to describe how to load and execute an MS-DOS stub, which comes right after the MSDOS header.</description>
+      <guid>https://hexterisk.tech/blog/posts/2020/03/13/trace-analysis/</guid>
+      <description>System Call Trace strace can be used to investigate system call behavior. In some cases, you may want to attach strace to a running process. To do this, you need to use the -p pid option, where pid is the process ID of the process you want to attach to.
+$ strace ./ctf show_me_the_flag ➊ execve(&amp;#34;./ctf&amp;#34;, [&amp;#34;./ctf&amp;#34;, &amp;#34;show_me_the_flag&amp;#34;], [/* 73 vars */]) = 0 brk(NULL) = 0x1053000 access(&amp;#34;/etc/ld.so.nohwcap&amp;#34;, F_OK) = -1 ENOENT (No such file or directory) mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f703477e000 access(&amp;#34;/etc/ld.</description>
     </item>
     
     <item>
-      <title>Trace Analysis</title>
-      <link>https://hexterisk.tech/blog/posts/2020/01/04/trace-analysis/</link>
-      <pubDate>Sat, 04 Jan 2020 00:00:00 +0000</pubDate>
+      <title>The PE Format</title>
+      <link>https://hexterisk.tech/blog/posts/2020/03/06/the-pe-format/</link>
+      <pubDate>Fri, 06 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/01/04/trace-analysis/</guid>
-      <description>System Call Trace strace can be used to investigate system call behavior. In some cases, you may want to attach strace to a running process. To do this, you need to use the -p pid option, where pid is the process ID of the process you want to attach to.
-$ strace ./ctf show_me_the_flag ➊ execve(&amp;#34;./ctf&amp;#34;, [&amp;#34;./ctf&amp;#34;, &amp;#34;show_me_the_flag&amp;#34;], [/* 73 vars */]) = 0 brk(NULL) = 0x1053000 access(&amp;#34;/etc/ld.so.nohwcap&amp;#34;, F_OK) = -1 ENOENT (No such file or directory) mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f703477e000 access(&amp;#34;/etc/ld.</description>
+      <guid>https://hexterisk.tech/blog/posts/2020/03/06/the-pe-format/</guid>
+      <description>PE is a modified version of the Common Object File Format (COFF), thus also referred to as PE/COFF. The 64-bit version of PE is called PE32+. The structure is defined in WinNT.h, which is included in the Microsoft Windows Software Developer Kit.  PE32+ binary structure
+ An MS-DOS header is included for backward compatibility. Thus it can also be interpreted as an MS-DOS binary. The main function of the MS-DOS header is to describe how to load and execute an MS-DOS stub, which comes right after the MSDOS header.</description>
     </item>
     
   </channel>

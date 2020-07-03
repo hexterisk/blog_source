@@ -10,7 +10,7 @@ Executable Header  Every ELF file starts with an executable header, which is jus
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/03/01/the-elf-format/" />
+<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/03/03/the-elf-format/" />
 
 
     <title>
@@ -43,8 +43,8 @@ Executable Header  Every ELF file starts with an executable header, which is jus
 <meta itemprop="name" content="The ELF Format">
 <meta itemprop="description" content="ELF binaries really consist of only four types of components:  Executable Header Program Headers (optional) Sections Section Headers, one per section (optional)  64-bit ELF binary structure
 Executable Header  Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata. Format of executable header: /usr/include/elf.h  typedef struct { unsigned char e_ident[16]; /* Magic number and other info */ uint16_t e_type; /* Object file type */ uint16_t e_machine; /* Architecture */ uint32_t e_version; /* Object file version */ uint64_t e_entry; /* Entry point virtual address */ uint64_t e_phoff; /* Program header table file offset */ uint64_t e_shoff; /* Section header table file offset */ uint32_t e_flags; /* Processor-specific flags */ uint16_t e_ehsize; /* ELF header size in bytes */ uint16_t e_phentsize; /* Program header table entry size */ uint16_t e_phnum; /* Program header table entry count */ uint16_t e_shentsize; /* Section header table entry size */ uint16_t e_shnum; /* Section header table entry count */ uint16_t e_shstrndx; /* Section header string table index */ } Elf64_Ehdr; Section Headers  The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called Sections.">
-<meta itemprop="datePublished" content="2020-03-01T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2020-03-01T00:00:00&#43;00:00" />
+<meta itemprop="datePublished" content="2020-03-03T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-03-03T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="2686">
 <meta itemprop="image" content="https://hexterisk.tech/blog"/>
 
@@ -63,7 +63,7 @@ Executable Header  Every ELF file starts with an executable header, which is jus
 
 
 
-    <meta property="article:published_time" content="2020-03-01 00:00:00 &#43;0000 UTC" />
+    <meta property="article:published_time" content="2020-03-03 00:00:00 &#43;0000 UTC" />
 
 
 
@@ -129,7 +129,7 @@ Executable Header  Every ELF file starts with an executable header, which is jus
 
         <article>
             <h1 class="post-title">
-                <a href="https://hexterisk.tech/blog/posts/2020/03/01/the-elf-format/">The ELF Format</a>
+                <a href="https://hexterisk.tech/blog/posts/2020/03/03/the-elf-format/">The ELF Format</a>
             </h1>
 
             
@@ -391,7 +391,7 @@ Segment Sections...
 
             <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2686 Words</p>
 
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-03-01 05:30 &#43;0530</p>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-03-03 05:30 &#43;0530</p>
         </div>
 
         
@@ -404,7 +404,7 @@ Segment Sections...
                 <div class="pagination__buttons">
                     
                         <span class="button previous">
-                            <a href="https://hexterisk.tech/blog/posts/2020/03/03/the-pe-format/">
+                            <a href="https://hexterisk.tech/blog/posts/2020/03/06/the-pe-format/">
                                 <span class="button__icon">←</span>
                                 <span class="button__text">The PE Format</span>
                             </a>

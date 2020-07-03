@@ -6,7 +6,7 @@
     <description>Recent content in Tags on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Tue, 16 Jun 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 12 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hexterisk.tech/blog/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>binary</title>
       <link>https://hexterisk.tech/blog/tags/binary/</link>
-      <pubDate>Tue, 16 Jun 2020 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/tags/binary/</guid>
       <description></description>
@@ -23,7 +23,7 @@
     <item>
       <title>dbi</title>
       <link>https://hexterisk.tech/blog/tags/dbi/</link>
-      <pubDate>Tue, 16 Jun 2020 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/tags/dbi/</guid>
       <description></description>
@@ -32,7 +32,7 @@
     <item>
       <title>dynamic</title>
       <link>https://hexterisk.tech/blog/tags/dynamic/</link>
-      <pubDate>Tue, 16 Jun 2020 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/tags/dynamic/</guid>
       <description></description>
@@ -41,7 +41,7 @@
     <item>
       <title>pin</title>
       <link>https://hexterisk.tech/blog/tags/pin/</link>
-      <pubDate>Tue, 16 Jun 2020 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/tags/pin/</guid>
       <description></description>
@@ -50,7 +50,7 @@
     <item>
       <title>syscall</title>
       <link>https://hexterisk.tech/blog/tags/syscall/</link>
-      <pubDate>Tue, 16 Jun 2020 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/tags/syscall/</guid>
       <description></description>
@@ -59,7 +59,7 @@
     <item>
       <title>taint</title>
       <link>https://hexterisk.tech/blog/tags/taint/</link>
-      <pubDate>Tue, 16 Jun 2020 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/tags/taint/</guid>
       <description></description>
@@ -68,7 +68,7 @@
     <item>
       <title>aslr</title>
       <link>https://hexterisk.tech/blog/tags/aslr/</link>
-      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/tags/aslr/</guid>
       <description></description>
@@ -77,7 +77,7 @@
     <item>
       <title>bbl</title>
       <link>https://hexterisk.tech/blog/tags/bbl/</link>
-      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/tags/bbl/</guid>
       <description></description>
@@ -86,7 +86,7 @@
     <item>
       <title>debugging</title>
       <link>https://hexterisk.tech/blog/tags/debugging/</link>
-      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/tags/debugging/</guid>
       <description></description>
@@ -95,7 +95,7 @@
     <item>
       <title>granularity</title>
       <link>https://hexterisk.tech/blog/tags/granularity/</link>
-      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.tech/blog/tags/granularity/</guid>
       <description></description>

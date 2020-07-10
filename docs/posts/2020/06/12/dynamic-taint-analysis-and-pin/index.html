@@ -9,7 +9,7 @@
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/06/12/dynamic-taint-analysis-and-pin/" />
+<link rel="canonical" href="https://hexterisk.github.io/blog/posts/2020/06/12/dynamic-taint-analysis-and-pin/" />
 
 
     <title>
@@ -25,17 +25,17 @@
 
 
 
-<link rel="stylesheet" href="https://hexterisk.tech/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
 
 
 
 
-    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.tech/blog/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.tech/blog/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.tech/blog/favicon-16x16.png">
-    <link rel="manifest" href="https://hexterisk.tech/blog/site.webmanifest">
-    <link rel="mask-icon" href="https://hexterisk.tech/blog/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="https://hexterisk.tech/blog/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
     <meta name="msapplication-TileColor" content="#252627">
     <meta name="theme-color" content="#252627">
 
@@ -44,12 +44,12 @@
 <meta itemprop="datePublished" content="2020-06-12T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-06-12T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="1200">
-<meta itemprop="image" content="https://hexterisk.tech/blog"/>
+<meta itemprop="image" content="https://hexterisk.github.io/blog"/>
 
 
 
 <meta itemprop="keywords" content="binary,dynamic,taint,pin,dbi,syscall," /><meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://hexterisk.tech/blog"/>
+<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
 
 <meta name="twitter:title" content="Dynamic Taint Analysis and Pin"/>
 <meta name="twitter:description" content="Dynamic Taint Analysis is a technique used to discover what part of memory or register are controllable by the some data we are interested, such as the user input, at a given program state. This is done by marking the interested data. There on after, any piece of data that comes in contact with the tainted data by any means, like getting computed from the tainted data, is tainted too, thus spreading the taint throughout the execution."/>
@@ -75,7 +75,7 @@
         <div class="container">
             <header class="header">
     <span class="header__inner">
-        <a href="https://hexterisk.tech/blog/" style="text-decoration: none;">
+        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
     <div class="logo">
         
             <span class="logo__mark">></span>
@@ -89,7 +89,7 @@
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="https://hexterisk.tech/blog/about/">About</a></li><li><a href="https://hexterisk.tech/blog/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
     </ul>
 </nav>
 
@@ -126,14 +126,14 @@
 
         <article>
             <h1 class="post-title">
-                <a href="https://hexterisk.tech/blog/posts/2020/06/12/dynamic-taint-analysis-and-pin/">Dynamic Taint Analysis and Pin</a>
+                <a href="https://hexterisk.github.io/blog/posts/2020/06/12/dynamic-taint-analysis-and-pin/">Dynamic Taint Analysis and Pin</a>
             </h1>
 
             
 
             <div class="post-content">
                 <p><strong>Dynamic Taint Analysis</strong> is a technique used to discover what part of memory or register are controllable by the some data we are interested, such as the user input, at a given program state. This is done by marking the interested data. There on after, any piece of data that comes in contact with the tainted data by any means, like getting computed from the tainted data, is tainted too, thus spreading the taint throughout the execution.</p>
-<p><img src="https://hexterisk.tech/blog/Dynamic_Taint_Analysis_and_Pin/image.png" alt="&ldquo;prop&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Dynamic_Taint_Analysis_and_Pin/image.png" alt="&ldquo;prop&rdquo;">
 <em>Taint propogration.</em></p>
 <p>Regions of interest are:</p>
 <ul>
@@ -378,7 +378,7 @@ VOID <span style="color:#a6e22e">Syscall_entry</span>(THREADID thread_id, CONTEX
 
         <div class="post-info">
                 <p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/dynamic">dynamic</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/taint">taint</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/pin">pin</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/dbi">dbi</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/syscall">syscall</a></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/dynamic">dynamic</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/taint">taint</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/pin">pin</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/dbi">dbi</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/syscall">syscall</a></span>
                 </p>
 
             <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1200 Words</p>
@@ -398,7 +398,7 @@ VOID <span style="color:#a6e22e">Syscall_entry</span>(THREADID thread_id, CONTEX
 
                     
                         <span class="button next">
-                            <a href="https://hexterisk.tech/blog/posts/2020/06/03/dynamic-binary-instrumentation-and-pin/">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/06/03/dynamic-binary-instrumentation-and-pin/">
                                 <span class="button__text">Dynamic Binary Instrumentation and Pin</span>
                                 <span class="button__icon">→</span>
                             </a>
@@ -418,7 +418,7 @@ VOID <span style="color:#a6e22e">Syscall_entry</span>(THREADID thread_id, CONTEX
     <div class="footer__inner">
         <div class="footer__content">
             
-                <span><a href="https://hexterisk.tech/blog">Bhanupratap Singh &copy; 2020</a></span>
+                <span><a href="https://hexterisk.github.io/blog">Bhanupratap Singh &copy; 2020</a></span>
             
         </div>
     </div>
@@ -448,7 +448,7 @@ VOID <span style="color:#a6e22e">Syscall_entry</span>(THREADID thread_id, CONTEX
 
 
 
-<script type="text/javascript" src="https://hexterisk.tech/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
 
 
 

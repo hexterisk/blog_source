@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Diffie-Hellman on Pwn the world.</title>
-    <link>https://hexterisk.tech/blog/tags/diffie-hellman/</link>
+    <link>https://hexterisk.github.io/blog/tags/diffie-hellman/</link>
     <description>Recent content in Diffie-Hellman on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Thu, 02 Apr 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://hexterisk.tech/blog/tags/diffie-hellman/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hexterisk.github.io/blog/tags/diffie-hellman/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Set 5</title>
-      <link>https://hexterisk.tech/blog/posts/2020/04/02/set-5/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/04/02/set-5/</link>
       <pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/04/02/set-5/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/04/02/set-5/</guid>
       <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
 Challenge 33: Implement Diffie-Hellman Link
  For one of the most important algorithms in cryptography this exercise couldn&amp;rsquo;t be a whole lot easier.

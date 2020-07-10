@@ -11,7 +11,7 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/04/25/binary-instrumentation/" />
+<link rel="canonical" href="https://hexterisk.github.io/blog/posts/2020/04/25/binary-instrumentation/" />
 
 
     <title>
@@ -27,17 +27,17 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
 
 
 
-<link rel="stylesheet" href="https://hexterisk.tech/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
 
 
 
 
-    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.tech/blog/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.tech/blog/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.tech/blog/favicon-16x16.png">
-    <link rel="manifest" href="https://hexterisk.tech/blog/site.webmanifest">
-    <link rel="mask-icon" href="https://hexterisk.tech/blog/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="https://hexterisk.tech/blog/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
     <meta name="msapplication-TileColor" content="#252627">
     <meta name="theme-color" content="#252627">
 
@@ -48,12 +48,12 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
 <meta itemprop="datePublished" content="2020-04-25T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-04-25T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="1566">
-<meta itemprop="image" content="https://hexterisk.tech/blog"/>
+<meta itemprop="image" content="https://hexterisk.github.io/blog"/>
 
 
 
 <meta itemprop="keywords" content="binary,rev,reversing,c,pe,windows,instrumentation," /><meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://hexterisk.tech/blog"/>
+<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
 
 <meta name="twitter:title" content="Binary Instrumentation"/>
 <meta name="twitter:description" content="Inserting new code at any point in an existing binary to observe or modify the binary’s behavior in some way is called instrumenting the binary. The point where you add new code is called the instrumentation point, and the added code is called instrumentation code.
@@ -81,7 +81,7 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
         <div class="container">
             <header class="header">
     <span class="header__inner">
-        <a href="https://hexterisk.tech/blog/" style="text-decoration: none;">
+        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
     <div class="logo">
         
             <span class="logo__mark">></span>
@@ -95,7 +95,7 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="https://hexterisk.tech/blog/about/">About</a></li><li><a href="https://hexterisk.tech/blog/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
     </ul>
 </nav>
 
@@ -132,19 +132,19 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
 
         <article>
             <h1 class="post-title">
-                <a href="https://hexterisk.tech/blog/posts/2020/04/25/binary-instrumentation/">Binary Instrumentation</a>
+                <a href="https://hexterisk.github.io/blog/posts/2020/04/25/binary-instrumentation/">Binary Instrumentation</a>
             </h1>
 
             
 
             <div class="post-content">
                 <p>Inserting new code at any point in an existing binary to observe or modify the binary’s behavior in some way is called <strong>instrumenting</strong> the binary. The point where you add new code is called the <strong>instrumentation point</strong>, and the added code is called <strong>instrumentation code</strong>.</p>
-<p><img src="https://hexterisk.tech/blog/Binary_Instrumentation/3_image.png" alt="&ldquo;tradeoffs&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Binary_Instrumentation/3_image.png" alt="&ldquo;tradeoffs&rdquo;">
 <em>Tradeoffs of Dynamic and Static Binary Instrumentation.</em></p>
 <h2 id="static-binary-instrumentation">Static Binary Instrumentation</h2>
 <p><strong>Static Binary Instrumentation</strong> works by disassembling a binary and then adding instrumentation code where needed and storing the updated binary permanently on disk.</p>
 <h3 id="naive-implementation">Naive Implementation</h3>
-<p><img src="https://hexterisk.tech/blog/Binary_Instrumentation/image.png" alt="&ldquo;sbi&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Binary_Instrumentation/image.png" alt="&ldquo;sbi&rdquo;">
 <em>A nongeneric SBI approach that uses jmp to hook instrumentation points.</em></p>
 <p>Instrumenting the instruction ➊, add instrumentation code to run before and after that instruction. Overwrite it with a <em>jmp</em> to your instrumentation code ➋, stored in a separate code section or library. The instrumentation code runs any pre-instrumentation code ➌, the original instruction ➍ and then the post-instrumentation code ➎. Finally, the instrumentation code jumps back to the instruction following the instrumentation point ➏, resuming normal execution.</p>
 <p>The issue is that a <em>jmp</em> instruction is 5-bytes, 1 opcode byte with a 32-bit offset. Replacing an instruction with a smaller byte-length will overwrite following bytes, such as instrumenting a <em>xor esi,esi (2-bytes)</em> would require replacing it with a 5-byte <em>jmp</em>.</p>
@@ -152,11 +152,11 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
 <p>The x86 int3 instruction generates a software interrupt that are caught as (on Linux) <strong>SIGTRAP signals</strong>. It’s only 1 byte long, so any instruction can be overwritten with it. On SIGTRAP, use Linux’s ptrace API to find out at which address the interrupt occurred, telling you the instrumentation point address. You can then invoke the appropriate instrumentation code for that instrumentation point.</p>
 <h3 id="trampoline-approach">Trampoline Approach</h3>
 <h5 id="direct-calls">Direct Calls</h5>
-<p><img src="https://hexterisk.tech/blog/Binary_Instrumentation/1_image.png" alt="&ldquo;trampolines&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Binary_Instrumentation/1_image.png" alt="&ldquo;trampolines&rdquo;">
 <em>Static binary instrumentation with trampolines.</em></p>
 <p>SBI engine creates copies of all the original functions, places them in a new code section, and overwrites the first instruction of each original function with  <em>jmp</em> instructions called <strong>trampolines</strong> to redirect the original code to the instrumented copy. Whenever a call or jump transfers control to a part of the original code, the trampoline at that location immediately jumps to the corresponding instrumented code. Instruction <em>jmp</em> is 5-bytes, so it may partially overwrite and corrupt multiple instructions, creating junk bytes right after the trampoline. It isn’t a problem since these corrupted instructions are never executed.</p>
 <p>As soon as <em>f1</em> is called, the trampoline jumps to <em>f1_copy</em> ➊, the instrumented version of <em>f1</em>. Junk bytes at ➋ aren’t executed. SBI engine inserts several <em>nop</em> in <em>f1_copy</em> ➌ so that to instrument an instruction, the SBI engine can simply overwrite the <em>nop</em> at that instrumentation point with a <em>jmp</em> or call to a chunk of instrumentation code. In the figure, all <em>nop</em> regions are unused except for the last one, just before the <em>ret</em>. SBI engine patches the offsets of all relative <em>jmp</em>, and replaces all 2-byte relative <em>jmp</em> having an 8-bit offset with a corresponding 5-byte version that has a 32-bit offset ➍ as the offset between <em>jmp</em> and their targets may become too large to encode in 8 bits. SBI engine rewrites direct calls too, such as <em>call f2</em> so that they target the instrumented function instead of the original ➎. Trampolines are needed at the start of every original function to accommodate indirect calls. For the engine instrumenting every <em>ret</em>, it overwrites the <em>nop</em> reserved for this purpose with a <em>jmp</em> or <em>call</em> to the instrumentation code ➏, <em>hook_ret</em>, which is placed in a shared library and reached by a call that the SBI engine placed at the instrumentation point, first saves state ➐, such as register contents, and then runs any instrumentation code that you specified. Finally, it restores the saved state ➑ and resumes normal execution by returning to the instruction following the instrumentation point.</p>
-<p><img src="https://hexterisk.tech/blog/Binary_Instrumentation/2_image.png" alt="&ldquo;indirect&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Binary_Instrumentation/2_image.png" alt="&ldquo;indirect&rdquo;">
 <em>Indirect control transfers in a statically instrumented binary.</em></p>
 <h5 id="indirect-calls">Indirect Calls</h5>
 <p>The SBI engine doesn’t alter code that computes addresses, so the target addresses used by indirect calls point to the original function ➊. Because there’s a trampoline at the start of every original function, control flows immediately back to the instrumented version of the function ➋.</p>
@@ -183,7 +183,7 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
 <h2 id="dynamic-binary-instrumentation">Dynamic Binary Instrumentation</h2>
 <p>DBI engines monitor binaries (or rather, processes) as they execute and instrument the instruction stream. They don’t require disassembly or binary rewriting, making them less error-prone.</p>
 <h3 id="architecture">Architecture</h3>
-<p><img src="https://hexterisk.tech/blog/Binary_Instrumentation/4_image.png" alt="&ldquo;dbi&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Binary_Instrumentation/4_image.png" alt="&ldquo;dbi&rdquo;">
 <em>Architecture of a DBI system.</em></p>
 <p>The DBI engine exposes an API that allows you to write user-defined DBI tools (often in the form of a shared library loaded by the engine) that specify which code should be instrumented and how. For example, the DBI tool shown on the right side implements (in pseudocode) a simple profiler that counts how many basic blocks are executed. To achieve that, it uses the DBI engine’s API to instrument the last instruction of every basic block with a callback to a function that increments a counter.</p>
 <p>DBI tool’s initialization function registers a function called <em>instrument_bb</em> with the DBI engine ➊. This function tells the DBI engine how to instrument every basic block; in this case, it adds a callback to <em>bb_callback</em> after the last instruction in the basic block. The DBI engine then starts the application ➋. The DBI engine never runs the application process directly but instead runs code in a <strong>code cache</strong> that contains all the instrumented code. Initially, the code cache is empty, so the DBI engine fetches a block of code from the process ➌ and instruments that code ➍ as instructed by the DBI tool ➎. Assuming the engine instruments code at basic block granularity (not always) JIT compiler ➏, which re-optimizes the instrumented code and stores the compiled code in the code cache ➐. The JIT compiler also rewrites control flow instructions to ensure that the DBI engine retains control, preventing control transfers from continuing execution in the uninstrumented application process.</p>
@@ -200,7 +200,7 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
 
         <div class="post-info">
                 <p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/rev">rev</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/reversing">reversing</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/c">c</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/pe">pe</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/windows">windows</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/instrumentation">instrumentation</a></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/rev">rev</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/reversing">reversing</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/c">c</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/pe">pe</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/windows">windows</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/instrumentation">instrumentation</a></span>
                 </p>
 
             <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1566 Words</p>
@@ -218,7 +218,7 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
                 <div class="pagination__buttons">
                     
                         <span class="button previous">
-                            <a href="https://hexterisk.tech/blog/posts/2020/04/28/binary-obfuscation/">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/04/28/binary-obfuscation/">
                                 <span class="button__icon">←</span>
                                 <span class="button__text">Binary Obfuscation</span>
                             </a>
@@ -227,7 +227,7 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
 
                     
                         <span class="button next">
-                            <a href="https://hexterisk.tech/blog/posts/2020/04/20/principles-of-symbolic-execution/">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/04/20/principles-of-symbolic-execution/">
                                 <span class="button__text">Principles of Symbolic Execution</span>
                                 <span class="button__icon">→</span>
                             </a>
@@ -247,7 +247,7 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
     <div class="footer__inner">
         <div class="footer__content">
             
-                <span><a href="https://hexterisk.tech/blog">Bhanupratap Singh &copy; 2020</a></span>
+                <span><a href="https://hexterisk.github.io/blog">Bhanupratap Singh &copy; 2020</a></span>
             
         </div>
     </div>
@@ -277,7 +277,7 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
 
 
 
-<script type="text/javascript" src="https://hexterisk.tech/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
 
 
 

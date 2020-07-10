@@ -11,7 +11,7 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }" />
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/05/15/constraint-solvers-and-z3/" />
+<link rel="canonical" href="https://hexterisk.github.io/blog/posts/2020/05/15/constraint-solvers-and-z3/" />
 
 
     <title>
@@ -27,17 +27,17 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }" />
 
 
 
-<link rel="stylesheet" href="https://hexterisk.tech/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
 
 
 
 
-    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.tech/blog/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.tech/blog/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.tech/blog/favicon-16x16.png">
-    <link rel="manifest" href="https://hexterisk.tech/blog/site.webmanifest">
-    <link rel="mask-icon" href="https://hexterisk.tech/blog/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="https://hexterisk.tech/blog/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
     <meta name="msapplication-TileColor" content="#252627">
     <meta name="theme-color" content="#252627">
 
@@ -48,12 +48,12 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }">
 <meta itemprop="datePublished" content="2020-05-15T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-05-15T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="1415">
-<meta itemprop="image" content="https://hexterisk.tech/blog"/>
+<meta itemprop="image" content="https://hexterisk.github.io/blog"/>
 
 
 
 <meta itemprop="keywords" content="binary,symbols,execution,path,constraints,expression," /><meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://hexterisk.tech/blog"/>
+<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
 
 <meta name="twitter:title" content="Constraint Solvers and Z3"/>
 <meta name="twitter:description" content="A constraint solver must be versatile, that is, it should be able to act as an:
@@ -81,7 +81,7 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }"/>
         <div class="container">
             <header class="header">
     <span class="header__inner">
-        <a href="https://hexterisk.tech/blog/" style="text-decoration: none;">
+        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
     <div class="logo">
         
             <span class="logo__mark">></span>
@@ -95,7 +95,7 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }"/>
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="https://hexterisk.tech/blog/about/">About</a></li><li><a href="https://hexterisk.tech/blog/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
     </ul>
 </nav>
 
@@ -132,7 +132,7 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }"/>
 
         <article>
             <h1 class="post-title">
-                <a href="https://hexterisk.tech/blog/posts/2020/05/15/constraint-solvers-and-z3/">Constraint Solvers and Z3</a>
+                <a href="https://hexterisk.github.io/blog/posts/2020/05/15/constraint-solvers-and-z3/">Constraint Solvers and Z3</a>
             </h1>
 
             
@@ -164,13 +164,13 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }"/>
 <p><strong>Postcondition</strong> (denoted 𝑝𝑜𝑠𝑡(𝑥, 𝑦)) is a predicate over parameters of <em>f</em> and its return value 𝑦 that holds when <em>f</em> returns. Therefore, <em>f</em> ensures that 𝑝𝑜𝑠𝑡(𝑥, 𝑦) holds.</p>
 <p>These pre- and post-conditions are known as <strong>Contracts</strong>.</p>
 <p>Usually, these contracts are tested (that is, evaluated dynamically, during execution).</p>
-<p><img src="https://hexterisk.tech/blog/Constraint_Solvers_and_Z3/image.png" alt="&ldquo;exec&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Constraint_Solvers_and_Z3/image.png" alt="&ldquo;exec&rdquo;">
 <strong>Contracts tested during execution.</strong></p>
 <p>However, with solvers, we want to test these contracts statically, at design time.</p>
-<p><img src="https://hexterisk.tech/blog/Constraint_Solvers_and_Z3/FireShot%20Capture%20210%20-%20%20-%20homes.cs.washington.edu.png" alt="&ldquo;static&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Constraint_Solvers_and_Z3/FireShot%20Capture%20210%20-%20%20-%20homes.cs.washington.edu.png" alt="&ldquo;static&rdquo;">
 <strong>Contracts tested during design with solvers.</strong></p>
 <h2 id="verification-problem">Verification Problem</h2>
-<p><img src="https://hexterisk.tech/blog/Constraint_Solvers_and_Z3/1_FireShot%20Capture%20210%20-%20%20-%20homes.cs.washington.edu.png" alt="&ldquo;verify&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Constraint_Solvers_and_Z3/1_FireShot%20Capture%20210%20-%20%20-%20homes.cs.washington.edu.png" alt="&ldquo;verify&rdquo;">
 <strong>Verification with Constraint Solver.</strong></p>
 <p>The problem at hand is to basically translate preconditions, postconditions, loop conditions, and assertions into solver&rsquo;s formulae in order to determine/verify if all properties can hold.</p>
 <p><strong>Correctness condition</strong> <em>𝜙</em> says that the program is correct for all valid inputs:</p>
@@ -184,7 +184,7 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }"/>
 <p>⇨ ∃𝑥 . 𝑝𝑟𝑒(𝑥) ∧ ¬ 𝑆ₚ(𝑥, 𝑦) ∧ 𝑝𝑜𝑠𝑡(𝑥, 𝑦)</p>
 <p>Since 𝑆ₚ always holds, as we can always find 𝑦 given 𝑥,</p>
 <p>⇨ ∃𝑥 . 𝑝𝑟𝑒(𝑥) ∧ 𝑆ₚ(𝑥, 𝑦) ∧ ¬ 𝑝𝑜𝑠𝑡(𝑥, 𝑦)</p>
-<p><img src="https://hexterisk.tech/blog/Constraint_Solvers_and_Z3/2_FireShot%20Capture%20210%20-%20%20-%20homes.cs.washington.edu.png" alt="&ldquo;predicate&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Constraint_Solvers_and_Z3/2_FireShot%20Capture%20210%20-%20%20-%20homes.cs.washington.edu.png" alt="&ldquo;predicate&rdquo;">
 <strong>Passing the verification condition to the solver.</strong></p>
 <h2 id="sat-solver">SAT Solver</h2>
 <p>A formula/constraint <em>F</em> is satisfiable if there is some assignment of appropriate values to its uninterpreted symbols under which <em>F</em> evaluates to true. Thus, the language of SAT Solvers is Boolean logic.</p>
@@ -241,9 +241,9 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }"/>
 <p>Using Z3 for binary analysis, let&rsquo;s analyse a binary.</p>
 <p>Taking up a serial validator, let&rsquo;s take a look at the binary&rsquo;s decompilation.</p>
 <p>We are looking at the decompilation to save ourselves the time and effort of reverse engineering, since the main focus is to demonstrate the usage of Z3 to resolve a serial check.</p>
-<p><img src="https://hexterisk.tech/blog/Constraint_Solvers_and_Z3/2020-05-27-145823_1920x1080_scrot.png" alt="&ldquo;main&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Constraint_Solvers_and_Z3/2020-05-27-145823_1920x1080_scrot.png" alt="&ldquo;main&rdquo;">
 <em>main function.</em></p>
-<p><img src="https://hexterisk.tech/blog/Constraint_Solvers_and_Z3/2020-05-27-150139_1920x1080_scrot.png" alt="&ldquo;validate&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Constraint_Solvers_and_Z3/2020-05-27-150139_1920x1080_scrot.png" alt="&ldquo;validate&rdquo;">
 <em>validate_serial function.</em></p>
 <p>Examining the <code>validate_serial</code> function, it is clear that</p>
 <ul>
@@ -256,7 +256,7 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }"/>
 </ul>
 <p>Using the constraints and computations specified, we&rsquo;ll write a Z3 script to give us our good serial.</p>
 <p>Read this <a href="https://hexterisk.tech/Z3Py-Archive/Serial%20solver%20using%20Z3.html">page</a> implemented in this <a href="https://github.com/hexterisk/Z3Py-Archive/blob/master/Serial%20solver%20using%20Z3.ipynb">IPython Notebook</a> to follow the solution for this problem.</p>
-<p><img src="https://hexterisk.tech/blog/Constraint_Solvers_and_Z3/2020-05-27-182912_1920x1080_scrot.png" alt="&ldquo;solution&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Constraint_Solvers_and_Z3/2020-05-27-182912_1920x1080_scrot.png" alt="&ldquo;solution&rdquo;">
 <em>Output.</em></p>
 <p>Credits for the guidance to Calle Svensson&rsquo;s talk &ldquo;SMT in reverse engineering, for dummies&rdquo; at SEC-T 0x09.</p>
 
@@ -267,7 +267,7 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }"/>
 
         <div class="post-info">
                 <p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/symbols">symbols</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/execution">execution</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/path">path</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/constraints">constraints</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/expression">expression</a></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/symbols">symbols</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/execution">execution</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/path">path</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/constraints">constraints</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/expression">expression</a></span>
                 </p>
 
             <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1415 Words</p>
@@ -285,7 +285,7 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }"/>
                 <div class="pagination__buttons">
                     
                         <span class="button previous">
-                            <a href="https://hexterisk.tech/blog/posts/2020/05/21/symbolic-execution-and-angr/">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/05/21/symbolic-execution-and-angr/">
                                 <span class="button__icon">←</span>
                                 <span class="button__text">Symbolic Execution and Angr</span>
                             </a>
@@ -294,7 +294,7 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }"/>
 
                     
                         <span class="button next">
-                            <a href="https://hexterisk.tech/blog/posts/2020/05/09/serial-2/">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/05/09/serial-2/">
                                 <span class="button__text">Serial 2</span>
                                 <span class="button__icon">→</span>
                             </a>
@@ -314,7 +314,7 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }"/>
     <div class="footer__inner">
         <div class="footer__content">
             
-                <span><a href="https://hexterisk.tech/blog">Bhanupratap Singh &copy; 2020</a></span>
+                <span><a href="https://hexterisk.github.io/blog">Bhanupratap Singh &copy; 2020</a></span>
             
         </div>
     </div>
@@ -344,7 +344,7 @@ Program: f(𝑥) { return 𝑥 &#43; 𝑥 }"/>
 
 
 
-<script type="text/javascript" src="https://hexterisk.tech/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
 
 
 

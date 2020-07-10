@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>basic-binary-analysis on Pwn the world.</title>
-    <link>https://hexterisk.tech/blog/categories/basic-binary-analysis/</link>
+    <link>https://hexterisk.github.io/blog/categories/basic-binary-analysis/</link>
     <description>Recent content in basic-binary-analysis on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Thu, 19 Mar 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://hexterisk.tech/blog/categories/basic-binary-analysis/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hexterisk.github.io/blog/categories/basic-binary-analysis/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Simple Code Injection Techniques for ELF</title>
-      <link>https://hexterisk.tech/blog/posts/2020/03/19/simple-code-injection-techniques-for-elf/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/03/19/simple-code-injection-techniques-for-elf/</link>
       <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/03/19/simple-code-injection-techniques-for-elf/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/03/19/simple-code-injection-techniques-for-elf/</guid>
       <description>Bare-Metal Binary Modification  Modify an existing binary is by directly editing the bytes of a binary file in hexadecimal format, using a program like hexedit.  Use a disassembler to identify the code or data bytes to be changed and then use a hex editor to make the changes. Advantage: Simple and requires only basic tools. Any padding bytes, dead code (such as unused functions), or unused data, can be overwritten with something new.</description>
     </item>
     
     <item>
       <title>Disassembly and Binary Analysis Fundamentals</title>
-      <link>https://hexterisk.tech/blog/posts/2020/03/16/disassembly-and-binary-analysis-fundamentals/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/03/16/disassembly-and-binary-analysis-fundamentals/</link>
       <pubDate>Mon, 16 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/03/16/disassembly-and-binary-analysis-fundamentals/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/03/16/disassembly-and-binary-analysis-fundamentals/</guid>
       <description>##Static Disassembly
 When people say disassembly, they usually mean static disassembly, which involves extracting the instructions from a binary without executing it.
 Linear Disassembly Disassembly desynchronization due to inline data interpreted as code. The instruction where the disassembly resynchronizes is shaded gray.
@@ -34,50 +34,50 @@ Linear Disassembly Disassembly desynchronization due to inline data interpreted 
     
     <item>
       <title>Trace Analysis</title>
-      <link>https://hexterisk.tech/blog/posts/2020/03/13/trace-analysis/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/03/13/trace-analysis/</link>
       <pubDate>Fri, 13 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/03/13/trace-analysis/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/03/13/trace-analysis/</guid>
       <description>System Call Trace strace can be used to investigate system call behavior. In some cases, you may want to attach strace to a running process. To do this, you need to use the -p pid option, where pid is the process ID of the process you want to attach to.
 $ strace ./ctf show_me_the_flag ➊ execve(&amp;#34;./ctf&amp;#34;, [&amp;#34;./ctf&amp;#34;, &amp;#34;show_me_the_flag&amp;#34;], [/* 73 vars */]) = 0 brk(NULL) = 0x1053000 access(&amp;#34;/etc/ld.so.nohwcap&amp;#34;, F_OK) = -1 ENOENT (No such file or directory) mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f703477e000 access(&amp;#34;/etc/ld.</description>
     </item>
     
     <item>
       <title>Stack and it&#39;s Frames</title>
-      <link>https://hexterisk.tech/blog/posts/2020/03/10/stack-and-its-frames/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/03/10/stack-and-its-frames/</link>
       <pubDate>Tue, 10 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/03/10/stack-and-its-frames/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/03/10/stack-and-its-frames/</guid>
       <description>Stack is a data structure, and means exactly what it&amp;rsquo;s name says - a stack(of objects). It is mainly characterized by pushing and popping operations. You push items onto the stack, and then pop those items off. A stack is therefore a LIFO(last in, first out) structure. Memory for functions, local variables, and flow control is stored in the stack.
 Stack Layout The stack grows from higher addresses to lower addresses.</description>
     </item>
     
     <item>
       <title>The PE Format</title>
-      <link>https://hexterisk.tech/blog/posts/2020/03/06/the-pe-format/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/03/06/the-pe-format/</link>
       <pubDate>Fri, 06 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/03/06/the-pe-format/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/03/06/the-pe-format/</guid>
       <description>PE is a modified version of the Common Object File Format (COFF), thus also referred to as PE/COFF. The 64-bit version of PE is called PE32+. The structure is defined in WinNT.h, which is included in the Microsoft Windows Software Developer Kit.  PE32+ binary structure
  An MS-DOS header is included for backward compatibility. Thus it can also be interpreted as an MS-DOS binary. The main function of the MS-DOS header is to describe how to load and execute an MS-DOS stub, which comes right after the MSDOS header.</description>
     </item>
     
     <item>
       <title>The ELF Format</title>
-      <link>https://hexterisk.tech/blog/posts/2020/03/03/the-elf-format/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/03/03/the-elf-format/</link>
       <pubDate>Tue, 03 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/03/03/the-elf-format/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/03/03/the-elf-format/</guid>
       <description>ELF binaries really consist of only four types of components:  Executable Header Program Headers (optional) Sections Section Headers, one per section (optional)  64-bit ELF binary structure
 Executable Header  Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata. Format of executable header: /usr/include/elf.h  typedef struct { unsigned char e_ident[16]; /* Magic number and other info */ uint16_t e_type; /* Object file type */ uint16_t e_machine; /* Architecture */ uint32_t e_version; /* Object file version */ uint64_t e_entry; /* Entry point virtual address */ uint64_t e_phoff; /* Program header table file offset */ uint64_t e_shoff; /* Section header table file offset */ uint32_t e_flags; /* Processor-specific flags */ uint16_t e_ehsize; /* ELF header size in bytes */ uint16_t e_phentsize; /* Program header table entry size */ uint16_t e_phnum; /* Program header table entry count */ uint16_t e_shentsize; /* Section header table entry size */ uint16_t e_shnum; /* Section header table entry count */ uint16_t e_shstrndx; /* Section header string table index */ } Elf64_Ehdr; Section Headers  The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called Sections.</description>
     </item>
     
     <item>
       <title>Anatomy of a Binary</title>
-      <link>https://hexterisk.tech/blog/posts/2020/02/28/anatomy-of-a-binary/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/02/28/anatomy-of-a-binary/</link>
       <pubDate>Fri, 28 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/02/28/anatomy-of-a-binary/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/02/28/anatomy-of-a-binary/</guid>
       <description>The C Compilation Process  Compilation is the process of translating human readable source code into machine code that the processor can execute. Binary Code is the machine code that systems execute. Binary Executable Files, or Binaries, store the executable binary program, that is, the code and data belonging to each program.  #include &amp;lt;stdio.h&amp;gt;#define FORMAT_STRING &amp;#34;%s&amp;#34; #define MESSAGE &amp;#34;Hello, world!\n&amp;#34;  int main(int argc, char *argv[]) { printf(FORMAT_STRING, MESSAGE); return 0; } The C Compilation Process</description>
     </item>
     

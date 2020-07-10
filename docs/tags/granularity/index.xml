@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>granularity on Pwn the world.</title>
-    <link>https://hexterisk.tech/blog/tags/granularity/</link>
+    <link>https://hexterisk.github.io/blog/tags/granularity/</link>
     <description>Recent content in granularity on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Wed, 03 Jun 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://hexterisk.tech/blog/tags/granularity/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hexterisk.github.io/blog/tags/granularity/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Dynamic Binary Instrumentation and Pin</title>
-      <link>https://hexterisk.tech/blog/posts/2020/06/03/dynamic-binary-instrumentation-and-pin/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/06/03/dynamic-binary-instrumentation-and-pin/</link>
       <pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/06/03/dynamic-binary-instrumentation-and-pin/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/06/03/dynamic-binary-instrumentation-and-pin/</guid>
       <description>Dynamic Binary Instrumentation is the process of monitoring or measuring a binary&amp;rsquo;s execution and its behavior, such as resource usage, during runtime. It allows us to focus on specific parts of a binary for various purposes such as vulnerability analysis, dynamic tainting and state analysis.
 We will skip over Source Instrumentation since it requires source code of the application, which is pretty rare in real world scenarios.
 Instrumentation Code The technique requires injecting Instrumentation Code into a running binary.</description>

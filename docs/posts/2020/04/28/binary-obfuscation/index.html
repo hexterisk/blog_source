@@ -9,7 +9,7 @@
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="https://hexterisk.github.io/blog/posts/2020/04/28/binary-obfuscation/" />
+<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/04/28/binary-obfuscation/" />
 
 
     <title>
@@ -25,17 +25,17 @@
 
 
 
-<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+<link rel="stylesheet" href="https://hexterisk.tech/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
 
 
 
 
-    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
-    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
-    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.tech/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.tech/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.tech/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.tech/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.tech/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.tech/blog/favicon.ico">
     <meta name="msapplication-TileColor" content="#252627">
     <meta name="theme-color" content="#252627">
 
@@ -44,12 +44,12 @@
 <meta itemprop="datePublished" content="2020-04-28T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-04-28T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="581">
-<meta itemprop="image" content="https://hexterisk.github.io/blog"/>
+<meta itemprop="image" content="https://hexterisk.tech/blog"/>
 
 
 
 <meta itemprop="keywords" content="binary,rev,reversing,obfuscation," /><meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
+<meta name="twitter:image" content="https://hexterisk.tech/blog"/>
 
 <meta name="twitter:title" content="Binary Obfuscation"/>
 <meta name="twitter:description" content="The main aim of Binary Obfuscation is to hinder the process of static analysis of a binary. Renaming the symbols(variables and functions) of a binary implies that the clues as to what data a variable holds or what task a function performs that could be obtained from their names, are lost. This makes it a little harder for the analysts to keep a track of all the symbols without documenting them."/>
@@ -75,7 +75,7 @@
         <div class="container">
             <header class="header">
     <span class="header__inner">
-        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
+        <a href="https://hexterisk.tech/blog/" style="text-decoration: none;">
     <div class="logo">
         
             <span class="logo__mark">></span>
@@ -89,7 +89,7 @@
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://hexterisk.tech/blog/about/">About</a></li><li><a href="https://hexterisk.tech/blog/posts/">Posts</a></li>
     </ul>
 </nav>
 
@@ -126,7 +126,7 @@
 
         <article>
             <h1 class="post-title">
-                <a href="https://hexterisk.github.io/blog/posts/2020/04/28/binary-obfuscation/">Binary Obfuscation</a>
+                <a href="https://hexterisk.tech/blog/posts/2020/04/28/binary-obfuscation/">Binary Obfuscation</a>
             </h1>
 
             
@@ -138,27 +138,27 @@
 <h3 id="junk-code-insertion">Junk Code Insertion</h3>
 <p>The actual instruction is hidden among a bunch of other instructions. While the actual instruction to be executed might be trivial, these “other” instructions seem to be performing something pretty complicated, yet essentially do zero work.</p>
 <p>Such instructions when closely analysed, can easily be segregated into typically useless, and can be changed to <em>nop</em> so it&rsquo;s easier to look at the bigger picture, or simpler to look at when revisiting this part of the binary.</p>
-<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/cc5ac2e806cd2b62.gif" alt="Junk insertion">
+<p><img src="https://hexterisk.tech/blog/Binary_Obfuscation/cc5ac2e806cd2b62.gif" alt="Junk insertion">
 <em>Junk Code Insertion technique.</em></p>
 <h3 id="metamorphic-code">Metamorphic Code</h3>
 <p>The actual instruction is expanded into a series of instruction that essentially give the same result. The effectiveness depends on the creativity of how complex can a simple instruction be made to look.</p>
-<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/efa49547f45c2d7e.gif" alt="Metamorphic Code">
+<p><img src="https://hexterisk.tech/blog/Binary_Obfuscation/efa49547f45c2d7e.gif" alt="Metamorphic Code">
 <em>Metamorphic Code technique.</em></p>
 <h3 id="data-encoding">Data Encoding</h3>
 <p>Static data values are forced to be computed at run time instead of hard coding them. A value to be operated upon can be calculated through a number of arithmetic operations instead of straightaway including it in the code itself. This value is ephemeral, that is, it remains in the memory as long as it&rsquo;s needed and disappears right after. This entails extra work to be done at the time of analysis to decipher the values being operated upon, while it renders tools like <strong>strings</strong> useless.</p>
-<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/de138c9f51bad4b5.gif" alt="Data Encoding">
+<p><img src="https://hexterisk.tech/blog/Binary_Obfuscation/de138c9f51bad4b5.gif" alt="Data Encoding">
 <em>Data Encoding technique.</em></p>
 <h3 id="opaque-predicates">Opaque Predicates</h3>
 <p>Extra computational checks are added in place of trivial branching instructions that will always yield the same output. The flow of code execution, therefore, now include checks that aren&rsquo;t needed since the flow is set in code and is always going to be the same. This simply makes the code a lot more complicated than it actually is. The involvement of such computational instructions as well as presence of extra branches(that will never be taken) can hinder the analyst and confuse decompilers.</p>
-<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/2_image.png" alt="&ldquo;Opaque Predicates">
+<p><img src="https://hexterisk.tech/blog/Binary_Obfuscation/2_image.png" alt="&ldquo;Opaque Predicates">
 <em>Opaque Predicates technique.</em></p>
 <h3 id="splitting">Splitting</h3>
 <p>Blocks of codes are split into smaller blocks, with the addition of unnecessary jumps and calls, so as to make it difficult for the analyst to keep track of flow of code execution.</p>
-<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/1_image.png" alt="Splitting">
+<p><img src="https://hexterisk.tech/blog/Binary_Obfuscation/1_image.png" alt="Splitting">
 <em>Splitting technique.</em></p>
 <h3 id="control-flow-flattening">Control Flow Flattening</h3>
 <p>A simple flow of code execution is transformed into a <strong>state machine</strong>. A state of decision making(<strong>dispatch table</strong>) is introduced which keeps track of the current state of execution, updates the current state at every pass and transfers the execution to different branches based on the current state.</p>
-<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/350577af599d101d.gif" alt="Control Flow Flattening">
+<p><img src="https://hexterisk.tech/blog/Binary_Obfuscation/350577af599d101d.gif" alt="Control Flow Flattening">
 <em>Control Flow Flattening technique.</em></p>
 <h3 id="polymorphic-code">Polymorphic Code</h3>
 <p>Code that has the ability to modify itself at every run(or even during the same run) and take different paths depending on it&rsquo;s current state, while achieving the same task every time. Even though this technique is tough to analyse, it requires parts of memory to be made writable and executable so as to be able to write it&rsquo;s own modified version in memory to be executed. This factor not only makes it detectable, but can even introduce vulnerabilities if not done</p>
@@ -170,7 +170,7 @@
 
         <div class="post-info">
                 <p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/rev">rev</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/reversing">reversing</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/obfuscation">obfuscation</a></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/rev">rev</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/reversing">reversing</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/obfuscation">obfuscation</a></span>
                 </p>
 
             <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>581 Words</p>
@@ -188,7 +188,7 @@
                 <div class="pagination__buttons">
                     
                         <span class="button previous">
-                            <a href="https://hexterisk.github.io/blog/posts/2020/05/03/taint-analysis/">
+                            <a href="https://hexterisk.tech/blog/posts/2020/05/03/taint-analysis/">
                                 <span class="button__icon">←</span>
                                 <span class="button__text">Taint Analysis</span>
                             </a>
@@ -197,7 +197,7 @@
 
                     
                         <span class="button next">
-                            <a href="https://hexterisk.github.io/blog/posts/2020/04/25/binary-instrumentation/">
+                            <a href="https://hexterisk.tech/blog/posts/2020/04/25/binary-instrumentation/">
                                 <span class="button__text">Binary Instrumentation</span>
                                 <span class="button__icon">→</span>
                             </a>
@@ -217,7 +217,7 @@
     <div class="footer__inner">
         <div class="footer__content">
             
-                <span><a href="https://hexterisk.github.io/blog">Bhanupratap Singh &copy; 2020</a></span>
+                <span><a href="https://hexterisk.tech/blog">Bhanupratap Singh &copy; 2020</a></span>
             
         </div>
     </div>
@@ -247,7 +247,7 @@
 
 
 
-<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+<script type="text/javascript" src="https://hexterisk.tech/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
 
 
 

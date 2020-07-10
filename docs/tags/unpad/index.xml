@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>unpad on Pwn the world.</title>
-    <link>https://hexterisk.github.io/blog/tags/unpad/</link>
+    <link>https://hexterisk.tech/blog/tags/unpad/</link>
     <description>Recent content in unpad on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Sat, 21 Mar 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://hexterisk.github.io/blog/tags/unpad/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hexterisk.tech/blog/tags/unpad/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Set 2</title>
-      <link>https://hexterisk.github.io/blog/posts/2020/03/21/set-2/</link>
+      <link>https://hexterisk.tech/blog/posts/2020/03/21/set-2/</link>
       <pubDate>Sat, 21 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/posts/2020/03/21/set-2/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/03/21/set-2/</guid>
       <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
 Challenge 9: Implement PKCS#7 padding Link
  A block cipher transforms a fixed-sized block (usually 8 or 16 bytes) of plaintext into ciphertext. But we almost never want to transform a single block; we encrypt irregularly-sized messages.

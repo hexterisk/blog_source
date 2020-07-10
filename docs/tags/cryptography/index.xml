@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>cryptography on Pwn the world.</title>
-    <link>https://hexterisk.github.io/blog/tags/cryptography/</link>
+    <link>https://hexterisk.tech/blog/tags/cryptography/</link>
     <description>Recent content in cryptography on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Fri, 10 Apr 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://hexterisk.github.io/blog/tags/cryptography/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hexterisk.tech/blog/tags/cryptography/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Set 6</title>
-      <link>https://hexterisk.github.io/blog/posts/2020/04/10/set-6/</link>
+      <link>https://hexterisk.tech/blog/posts/2020/04/10/set-6/</link>
       <pubDate>Fri, 10 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/posts/2020/04/10/set-6/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/04/10/set-6/</guid>
       <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
 Challenge 41: Implement unpadded message recovery oracle Link
  Nate Lawson says we should stop calling it &amp;ldquo;RSA padding&amp;rdquo; and start calling it &amp;ldquo;RSA armoring&amp;rdquo;. Here&amp;rsquo;s why.
@@ -26,10 +26,10 @@ You can submit an arbitrary RSA blob and the server will return plaintext.</desc
     
     <item>
       <title>Set 5</title>
-      <link>https://hexterisk.github.io/blog/posts/2020/04/02/set-5/</link>
+      <link>https://hexterisk.tech/blog/posts/2020/04/02/set-5/</link>
       <pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/posts/2020/04/02/set-5/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/04/02/set-5/</guid>
       <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
 Challenge 33: Implement Diffie-Hellman Link
  For one of the most important algorithms in cryptography this exercise couldn&amp;rsquo;t be a whole lot easier.
@@ -39,10 +39,10 @@ Generate &amp;ldquo;a&amp;rdquo;, a random number mod 37.</description>
     
     <item>
       <title>Set 4</title>
-      <link>https://hexterisk.github.io/blog/posts/2020/03/27/set-4/</link>
+      <link>https://hexterisk.tech/blog/posts/2020/03/27/set-4/</link>
       <pubDate>Fri, 27 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/posts/2020/03/27/set-4/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/03/27/set-4/</guid>
       <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
 Challenge 25: Break &amp;ldquo;random access read/write&amp;rdquo; AES CTR Link
  Back to CTR. Encrypt the recovered plaintext from this file (the ECB exercise) under CTR with a random key (for this exercise the key should be unknown to you, but hold on to it).
@@ -51,10 +51,10 @@ Now, write the code that allows you to &amp;ldquo;seek&amp;rdquo; into the ciphe
     
     <item>
       <title>Set 3</title>
-      <link>https://hexterisk.github.io/blog/posts/2020/03/23/set-3/</link>
+      <link>https://hexterisk.tech/blog/posts/2020/03/23/set-3/</link>
       <pubDate>Mon, 23 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/posts/2020/03/23/set-3/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/03/23/set-3/</guid>
       <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
 Challenge 17: The CBC padding oracle Link
  This is the best-known attack on modern block-cipher cryptography.
@@ -75,10 +75,10 @@ MDAwMDA5aXRoIG15IHJhZy10b3AgZG93biBzbyBteSBoYWlyIGNhbiBibG93
     
     <item>
       <title>Set 2</title>
-      <link>https://hexterisk.github.io/blog/posts/2020/03/21/set-2/</link>
+      <link>https://hexterisk.tech/blog/posts/2020/03/21/set-2/</link>
       <pubDate>Sat, 21 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/posts/2020/03/21/set-2/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/03/21/set-2/</guid>
       <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
 Challenge 9: Implement PKCS#7 padding Link
  A block cipher transforms a fixed-sized block (usually 8 or 16 bytes) of plaintext into ciphertext. But we almost never want to transform a single block; we encrypt irregularly-sized messages.
@@ -87,10 +87,10 @@ One way we account for irregularly-sized messages is by padding, creating a plai
     
     <item>
       <title>Set 1</title>
-      <link>https://hexterisk.github.io/blog/posts/2020/03/20/set-1/</link>
+      <link>https://hexterisk.tech/blog/posts/2020/03/20/set-1/</link>
       <pubDate>Fri, 20 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/posts/2020/03/20/set-1/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/03/20/set-1/</guid>
       <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
 Challenge 1: Convert hex to base64 Link
  The string:

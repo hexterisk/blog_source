@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>PRNG on Pwn the world.</title>
-    <link>https://hexterisk.github.io/blog/tags/prng/</link>
+    <link>https://hexterisk.tech/blog/tags/prng/</link>
     <description>Recent content in PRNG on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Mon, 23 Mar 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://hexterisk.github.io/blog/tags/prng/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hexterisk.tech/blog/tags/prng/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Set 3</title>
-      <link>https://hexterisk.github.io/blog/posts/2020/03/23/set-3/</link>
+      <link>https://hexterisk.tech/blog/posts/2020/03/23/set-3/</link>
       <pubDate>Mon, 23 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/posts/2020/03/23/set-3/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/03/23/set-3/</guid>
       <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
 Challenge 17: The CBC padding oracle Link
  This is the best-known attack on modern block-cipher cryptography.

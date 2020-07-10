@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>code on Pwn the world.</title>
-    <link>https://hexterisk.github.io/blog/tags/code/</link>
+    <link>https://hexterisk.tech/blog/tags/code/</link>
     <description>Recent content in code on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Thu, 19 Mar 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://hexterisk.github.io/blog/tags/code/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hexterisk.tech/blog/tags/code/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Simple Code Injection Techniques for ELF</title>
-      <link>https://hexterisk.github.io/blog/posts/2020/03/19/simple-code-injection-techniques-for-elf/</link>
+      <link>https://hexterisk.tech/blog/posts/2020/03/19/simple-code-injection-techniques-for-elf/</link>
       <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/posts/2020/03/19/simple-code-injection-techniques-for-elf/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/03/19/simple-code-injection-techniques-for-elf/</guid>
       <description>Bare-Metal Binary Modification  Modify an existing binary is by directly editing the bytes of a binary file in hexadecimal format, using a program like hexedit.  Use a disassembler to identify the code or data bytes to be changed and then use a hex editor to make the changes. Advantage: Simple and requires only basic tools. Any padding bytes, dead code (such as unused functions), or unused data, can be overwritten with something new.</description>
     </item>
     

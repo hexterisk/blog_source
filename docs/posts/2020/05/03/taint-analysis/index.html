@@ -9,7 +9,7 @@
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="https://hexterisk.github.io/blog/posts/2020/05/03/taint-analysis/" />
+<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/05/03/taint-analysis/" />
 
 
     <title>
@@ -25,17 +25,17 @@
 
 
 
-<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+<link rel="stylesheet" href="https://hexterisk.tech/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
 
 
 
 
-    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
-    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
-    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.tech/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.tech/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.tech/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.tech/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.tech/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.tech/blog/favicon.ico">
     <meta name="msapplication-TileColor" content="#252627">
     <meta name="theme-color" content="#252627">
 
@@ -44,12 +44,12 @@
 <meta itemprop="datePublished" content="2020-05-03T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-05-03T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="1527">
-<meta itemprop="image" content="https://hexterisk.github.io/blog"/>
+<meta itemprop="image" content="https://hexterisk.tech/blog"/>
 
 
 
 <meta itemprop="keywords" content="binary,rev,reversing,c,pe,windows,taint,DTA,DFA,source,sink," /><meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
+<meta name="twitter:image" content="https://hexterisk.tech/blog"/>
 
 <meta name="twitter:title" content="Taint Analysis"/>
 <meta name="twitter:description" content="Taint Analysis is a program analysis technique that allows you to determine the influence that a selected program state has on other parts of the program state. Taint any data that a program receives from the network, track that data, and raise an alert if it affects the program counter. If an operation uses the value of some tainted object, say X, to derive a value for another, say Y, then object Y becomes tainted."/>
@@ -75,7 +75,7 @@
         <div class="container">
             <header class="header">
     <span class="header__inner">
-        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
+        <a href="https://hexterisk.tech/blog/" style="text-decoration: none;">
     <div class="logo">
         
             <span class="logo__mark">></span>
@@ -89,7 +89,7 @@
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://hexterisk.tech/blog/about/">About</a></li><li><a href="https://hexterisk.tech/blog/posts/">Posts</a></li>
     </ul>
 </nav>
 
@@ -126,7 +126,7 @@
 
         <article>
             <h1 class="post-title">
-                <a href="https://hexterisk.github.io/blog/posts/2020/05/03/taint-analysis/">Taint Analysis</a>
+                <a href="https://hexterisk.tech/blog/posts/2020/05/03/taint-analysis/">Taint Analysis</a>
             </h1>
 
             
@@ -163,10 +163,10 @@
 <h3 id="taint-granularity">Taint Granularity</h3>
 <p>The unit of information by which a DTA system tracks taint. An important factor influencing its accuracy.</p>
 <p>For example, taking white bytes as untainted and grey ones as tainted,</p>
-<p><img src="https://hexterisk.github.io/blog/Taint_Analysis/image.png" alt="&ldquo;bit&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Taint_Analysis/image.png" alt="&ldquo;bit&rdquo;">
 <em>Bit-Granularity.</em></p>
 <p>All the bits in the first operand are tainted, while no bits are tainted in the second operand. Since this is a bitwise AND operation, if an attacker controls only the first input operand, then the only bit positions in the output that they can affect are those where the second operand has a 1. All other output bits will always be set to 0. Thus, only that one output bit is tainted.</p>
-<p><img src="https://hexterisk.github.io/blog/Taint_Analysis/1_image.png" alt="&ldquo;byte&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Taint_Analysis/1_image.png" alt="&ldquo;byte&rdquo;">
 <em>Byte-Granularity.</em></p>
 <p>Byte-Granularity DTA system can’t consider each bit individually, the whole output is marked as tainted. The system simply sees a tainted input byte and a nonzero second operand and therefore concludes that an attacker could affect the output operand.</p>
 <h3 id="taint-colors">Taint Colors</h3>
@@ -174,7 +174,7 @@
 <p>It may seem possible to store 255 different colors in 1 byte of taint information since a byte can store 255 distinct nonzero values. However, that approach doesn’t allow for different colors to mix. Without the ability to mix colors, distinguishing between taint flows when two taint flows run together is impossible: if a value is affected by two different taint sources, each with their own color, it&rsquo;s not possible to record both colors in the affected value’s taint information. To support mixing colors, a dedicated bit per taint color is required. For instance, for 1 byte of taint information, the colors 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, and 0x80 can be supported. Then, if a particular value is tainted by both the colors 0x01 and 0x02, the combined taint information for this value is 0x03, which is the bitwise OR of the two colors.</p>
 <h3 id="taint-propagation-policies">Taint Propagation Policies</h3>
 <p>The taint policy of a DTA system describes how the system propagates taint and how it merges taint colors if multiple taint flows run together.</p>
-<p><img src="https://hexterisk.github.io/blog/Taint_Analysis/2_image.png" alt="&ldquo;propagation&rdquo;"></p>
+<p><img src="https://hexterisk.tech/blog/Taint_Analysis/2_image.png" alt="&ldquo;propagation&rdquo;"></p>
 <p>Taint Propagation Examples for a Byte-Granularity DTA System with Two Colors, Red (R) and Blue (B).</p>
 <h3 id="overtainting-and-undertainting">Overtainting and Undertainting</h3>
 <p><strong>Undertainting</strong> occurs when a value isn’t tainted even though it “should be,” which means that an attacker can get away with influencing that value without being noticed.</p>
@@ -186,7 +186,7 @@
 </code></pre></div><p>An attacker who controls the loop condition cond can determine the value of <em>var</em>. This is called a <strong>control dependency</strong>. While the attacker can control var through <em>cond</em>, there’s no explicit data flow between the two variables.</p>
 <h3 id="shadow-memory">Shadow Memory</h3>
 <p>Region of virtual memory allocated by the DTA system to keep track of the taint status of the rest of the memory. Typically, DTA systems also allocate a special structure in memory where they keep track of taint information for CPU registers. The structure of the shadow memory differs depending on the taint granularity and how many taint colors are supported.</p>
-<p><img src="https://hexterisk.github.io/blog/Taint_Analysis/3_image.png" alt="&ldquo;shadow&rdquo;"></p>
+<p><img src="https://hexterisk.tech/blog/Taint_Analysis/3_image.png" alt="&ldquo;shadow&rdquo;"></p>
 <p>Shadow memory with byte-granularity and 1, 8, or 32 colors per byte.</p>
 <h5 id="bitmap-based-shadow-memory">Bitmap-Based Shadow Memory</h5>
 <p><strong>Bitmap</strong> ➊ stores a single bit of taint information per byte of virtual memory, so it can represent only one color: each byte of memory is either tainted or untainted. Bytes A–D are represented by the bits 1101, meaning that bytes A, B, and D are tainted, while byte C is not.</p>
@@ -201,7 +201,7 @@
 
         <div class="post-info">
                 <p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/rev">rev</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/reversing">reversing</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/c">c</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/pe">pe</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/windows">windows</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/taint">taint</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/dta">DTA</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/dfa">DFA</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/source">source</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/sink">sink</a></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/rev">rev</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/reversing">reversing</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/c">c</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/pe">pe</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/windows">windows</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/taint">taint</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/dta">DTA</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/dfa">DFA</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/source">source</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/sink">sink</a></span>
                 </p>
 
             <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1527 Words</p>
@@ -219,7 +219,7 @@
                 <div class="pagination__buttons">
                     
                         <span class="button previous">
-                            <a href="https://hexterisk.github.io/blog/posts/2020/05/08/serial-1/">
+                            <a href="https://hexterisk.tech/blog/posts/2020/05/08/serial-1/">
                                 <span class="button__icon">←</span>
                                 <span class="button__text">Serial 1</span>
                             </a>
@@ -228,7 +228,7 @@
 
                     
                         <span class="button next">
-                            <a href="https://hexterisk.github.io/blog/posts/2020/04/28/binary-obfuscation/">
+                            <a href="https://hexterisk.tech/blog/posts/2020/04/28/binary-obfuscation/">
                                 <span class="button__text">Binary Obfuscation</span>
                                 <span class="button__icon">→</span>
                             </a>
@@ -248,7 +248,7 @@
     <div class="footer__inner">
         <div class="footer__content">
             
-                <span><a href="https://hexterisk.github.io/blog">Bhanupratap Singh &copy; 2020</a></span>
+                <span><a href="https://hexterisk.tech/blog">Bhanupratap Singh &copy; 2020</a></span>
             
         </div>
     </div>
@@ -278,7 +278,7 @@
 
 
 
-<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+<script type="text/javascript" src="https://hexterisk.tech/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
 
 
 

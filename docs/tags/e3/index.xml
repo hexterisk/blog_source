@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>e=3 on Pwn the world.</title>
-    <link>https://hexterisk.github.io/blog/tags/e3/</link>
+    <link>https://hexterisk.tech/blog/tags/e3/</link>
     <description>Recent content in e=3 on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Fri, 10 Apr 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://hexterisk.github.io/blog/tags/e3/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hexterisk.tech/blog/tags/e3/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Set 6</title>
-      <link>https://hexterisk.github.io/blog/posts/2020/04/10/set-6/</link>
+      <link>https://hexterisk.tech/blog/posts/2020/04/10/set-6/</link>
       <pubDate>Fri, 10 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/posts/2020/04/10/set-6/</guid>
+      <guid>https://hexterisk.tech/blog/posts/2020/04/10/set-6/</guid>
       <description>Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
 Challenge 41: Implement unpadded message recovery oracle Link
  Nate Lawson says we should stop calling it &amp;ldquo;RSA padding&amp;rdquo; and start calling it &amp;ldquo;RSA armoring&amp;rdquo;. Here&amp;rsquo;s why.

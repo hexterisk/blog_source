@@ -10,7 +10,7 @@ Executable Header  Every ELF file starts with an executable header, which is jus
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="https://hexterisk.github.io/blog/posts/2020/03/03/the-elf-format/" />
+<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/03/03/the-elf-format/" />
 
 
     <title>
@@ -26,17 +26,17 @@ Executable Header  Every ELF file starts with an executable header, which is jus
 
 
 
-<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+<link rel="stylesheet" href="https://hexterisk.tech/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
 
 
 
 
-    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
-    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
-    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.tech/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.tech/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.tech/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.tech/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.tech/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.tech/blog/favicon.ico">
     <meta name="msapplication-TileColor" content="#252627">
     <meta name="theme-color" content="#252627">
 
@@ -46,12 +46,12 @@ Executable Header  Every ELF file starts with an executable header, which is jus
 <meta itemprop="datePublished" content="2020-03-03T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-03-03T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="2686">
-<meta itemprop="image" content="https://hexterisk.github.io/blog"/>
+<meta itemprop="image" content="https://hexterisk.tech/blog"/>
 
 
 
 <meta itemprop="keywords" content="binary,rev,reversing,c,elf,headers,sections," /><meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
+<meta name="twitter:image" content="https://hexterisk.tech/blog"/>
 
 <meta name="twitter:title" content="The ELF Format"/>
 <meta name="twitter:description" content="ELF binaries really consist of only four types of components:  Executable Header Program Headers (optional) Sections Section Headers, one per section (optional)  64-bit ELF binary structure
@@ -78,7 +78,7 @@ Executable Header  Every ELF file starts with an executable header, which is jus
         <div class="container">
             <header class="header">
     <span class="header__inner">
-        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
+        <a href="https://hexterisk.tech/blog/" style="text-decoration: none;">
     <div class="logo">
         
             <span class="logo__mark">></span>
@@ -92,7 +92,7 @@ Executable Header  Every ELF file starts with an executable header, which is jus
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://hexterisk.tech/blog/about/">About</a></li><li><a href="https://hexterisk.tech/blog/posts/">Posts</a></li>
     </ul>
 </nav>
 
@@ -129,7 +129,7 @@ Executable Header  Every ELF file starts with an executable header, which is jus
 
         <article>
             <h1 class="post-title">
-                <a href="https://hexterisk.github.io/blog/posts/2020/03/03/the-elf-format/">The ELF Format</a>
+                <a href="https://hexterisk.tech/blog/posts/2020/03/03/the-elf-format/">The ELF Format</a>
             </h1>
 
             
@@ -142,7 +142,7 @@ Executable Header  Every ELF file starts with an executable header, which is jus
 <li>Sections</li>
 <li>Section Headers, one per section (optional)</li>
 </ol>
-<p><img src="https://hexterisk.github.io/blog/The_ELF_Format/1_image.png" alt="&ldquo;binary_structure&rdquo;">
+<p><img src="https://hexterisk.tech/blog/The_ELF_Format/1_image.png" alt="&ldquo;binary_structure&rdquo;">
 <em>64-bit ELF binary structure</em></p>
 <h2 id="executable-header">Executable Header</h2>
 <ul>
@@ -266,7 +266,7 @@ O (extra OS processing required) o (OS specific), p (processor specific)
 </ul>
 <h3 id="lazy-binding">Lazy Binding</h3>
 <p>Many of the relocations are typically not done right away when the binary is loaded but are deferred until the first reference to the unresolved location is actually made. This is known as L<strong>azy Binding</strong>. It ensures that the dynamic linker never needlessly wastes time on relocations; it only performs those relocations that are truly needed at runtime.</p>
-<p><img src="https://hexterisk.github.io/blog/The_ELF_Format/image.png" alt="&ldquo;elf_format&rdquo;">
+<p><img src="https://hexterisk.tech/blog/The_ELF_Format/image.png" alt="&ldquo;elf_format&rdquo;">
 <em>Lazy Binding</em></p>
 <ul>
 <li>Linker can be forced to perform all relocations right away by exporting an environment variable called <strong>LD_BIND_NOW</strong>, done when the application calls for real-time performance guarantees.</li>
@@ -386,7 +386,7 @@ Segment Sections...
 
         <div class="post-info">
                 <p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/rev">rev</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/reversing">reversing</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/c">c</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/elf">elf</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/headers">headers</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/sections">sections</a></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/rev">rev</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/reversing">reversing</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/c">c</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/elf">elf</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/headers">headers</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/sections">sections</a></span>
                 </p>
 
             <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2686 Words</p>
@@ -404,7 +404,7 @@ Segment Sections...
                 <div class="pagination__buttons">
                     
                         <span class="button previous">
-                            <a href="https://hexterisk.github.io/blog/posts/2020/03/06/the-pe-format/">
+                            <a href="https://hexterisk.tech/blog/posts/2020/03/06/the-pe-format/">
                                 <span class="button__icon">←</span>
                                 <span class="button__text">The PE Format</span>
                             </a>
@@ -413,7 +413,7 @@ Segment Sections...
 
                     
                         <span class="button next">
-                            <a href="https://hexterisk.github.io/blog/posts/2020/02/28/anatomy-of-a-binary/">
+                            <a href="https://hexterisk.tech/blog/posts/2020/02/28/anatomy-of-a-binary/">
                                 <span class="button__text">Anatomy of a Binary</span>
                                 <span class="button__icon">→</span>
                             </a>
@@ -433,7 +433,7 @@ Segment Sections...
     <div class="footer__inner">
         <div class="footer__content">
             
-                <span><a href="https://hexterisk.github.io/blog">Bhanupratap Singh &copy; 2020</a></span>
+                <span><a href="https://hexterisk.tech/blog">Bhanupratap Singh &copy; 2020</a></span>
             
         </div>
     </div>
@@ -463,7 +463,7 @@ Segment Sections...
 
 
 
-<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+<script type="text/javascript" src="https://hexterisk.tech/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
 
 
 

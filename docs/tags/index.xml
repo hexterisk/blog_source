@@ -2,102 +2,102 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Pwn the world.</title>
-    <link>https://hexterisk.github.io/blog/tags/</link>
+    <link>https://hexterisk.tech/blog/tags/</link>
     <description>Recent content in Tags on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Fri, 12 Jun 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://hexterisk.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hexterisk.tech/blog/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>binary</title>
-      <link>https://hexterisk.github.io/blog/tags/binary/</link>
+      <link>https://hexterisk.tech/blog/tags/binary/</link>
       <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/tags/binary/</guid>
+      <guid>https://hexterisk.tech/blog/tags/binary/</guid>
       <description></description>
     </item>
     
     <item>
       <title>dbi</title>
-      <link>https://hexterisk.github.io/blog/tags/dbi/</link>
+      <link>https://hexterisk.tech/blog/tags/dbi/</link>
       <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/tags/dbi/</guid>
+      <guid>https://hexterisk.tech/blog/tags/dbi/</guid>
       <description></description>
     </item>
     
     <item>
       <title>dynamic</title>
-      <link>https://hexterisk.github.io/blog/tags/dynamic/</link>
+      <link>https://hexterisk.tech/blog/tags/dynamic/</link>
       <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/tags/dynamic/</guid>
+      <guid>https://hexterisk.tech/blog/tags/dynamic/</guid>
       <description></description>
     </item>
     
     <item>
       <title>pin</title>
-      <link>https://hexterisk.github.io/blog/tags/pin/</link>
+      <link>https://hexterisk.tech/blog/tags/pin/</link>
       <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/tags/pin/</guid>
+      <guid>https://hexterisk.tech/blog/tags/pin/</guid>
       <description></description>
     </item>
     
     <item>
       <title>syscall</title>
-      <link>https://hexterisk.github.io/blog/tags/syscall/</link>
+      <link>https://hexterisk.tech/blog/tags/syscall/</link>
       <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/tags/syscall/</guid>
+      <guid>https://hexterisk.tech/blog/tags/syscall/</guid>
       <description></description>
     </item>
     
     <item>
       <title>taint</title>
-      <link>https://hexterisk.github.io/blog/tags/taint/</link>
+      <link>https://hexterisk.tech/blog/tags/taint/</link>
       <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/tags/taint/</guid>
+      <guid>https://hexterisk.tech/blog/tags/taint/</guid>
       <description></description>
     </item>
     
     <item>
       <title>aslr</title>
-      <link>https://hexterisk.github.io/blog/tags/aslr/</link>
+      <link>https://hexterisk.tech/blog/tags/aslr/</link>
       <pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/tags/aslr/</guid>
+      <guid>https://hexterisk.tech/blog/tags/aslr/</guid>
       <description></description>
     </item>
     
     <item>
       <title>bbl</title>
-      <link>https://hexterisk.github.io/blog/tags/bbl/</link>
+      <link>https://hexterisk.tech/blog/tags/bbl/</link>
       <pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/tags/bbl/</guid>
+      <guid>https://hexterisk.tech/blog/tags/bbl/</guid>
       <description></description>
     </item>
     
     <item>
       <title>debugging</title>
-      <link>https://hexterisk.github.io/blog/tags/debugging/</link>
+      <link>https://hexterisk.tech/blog/tags/debugging/</link>
       <pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/tags/debugging/</guid>
+      <guid>https://hexterisk.tech/blog/tags/debugging/</guid>
       <description></description>
     </item>
     
     <item>
       <title>granularity</title>
-      <link>https://hexterisk.github.io/blog/tags/granularity/</link>
+      <link>https://hexterisk.tech/blog/tags/granularity/</link>
       <pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/tags/granularity/</guid>
+      <guid>https://hexterisk.tech/blog/tags/granularity/</guid>
       <description></description>
     </item>
     

@@ -10,7 +10,7 @@ $ strace ./ctf show_me_the_flag ➊ execve(&amp;#34;./ctf&amp;#34;, [&amp;#34;./
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/03/13/trace-analysis/" />
+<link rel="canonical" href="https://hexterisk.github.io/blog/posts/2020/03/13/trace-analysis/" />
 
 
     <title>
@@ -26,17 +26,17 @@ $ strace ./ctf show_me_the_flag ➊ execve(&amp;#34;./ctf&amp;#34;, [&amp;#34;./
 
 
 
-<link rel="stylesheet" href="https://hexterisk.tech/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
 
 
 
 
-    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.tech/blog/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.tech/blog/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.tech/blog/favicon-16x16.png">
-    <link rel="manifest" href="https://hexterisk.tech/blog/site.webmanifest">
-    <link rel="mask-icon" href="https://hexterisk.tech/blog/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="https://hexterisk.tech/blog/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
     <meta name="msapplication-TileColor" content="#252627">
     <meta name="theme-color" content="#252627">
 
@@ -46,12 +46,12 @@ $ strace ./ctf show_me_the_flag ➊ execve(&#34;./ctf&#34;, [&#34;./ctf&#34;, &#
 <meta itemprop="datePublished" content="2020-03-13T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-03-13T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="1328">
-<meta itemprop="image" content="https://hexterisk.tech/blog"/>
+<meta itemprop="image" content="https://hexterisk.github.io/blog"/>
 
 
 
 <meta itemprop="keywords" content="binary,rev,reversing,c,pe,windows," /><meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://hexterisk.tech/blog"/>
+<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
 
 <meta name="twitter:title" content="Trace Analysis"/>
 <meta name="twitter:description" content="System Call Trace strace can be used to investigate system call behavior. In some cases, you may want to attach strace to a running process. To do this, you need to use the -p pid option, where pid is the process ID of the process you want to attach to.
@@ -78,7 +78,7 @@ $ strace ./ctf show_me_the_flag ➊ execve(&#34;./ctf&#34;, [&#34;./ctf&#34;, &#
         <div class="container">
             <header class="header">
     <span class="header__inner">
-        <a href="https://hexterisk.tech/blog/" style="text-decoration: none;">
+        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
     <div class="logo">
         
             <span class="logo__mark">></span>
@@ -92,7 +92,7 @@ $ strace ./ctf show_me_the_flag ➊ execve(&#34;./ctf&#34;, [&#34;./ctf&#34;, &#
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="https://hexterisk.tech/blog/about/">About</a></li><li><a href="https://hexterisk.tech/blog/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
     </ul>
 </nav>
 
@@ -129,7 +129,7 @@ $ strace ./ctf show_me_the_flag ➊ execve(&#34;./ctf&#34;, [&#34;./ctf&#34;, &#
 
         <article>
             <h1 class="post-title">
-                <a href="https://hexterisk.tech/blog/posts/2020/03/13/trace-analysis/">Trace Analysis</a>
+                <a href="https://hexterisk.github.io/blog/posts/2020/03/13/trace-analysis/">Trace Analysis</a>
             </h1>
 
             
@@ -269,7 +269,7 @@ std<span style="color:#f92672">::</span>char_traits<span style="color:#f92672">&
 
         <div class="post-info">
                 <p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/rev">rev</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/reversing">reversing</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/c">c</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/pe">pe</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/windows">windows</a></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/rev">rev</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/reversing">reversing</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/c">c</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/pe">pe</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/windows">windows</a></span>
                 </p>
 
             <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1328 Words</p>
@@ -287,7 +287,7 @@ std<span style="color:#f92672">::</span>char_traits<span style="color:#f92672">&
                 <div class="pagination__buttons">
                     
                         <span class="button previous">
-                            <a href="https://hexterisk.tech/blog/posts/2020/03/16/disassembly-and-binary-analysis-fundamentals/">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/03/16/disassembly-and-binary-analysis-fundamentals/">
                                 <span class="button__icon">←</span>
                                 <span class="button__text">Disassembly and Binary Analysis Fundamentals</span>
                             </a>
@@ -296,7 +296,7 @@ std<span style="color:#f92672">::</span>char_traits<span style="color:#f92672">&
 
                     
                         <span class="button next">
-                            <a href="https://hexterisk.tech/blog/posts/2020/03/10/stack-and-its-frames/">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/03/10/stack-and-its-frames/">
                                 <span class="button__text">Stack and it&#39;s Frames</span>
                                 <span class="button__icon">→</span>
                             </a>
@@ -316,7 +316,7 @@ std<span style="color:#f92672">::</span>char_traits<span style="color:#f92672">&
     <div class="footer__inner">
         <div class="footer__content">
             
-                <span><a href="https://hexterisk.tech/blog">Bhanupratap Singh &copy; 2020</a></span>
+                <span><a href="https://hexterisk.github.io/blog">Bhanupratap Singh &copy; 2020</a></span>
             
         </div>
     </div>
@@ -346,7 +346,7 @@ std<span style="color:#f92672">::</span>char_traits<span style="color:#f92672">&
 
 
 
-<script type="text/javascript" src="https://hexterisk.tech/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
 
 
 

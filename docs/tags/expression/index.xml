@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>expression on Pwn the world.</title>
-    <link>https://hexterisk.tech/blog/tags/expression/</link>
+    <link>https://hexterisk.github.io/blog/tags/expression/</link>
     <description>Recent content in expression on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Thu, 21 May 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://hexterisk.tech/blog/tags/expression/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hexterisk.github.io/blog/tags/expression/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Symbolic Execution and Angr</title>
-      <link>https://hexterisk.tech/blog/posts/2020/05/21/symbolic-execution-and-angr/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/05/21/symbolic-execution-and-angr/</link>
       <pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/05/21/symbolic-execution-and-angr/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/05/21/symbolic-execution-and-angr/</guid>
       <description>Symbolic Execution is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
 Symbols Different values in a program(such as the user input) are substituted with Symbols(variables or placeholders). These symbols pertain to a domain full of values, allowing us to explore the program in a much more open form, basically “walking through the program” with a domain full of values(handled by any one of the constraint solving backends like Z3) instead of walking a fixed path due to a fixed hard-coded value/input.</description>
     </item>
     
     <item>
       <title>Constraint Solvers and Z3</title>
-      <link>https://hexterisk.tech/blog/posts/2020/05/15/constraint-solvers-and-z3/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/05/15/constraint-solvers-and-z3/</link>
       <pubDate>Fri, 15 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/05/15/constraint-solvers-and-z3/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/05/15/constraint-solvers-and-z3/</guid>
       <description>A constraint solver must be versatile, that is, it should be able to act as an:
  Interpreter: Given the input, solve for the output of the equation. Inverter: Given the output, solve for the input of the equation. Synthesizer: Act as both Interpreter and Inverter.  Formulating Programs Assume a formula 𝑆ₚ(𝑥, 𝑦) which holds if and only if program P(x) outputs value y such that
 Program: f(𝑥) { return 𝑥 + 𝑥 }</description>
@@ -34,20 +34,20 @@ Program: f(𝑥) { return 𝑥 + 𝑥 }</description>
     
     <item>
       <title>Principles of Symbolic Execution</title>
-      <link>https://hexterisk.tech/blog/posts/2020/04/20/principles-of-symbolic-execution/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/04/20/principles-of-symbolic-execution/</link>
       <pubDate>Mon, 20 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/04/20/principles-of-symbolic-execution/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/04/20/principles-of-symbolic-execution/</guid>
       <description>Symbolic Execution, or symbex, is a software analysis technique that expresses program state in terms of logical formulas that you can automatically reason about to answer complex questions about a program’s behavior. Can automatically increase the code coverage of dynamic analyses by generating new inputs that lead to unexplored program paths. Apply it sparingly and carefully because of scalability issues.
  Symbex executes (or emulates) an application with symbolic values.  Symbolic values represent a domain covering possible concrete values, represented by symbols like φ.</description>
     </item>
     
     <item>
       <title>Stack and it&#39;s Frames</title>
-      <link>https://hexterisk.tech/blog/posts/2020/03/10/stack-and-its-frames/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/03/10/stack-and-its-frames/</link>
       <pubDate>Tue, 10 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/03/10/stack-and-its-frames/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/03/10/stack-and-its-frames/</guid>
       <description>Stack is a data structure, and means exactly what it&amp;rsquo;s name says - a stack(of objects). It is mainly characterized by pushing and popping operations. You push items onto the stack, and then pop those items off. A stack is therefore a LIFO(last in, first out) structure. Memory for functions, local variables, and flow control is stored in the stack.
 Stack Layout The stack grows from higher addresses to lower addresses.</description>
     </item>

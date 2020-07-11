@@ -12,7 +12,7 @@ Now, write the code that allows you to &amp;ldquo;seek&amp;rdquo; into the ciphe
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="https://hexterisk.tech/blog/posts/2020/03/27/set-4/" />
+<link rel="canonical" href="https://hexterisk.github.io/blog/posts/2020/03/27/set-4/" />
 
 
     <title>
@@ -28,17 +28,17 @@ Now, write the code that allows you to &amp;ldquo;seek&amp;rdquo; into the ciphe
 
 
 
-<link rel="stylesheet" href="https://hexterisk.tech/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
 
 
 
 
-    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.tech/blog/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.tech/blog/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.tech/blog/favicon-16x16.png">
-    <link rel="manifest" href="https://hexterisk.tech/blog/site.webmanifest">
-    <link rel="mask-icon" href="https://hexterisk.tech/blog/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="https://hexterisk.tech/blog/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
     <meta name="msapplication-TileColor" content="#252627">
     <meta name="theme-color" content="#252627">
 
@@ -50,12 +50,12 @@ Now, write the code that allows you to &ldquo;seek&rdquo; into the ciphertext, d
 <meta itemprop="datePublished" content="2020-03-27T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-03-27T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="5107">
-<meta itemprop="image" content="https://hexterisk.tech/blog"/>
+<meta itemprop="image" content="https://hexterisk.github.io/blog"/>
 
 
 
 <meta itemprop="keywords" content="Matasano,cryptography,SHA-1,MAC,IV,CTR,xor,CBC,AES,pad,bit-flipping," /><meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://hexterisk.tech/blog"/>
+<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
 
 <meta name="twitter:title" content="Set 4"/>
 <meta name="twitter:description" content="Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
@@ -84,7 +84,7 @@ Now, write the code that allows you to &ldquo;seek&rdquo; into the ciphertext, d
         <div class="container">
             <header class="header">
     <span class="header__inner">
-        <a href="https://hexterisk.tech/blog/" style="text-decoration: none;">
+        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
     <div class="logo">
         
             <span class="logo__mark">></span>
@@ -98,7 +98,7 @@ Now, write the code that allows you to &ldquo;seek&rdquo; into the ciphertext, d
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="https://hexterisk.tech/blog/about/">About</a></li><li><a href="https://hexterisk.tech/blog/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
     </ul>
 </nav>
 
@@ -135,7 +135,7 @@ Now, write the code that allows you to &ldquo;seek&rdquo; into the ciphertext, d
 
         <article>
             <h1 class="post-title">
-                <a href="https://hexterisk.tech/blog/posts/2020/03/27/set-4/">Set 4</a>
+                <a href="https://hexterisk.github.io/blog/posts/2020/03/27/set-4/">Set 4</a>
             </h1>
 
             
@@ -316,7 +316,7 @@ append_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&
 <li>Compute the key as K = P¹ ⊕ C¹.</li>
 </ol>
 <p>Now, since the oracle checks the output for ASCII compliance, and in fact does send us the supposedly decrypted bytes when it&rsquo;s non-ASCII compliant, we can thus receive the key as it gets decrypted. If the decrypted bytes happens to pass the ASCII check, pick a different cipher block to begin with.</p>
-<p><img src="https://hexterisk.tech/blog/Cryptopals_Set_4/image.png" alt="&ldquo;CBC_decryption&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_4/image.png" alt="&ldquo;CBC_decryption&rdquo;">
 <em>AES CBC Decryption (3 blocks).</em></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">keysize <span style="color:#f92672">=</span> <span style="color:#ae81ff">16</span>
 random_key <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>urandom(keysize)
@@ -771,7 +771,7 @@ response <span style="color:#f92672">=</span> app<span style="color:#f92672">.</
 <span style="color:#66d9ef">print</span>(response)
 </code></pre></div><p><code>&lt;Storage {'status': 500, 'headers': {}, 'header_items': [], 'data': b'500'}&gt;</code><br>
 <code>&lt;Storage {'status': 200, 'headers': {}, 'header_items': [], 'data': b'200'}&gt;</code></p>
-<p><img src="https://hexterisk.tech/blog/Cryptopals_Set_4/1_image.png" alt="&ldquo;timing_attack&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_4/1_image.png" alt="&ldquo;timing_attack&rdquo;">
 <em>Classical timing attack.</em></p>
 <p>It&rsquo;s a classical timing attack. We brute force all the bytes of the hash by judging the response time. Every byte check causes some delay. If for some byte the response comes back with a little more delay than all others, then it&rsquo;s clear that this byte triggered the byte check for the next byte, and thus this byte was guessed correctly. Slowly the whole signature is built this way.</p>
 <p>The function produces a 160-bit (20-byte) hash value known as a message digest, typically rendered as a hexadecimal number, 40 digits long.</p>
@@ -925,7 +925,7 @@ response <span style="color:#f92672">=</span> app<span style="color:#f92672">.</
 
         <div class="post-info">
                 <p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.tech/blog/tags/matasano">Matasano</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/cryptography">cryptography</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/sha-1">SHA-1</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/mac">MAC</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/iv">IV</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/ctr">CTR</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/xor">xor</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/cbc">CBC</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/aes">AES</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/pad">pad</a></span><span class="tag"><a href="https://hexterisk.tech/blog/tags/bit-flipping">bit-flipping</a></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/matasano">Matasano</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/cryptography">cryptography</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/sha-1">SHA-1</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/mac">MAC</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/iv">IV</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/ctr">CTR</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/xor">xor</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/cbc">CBC</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/aes">AES</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/pad">pad</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/bit-flipping">bit-flipping</a></span>
                 </p>
 
             <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>5107 Words</p>
@@ -943,7 +943,7 @@ response <span style="color:#f92672">=</span> app<span style="color:#f92672">.</
                 <div class="pagination__buttons">
                     
                         <span class="button previous">
-                            <a href="https://hexterisk.tech/blog/posts/2020/04/02/set-5/">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/04/02/set-5/">
                                 <span class="button__icon">←</span>
                                 <span class="button__text">Set 5</span>
                             </a>
@@ -952,7 +952,7 @@ response <span style="color:#f92672">=</span> app<span style="color:#f92672">.</
 
                     
                         <span class="button next">
-                            <a href="https://hexterisk.tech/blog/posts/2020/03/23/set-3/">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/03/23/set-3/">
                                 <span class="button__text">Set 3</span>
                                 <span class="button__icon">→</span>
                             </a>
@@ -972,7 +972,7 @@ response <span style="color:#f92672">=</span> app<span style="color:#f92672">.</
     <div class="footer__inner">
         <div class="footer__content">
             
-                <span><a href="https://hexterisk.tech/blog">Bhanupratap Singh &copy; 2020</a></span>
+                <span><a href="https://hexterisk.github.io/blog">Bhanupratap Singh &copy; 2020</a></span>
             
         </div>
     </div>
@@ -1002,7 +1002,7 @@ response <span style="color:#f92672">=</span> app<span style="color:#f92672">.</
 
 
 
-<script type="text/javascript" src="https://hexterisk.tech/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
 
 
 

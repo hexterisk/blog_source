@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>taint on Pwn the world.</title>
-    <link>https://hexterisk.tech/blog/tags/taint/</link>
+    <link>https://hexterisk.github.io/blog/tags/taint/</link>
     <description>Recent content in taint on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Fri, 12 Jun 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://hexterisk.tech/blog/tags/taint/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hexterisk.github.io/blog/tags/taint/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Dynamic Taint Analysis and Pin</title>
-      <link>https://hexterisk.tech/blog/posts/2020/06/12/dynamic-taint-analysis-and-pin/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/06/12/dynamic-taint-analysis-and-pin/</link>
       <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/06/12/dynamic-taint-analysis-and-pin/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/06/12/dynamic-taint-analysis-and-pin/</guid>
       <description>Dynamic Taint Analysis is a technique used to discover what part of memory or register are controllable by the some data we are interested, such as the user input, at a given program state. This is done by marking the interested data. There on after, any piece of data that comes in contact with the tainted data by any means, like getting computed from the tainted data, is tainted too, thus spreading the taint throughout the execution.</description>
     </item>
     
     <item>
       <title>Taint Analysis</title>
-      <link>https://hexterisk.tech/blog/posts/2020/05/03/taint-analysis/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/05/03/taint-analysis/</link>
       <pubDate>Sun, 03 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/05/03/taint-analysis/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/05/03/taint-analysis/</guid>
       <description>Taint Analysis is a program analysis technique that allows you to determine the influence that a selected program state has on other parts of the program state. Taint any data that a program receives from the network, track that data, and raise an alert if it affects the program counter. If an operation uses the value of some tainted object, say X, to derive a value for another, say Y, then object Y becomes tainted.</description>
     </item>
     

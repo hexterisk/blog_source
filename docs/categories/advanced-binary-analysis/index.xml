@@ -2,39 +2,39 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>advanced-binary-analysis on Pwn the world.</title>
-    <link>https://hexterisk.tech/blog/categories/advanced-binary-analysis/</link>
+    <link>https://hexterisk.github.io/blog/categories/advanced-binary-analysis/</link>
     <description>Recent content in advanced-binary-analysis on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Sun, 03 May 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://hexterisk.tech/blog/categories/advanced-binary-analysis/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hexterisk.github.io/blog/categories/advanced-binary-analysis/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Taint Analysis</title>
-      <link>https://hexterisk.tech/blog/posts/2020/05/03/taint-analysis/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/05/03/taint-analysis/</link>
       <pubDate>Sun, 03 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/05/03/taint-analysis/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/05/03/taint-analysis/</guid>
       <description>Taint Analysis is a program analysis technique that allows you to determine the influence that a selected program state has on other parts of the program state. Taint any data that a program receives from the network, track that data, and raise an alert if it affects the program counter. If an operation uses the value of some tainted object, say X, to derive a value for another, say Y, then object Y becomes tainted.</description>
     </item>
     
     <item>
       <title>Binary Obfuscation</title>
-      <link>https://hexterisk.tech/blog/posts/2020/04/28/binary-obfuscation/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/04/28/binary-obfuscation/</link>
       <pubDate>Tue, 28 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/04/28/binary-obfuscation/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/04/28/binary-obfuscation/</guid>
       <description>The main aim of Binary Obfuscation is to hinder the process of static analysis of a binary. Renaming the symbols(variables and functions) of a binary implies that the clues as to what data a variable holds or what task a function performs that could be obtained from their names, are lost. This makes it a little harder for the analysts to keep a track of all the symbols without documenting them.</description>
     </item>
     
     <item>
       <title>Binary Instrumentation</title>
-      <link>https://hexterisk.tech/blog/posts/2020/04/25/binary-instrumentation/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/04/25/binary-instrumentation/</link>
       <pubDate>Sat, 25 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/04/25/binary-instrumentation/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/04/25/binary-instrumentation/</guid>
       <description>Inserting new code at any point in an existing binary to observe or modify the binary’s behavior in some way is called instrumenting the binary. The point where you add new code is called the instrumentation point, and the added code is called instrumentation code.
 Tradeoffs of Dynamic and Static Binary Instrumentation.
 Static Binary Instrumentation Static Binary Instrumentation works by disassembling a binary and then adding instrumentation code where needed and storing the updated binary permanently on disk.</description>
@@ -42,10 +42,10 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
     
     <item>
       <title>Principles of Symbolic Execution</title>
-      <link>https://hexterisk.tech/blog/posts/2020/04/20/principles-of-symbolic-execution/</link>
+      <link>https://hexterisk.github.io/blog/posts/2020/04/20/principles-of-symbolic-execution/</link>
       <pubDate>Mon, 20 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.tech/blog/posts/2020/04/20/principles-of-symbolic-execution/</guid>
+      <guid>https://hexterisk.github.io/blog/posts/2020/04/20/principles-of-symbolic-execution/</guid>
       <description>Symbolic Execution, or symbex, is a software analysis technique that expresses program state in terms of logical formulas that you can automatically reason about to answer complex questions about a program’s behavior. Can automatically increase the code coverage of dynamic analyses by generating new inputs that lead to unexplored program paths. Apply it sparingly and carefully because of scalability issues.
  Symbex executes (or emulates) an application with symbolic values.  Symbolic values represent a domain covering possible concrete values, represented by symbols like φ.</description>
     </item>

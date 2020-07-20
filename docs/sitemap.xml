@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://hexterisk.github.io/blog/posts/2020/07/02/dockerise-mysql-phpmyadmin/</loc>
+    <lastmod>2020-07-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://hexterisk.github.io/blog/posts/2020/06/12/dynamic-taint-analysis-and-pin/</loc>
     <lastmod>2020-06-12T00:00:00+00:00</lastmod>
   </url>
@@ -128,12 +133,57 @@
   </url>
   
   <url>
-    <loc>https://hexterisk.github.io/blog/tags/binary/</loc>
-    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
+    <loc>https://hexterisk.github.io/blog/categories/</loc>
+    <lastmod>2020-07-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://hexterisk.github.io/blog/categories/</loc>
+    <loc>https://hexterisk.github.io/blog/tags/container/</loc>
+    <lastmod>2020-07-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/categories/dev-ops/</loc>
+    <lastmod>2020-07-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/tags/docker/</loc>
+    <lastmod>2020-07-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/tags/docker-compose/</loc>
+    <lastmod>2020-07-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/tags/mysql/</loc>
+    <lastmod>2020-07-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/tags/phpmyadmin/</loc>
+    <lastmod>2020-07-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/posts/</loc>
+    <lastmod>2020-07-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/</loc>
+    <lastmod>2020-07-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/tags/</loc>
+    <lastmod>2020-07-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/tags/binary/</loc>
     <lastmod>2020-06-12T00:00:00+00:00</lastmod>
   </url>
   
@@ -153,27 +203,12 @@
   </url>
   
   <url>
-    <loc>https://hexterisk.github.io/blog/posts/</loc>
-    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://hexterisk.github.io/blog/categories/practical-binary-analysis/</loc>
     <lastmod>2020-06-12T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://hexterisk.github.io/blog/</loc>
-    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://hexterisk.github.io/blog/tags/syscall/</loc>
-    <lastmod>2020-06-12T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hexterisk.github.io/blog/tags/</loc>
     <lastmod>2020-06-12T00:00:00+00:00</lastmod>
   </url>
   
@@ -618,27 +653,7 @@
   </url>
   
   <url>
-    <loc>https://hexterisk.github.io/blog/tags/container/</loc>
-    <lastmod>2020-01-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://hexterisk.github.io/blog/tags/database/</loc>
-    <lastmod>2020-01-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hexterisk.github.io/blog/categories/dev-ops/</loc>
-    <lastmod>2020-01-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hexterisk.github.io/blog/tags/docker/</loc>
-    <lastmod>2020-01-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hexterisk.github.io/blog/tags/docker-compose/</loc>
     <lastmod>2020-01-22T00:00:00+00:00</lastmod>
   </url>
   

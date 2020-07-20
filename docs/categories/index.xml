@@ -6,10 +6,19 @@
     <description>Recent content in Categories on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Fri, 12 Jun 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 02 Jul 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hexterisk.github.io/blog/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dev-Ops</title>
+      <link>https://hexterisk.github.io/blog/categories/dev-ops/</link>
+      <pubDate>Thu, 02 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/categories/dev-ops/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>practical-binary-analysis</title>
@@ -53,15 +62,6 @@
       <pubDate>Thu, 19 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.github.io/blog/categories/basic-binary-analysis/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Dev-Ops</title>
-      <link>https://hexterisk.github.io/blog/categories/dev-ops/</link>
-      <pubDate>Wed, 22 Jan 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/categories/dev-ops/</guid>
       <description></description>
     </item>
     

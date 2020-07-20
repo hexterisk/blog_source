@@ -6,10 +6,55 @@
     <description>Recent content in Tags on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Fri, 12 Jun 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 02 Jul 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hexterisk.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>container</title>
+      <link>https://hexterisk.github.io/blog/tags/container/</link>
+      <pubDate>Thu, 02 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/tags/container/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>docker</title>
+      <link>https://hexterisk.github.io/blog/tags/docker/</link>
+      <pubDate>Thu, 02 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>docker-compose</title>
+      <link>https://hexterisk.github.io/blog/tags/docker-compose/</link>
+      <pubDate>Thu, 02 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/tags/docker-compose/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mysql</title>
+      <link>https://hexterisk.github.io/blog/tags/mysql/</link>
+      <pubDate>Thu, 02 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/tags/mysql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>phpmyadmin</title>
+      <link>https://hexterisk.github.io/blog/tags/phpmyadmin/</link>
+      <pubDate>Thu, 02 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/tags/phpmyadmin/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>binary</title>
@@ -53,51 +98,6 @@
       <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.github.io/blog/tags/syscall/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>taint</title>
-      <link>https://hexterisk.github.io/blog/tags/taint/</link>
-      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/tags/taint/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>aslr</title>
-      <link>https://hexterisk.github.io/blog/tags/aslr/</link>
-      <pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/tags/aslr/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>bbl</title>
-      <link>https://hexterisk.github.io/blog/tags/bbl/</link>
-      <pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/tags/bbl/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>debugging</title>
-      <link>https://hexterisk.github.io/blog/tags/debugging/</link>
-      <pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/tags/debugging/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>granularity</title>
-      <link>https://hexterisk.github.io/blog/tags/granularity/</link>
-      <pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/tags/granularity/</guid>
       <description></description>
     </item>
     

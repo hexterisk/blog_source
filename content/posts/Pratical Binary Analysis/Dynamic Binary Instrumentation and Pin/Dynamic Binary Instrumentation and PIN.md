@@ -107,6 +107,8 @@ Pin has two modes:
         *   If it is 32-bit, command: `cd /opt/pin-dir/source/tools && make all TARGET=ia32`
 *   Setup complete.
 
+Compiled [script](https://github.com/hexterisk/scripts/blob/master/install-Pin.sh) can be downloaded from here.
+
 ### Execution
 
 Format: `./pin -t [full path to tool] -- [full path to app]`

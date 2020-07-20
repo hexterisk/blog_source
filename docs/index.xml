@@ -6,10 +6,20 @@
     <description>Recent content on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Fri, 12 Jun 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 02 Jul 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hexterisk.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Dockerise MySQL &#43; phpMyAdmin</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/07/02/dockerise-mysql-phpmyadmin/</link>
+      <pubDate>Thu, 02 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/07/02/dockerise-mysql-phpmyadmin/</guid>
+      <description>A common requirement in a large number of software projects is a relational database with an easy to use management tool. Considering how often a developer needs this, setting it up everytime from scratch can be a drag. However, with the advent of containerisation, we can have a setup off the ground in a couple of minutes, whether it&amp;rsquo;s a development or a production environment.
+The age long discussion of MySQL versus MariaDB is something that an average developer need not bother with unless their requirement is very specific.</description>
+    </item>
     
     <item>
       <title>Dynamic Taint Analysis and Pin</title>
@@ -108,17 +118,6 @@ Output of netdiscover.
       
       <guid>https://hexterisk.github.io/blog/posts/2020/04/28/binary-obfuscation/</guid>
       <description>The main aim of Binary Obfuscation is to hinder the process of static analysis of a binary. Renaming the symbols(variables and functions) of a binary implies that the clues as to what data a variable holds or what task a function performs that could be obtained from their names, are lost. This makes it a little harder for the analysts to keep a track of all the symbols without documenting them.</description>
-    </item>
-    
-    <item>
-      <title>Binary Instrumentation</title>
-      <link>https://hexterisk.github.io/blog/posts/2020/04/25/binary-instrumentation/</link>
-      <pubDate>Sat, 25 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/posts/2020/04/25/binary-instrumentation/</guid>
-      <description>Inserting new code at any point in an existing binary to observe or modify the binary’s behavior in some way is called instrumenting the binary. The point where you add new code is called the instrumentation point, and the added code is called instrumentation code.
-Tradeoffs of Dynamic and Static Binary Instrumentation.
-Static Binary Instrumentation Static Binary Instrumentation works by disassembling a binary and then adding instrumentation code where needed and storing the updated binary permanently on disk.</description>
     </item>
     
   </channel>

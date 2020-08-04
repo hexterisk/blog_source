@@ -5,8 +5,43 @@
         <description>Recent content in Posts on Pwn the world.</description>
         <generator>Hugo -- gohugo.io</generator>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Thu, 02 Jul 2020 00:00:00 +0000</lastBuildDate>
+        <lastBuildDate>Mon, 20 Jul 2020 00:00:00 +0000</lastBuildDate>
         <atom:link href="https://hexterisk.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Classification of Malware using Static Information</title>
+            <link>https://hexterisk.github.io/blog/posts/2020/07/20/classification-of-malware-using-static-information/</link>
+            <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
+            
+            <guid>https://hexterisk.github.io/blog/posts/2020/07/20/classification-of-malware-using-static-information/</guid>
+            <description>Static analysis of a PE allows extraction of a lot of metadata that can be useful in further analysis such as names of sections, imported DLLs and strings present which gives an early idea of the functions performed by the binary in question. Malicious binaries with unstructured and improperly formatted metadata (done to achieve sophisticated levels of obfuscation and anti-debugging/anti-reversing defenses) can raise suspicions since a benign PE generally has a well-formed and valid metadata.</description>
+            <content type="html"><![CDATA[<p>Static analysis of a PE allows extraction of a lot of metadata that can be useful in further analysis such as names of sections, imported DLLs and strings present which gives an early idea of the functions performed by the binary in question. Malicious binaries with unstructured and improperly formatted metadata (done to achieve sophisticated levels of obfuscation and anti-debugging/anti-reversing defenses) can raise suspicions since a benign PE generally has a well-formed and valid metadata. Therefore, static analysis has been a popular approach towards malware detection in PEs. Since execution of the binary is not required, this approach is much more lightweight and resource-conserving. This allows security teams and researchers quickly perform a preliminary analysis.</p>
+<p>The metadata extracted from the PEs to be used as features, however, is mostly unreliable because of it&rsquo;s extreme variance and invalidity.</p>
+<h2 id="feature-extraction">Feature Extraction</h2>
+<p>The following features can be extracted from a PE:</p>
+<ol>
+<li>General File Information<br>
+General information about the binary such as it&rsquo;s size and other basic information parsed from the PE header: virtual size of the binary, resources, re-locations and symbols.</li>
+<li>Header Information<br>
+We parse different headers and extract different data points relevant to the said headers. For example. we can extract timestamps and image characteristics from the COFF header, DLL characteristics an linker versions from the Optional header.</li>
+<li>Imported Functions<br>
+Parsing the IAT(Import Address Table) can tell us about the imported functions by the libraries used by the binary. These strings can be hashed and used as features. Total number of imported functions is in General File Information.</li>
+<li>Exported Functions<br>
+The functions exported by the binary can give us a vague idea if it works as a support to some other binary, and what functions it can perform. Total number of exported functions is in General File Information.Imported Functions</li>
+<li>Section Information<br>
+Properties of each section such as it&rsquo;s size, entropy and list of strings can help capture the characteristics of that section.</li>
+<li>Byte Histogram<br>
+A histogram can be generated from all the bytes of the binary and normalized to be used as a feature.</li>
+<li>Byte-Entropy Histogram<br>
+A histogram can be generated from the byte-entropy of the binary for an approximation of a byte&rsquo;s joint distribution to the entropy. It can then be normalized and used as a feature.</li>
+<li>Strings<br>
+Collection of subsequent printable bytes can be extremely unreliable since any random byte combination(of at least length 5) would qualify as a string. However, it provides distinct information in comparison to the byte histogram since strings can capture occurrences of URLs, registry keys and file names.</li>
+</ol>
+<p>These features can be used to form a general idea about the PE before executing it.</p>
+<p>Sample structure info after running a PE through a parser is shown in this <a href="https://github.com/hexterisk/static-malwired/blob/master/static_info.txt">file</a>.</p>
+<p>A POC working on malware classification using static analysis is in this <a href="https://github.com/hexterisk/static-malwired">repository</a>.</p>
+]]></content>
+        </item>
         
         <item>
             <title>Dockerise MySQL &#43; phpMyAdmin</title>

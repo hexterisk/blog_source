@@ -6,10 +6,19 @@
     <description>Recent content on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Thu, 02 Jul 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 20 Jul 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hexterisk.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Classification of Malware using Static Information</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/07/20/classification-of-malware-using-static-information/</link>
+      <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/07/20/classification-of-malware-using-static-information/</guid>
+      <description>Static analysis of a PE allows extraction of a lot of metadata that can be useful in further analysis such as names of sections, imported DLLs and strings present which gives an early idea of the functions performed by the binary in question. Malicious binaries with unstructured and improperly formatted metadata (done to achieve sophisticated levels of obfuscation and anti-debugging/anti-reversing defenses) can raise suspicions since a benign PE generally has a well-formed and valid metadata.</description>
+    </item>
     
     <item>
       <title>Dockerise MySQL &#43; phpMyAdmin</title>
@@ -109,15 +118,6 @@ Output of netdiscover.
       
       <guid>https://hexterisk.github.io/blog/posts/2020/05/03/taint-analysis/</guid>
       <description>Taint Analysis is a program analysis technique that allows you to determine the influence that a selected program state has on other parts of the program state. Taint any data that a program receives from the network, track that data, and raise an alert if it affects the program counter. If an operation uses the value of some tainted object, say X, to derive a value for another, say Y, then object Y becomes tainted.</description>
-    </item>
-    
-    <item>
-      <title>Binary Obfuscation</title>
-      <link>https://hexterisk.github.io/blog/posts/2020/04/28/binary-obfuscation/</link>
-      <pubDate>Tue, 28 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/posts/2020/04/28/binary-obfuscation/</guid>
-      <description>The main aim of Binary Obfuscation is to hinder the process of static analysis of a binary. Renaming the symbols(variables and functions) of a binary implies that the clues as to what data a variable holds or what task a function performs that could be obtained from their names, are lost. This makes it a little harder for the analysts to keep a track of all the symbols without documenting them.</description>
     </item>
     
   </channel>

@@ -5,17 +5,50 @@
         <description>Recent content in Posts on Pwn the world.</description>
         <generator>Hugo -- gohugo.io</generator>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Mon, 20 Jul 2020 00:00:00 +0000</lastBuildDate>
+        <lastBuildDate>Tue, 04 Aug 2020 00:00:00 +0000</lastBuildDate>
         <atom:link href="https://hexterisk.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
         
         <item>
-            <title>Classification of Malware using Static Information</title>
-            <link>https://hexterisk.github.io/blog/posts/2020/07/20/classification-of-malware-using-static-information/</link>
+            <title>Classification of Malwares through Dynamic Analysis</title>
+            <link>https://hexterisk.github.io/blog/posts/2020/08/04/classification-of-malwares-through-dynamic-analysis/</link>
+            <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
+            
+            <guid>https://hexterisk.github.io/blog/posts/2020/08/04/classification-of-malwares-through-dynamic-analysis/</guid>
+            <description>Malwares come in many forms. Sometimes it&amp;rsquo;s a standalone binary whereas sometimes it&amp;rsquo;s a legitimate software having a malware inside it. Sometimes it&amp;rsquo;s a binary with malformed metadata and packed bytes to throw off the analyst whereas sometimes it acts as a downloader/launcher for a more malicious binary. Information extracted from static analysis can therefore be deemed unreliable and not as accurate when compared with information extracted from dynamic analysis.</description>
+            <content type="html"><![CDATA[<p>Malwares come in many forms. Sometimes it&rsquo;s a standalone binary whereas sometimes it&rsquo;s a legitimate software having a malware inside it. Sometimes it&rsquo;s a binary with malformed metadata and packed bytes to throw off the analyst whereas sometimes it acts as a downloader/launcher for a more malicious binary. Information extracted from static analysis can therefore be deemed unreliable and not as accurate when compared with information extracted from dynamic analysis.</p>
+<p>Dynamic analysis involves analyzing the executable&rsquo;s behavior in a controlled environment. All the actions performed and modifications to system settings cause by the executable are recorded and analyzed afterwards. This process is usually automated using sandboxes such as Cuckoo Sandbox logging the behavior.</p>
+<h2 id="feature-extraction">Feature Extraction</h2>
+<p>The following features can be extracted from a dynamic analysis log:</p>
+<ol>
+<li>Registry Keys<br>
+Windows registry contains configuration information about the system, installed apps and mounted devices. Any modifications made to the registry can be used to understand what sort of environment the executable wants to set up for it&rsquo;s execution. Therefore, registry keys read, written, opened and deleted can be useful as a feature.</li>
+<li>Files<br>
+The logs record any changes made to the file structure of the system. Any files copied, created, written or read, and any of these operations failing can be used as a feature to judge the executable&rsquo;s characteristics. Ransomware and lockers would have high number of file system accesses.</li>
+<li>DLLs<br>
+Native exported functions used by an executable can also help form a rough idea of the task it is trying to achieve. Therefore, the DLLs loaded by the executable can be used as a feature.</li>
+<li>API Calls<br>
+APIs are sets of subroutines used by software to communicate with the hardware. API calls made by the executable would give a faint idea of the functions the executable is trying to perform. Therefore, all the unique API calls made, successful or failed can be summarized and used as a feature.</li>
+<li>IPs and DNS<br>
+Logged network traffic can be used to observe the connections and queries that the executable tried. These can then be used to fingerprint traffic flows in the pcaps.</li>
+<li>API Call Sequence<br>
+The order of API calls made by an executable is the closest one can get to it&rsquo;s behavior since an ordered call sequence can define a particular intent.</li>
+</ol>
+<p>Different sets of these features can be used to try out the performance of the models.</p>
+<p>The API Call Sequence feature can be independently used for behavior fingerprinting. The APIs can be divided into different sets to create a signature and then a language model can be used on a dataset of signatures.</p>
+<p>A POC working on malware classification using dynamic analysis is in this <a href="https://github.com/hexterisk/dynamic-malwired/">repository</a>.</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Classification of Malwares through Static Analysis</title>
+            <link>https://hexterisk.github.io/blog/posts/2020/07/20/classification-of-malwares-through-static-analysis/</link>
             <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
             
-            <guid>https://hexterisk.github.io/blog/posts/2020/07/20/classification-of-malware-using-static-information/</guid>
-            <description>Static analysis of a PE allows extraction of a lot of metadata that can be useful in further analysis such as names of sections, imported DLLs and strings present which gives an early idea of the functions performed by the binary in question. Malicious binaries with unstructured and improperly formatted metadata (done to achieve sophisticated levels of obfuscation and anti-debugging/anti-reversing defenses) can raise suspicions since a benign PE generally has a well-formed and valid metadata.</description>
-            <content type="html"><![CDATA[<p>Static analysis of a PE allows extraction of a lot of metadata that can be useful in further analysis such as names of sections, imported DLLs and strings present which gives an early idea of the functions performed by the binary in question. Malicious binaries with unstructured and improperly formatted metadata (done to achieve sophisticated levels of obfuscation and anti-debugging/anti-reversing defenses) can raise suspicions since a benign PE generally has a well-formed and valid metadata. Therefore, static analysis has been a popular approach towards malware detection in PEs. Since execution of the binary is not required, this approach is much more lightweight and resource-conserving. This allows security teams and researchers quickly perform a preliminary analysis.</p>
+            <guid>https://hexterisk.github.io/blog/posts/2020/07/20/classification-of-malwares-through-static-analysis/</guid>
+            <description>Static analysis is the analysis of an executable file on a structural bases without executing it in controlled environment. It is the analysis of the executable&amp;rsquo;s static attributes such as different sections and memory characteristics.
+Therefore, static analysis of a PE allows extraction of a lot of metadata that can be useful in further analysis such as names of sections, imported DLLs and strings present which gives an early idea of the functions performed by the binary in question.</description>
+            <content type="html"><![CDATA[<p>Static analysis is the analysis of an executable file on a structural bases without executing it in controlled environment. It is the analysis of the executable&rsquo;s static attributes such as different sections and memory characteristics.</p>
+<p>Therefore, static analysis of a PE allows extraction of a lot of metadata that can be useful in further analysis such as names of sections, imported DLLs and strings present which gives an early idea of the functions performed by the binary in question. Malicious binaries with unstructured and improperly formatted metadata (done to achieve sophisticated levels of obfuscation and anti-debugging/anti-reversing defenses) can raise suspicions since a benign PE generally has a well-formed and valid metadata. Therefore, static analysis has been a popular approach towards malware detection in PEs. Since execution of the binary is not required, this approach is much more lightweight and resource-conserving. This allows security teams and researchers quickly perform a preliminary analysis.</p>
 <p>The metadata extracted from the PEs to be used as features, however, is mostly unreliable because of it&rsquo;s extreme variance and invalidity.</p>
 <h2 id="feature-extraction">Feature Extraction</h2>
 <p>The following features can be extracted from a PE:</p>

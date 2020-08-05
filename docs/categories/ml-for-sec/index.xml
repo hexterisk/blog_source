@@ -6,18 +6,28 @@
     <description>Recent content in ml-for-sec on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Mon, 20 Jul 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 04 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hexterisk.github.io/blog/categories/ml-for-sec/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Classification of Malware using Static Information</title>
-      <link>https://hexterisk.github.io/blog/posts/2020/07/20/classification-of-malware-using-static-information/</link>
+      <title>Classification of Malwares through Dynamic Analysis</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/08/04/classification-of-malwares-through-dynamic-analysis/</link>
+      <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/08/04/classification-of-malwares-through-dynamic-analysis/</guid>
+      <description>Malwares come in many forms. Sometimes it&amp;rsquo;s a standalone binary whereas sometimes it&amp;rsquo;s a legitimate software having a malware inside it. Sometimes it&amp;rsquo;s a binary with malformed metadata and packed bytes to throw off the analyst whereas sometimes it acts as a downloader/launcher for a more malicious binary. Information extracted from static analysis can therefore be deemed unreliable and not as accurate when compared with information extracted from dynamic analysis.</description>
+    </item>
+    
+    <item>
+      <title>Classification of Malwares through Static Analysis</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/07/20/classification-of-malwares-through-static-analysis/</link>
       <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://hexterisk.github.io/blog/posts/2020/07/20/classification-of-malware-using-static-information/</guid>
-      <description>Static analysis of a PE allows extraction of a lot of metadata that can be useful in further analysis such as names of sections, imported DLLs and strings present which gives an early idea of the functions performed by the binary in question. Malicious binaries with unstructured and improperly formatted metadata (done to achieve sophisticated levels of obfuscation and anti-debugging/anti-reversing defenses) can raise suspicions since a benign PE generally has a well-formed and valid metadata.</description>
+      <guid>https://hexterisk.github.io/blog/posts/2020/07/20/classification-of-malwares-through-static-analysis/</guid>
+      <description>Static analysis is the analysis of an executable file on a structural bases without executing it in controlled environment. It is the analysis of the executable&amp;rsquo;s static attributes such as different sections and memory characteristics.
+Therefore, static analysis of a PE allows extraction of a lot of metadata that can be useful in further analysis such as names of sections, imported DLLs and strings present which gives an early idea of the functions performed by the binary in question.</description>
     </item>
     
   </channel>

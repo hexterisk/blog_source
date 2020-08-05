@@ -3,7 +3,12 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://hexterisk.github.io/blog/posts/2020/07/20/classification-of-malware-using-static-information/</loc>
+    <loc>https://hexterisk.github.io/blog/posts/2020/08/04/classification-of-malwares-through-dynamic-analysis/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/posts/2020/07/20/classification-of-malwares-through-static-analysis/</loc>
     <lastmod>2020-07-20T00:00:00+00:00</lastmod>
   </url>
   
@@ -138,8 +143,68 @@
   </url>
   
   <url>
+    <loc>https://hexterisk.github.io/blog/tags/api-calls/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://hexterisk.github.io/blog/categories/</loc>
-    <lastmod>2020-07-20T00:00:00+00:00</lastmod>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/tags/files/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/tags/machine-learning/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/tags/malwares/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/categories/ml-for-sec/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/tags/pe/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/posts/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/tags/registry/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/tags/signature/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/tags/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://hexterisk.github.io/blog/tags/windows/</loc>
+    <lastmod>2020-08-04T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -153,47 +218,7 @@
   </url>
   
   <url>
-    <loc>https://hexterisk.github.io/blog/tags/machine-learning/</loc>
-    <lastmod>2020-07-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hexterisk.github.io/blog/tags/malwares/</loc>
-    <lastmod>2020-07-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hexterisk.github.io/blog/categories/ml-for-sec/</loc>
-    <lastmod>2020-07-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hexterisk.github.io/blog/tags/pe/</loc>
-    <lastmod>2020-07-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hexterisk.github.io/blog/posts/</loc>
-    <lastmod>2020-07-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hexterisk.github.io/blog/</loc>
-    <lastmod>2020-07-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://hexterisk.github.io/blog/tags/sections/</loc>
-    <lastmod>2020-07-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hexterisk.github.io/blog/tags/</loc>
-    <lastmod>2020-07-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hexterisk.github.io/blog/tags/windows/</loc>
     <lastmod>2020-07-20T00:00:00+00:00</lastmod>
   </url>
   

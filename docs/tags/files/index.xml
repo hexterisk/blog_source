@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>files on Pwn the world.</title>
+    <link>https://hexterisk.github.io/blog/tags/files/</link>
+    <description>Recent content in files on Pwn the world.</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Tue, 04 Aug 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hexterisk.github.io/blog/tags/files/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Classification of Malwares through Dynamic Analysis</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/08/04/classification-of-malwares-through-dynamic-analysis/</link>
+      <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/08/04/classification-of-malwares-through-dynamic-analysis/</guid>
+      <description>Malwares come in many forms. Sometimes it&amp;rsquo;s a standalone binary whereas sometimes it&amp;rsquo;s a legitimate software having a malware inside it. Sometimes it&amp;rsquo;s a binary with malformed metadata and packed bytes to throw off the analyst whereas sometimes it acts as a downloader/launcher for a more malicious binary. Information extracted from static analysis can therefore be deemed unreliable and not as accurate when compared with information extracted from dynamic analysis.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1399,6 +1399,7 @@ Symbols Different values in a program(such as the user input) are substituted wi
 <h2 id="angr">Angr</h2>
 <p>I would highly recommend reading through the <a href="http://docs.angr.io/">Angr docs</a> for a comprehensive surface-level understanding of different classes and methods supported by Angr, with their usecases, as well as reading <a href="https://blog.notso.pro/2019-03-20-angr-introduction-part0/">Federico Lagrasta’s intorductory series on Angr</a>.</p>
 <p>Now, I&rsquo;d be amiss if I didn&rsquo;t highlight the fact that while Angr manages to be a stroke of brilliance, it isn&rsquo;t that tough. It&rsquo;s the lack of resources that proves to be overwhelming, especially with so many version changes. There are a lot of writeups you could read through, but that doesn&rsquo;t help much from an absolute beginner&rsquo;s point of view. Therefore, I intend to solve the CMU bomb binaries in order to learn Angr, and will be documenting the journey in the hopes that it would probably be useful to someone, someday.</p>
+<p>View the <a href="https://github.com/hexterisk/bomblab-Angr/blob/master/Fuzzing%20and%20Symbolic%20Execution.pptx">PPT</a> for a quick intro to Symbolic Execution.</p>
 <h2 id="x64-cmu-bomb-lab">x64 CMU Bomb Lab</h2>
 <p>There are a bunch of different <em>phases</em>(read: levels) that we&rsquo;ll have to solve.</p>
 <p>The binary looks as follows:</p>

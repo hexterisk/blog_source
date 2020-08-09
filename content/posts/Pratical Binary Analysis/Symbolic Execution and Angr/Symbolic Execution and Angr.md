@@ -38,6 +38,8 @@ I would highly recommend reading through the [Angr docs](http://docs.angr.io/) f
 
 Now, I'd be amiss if I didn't highlight the fact that while Angr manages to be a stroke of brilliance, it isn't that tough. It's the lack of resources that proves to be overwhelming, especially with so many version changes. There are a lot of writeups you could read through, but that doesn't help much from an absolute beginner's point of view. Therefore, I intend to solve the CMU bomb binaries in order to learn Angr, and will be documenting the journey in the hopes that it would probably be useful to someone, someday.
 
+View the [PPT](https://github.com/hexterisk/bomblab-Angr/blob/master/Fuzzing%20and%20Symbolic%20Execution.pptx) for a quick intro to Symbolic Execution.
+
 ## x64 CMU Bomb Lab
 
 There are a bunch of different _phases_(read: levels) that we'll have to solve.

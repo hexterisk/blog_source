@@ -43,14 +43,15 @@ $ strace ./ctf show_me_the_flag ➊ execve(&amp;#34;./ctf&amp;#34;, [&amp;#34;./
 <meta itemprop="name" content="Trace Analysis">
 <meta itemprop="description" content="System Call Trace strace can be used to investigate system call behavior. In some cases, you may want to attach strace to a running process. To do this, you need to use the -p pid option, where pid is the process ID of the process you want to attach to.
 $ strace ./ctf show_me_the_flag ➊ execve(&#34;./ctf&#34;, [&#34;./ctf&#34;, &#34;show_me_the_flag&#34;], [/* 73 vars */]) = 0 brk(NULL) = 0x1053000 access(&#34;/etc/ld.so.nohwcap&#34;, F_OK) = -1 ENOENT (No such file or directory) mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f703477e000 access(&#34;/etc/ld.">
-<meta itemprop="datePublished" content="2020-03-13T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2020-03-13T00:00:00&#43;00:00" />
+<meta itemprop="datePublished" content="2020-03-13T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2020-03-13T00:00:00+00:00" />
 <meta itemprop="wordCount" content="1328">
 <meta itemprop="image" content="https://hexterisk.github.io/blog"/>
 
 
 
-<meta itemprop="keywords" content="binary,rev,reversing,c,pe,windows," /><meta name="twitter:card" content="summary_large_image"/>
+<meta itemprop="keywords" content="binary,rev,reversing,c,pe,windows," />
+<meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
 
 <meta name="twitter:title" content="Trace Analysis"/>

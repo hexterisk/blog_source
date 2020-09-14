@@ -5990,7 +5990,7 @@ Since most messages are irregularly sized and need to be padded up to the block 
 <blockquote>
 <p>For such algorithms, the method shall be to pad the input at the trailing end with k - (l mod k) octets all having value k - (l mod k), where l is the length of the input.</p>
 </blockquote>
-<p><img src="Set%202/image.png" alt="&ldquo;pkcs#7&rdquo;">
+<p><img src="/Cryptopals_Set_2/image.png" alt="&ldquo;pkcs#7&rdquo;">
 <em>Valid PKCS#7 padding.</em></p>
 <p>Therefore, a message whose length is short of the block size by x, is to be padded by the x byte itself. It allows block sizes up to 255 bytes.</p>
 <p>Since the plaintext length is short of the block size by 4 bytes, it is padded by 4 &lsquo;\x04&rsquo; bytes.</p>
@@ -6071,7 +6071,7 @@ key <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><sp
         previous <span style="color:#f92672">=</span> ciphertext[i:i<span style="color:#f92672">+</span>keysize]
         
     <span style="color:#66d9ef">return</span> plaintext
-</code></pre></div><p><img src="Set%202/1_image.png" alt="&ldquo;CBC_decryption&rdquo;">
+</code></pre></div><p><img src="/Cryptopals_Set_2/1_image.png" alt="&ldquo;CBC_decryption&rdquo;">
 <em>AES CBC Decryption.</em></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">AES_CBC_decrypt</span>(ciphertext: bytes, IV: bytes, key: bytes) <span style="color:#f92672">-&gt;</span> bytes:
     <span style="color:#e6db74">&#34;&#34;&#34;
@@ -6194,7 +6194,7 @@ Now, have the function choose to encrypt under ECB 1/2 the time, and under CBC t
     text <span style="color:#f92672">=</span> PKCS7_pad(plaintext, len(key))
     <span style="color:#66d9ef">return</span> cipher<span style="color:#f92672">.</span>encrypt(PKCS7_pad(text, len(key)))
 </code></pre></div><p>The second AES Mode is the <strong>CBC</strong> (<strong>Cipher Block Chaining</strong>) Mode. Each block of plaintext is XORed with the previous ciphertext block before being encrypted. This way, each ciphertext block depends on all plaintext blocks processed up to that point. To make each message unique, an <strong>Initialization Vector</strong> must be used in the first block.</p>
-<p><img src="Set%202/2_image.png" alt="&ldquo;CBC_encryption&rdquo;">
+<p><img src="/Cryptopals_Set_2/2_image.png" alt="&ldquo;CBC_encryption&rdquo;">
 <em>AES CBC Encryption.</em></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">AES_CBC_encrypt</span>(plaintext: bytes, IV: bytes, key: bytes) <span style="color:#f92672">-&gt;</span> bytes:
     <span style="color:#e6db74">&#34;&#34;&#34;

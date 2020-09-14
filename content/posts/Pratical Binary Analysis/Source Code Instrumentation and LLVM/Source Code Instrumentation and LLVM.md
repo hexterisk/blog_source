@@ -553,7 +553,7 @@ static RegisterPass<PASS_NAME> X("PASS_NAME", "Custom Pass");
 *   PART 6: The _ID_ to our pass _PASS\_NAME_ is initialized.
 *   PART 7: Register the subclass we just created. The first argument is the name of the parameter we will provide to choose this pass, and the second argument is the name of the pass.
 
-Add a file named to the same folder CMakeLists.txt with the following content.
+Add a file named **CMakeLists.txt** to the same folder with the following content.
 
 ```bash
 add_llvm_library( LLVMCUSTOM_PASS MODULE

@@ -17,7 +17,7 @@ categories: ["basic-binary-analysis"]
 *   **Binary Code** is the machine code that systems execute.
 *   **Binary Executable Files**, or **Binaries**,  store the executable binary program, that is, the code and data belonging to each program.
 
-```C
+```c
 #include <stdio.h>
 #define FORMAT_STRING "%s"
 #define MESSAGE "Hello, world!\n"
@@ -28,8 +28,8 @@ return 0;
 }
 ```
 
-!["compilation_process"](/Anatomy_of_a_Binary/1_image.png)
-_The C Compilation Process_
+![](/Anatomy_of_a_Binary/1_image.png)
+_The C Compilation Process._
 
 ### Preprocessing
 
@@ -37,7 +37,7 @@ _The C Compilation Process_
 *   Every _#include_ directive, the header is copied in its entirety.
 *   Every _#define_ directive is fully expanded everywhere it is used.
 
-```C
+```c
 $ gcc -E -P compilation_example.c
 
 typedef long unsigned int size_t;
@@ -74,7 +74,7 @@ return 0;
 *   Each source code file corresponds to one assembly file.
 *   Takes _**.c**_ file as input and produces _**.s**_ assembly file.
 
-```C
+```c
 $ gcc -S -masm=intel compilation_example.c
 $ cat compilation_example.s
 
@@ -117,7 +117,7 @@ ret
 *   Object files contain machine instructions that are in principle executable by the processor.
 *   Takes .c file as input and produces .o object file.
 
-```C
+```c
 $ gcc -c compilation_example.c
 $ file compilation_example.o
 compilation_example.o: ELF 64-bit LSB relocatable, x86-64, version 1 (SYSV), not stripped
@@ -133,7 +133,7 @@ compilation_example.o: ELF 64-bit LSB relocatable, x86-64, version 1 (SYSV), not
 *   Linker resolves all symbolic references now that the arrangement of modules is known after linking.
 *   Static libraries are merged into the executable allowing all references to be resolved entirely. Symbolic references to dynamic libraries are left unresolved even in the final executable (will be resolved during execution).
 
-```C
+```c
 $ gcc compilation_example.c
 $ file a.out
 a.out: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=d0e23ea731bce9de65619cadd58b14ecd8c015c7, not stripped
@@ -146,7 +146,7 @@ Hello, world!
 
 *   **Symbols** keep track of symbolic names and records which binary code and data correspond to. They provide a mapping from high-level names to address and size. This information is required by linker.
 
-```C
+```c
 $ readelf --syms a.out
 
 Symbol table '.dynsym' contains 4 entries:
@@ -179,7 +179,7 @@ Num: 	Value 				Size 	Type 	Bind 	Vis 	Ndx 	Name
 
 *   On stripping a binary, only a few symbols are left in the _**.dynsym** symbol table_. These are used to resolve dynamic dependencies (such as references to dynamic libraries) when the binary is loaded into memory, but they’re not much use when disassembling.
 
-```C
+```c
 $ strip --strip-all a.out
 $ file a.out
 
@@ -197,15 +197,15 @@ Num:	Value 				Size 	Type 	Bind 	Vis 		Ndx 	Name
 
 ## Loading and Executing a Binary
 
-!["binary_dissection"](/Anatomy_of_a_Binary/image.png)
-_Loading an ELF binary on a Linux-based system_
+![](/Anatomy_of_a_Binary/image.png)
+_Loading an ELF binary on a Linux-based system._
 
 *   A binary’s representation in memory does not necessarily correspond one-to-one with its on-disk representation, like collapsing a string of zeros to a single one to save space, and re-expand while loading into the memory.
 *   A new process is setup for the program to run in, including a virtual address space. Subsequently, the operating system maps an interpreter into the process’s virtual memory to load the binary and perform the necessary relocations. On Linux, the interpreter is typically a shared library called _**ld-linux.so**_. On Windows, the interpreter functionality is implemented as part of _**ntdll.dll**_. After loading the interpreter, the kernel transfers control to it, and the interpreter begins its work in user space.
 *   The interpreter then maps the dynamic libraries required into the virtual address space (using _**mmap**_ or an equivalent function) and then resolves any relocations left in the binary’s code sections to fill in the correct addresses for references to the dynamic libraries.
 *   Linux ELF binaries come with a special section called **.interp** that specifies the path to the interpreter.
 
-```C
+```c
 $ readelf -p .interp a.out
 
 String dump of section '.interp':

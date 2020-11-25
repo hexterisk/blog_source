@@ -6,11 +6,7 @@
     <description>Recent content in reversing on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Sun, 03 May 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://hexterisk.github.io/blog/tags/reversing/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 03 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://hexterisk.github.io/blog/tags/reversing/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Taint Analysis</title>
       <link>https://hexterisk.github.io/blog/posts/2020/05/03/taint-analysis/</link>
@@ -46,8 +42,7 @@ Static Binary Instrumentation Static Binary Instrumentation works by disassembli
       <pubDate>Mon, 16 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.github.io/blog/posts/2020/03/16/disassembly-and-binary-analysis-fundamentals/</guid>
-      <description>##Static Disassembly
-When people say disassembly, they usually mean static disassembly, which involves extracting the instructions from a binary without executing it.
+      <description>Static Disassembly When people say disassembly, they usually mean static disassembly, which involves extracting the instructions from a binary without executing it.
 Linear Disassembly Disassembly desynchronization due to inline data interpreted as code. The instruction where the disassembly resynchronizes is shaded gray.
  It iterates through all code segments in a binary, decoding all bytes consecutively and parsing them into a list of instructions. Many simple disassemblers, including objdump, use this approach.</description>
     </item>
@@ -68,7 +63,7 @@ $ strace ./ctf show_me_the_flag ➊ execve(&amp;#34;./ctf&amp;#34;, [&amp;#34;./
       <pubDate>Fri, 06 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.github.io/blog/posts/2020/03/06/the-pe-format/</guid>
-      <description>PE is a modified version of the Common Object File Format (COFF), thus also referred to as PE/COFF. The 64-bit version of PE is called PE32+. The structure is defined in WinNT.h, which is included in the Microsoft Windows Software Developer Kit.  PE32+ binary structure
+      <description>PE is a modified version of the Common Object File Format (COFF), thus also referred to as PE/COFF. The 64-bit version of PE is called PE32+. The structure is defined in WinNT.h, which is included in the Microsoft Windows Software Developer Kit.  PE32+ binary structure.
  An MS-DOS header is included for backward compatibility. Thus it can also be interpreted as an MS-DOS binary. The main function of the MS-DOS header is to describe how to load and execute an MS-DOS stub, which comes right after the MSDOS header.</description>
     </item>
     
@@ -78,7 +73,7 @@ $ strace ./ctf show_me_the_flag ➊ execve(&amp;#34;./ctf&amp;#34;, [&amp;#34;./
       <pubDate>Tue, 03 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.github.io/blog/posts/2020/03/03/the-elf-format/</guid>
-      <description>ELF binaries really consist of only four types of components:  Executable Header Program Headers (optional) Sections Section Headers, one per section (optional)  64-bit ELF binary structure
+      <description>ELF binaries really consist of only four types of components:  Executable Header Program Headers (optional) Sections Section Headers, one per section (optional)  64-bit ELF binary structure.
 Executable Header  Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata. Format of executable header: /usr/include/elf.h  typedef struct { unsigned char e_ident[16]; /* Magic number and other info */ uint16_t e_type; /* Object file type */ uint16_t e_machine; /* Architecture */ uint32_t e_version; /* Object file version */ uint64_t e_entry; /* Entry point virtual address */ uint64_t e_phoff; /* Program header table file offset */ uint64_t e_shoff; /* Section header table file offset */ uint32_t e_flags; /* Processor-specific flags */ uint16_t e_ehsize; /* ELF header size in bytes */ uint16_t e_phentsize; /* Program header table entry size */ uint16_t e_phnum; /* Program header table entry count */ uint16_t e_shentsize; /* Section header table entry size */ uint16_t e_shnum; /* Section header table entry count */ uint16_t e_shstrndx; /* Section header string table index */ } Elf64_Ehdr; Section Headers  The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called Sections.</description>
     </item>
     
@@ -88,7 +83,7 @@ Executable Header  Every ELF file starts with an executable header, which is jus
       <pubDate>Fri, 28 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.github.io/blog/posts/2020/02/28/anatomy-of-a-binary/</guid>
-      <description>The C Compilation Process  Compilation is the process of translating human readable source code into machine code that the processor can execute. Binary Code is the machine code that systems execute. Binary Executable Files, or Binaries, store the executable binary program, that is, the code and data belonging to each program.  #include &amp;lt;stdio.h&amp;gt;#define FORMAT_STRING &amp;#34;%s&amp;#34; #define MESSAGE &amp;#34;Hello, world!\n&amp;#34;  int main(int argc, char *argv[]) { printf(FORMAT_STRING, MESSAGE); return 0; } The C Compilation Process</description>
+      <description>The C Compilation Process  Compilation is the process of translating human readable source code into machine code that the processor can execute. Binary Code is the machine code that systems execute. Binary Executable Files, or Binaries, store the executable binary program, that is, the code and data belonging to each program.  #include &amp;lt;stdio.h&amp;gt;#define FORMAT_STRING &amp;#34;%s&amp;#34; #define MESSAGE &amp;#34;Hello, world!\n&amp;#34;  int main(int argc, char *argv[]) { printf(FORMAT_STRING, MESSAGE); return 0; } The C Compilation Process.</description>
     </item>
     
   </channel>

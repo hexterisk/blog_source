@@ -65,7 +65,7 @@ The protocol uses the [multiplicative group of integers modulo](https://en.wikip
     *   _**s**_ = 4**3** mod 23 = 18
 6.  Alice and Bob now share a secret (the number 18).
 
-!["exchange"](/Cryptopals_Set_5/1_image.png)
+![](/Cryptopals_Set_5/1_image.png)
 _The concept is that after all the computation involved, the two parties will end up with a common secret value._
 
 ```python

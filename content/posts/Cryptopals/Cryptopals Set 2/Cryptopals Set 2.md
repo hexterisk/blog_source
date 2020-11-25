@@ -31,7 +31,7 @@ The [PKCS#7 RFC](https://tools.ietf.org/html/rfc2315)(10.3 note 2) states:
 
 > For such algorithms, the method shall be to pad the input at the trailing end with k - (l mod k) octets all having value k - (l mod k), where l is the length of the input.
 
-!["pkcs#7"](/Cryptopals_Set_2/image.png)
+![](/Cryptopals_Set_2/image.png)
 _Valid PKCS#7 padding._
 
 Therefore, a message whose length is short of the block size by x, is to be padded by the x byte itself. It allows block sizes up to 255 bytes.
@@ -136,7 +136,7 @@ def AES_CBC_decrypt(ciphertext: bytes, IV: bytes, key: bytes) -> bytes:
     return plaintext
 ```
 
-!["CBC_decryption"](/Cryptopals_Set_2/1_image.png)
+![](/Cryptopals_Set_2/1_image.png)
 _AES CBC Decryption._
 
 ```python
@@ -343,7 +343,7 @@ def AES_ECB_encrypt(plaintext: bytes, key: bytes) -> bytes:
 
 The second AES Mode is the **CBC** (**Cipher Block Chaining**) Mode. Each block of plaintext is XORed with the previous ciphertext block before being encrypted. This way, each ciphertext block depends on all plaintext blocks processed up to that point. To make each message unique, an **Initialization Vector** must be used in the first block.
 
-!["CBC_encryption"](/Cryptopals_Set_2/2_image.png)
+![](/Cryptopals_Set_2/2_image.png)
 _AES CBC Encryption._
 
 ```python

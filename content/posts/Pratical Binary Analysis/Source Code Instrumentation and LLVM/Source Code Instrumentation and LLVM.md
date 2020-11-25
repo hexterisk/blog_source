@@ -14,7 +14,7 @@ categories: ["practical-binary-analysis"]
 
 **Source Code Instrumentation** adds specific code meant for instrumentation/analysis, called **Instrumentation Code**, to the source files of the program under consideration. The source files are then compiled and executed. Since the instrumentation code is integrated into the binary itself, the output from the execution includes the dump of the instrumentation code which can then be used for further analysis and component testing.
 
-# Intermediate Representations
+## Intermediate Representations
 
 Representation of a program in a state that lies between the source code and the compiled binary(specifically, the assembly code). Compilers have a stage of intermediate code generation, where they natively generate IR of the source code.
 
@@ -37,14 +37,14 @@ It can be expressed in different IR formats.
 
 Graphically oriented format which is heavily used in source-to-source translations. A graph is formed showing different stages in different shapes along the flow of execution.
 
-![irgraphexample.gif](/Source_Code_Instrumentation_and_LLVM/irgraphexample.gif)
+![](/Source_Code_Instrumentation_and_LLVM/irgraphexample.gif)
 _Semantic graph._
 
 ### Linear
 
 Pseudo-code like format with varying levels of abstraction (such as sub types of Tuples). It's shown using simple and compact data structures and is easier to rearrange.
 
-##### Tuples
+#### Tuples
 
 Instruction-like entities consisting of an operator and zero to three arguments. Arguments can be literals, subroutine references, variables or temporaries.
 
@@ -76,7 +76,7 @@ for (int i = 0; i < n; i += di)
     a[i][j+2] = j;
 ```
 
-###### High-level
+##### High-level
 
 *   Keeps structure of source language program explicit.
 *   Source program can be reconstructed from it.
@@ -97,7 +97,7 @@ for (int i = 0; i < n; i += di)
 (LABEL, L2)                    L2:
 ```
 
-###### Medium-level
+##### Medium-level
 
 *   Can be source or target oriented.
 *   Language and machine independent.
@@ -119,7 +119,7 @@ for (int i = 0; i < n; i += di)
 (LABEL, L2)                    L2:
 ```
 
-###### Low-level
+##### Low-level
 
 *   Extremely close to machine architecture.
 *   Architecture dependent.
@@ -147,7 +147,7 @@ for (int i = 0; i < n; i += di)
 (LABEL, L2)                    L2:
 ```
 
-##### Stack Code
+### Stack Code
 
 Originally used for stack-based computers, and therefore use implicit names instead of explicit since explicit names take up space. It's simple to generate and execute.
 
@@ -176,7 +176,7 @@ L2:
     jump_if_not_zero L1
 ```
 
-##### Three Address Code
+#### Three Address Code
 
 Has a compact form with proper names, resembling a general format for most machines.
 
@@ -204,7 +204,7 @@ sub r5, r4, r3
 
 A combination of both, Graphs and Linear code.
 
-##### Control Flow Graph
+#### Control Flow Graph
 
 A graph whose nodes are basic blocks and whose edges are transitions between blocks.
 
@@ -234,10 +234,10 @@ L2:
 
 can be represented as a CFG as:
 
-![controlgraphexample.gif](/Source_Code_Instrumentation_and_LLVM/controlgraphexample.gif)
+![](/Source_Code_Instrumentation_and_LLVM/controlgraphexample.gif)
 _Control flow graph._
 
-### Static Single Assignment
+#### Static Single Assignment
 
 The idea with SSA is to define each name only once in a program. This is achieved by using φ-functions, or Euler's totient functions. These functions count positive integers upto a given integer _n_, that are relatively prime to _n_.
 
@@ -271,7 +271,7 @@ next: ...
 
 The primary benefit of this form is it's ability to simultaneously simplify and improve results of various compiler optimizations just by simplifying properties of the variables.
 
-# LLVM
+## LLVM
 
 **L**ow **L**evel **V**irtual **M**achine is an IR. The main idea behind it was to get an interface to the compilation process so that optimizations to the binary could be applied then itself, rather than using JIT compilers to provide runtime optimizations. This was because these compilations by virtual machines(such as JVM) were online which meant that these optimizations had to be performed every time a certain piece of code ran. Thus, the heavy lifting task of optimization was moved from runtime to compile time.
 
@@ -451,7 +451,7 @@ The `addptr` function performs **pass by pointers**.
 *   The four load instructions can be seen to dereferences values stored at the given addresses into integer variables.
 *   The addition is then performed on these integers and the result returned.
 
-# Instrumentation
+## Instrumentation
 
 We'll create a simple C++ program to instrument. 
 
@@ -615,9 +615,9 @@ To generate the CFGs, run `PATH/llvm-project/llvm/build/bin/opt -dot-cfg loop.bc
 
 As an example, let's checkout the CFG for the function `_Z7looper0ii`.
 
-!["CFG"](/Source_Code_Instrumentation_and_LLVM/2020-06-25-031857-screenshot.png)
+![](/Source_Code_Instrumentation_and_LLVM/2020-06-25-031857-screenshot.png)
 _CFG for the looper0 function._
 
 Counting the number of basic blocks and instructions, the output from our instrumentation checks out.
 
-Credits for the guidance to
+Credits for the guidance to Mike Shah's talk “Intro to LLVM” at FOSDEM 18.

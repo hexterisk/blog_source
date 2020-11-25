@@ -21,7 +21,7 @@ categories: ["Advanced Binary Analysis"]
 *   The collection of symbolic values and formulas that a symbex engine maintains is called the **Symbolic State**.
 *   Symbex engine computes two different kinds of formulas over these symbolic values: a set of **symbolic expressions** and a **path constraint.**
 
-### Symbolic Expressions
+## Symbolic Expressions
 
 A symbolic expression (_φj_ , with _j ∈ N)_ corresponds either to a symbolic value _αi_ or to some mathematical combination of symbolic expressions, such as _φ3 = φ1 + φ2_.
 
@@ -29,7 +29,7 @@ A symbolic expression (_φj_ , with _j ∈ N)_ corresponds either to a symbolic 
 *   Symbex maintains a mapping of variables (or in the case of binary symbex, registers and memory locations) to symbolic expression.
 *   I refer to the combination of the path constraint and all symbolic expressions and mappings as the **symbolic state**.
 
-### Path Constraint
+## Path Constraint
 
 A path constraint (π) encodes the limitations imposed on the symbolic expressions by the branches taken during execution. For instance, if the symbolic execution takes a branch if(x < 5) and then another branch if(y >= 4), where x and y are mapped to the symbolic expressions φ1 and φ2, respectively, the path constraint formula becomes φ1 < 5 ∧ φ2 ≥ 4. 
 
@@ -38,8 +38,7 @@ A path constraint (π) encodes the limitations imposed on the symbolic expressio
 A solution (possible concrete values) to a constraint which can lead the concrete execution of the program to the desired point is called a **model**. Models are computed automatically with a special program called a **constraint solver**, which is capable of solving for the symbolic values such that all constraints and symbolic expressions are satisfied. In some cases, the solver might also report that no solution exists, meaning that the path is unreachable. In general, it’s not feasible to cover all paths through a nontrivial program since the number of possible paths increases exponentially with the number of branches.
 
 ![](/Principles_of_Symbolic_Execution/image.png)
-
-Path constraints and symbolic state for all paths in the example function.
+_Path constraints and symbolic state for all paths in the example function._
 
 ```c
 ➊ x := int(argv[0]), y := int(argv[1])
@@ -78,8 +77,7 @@ Step ➍ takes the _else_ case.
 ## Variants
 
 ![](/Principles_of_Symbolic_Execution/1_image.png)
-
-Symbolic execution design dimensions. 
+_Symbolic execution design dimensions._
 
 ### Static Symbolic Execution (SSE)
 
@@ -91,11 +89,11 @@ Symbolic execution design dimensions. 
     *   Forks off a new symbex instance at each branch to explore both directions in parallel.
 *   Parts of an application’s behavior can be hard to model correctly with SSE, specifically when control flows outside the application to software components that the symbolic execution engine doesn’t control, such as the kernel or a library. Happens when a program issues a system call or library call, receives a signal, tries to read an environment variable, and so on.
 
-##### Effect Modeling
+#### Effect Modeling
 
 Models the effects of external interactions like system calls and library calls. These models are a sort of “summary” of the effects that a system or library call has on the symbolic state. Performance-wise, effect modeling is a relatively cheap solution. However, creating accurate models for all possible environment interactions—including with the network, the filesystem, and other processes—is a monumental task, which may involve creating a simulated symbolic filesystem, symbolic network stack, and so on. To make matters worse, the models have to be rewritten to simulate a different operating system or kernel. Models are therefore often incomplete or inaccurate in practice.
 
-##### Direct External Interactions
+#### Direct External Interactions
 
 Instead of modeling the effects of a system call, the symbex engine may actually make the system call and incorporate the concrete return value and side effects into the symbolic state. Leads to problems when multiple paths that perform competing external interactions are explored in parallel. For instance, if multiple paths operate on the same physical file in parallel, this may lead to consistency issues if the changes conflict. Can be resolved by cloning the complete system state for each explored path, but that solution is extremely memory intensive. Moreover, because external software components cannot handle symbolic state, interacting directly with the environment means an expensive call to the constraint solver to compute suitable concrete values that can be passed to the system or library call that is being invoked.
 
@@ -125,11 +123,11 @@ Engines provide the option of omitting symbolic state for some registers and mem
 *   The trade-off is choosing which state to make symbolic and which to make concrete only, and this decision is not always trivial. Choosing incorrectly may cause the symbex tool to report unexpected results.
 *   Pointers can be symbolic, meaning that their value is not concrete but partly undetermined. This introduces a difficult problem when memory loads or stores use a symbolic address.
 
-##### Fully Symbolic Memory
+#### Fully Symbolic Memory
 
 Solutions based on fully symbolic memory attempt to model all the possible outcomes of a memory load or store operation, forking the state into multiple copies to reflect each possible outcome of the memory operation. For instance, let’s suppose we’re reading from an array a using a symbolic index φi , with the constraint that φi < 5. The state-forking approach would then fork the state into five copies: one for the situation where φi = 0 (so that a\[0\] is read), another one for φi = 1, and so on. Another way to achieve the same effect is to use constraints with if-then-else expressions supported by some constraint solvers. These expressions are analogous to if-then-else conditionals used in programming languages. In this approach, the same array read is modeled as a conditional constraint that evaluates to the symbolic expression of a\[i\] if φi = i. This approach suffers from state explosion or extremely complicated constraints if any memory accesses use unbounded addresses. These problems are more prevalent in binary-level symbex than source-level symbex because bounds information is not readily available in binaries.
 
-##### Address Concretization
+#### Address Concretization
 
 To avoid the state explosion of fully symbolic memory, unbounded symbolic addresses can be replaced with concrete ones.
 
@@ -153,15 +151,15 @@ Concolic execution explores only one path at a time as driven by concrete inputs
 
 Simplifying constraints as much as possible to keep usage of the constraint solver to an absolute minimum can reduce computation extensively since constraint solving is the most computationally expensive aspect of symbex. Thus, aim to reduce the complexity of the constraint solver’s task, thereby speeding up the symbolic execution, without significantly affecting the accuracy of the analysis.
 
-##### Limiting the Number of Symbolic Variables
+#### Limiting the Number of Symbolic Variables
 
 Simplifying constraints reduces the number of symbolic variables and make the rest of the program state concrete only. However, randomly concretizing state may result in wrong state to be concretized causing your symbex tool to miss possible solutions to the problem. Using a pre-processing pass that employs taint analysis and fuzzing to find inputs that cause dangerous effects, such as a corrupted return address, and then using symbex to find out whether there are any inputs that corrupt that return address such that it allows exploitation, can save a lot of computation. Using relatively cheap techniques such as DTA and fuzzing to find out whether there’s a potential vulnerability and using symbolic execution only in potentially vulnerable program paths to find out how to exploit that vulnerability in practice is a much more efficient approach.
 
-##### Limiting the Number of Symbolic Operations
+#### Limiting the Number of Symbolic Operations
 
 Symbolically execute only those instructions that are relevant. For instance, exploiting an indirect call through the rax register involve focusing on only the instructions that contribute to rax’s value. Thus, computing a backward slice to find the instructions contributing to rax and then symbolically emulating the instructions in the slice reduces number of symbolic operations in contrast to emulating all instructions.
 
-##### Simplifying Symbolic Memory
+#### Simplifying Symbolic Memory
 
 Full symbolic memory can cause an explosion in the number of states or the size of the constraints if there are any unbounded symbolic memory accesses. Impact of such memory accesses on constraint complexity can be reduced by concretizing them.
 

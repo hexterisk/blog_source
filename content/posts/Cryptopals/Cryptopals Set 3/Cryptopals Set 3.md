@@ -101,12 +101,12 @@ def decryptor(ciphertext: bytes, IV: bytes, key: bytes) -> bool:
         return False
 ```
 
-!["cbc_decryption"](/Cryptopals_Set_3/image.png)
+![](/Cryptopals_Set_3/image.png)
 _AES CBC Decryption._
 
 The philosophy for the padding attack stems from the design of the CBC encryption mechanism. The ciphertext from the previous block is xored with the intermediate state of the next block formed during it's decryption. Since we have control over the ciphertext, maybe we can manipulate the blocks in some way into giving us some sort of indication towards it's effectiveness.
 
-!["xor_pad"](/Cryptopals_Set_3/1_image.png)
+![](/Cryptopals_Set_3/1_image.png)
 _Xoring the bytes to get valid padding._
 
 The idea of the padding oracle attack is as follows:
@@ -270,7 +270,7 @@ nonce = 0
 
 The third AES Mode is the **CTR** (**Counter**) Mode. It uses a keystream to encrypt/decrypt, turning block cipher into a stream cipher. 
 
-!["AES_CTR](/Cryptopals_Set_3/5_image.png)
+![](/Cryptopals_Set_3/5_image.png)
 _Keystream blocks being generated._
 
 This keystream is generated block at a time, by appending a nonce value, and a counter that is being incremented at every call to it. The counter can be any function which produces a sequence which is guaranteed not to repeat for a long time, although an actual increment-by-one counter is the simplest and most popular.
@@ -293,12 +293,12 @@ def CTR_keystream_generator(key: bytes, nonce: int) -> bytes:
         counter += 1
 ```
 
-!["AES_CTR_encryption"](/Cryptopals_Set_3/2_image.png)
+![](/Cryptopals_Set_3/2_image.png)
 _AES CTR Encryption._
 
 The encryption process involves encrypting the keystream block with a different block cipher encrypting technique and xoring it with plaintext to generate ciphertext.
 
-!["AES_CTR_decryption"](/Cryptopals_Set_3/3_image.png)
+![](/Cryptopals_Set_3/3_image.png)
 _AES CTR Decryption._
 
 The decryption process can be stated as a mirror of the encryption process. It again encrypts the keystream block with the same block cipher encrypting technique as was used during encryption, and then xoring the ciphertext with it to receive the plaintext back.
@@ -456,7 +456,7 @@ The [Mersenne Twister](https://stackedit.io/%5Bhttps://en.wikipedia.org/wiki/Mer
 
 The implementation is derived from the pseudo-code on Wikipedia. Any of the above links can be used to study more on the topic.
 
-!["mersenne_twister"](/Cryptopals_Set_3/4_image.png)
+![](/Cryptopals_Set_3/4_image.png)
 _Mersenne Twister._
 
 ```python

@@ -14,11 +14,11 @@ categories: ["practical-binary-analysis"]
 
 **Symbolic Execution** is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
 
-### Symbols
+## Symbols
 
 Different values in a program(such as the user input) are substituted with **Symbols**(variables or placeholders). These symbols pertain to a domain full of values, allowing us to explore the program in a much more open form, basically “walking through the program” with a domain full of values(handled by any one of the constraint solving backends like Z3) instead of walking a fixed path due to a fixed hard-coded value/input.
 
-### Execution Paths
+## Execution Paths
 
 The phrase “walking through the program” essentially means carrying out the set of instructions in the program. These set of instructions define a particular path, which when executed, brings the execution flow of the program to a particular state, unique to that path. An execution path, therefore, represents a possible execution of the program that begins somewhere and ends somewhere else.
 
@@ -46,8 +46,8 @@ There are a bunch of different _phases_(read: levels) that we'll have to solve.
 
 The binary looks as follows:
 
-!["main"](/Symbolic_Execution_and_Angr/2020-06-04-051114_1920x1080_scrot.png)
-_Disassembly of the important part of the main function (a handy reference for addresses)._
+![](/Symbolic_Execution_and_Angr/2020-06-04-051114_1920x1080_scrot.png)
+_Disassembly of the important part of the "main" function (a handy reference for addresses)._
 
 It tells us: 
 
@@ -55,8 +55,8 @@ It tells us: 
 *   A value is returned from the function `read_line`. Going by the calling convention of x86\_64, a function returns a value using the `RAX` register. Thus the `input` variable gets the value returned from the function.
 *   Going by the calling convention of x86\_64, a function's first argument is passed via the `RDI` register. Thus, the value returned from the `read_line` function is passed onto the next phase function every time.
 
-!["read_line"](/Symbolic_Execution_and_Angr/1_2020-06-06-003407_1920x1080_scrot.png)
-_Disassembly of the read\_line function._
+![](/Symbolic_Execution_and_Angr/1_2020-06-06-003407_1920x1080_scrot.png)
+_Disassembly of the "read\_line" function._
 
 Taking a look at the `read_line` function's ending code blocks, it can be seen that a particular comparison with `78` (decimal value) gives rise to branches - one with an error (saying that the input is too long), while the other one returns. It can be easily deduced that the user input seems to be limited to 78 characters, and it is the value which is returned.
 
@@ -74,13 +74,13 @@ This approach is a more targeted approach based on our knowledge of the inside w
 
 Function: `phase_1`
 
-!["phase_1"](/Symbolic_Execution_and_Angr/2020-06-04-144000_1920x1080_scrot.png)
-_Disassembly of the phase\_1 function._
+![](/Symbolic_Execution_and_Angr/2020-06-04-144000_1920x1080_scrot.png)
+_Disassembly of the "phase\_1" function._
 
 From the disassembly, we can see that following the calling convention goes, an address is being moved into the `ESI` register. 
 
-!["strings_not_equal"](/Symbolic_Execution_and_Angr/1_2020-06-04-152129_1920x1080_scrot.png)
-_Disassembly of the strings\_not\_equal function._
+![](/Symbolic_Execution_and_Angr/1_2020-06-04-152129_1920x1080_scrot.png)
+_Disassembly of the "strings\_not\_equal" function._
 
 A few observations follow:
 
@@ -103,8 +103,8 @@ Read this [page](https://hexterisk.github.io/bomblab-Angr/Phase%201%20x86_64.htm
 
 Function: `phase_2`
 
-!["phase_2"](/Symbolic_Execution_and_Angr/1_2020-06-04-153538_1920x1080_scrot.png)
-_Disassembly of the phase\_2 function._
+![](/Symbolic_Execution_and_Angr/1_2020-06-04-153538_1920x1080_scrot.png)
+_Disassembly of the "phase\_2" function._
 
 A few observations follow:
 
@@ -150,8 +150,8 @@ Read this [page](https://hexterisk.github.io/bomblab-Angr/Phase%202%20x86_64.htm
 
 Function: `phase_3`
 
-!["phase_3"](/Symbolic_Execution_and_Angr/2020-06-04-171912_1920x1080_scrot.png)
-_Disassembly of the phase\_3 function._
+![](/Symbolic_Execution_and_Angr/2020-06-04-171912_1920x1080_scrot.png)
+_Disassembly of the "phase\_3" function._
 
 A few observations follow:
 
@@ -163,13 +163,13 @@ A few observations follow:
 
 So we once again verify the stack structure and see if our previous approach would work.
 
-!["before"](/Symbolic_Execution_and_Angr/2020-06-04-172422_1920x1080_scrot.png)
-_Before sscanf is called._
+![](/Symbolic_Execution_and_Angr/2020-06-04-172422_1920x1080_scrot.png)
+_Before "sscanf" function is called._
 
 We can see that an argument of `1 1` is provided to the function.
 
-!["after"](/Symbolic_Execution_and_Angr/1_2020-06-04-172430_1920x1080_scrot.png)
-_After sscanf is called._
+![](/Symbolic_Execution_and_Angr/1_2020-06-04-172430_1920x1080_scrot.png)
+_After "sscanf" function is called._
 
 The top of the stack is a null value while our input is right below it. Therefore, a kind of a stack setup is required before we can proceed.
 
@@ -186,8 +186,8 @@ Read this [page](https://hexterisk.github.io/bomblab-Angr/Phase%203%20x86_64.htm
 
 Function: `phase_4`
 
-!["phase_4"](/Symbolic_Execution_and_Angr/2020-06-06-003920_1920x1080_scrot.png)
-_Disassembly of the phase\_4 function._
+![](/Symbolic_Execution_and_Angr/2020-06-06-003920_1920x1080_scrot.png)
+_Disassembly of the "phase\_4" function._
 
 A few observations follow:
 
@@ -197,8 +197,8 @@ A few observations follow:
 
 All we need is that function to return a `0x0`.
 
-!["func4"](/Symbolic_Execution_and_Angr/2020-06-06-004556_1920x1080_scrot.png)
-_Disassembly of the func4 function._
+![](/Symbolic_Execution_and_Angr/2020-06-06-004556_1920x1080_scrot.png)
+_Disassembly of the "func4" function._
 
 From the first look, this function comes out to be recursive in nature. Now, that might not have been that big of a problem if we had not been using a tool to solve the intricacies presented by this problem. You see, a recursive function might cause an automated tool(working with no concrete values, only symbolic ones) to get stuck in it's own loop, causing a path explosion. 
 
@@ -221,8 +221,8 @@ Read this [page](https://hexterisk.github.io/bomblab-Angr/Phase%204%20x86_64.htm
 
 Function: `phase_5`
 
-!["phase_5"](/Symbolic_Execution_and_Angr/2020-06-08-092622_1920x1080_scrot.png)
-_Disassembly of the phase\_5 function._
+![](/Symbolic_Execution_and_Angr/2020-06-08-092622_1920x1080_scrot.png)
+_Disassembly of the "phase\_5" function._
 
 A few observations follow:
 
@@ -237,8 +237,8 @@ Seems pretty straightforward.
 
 But what about the input? A string input needs to be placed somewhere in the memory. Since there seem to be no push operations, we need to find the address where the input is being stored at. We'll look it up in a debugger.
 
-!["beginning"](/Symbolic_Execution_and_Angr/1_image.png)
-_Beginning of phase\_5 function._
+![](/Symbolic_Execution_and_Angr/1_image.png)
+_Beginning of "phase\_5" function._
 
 Therefore,
 
@@ -257,8 +257,8 @@ Read this [page](https://hexterisk.github.io/bomblab-Angr/Phase%205%20x86_64.htm
 
 Function: `phase_6`
 
-!["phase_6"](/Symbolic_Execution_and_Angr/2020-06-14-052441_1920x1080_scrot.png)
-_Disassembly of the phase\_6 function._
+![](/Symbolic_Execution_and_Angr/2020-06-14-052441_1920x1080_scrot.png)
+_Disassembly of the "phase\_6" function._
 
 From a perspective where we just worry about setting up the input, this function essentially seems no different than `phase_2`.
 
@@ -266,13 +266,13 @@ There seem to be two sets of loops, prominent blue and red arrows indicating the
 
 A function, namely `read_six_numbers`, is called in the first block, which maps our input onto the stack.
 
-!["stack"](/Symbolic_Execution_and_Angr/3_image.png)
-_Stack after read\_six\_numbers is called._
+![](/Symbolic_Execution_and_Angr/3_image.png)
+_Stack after the "read\_six\_numbers" function is called._
 
 An added point of interest is the state of registers. R13 gets the stack address (where the input we provided is at the top) and then is iterated through all the values on top of the stack (our input) in the block right after the first, where it is essentially made sure that each number is less than or equal to 6. This could be added as a constraint (not a necessity though).
 
-!["registers"](/Symbolic_Execution_and_Angr/4_image.png)
-_Registers after read\_six\_numbers is called._
+![](/Symbolic_Execution_and_Angr/4_image.png)
+_Registers after the "read\_six\_numbers" function is called._
 
 We could simply apply the same approach as we did in `phase_2` (by pushing values to stack and popping in the end, minding the formatting), with a slight change: reversing the manipulation did by the first loop denoted by the blue arrow in the picture showing the disassembly of the `phase_6` function.
 
@@ -292,8 +292,8 @@ We'll start from the beginning of the function, and add a hook to the read\_six\
 
 To find out the address where we need to put the values, let's open the binary in the debugger.
 
-!["args"](/Symbolic_Execution_and_Angr/2020-06-16-033553-screenshot.png)
-_Arguments to sscanf function._
+![](/Symbolic_Execution_and_Angr/2020-06-16-033553-screenshot.png)
+_Arguments to the "sscanf" function._
 
 We can clearly see the addresses to which the values are to be stored. Thus, we save the values right on these addresses to form a sequence, as expected by the binary.
 
@@ -307,27 +307,27 @@ Function: `secret_phase`
 
 Let's start bu discovering the `secret_phase` function.
 
-!["xrefs"](/Symbolic_Execution_and_Angr/1_2020-06-16-045900-screenshot.png)
+![](/Symbolic_Execution_and_Angr/1_2020-06-16-045900-screenshot.png)
 _Cross references chart._
 
 From the _xrefs char_t, we can see that only one function invokes the `secret_phase` function.
 
-!["phase_defused"](/Symbolic_Execution_and_Angr/2020-06-16-050208-screenshot.png)
-_Disassembly of the phase\_defused function._
+![](/Symbolic_Execution_and_Angr/2020-06-16-050208-screenshot.png)
+_Disassembly of the "phase\_defused" function._
 
 The phase\_defused function simply checks a couple of conditions based on which, it invokes the secret phase.
 
 The middle blocks are responsible to check if our input are worthy of unlocking this secret phase. It takes on the input from one of the phases and verifies it to decide whether to unlock the secret phase. The point of interest here is that the address being used here(`0x603870`), in the call to `sscanf` to source values for the variables, is hard-coded and is not of the buffer that stores the address. A search for cross references to it yield nothing. So to find out that phase, we use the debugger and monitor any changes made to this address (using hardware watchpoints).
 
-!["hardware_watchpoint"](/Symbolic_Execution_and_Angr/2020-06-16-051601-screenshot.png)
+![](/Symbolic_Execution_and_Angr/2020-06-16-051601-screenshot.png)
 _Hardware watchpoint triggered._
 
 The hardware watchpoint is triggered right when the input is given for the `phase_4` function. Therefore, the input for this phase needs to be modified so as to unlock the secret phase.
 
 Now we know how to unlock it, we'll just pass a symbolic value to Angr hoping that it'll be able to give us the string input which will be the key.
 
-!["call"](/Symbolic_Execution_and_Angr/2020-06-16-053413-screenshot.png)
-_Call to sscanf function._
+![](/Symbolic_Execution_and_Angr/2020-06-16-053413-screenshot.png)
+_Call to "sscanf" function._
 
 We can just slide in the symbolic value at the address where the string will be dereferenced(`0x7fffffffdf10`) and then let Angr do it's magic over the bunch of instructions that carry out the comparison.
 
@@ -335,8 +335,8 @@ After we get the key to the phase, we can move on to solving it.
 
 ##### Solving the Secret Phase
 
-!["secret_phase"](/Symbolic_Execution_and_Angr/2020-06-16-042658-screenshot.png)
-_Disassembly of the secret\_phase function._
+![](/Symbolic_Execution_and_Angr/2020-06-16-042658-screenshot.png)
+_Disassembly of the "secret\_phase" function._
 
 A few observations follow:
 
@@ -347,8 +347,8 @@ It's pretty simple and straightforward, especially compared to what we have done
 
 Checking out the `fun7` function, it seems to be entangled in some sort of a recursive conditional parsing based on the user input.
 
-!["fun7"](/Symbolic_Execution_and_Angr/2020-06-16-043140-screenshot.png)
-_Disassembly of the fun7 function._
+![](/Symbolic_Execution_and_Angr/2020-06-16-043140-screenshot.png)
+_Disassembly of the "fun7" function._
 
 We'll leave it up to Angr to bypass the mess and just give us the answer.
 

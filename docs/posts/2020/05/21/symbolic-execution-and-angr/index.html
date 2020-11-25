@@ -45,7 +45,7 @@ Symbols Different values in a program(such as the user input) are substituted wi
 Symbols Different values in a program(such as the user input) are substituted with Symbols(variables or placeholders). These symbols pertain to a domain full of values, allowing us to explore the program in a much more open form, basically “walking through the program” with a domain full of values(handled by any one of the constraint solving backends like Z3) instead of walking a fixed path due to a fixed hard-coded value/input.">
 <meta itemprop="datePublished" content="2020-05-21T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2020-05-21T00:00:00+00:00" />
-<meta itemprop="wordCount" content="3371">
+<meta itemprop="wordCount" content="3378">
 <meta itemprop="image" content="https://hexterisk.github.io/blog"/>
 
 
@@ -137,9 +137,9 @@ Symbols Different values in a program(such as the user input) are substituted wi
 
             <div class="post-content">
                 <p><strong>Symbolic Execution</strong> is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:</p>
-<h3 id="symbols">Symbols</h3>
+<h2 id="symbols">Symbols</h2>
 <p>Different values in a program(such as the user input) are substituted with <strong>Symbols</strong>(variables or placeholders). These symbols pertain to a domain full of values, allowing us to explore the program in a much more open form, basically “walking through the program” with a domain full of values(handled by any one of the constraint solving backends like Z3) instead of walking a fixed path due to a fixed hard-coded value/input.</p>
-<h3 id="execution-paths">Execution Paths</h3>
+<h2 id="execution-paths">Execution Paths</h2>
 <p>The phrase “walking through the program” essentially means carrying out the set of instructions in the program. These set of instructions define a particular path, which when executed, brings the execution flow of the program to a particular state, unique to that path. An execution path, therefore, represents a possible execution of the program that begins somewhere and ends somewhere else.</p>
 <p>Checkout the <a href="https://blog.notso.pro/downloads/SymbolicExecution.pdf">slides</a> for a practical viewpoint over symbolic execution.</p>
 <p>From a practical view point, the ability to reason (solve) large boolean functions makes symbolic execution possible. Programs and instructions are converted into formulae, and then these formulae are reasoned with to see if a particular path of execution is possible. However, testing all the paths of a binary can be cumbersome since the number of paths grow exponentially. Therefore, we solve problems that have a certain structure to them instead of completely random stuff such as random bitvectors or integers. We imply such techniques on something that one is confident about, so symbolic execution coming out to be undecidable or an ETA of time as large as the age of universe(literally) is pretty infrequent, although it does happen.</p>
@@ -153,16 +153,16 @@ Symbols Different values in a program(such as the user input) are substituted wi
 <h2 id="x64-cmu-bomb-lab">x64 CMU Bomb Lab</h2>
 <p>There are a bunch of different <em>phases</em>(read: levels) that we&rsquo;ll have to solve.</p>
 <p>The binary looks as follows:</p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-04-051114_1920x1080_scrot.png" alt="&ldquo;main&rdquo;">
-<em>Disassembly of the important part of the main function (a handy reference for addresses).</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-04-051114_1920x1080_scrot.png" alt="">
+<em>Disassembly of the important part of the &ldquo;main&rdquo; function (a handy reference for addresses).</em></p>
 <p>It tells us: </p>
 <ul>
 <li>The binary just calls a bunch of different functions sequentially, and we gotta pass through them all to be able to successfully defuse the bomb.</li>
 <li>A value is returned from the function <code>read_line</code>. Going by the calling convention of x86_64, a function returns a value using the <code>RAX</code> register. Thus the <code>input</code> variable gets the value returned from the function.</li>
 <li>Going by the calling convention of x86_64, a function&rsquo;s first argument is passed via the <code>RDI</code> register. Thus, the value returned from the <code>read_line</code> function is passed onto the next phase function every time.</li>
 </ul>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/1_2020-06-06-003407_1920x1080_scrot.png" alt="&ldquo;read_line&rdquo;">
-<em>Disassembly of the read_line function.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/1_2020-06-06-003407_1920x1080_scrot.png" alt="">
+<em>Disassembly of the &ldquo;read_line&rdquo; function.</em></p>
 <p>Taking a look at the <code>read_line</code> function&rsquo;s ending code blocks, it can be seen that a particular comparison with <code>78</code> (decimal value) gives rise to branches - one with an error (saying that the input is too long), while the other one returns. It can be easily deduced that the user input seems to be limited to 78 characters, and it is the value which is returned.</p>
 <p>We&rsquo;ll take two approaches for each phase:</p>
 <h5 id="approach-1-blind-walk">Approach 1: Blind Walk</h5>
@@ -171,11 +171,11 @@ Symbols Different values in a program(such as the user input) are substituted wi
 <p>This approach is a more targeted approach based on our knowledge of the inside workings of the function. The main focus here is to find out how the user input and the values to be compared are provided to the function, and then applying a tailored method to exact this comparison value.</p>
 <h3 id="phase-1">Phase 1</h3>
 <p>Function: <code>phase_1</code></p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-04-144000_1920x1080_scrot.png" alt="&ldquo;phase_1&rdquo;">
-<em>Disassembly of the phase_1 function.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-04-144000_1920x1080_scrot.png" alt="">
+<em>Disassembly of the &ldquo;phase_1&rdquo; function.</em></p>
 <p>From the disassembly, we can see that following the calling convention goes, an address is being moved into the <code>ESI</code> register. </p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/1_2020-06-04-152129_1920x1080_scrot.png" alt="&ldquo;strings_not_equal&rdquo;">
-<em>Disassembly of the strings_not_equal function.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/1_2020-06-04-152129_1920x1080_scrot.png" alt="">
+<em>Disassembly of the &ldquo;strings_not_equal&rdquo; function.</em></p>
 <p>A few observations follow:</p>
 <ul>
 <li>The values stored in both, the <code>RSI</code> and the <code>RDI</code> registers are moved to <code>RBX</code> and <code>RBP</code> in the top left block.</li>
@@ -195,8 +195,8 @@ Symbols Different values in a program(such as the user input) are substituted wi
 <p>Read this <a href="https://hexterisk.github.io/bomblab-Angr/Phase%201%20x86_64.html">page</a> implemented in this <a href="https://github.com/hexterisk/bomblab-Angr/blob/master/Phase%201%20x86_64.ipynb">IPython Notebook</a> for a step-by-step explanation on the approaches taken to solve this phase.</p>
 <h3 id="phase-2">Phase 2</h3>
 <p>Function: <code>phase_2</code></p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/1_2020-06-04-153538_1920x1080_scrot.png" alt="&ldquo;phase_2&rdquo;">
-<em>Disassembly of the phase_2 function.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/1_2020-06-04-153538_1920x1080_scrot.png" alt="">
+<em>Disassembly of the &ldquo;phase_2&rdquo; function.</em></p>
 <p>A few observations follow:</p>
 <ul>
 <li>A function, namely <code>read_six_numbers</code>, is called in the first block.
@@ -233,8 +233,8 @@ Symbols Different values in a program(such as the user input) are substituted wi
 <p>Read this <a href="https://hexterisk.github.io/bomblab-Angr/Phase%202%20x86_64.html">page</a> implemented in this <a href="https://github.com/hexterisk/bomblab-Angr/blob/master/Phase%202%20x86_64.ipynb">IPython Notebook</a> for a step-by-step explanation on the approaches taken to solve this phase.</p>
 <h3 id="phase-3">Phase 3</h3>
 <p>Function: <code>phase_3</code></p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-04-171912_1920x1080_scrot.png" alt="&ldquo;phase_3&rdquo;">
-<em>Disassembly of the phase_3 function.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-04-171912_1920x1080_scrot.png" alt="">
+<em>Disassembly of the &ldquo;phase_3&rdquo; function.</em></p>
 <p>A few observations follow:</p>
 <ul>
 <li>This function has a jump table(essentially a switch case that has been resolved by the compiler).
@@ -247,11 +247,11 @@ Symbols Different values in a program(such as the user input) are substituted wi
 <li>Going through the assembly, it becomes clear that it&rsquo;s a pair-set value, that is, the second value will be accepted based on what the first value is.</li>
 </ul>
 <p>So we once again verify the stack structure and see if our previous approach would work.</p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-04-172422_1920x1080_scrot.png" alt="&ldquo;before&rdquo;">
-<em>Before sscanf is called.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-04-172422_1920x1080_scrot.png" alt="">
+<em>Before &ldquo;sscanf&rdquo; function is called.</em></p>
 <p>We can see that an argument of <code>1 1</code> is provided to the function.</p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/1_2020-06-04-172430_1920x1080_scrot.png" alt="&ldquo;after&rdquo;">
-<em>After sscanf is called.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/1_2020-06-04-172430_1920x1080_scrot.png" alt="">
+<em>After &ldquo;sscanf&rdquo; function is called.</em></p>
 <p>The top of the stack is a null value while our input is right below it. Therefore, a kind of a stack setup is required before we can proceed.</p>
 <p>Therefore,</p>
 <ul>
@@ -262,8 +262,8 @@ Symbols Different values in a program(such as the user input) are substituted wi
 <p>Read this <a href="https://hexterisk.github.io/bomblab-Angr/Phase%203%20x86_64.html">page</a> implemented in this <a href="https://github.com/hexterisk/bomblab-Angr/blob/master/Phase%203%20x86_64.ipynb">IPython Notebook</a> for a step-by-step explanation on the approaches taken to solve this phase.</p>
 <h3 id="phase-4">Phase 4</h3>
 <p>Function: <code>phase_4</code></p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-06-003920_1920x1080_scrot.png" alt="&ldquo;phase_4&rdquo;">
-<em>Disassembly of the phase_4 function.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-06-003920_1920x1080_scrot.png" alt="">
+<em>Disassembly of the &ldquo;phase_4&rdquo; function.</em></p>
 <p>A few observations follow:</p>
 <ul>
 <li>The function takes up an input with two integers, and passes them onto another function, namely <code>func4</code>. The result of this function is based on the result of this sub-function, and therefore needs to be paid special attention to.</li>
@@ -271,8 +271,8 @@ Symbols Different values in a program(such as the user input) are substituted wi
 <li>Right after the code block where this function was executed, we can see our other argument being comapred against <code>0x0</code>. Since our main focus would be on this function, we can explicitly put the second input as <code>0x0</code> when we put in the flag, and not bother about it at the moment.</li>
 </ul>
 <p>All we need is that function to return a <code>0x0</code>.</p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-06-004556_1920x1080_scrot.png" alt="&ldquo;func4&rdquo;">
-<em>Disassembly of the func4 function.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-06-004556_1920x1080_scrot.png" alt="">
+<em>Disassembly of the &ldquo;func4&rdquo; function.</em></p>
 <p>From the first look, this function comes out to be recursive in nature. Now, that might not have been that big of a problem if we had not been using a tool to solve the intricacies presented by this problem. You see, a recursive function might cause an automated tool(working with no concrete values, only symbolic ones) to get stuck in it&rsquo;s own loop, causing a path explosion. </p>
 <p>Since checks are in place to prevent the tool from going down a rabbit hole, therefore instead of tinkering with the recursion depths here, let&rsquo;s just focus a little bit deeper onto the function. We can see that going along with the single middle block will do the trick.</p>
 <p>Therefore,</p>
@@ -289,8 +289,8 @@ Symbols Different values in a program(such as the user input) are substituted wi
 <p>Read this <a href="https://hexterisk.github.io/bomblab-Angr/Phase%204%20x86_64.html">page</a> implemented in this <a href="https://github.com/hexterisk/bomblab-Angr/blob/master/Phase%204%20x86_64.ipynb">IPython Notebook</a> for a step-by-step explanation on the approaches taken to solve this phase.</p>
 <h3 id="phase-5">Phase 5</h3>
 <p>Function: <code>phase_5</code></p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-08-092622_1920x1080_scrot.png" alt="&ldquo;phase_5&rdquo;">
-<em>Disassembly of the phase_5 function.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-08-092622_1920x1080_scrot.png" alt="">
+<em>Disassembly of the &ldquo;phase_5&rdquo; function.</em></p>
 <p>A few observations follow:</p>
 <ul>
 <li>The function takes up a string as an input.</li>
@@ -305,8 +305,8 @@ Symbols Different values in a program(such as the user input) are substituted wi
 </ul>
 <p>Seems pretty straightforward.</p>
 <p>But what about the input? A string input needs to be placed somewhere in the memory. Since there seem to be no push operations, we need to find the address where the input is being stored at. We&rsquo;ll look it up in a debugger.</p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/1_image.png" alt="&ldquo;beginning&rdquo;">
-<em>Beginning of phase_5 function.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/1_image.png" alt="">
+<em>Beginning of &ldquo;phase_5&rdquo; function.</em></p>
 <p>Therefore,</p>
 <ul>
 <li>User input: Stored at the address <code>0x6038c0</code>.</li>
@@ -321,51 +321,51 @@ Symbols Different values in a program(such as the user input) are substituted wi
 <p>Read this <a href="https://hexterisk.github.io/bomblab-Angr/Phase%205%20x86_64.html">page</a> implemented in this <a href="https://github.com/hexterisk/bomblab-Angr/blob/master/Phase%205%20x86_64.ipynb">IPython Notebook</a> for a step-by-step explanation on the approaches taken to solve this phase.</p>
 <h3 id="phase-6">Phase 6</h3>
 <p>Function: <code>phase_6</code></p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-14-052441_1920x1080_scrot.png" alt="&ldquo;phase_6&rdquo;">
-<em>Disassembly of the phase_6 function.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-14-052441_1920x1080_scrot.png" alt="">
+<em>Disassembly of the &ldquo;phase_6&rdquo; function.</em></p>
 <p>From a perspective where we just worry about setting up the input, this function essentially seems no different than <code>phase_2</code>.</p>
 <p>There seem to be two sets of loops, prominent blue and red arrows indicating their flow. One modifies the input (the one with the blue arrow) and the other one verifies it (the one with the red arrow).</p>
 <p>A function, namely <code>read_six_numbers</code>, is called in the first block, which maps our input onto the stack.</p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/3_image.png" alt="&ldquo;stack&rdquo;">
-<em>Stack after read_six_numbers is called.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/3_image.png" alt="">
+<em>Stack after the &ldquo;read_six_numbers&rdquo; function is called.</em></p>
 <p>An added point of interest is the state of registers. R13 gets the stack address (where the input we provided is at the top) and then is iterated through all the values on top of the stack (our input) in the block right after the first, where it is essentially made sure that each number is less than or equal to 6. This could be added as a constraint (not a necessity though).</p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/4_image.png" alt="&ldquo;registers&rdquo;">
-<em>Registers after read_six_numbers is called.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/4_image.png" alt="">
+<em>Registers after the &ldquo;read_six_numbers&rdquo; function is called.</em></p>
 <p>We could simply apply the same approach as we did in <code>phase_2</code> (by pushing values to stack and popping in the end, minding the formatting), with a slight change: reversing the manipulation did by the first loop denoted by the blue arrow in the picture showing the disassembly of the <code>phase_6</code> function.</p>
 <p>This is because the instructions perform some form of manipulation (observed by the fact that the Angr gave an answer that wasn&rsquo;t right on popping, although it fit the conditions, verified by running in a debugger), that rearrange our input using their addresses. It&rsquo;s more than believable since a further look at the disassembly showed a linked list being initialized with the values given as input, and it becomes the subject of the manipulations in the loops shown by the red arrow in the picture showing the disassembly of the <code>phase_6</code> function.</p>
-<p>Since we got the modified input (from the “not so wrong&rdquo; output), we could simply reverse that transformation to get the original input.</p>
+<p>Since we got the modified input (from the “not so wrong&quot; output), we could simply reverse that transformation to get the original input.</p>
 <p>The instruction to be focused on is <code>000000000040115B                 mov     ecx, 7</code></p>
 <p>Therefore, we could just subtract the values we get from Angr to get the original input to bypass the stage.</p>
 <h3 id="alternative-approach">Alternative Approach</h3>
 <p>Instead of pushing the values onto the stack, we&rsquo;ll find out the address where the values are put and store them right there, just to see if we can make it work.</p>
 <p>We&rsquo;ll start from the beginning of the function, and add a hook to the read_six_numbers function so as to make it return without doing anything, while we explicitly store the symbolic values in the memory.</p>
 <p>To find out the address where we need to put the values, let&rsquo;s open the binary in the debugger.</p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-16-033553-screenshot.png" alt="&ldquo;args&rdquo;">
-<em>Arguments to sscanf function.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-16-033553-screenshot.png" alt="">
+<em>Arguments to the &ldquo;sscanf&rdquo; function.</em></p>
 <p>We can clearly see the addresses to which the values are to be stored. Thus, we save the values right on these addresses to form a sequence, as expected by the binary.</p>
 <p>Read this <a href="https://hexterisk.github.io/bomblab-Angr/Phase%206%20x86_64.html">page</a> implemented in this <a href="https://github.com/hexterisk/bomblab-Angr/blob/master/Phase%206%20x86_64.ipynb">IPython Notebook</a> for a step-by-step explanation on the approaches taken to solve this phase.</p>
 <h3 id="secret-phase">Secret Phase</h3>
 <p>Function: <code>secret_phase</code></p>
 <h5 id="discovering-the-secret-phase">Discovering the Secret Phase</h5>
 <p>Let&rsquo;s start bu discovering the <code>secret_phase</code> function.</p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/1_2020-06-16-045900-screenshot.png" alt="&ldquo;xrefs&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/1_2020-06-16-045900-screenshot.png" alt="">
 <em>Cross references chart.</em></p>
 <p>From the _xrefs char_t, we can see that only one function invokes the <code>secret_phase</code> function.</p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-16-050208-screenshot.png" alt="&ldquo;phase_defused&rdquo;">
-<em>Disassembly of the phase_defused function.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-16-050208-screenshot.png" alt="">
+<em>Disassembly of the &ldquo;phase_defused&rdquo; function.</em></p>
 <p>The phase_defused function simply checks a couple of conditions based on which, it invokes the secret phase.</p>
 <p>The middle blocks are responsible to check if our input are worthy of unlocking this secret phase. It takes on the input from one of the phases and verifies it to decide whether to unlock the secret phase. The point of interest here is that the address being used here(<code>0x603870</code>), in the call to <code>sscanf</code> to source values for the variables, is hard-coded and is not of the buffer that stores the address. A search for cross references to it yield nothing. So to find out that phase, we use the debugger and monitor any changes made to this address (using hardware watchpoints).</p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-16-051601-screenshot.png" alt="&ldquo;hardware_watchpoint&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-16-051601-screenshot.png" alt="">
 <em>Hardware watchpoint triggered.</em></p>
 <p>The hardware watchpoint is triggered right when the input is given for the <code>phase_4</code> function. Therefore, the input for this phase needs to be modified so as to unlock the secret phase.</p>
 <p>Now we know how to unlock it, we&rsquo;ll just pass a symbolic value to Angr hoping that it&rsquo;ll be able to give us the string input which will be the key.</p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-16-053413-screenshot.png" alt="&ldquo;call&rdquo;">
-<em>Call to sscanf function.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-16-053413-screenshot.png" alt="">
+<em>Call to &ldquo;sscanf&rdquo; function.</em></p>
 <p>We can just slide in the symbolic value at the address where the string will be dereferenced(<code>0x7fffffffdf10</code>) and then let Angr do it&rsquo;s magic over the bunch of instructions that carry out the comparison.</p>
 <p>After we get the key to the phase, we can move on to solving it.</p>
 <h5 id="solving-the-secret-phase">Solving the Secret Phase</h5>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-16-042658-screenshot.png" alt="&ldquo;secret_phase&rdquo;">
-<em>Disassembly of the secret_phase function.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-16-042658-screenshot.png" alt="">
+<em>Disassembly of the &ldquo;secret_phase&rdquo; function.</em></p>
 <p>A few observations follow:</p>
 <ul>
 <li>The function takes the string input and converts it into a long.</li>
@@ -373,8 +373,8 @@ Symbols Different values in a program(such as the user input) are substituted wi
 </ul>
 <p>It&rsquo;s pretty simple and straightforward, especially compared to what we have done in all the previous phases.</p>
 <p>Checking out the <code>fun7</code> function, it seems to be entangled in some sort of a recursive conditional parsing based on the user input.</p>
-<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-16-043140-screenshot.png" alt="&ldquo;fun7&rdquo;">
-<em>Disassembly of the fun7 function.</em></p>
+<p><img src="https://hexterisk.github.io/blog/Symbolic_Execution_and_Angr/2020-06-16-043140-screenshot.png" alt="">
+<em>Disassembly of the &ldquo;fun7&rdquo; function.</em></p>
 <p>We&rsquo;ll leave it up to Angr to bypass the mess and just give us the answer.</p>
 <p>Therefore,</p>
 <ul>
@@ -394,7 +394,7 @@ Symbols Different values in a program(such as the user input) are substituted wi
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/symbols">symbols</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/execution">execution</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/path">path</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/constraints">constraints</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/expression">expression</a></span>
                 </p>
 
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>3371 Words</p>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>3378 Words</p>
 
             <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-05-21 05:30 &#43;0530</p>
         </div>

@@ -159,7 +159,7 @@ Since most messages are irregularly sized and need to be padded up to the block 
 <blockquote>
 <p>For such algorithms, the method shall be to pad the input at the trailing end with k - (l mod k) octets all having value k - (l mod k), where l is the length of the input.</p>
 </blockquote>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_2/image.png" alt="&ldquo;pkcs#7&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_2/image.png" alt="">
 <em>Valid PKCS#7 padding.</em></p>
 <p>Therefore, a message whose length is short of the block size by x, is to be padded by the x byte itself. It allows block sizes up to 255 bytes.</p>
 <p>Since the plaintext length is short of the block size by 4 bytes, it is padded by 4 &lsquo;\x04&rsquo; bytes.</p>
@@ -240,7 +240,7 @@ key <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><sp
         previous <span style="color:#f92672">=</span> ciphertext[i:i<span style="color:#f92672">+</span>keysize]
         
     <span style="color:#66d9ef">return</span> plaintext
-</code></pre></div><p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_2/1_image.png" alt="&ldquo;CBC_decryption&rdquo;">
+</code></pre></div><p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_2/1_image.png" alt="">
 <em>AES CBC Decryption.</em></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">AES_CBC_decrypt</span>(ciphertext: bytes, IV: bytes, key: bytes) <span style="color:#f92672">-&gt;</span> bytes:
     <span style="color:#e6db74">&#34;&#34;&#34;
@@ -265,16 +265,16 @@ key <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><sp
 
 text <span style="color:#f92672">=</span> PKCS7_unpad(AES_CBC_decrypt(byte_string, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">*</span>AES<span style="color:#f92672">.</span>block_size, key))
 <span style="color:#66d9ef">print</span>(text<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#34;utf-8&#34;</span>)<span style="color:#f92672">.</span>strip(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>))
-</code></pre></div><p>I&rsquo;m back and I&rsquo;m ringin&rsquo; the bell </p>
-<p>A rockin&rsquo; on the mike while the fly girls yell </p>
+</code></pre></div><p>I&rsquo;m back and I&rsquo;m ringin' the bell </p>
+<p>A rockin' on the mike while the fly girls yell </p>
 <p>In ecstasy in the back of me </p>
-<p>Well that&rsquo;s my DJ Deshay cuttin&rsquo; all them Z&rsquo;s </p>
-<p>Hittin&rsquo; hard and the girlies goin&rsquo; crazy </p>
+<p>Well that&rsquo;s my DJ Deshay cuttin' all them Z&rsquo;s </p>
+<p>Hittin' hard and the girlies goin' crazy </p>
 <p>Vanilla&rsquo;s on the mike, man I&rsquo;m not lazy. </p>
-<p>I&rsquo;m lettin&rsquo; my drug kick in </p>
+<p>I&rsquo;m lettin' my drug kick in </p>
 <p>It controls my mouth and I begin </p>
 <p>To just let it flow, let my concepts go </p>
-<p>My posse&rsquo;s to the side yellin&rsquo;, Go Vanilla Go! </p>
+<p>My posse&rsquo;s to the side yellin', Go Vanilla Go! </p>
 <p>Smooth &lsquo;cause that&rsquo;s the way I will be </p>
 <p>And if you don&rsquo;t give a damn, then </p>
 <p>Why you starin&rsquo; at me </p>
@@ -282,8 +282,8 @@ text <span style="color:#f92672">=</span> PKCS7_unpad(AES_CBC_decrypt(byte_strin
 <p>There&rsquo;s no dissin&rsquo; allowed </p>
 <p>I&rsquo;m in my own phase </p>
 <p>The girlies sa y they love me and that is ok </p>
-<p>And I can dance better than any kid n&rsquo; play </p>
-<p>Stage 2 &ndash; Yea the one ya&rsquo; wanna listen to </p>
+<p>And I can dance better than any kid n' play </p>
+<p>Stage 2 &ndash; Yea the one ya' wanna listen to </p>
 <p>It&rsquo;s off my head so let the beat play through </p>
 <p>So I can funk it up and make it sound good </p>
 <p>1-2-3 Yo &ndash; Knock on some wood </p>
@@ -292,25 +292,25 @@ text <span style="color:#f92672">=</span> PKCS7_unpad(AES_CBC_decrypt(byte_strin
 <p>I&rsquo;m an effect and that you can bet </p>
 <p>I can take a fly girl and make her wet. </p>
 <p>I&rsquo;m like Samson &ndash; Samson to Delilah </p>
-<p>There&rsquo;s no denyin&rsquo;, You can try to hang </p>
-<p>But you&rsquo;ll keep tryin&rsquo; to get my style </p>
+<p>There&rsquo;s no denyin', You can try to hang </p>
+<p>But you&rsquo;ll keep tryin' to get my style </p>
 <p>Over and over, practice makes perfect </p>
 <p>But not if you&rsquo;re a loafer. </p>
 <p>You&rsquo;ll get nowhere, no place, no time, no girls </p>
 <p>Soon &ndash; Oh my God, homebody, you probably eat </p>
 <p>Spaghetti with a spoon! Come on and say it! </p>
-<p>VIP. Vanilla Ice yep, yep, I&rsquo;m comin&rsquo; hard like a rhino </p>
+<p>VIP. Vanilla Ice yep, yep, I&rsquo;m comin' hard like a rhino </p>
 <p>Intoxicating so you stagger like a wino </p>
-<p>So punks stop trying and girl stop cryin&rsquo; </p>
-<p>Vanilla Ice is sellin&rsquo; and you people are buyin&rsquo; </p>
+<p>So punks stop trying and girl stop cryin' </p>
+<p>Vanilla Ice is sellin' and you people are buyin' </p>
 <p>&lsquo;Cause why the freaks are jockin&rsquo; like Crazy Glue </p>
-<p>Movin&rsquo; and groovin&rsquo; trying to sing along </p>
-<p>All through the ghetto groovin&rsquo; this here song </p>
+<p>Movin' and groovin' trying to sing along </p>
+<p>All through the ghetto groovin' this here song </p>
 <p>Now you&rsquo;re amazed by the VIP posse. </p>
-<p>Steppin&rsquo; so hard like a German Nazi </p>
-<p>Startled by the bases hittin&rsquo; ground </p>
-<p>There&rsquo;s no trippin&rsquo; on mine, I&rsquo;m just gettin&rsquo; down </p>
-<p>Sparkamatic, I&rsquo;m hangin&rsquo; tight like a fanatic </p>
+<p>Steppin' so hard like a German Nazi </p>
+<p>Startled by the bases hittin' ground </p>
+<p>There&rsquo;s no trippin' on mine, I&rsquo;m just gettin' down </p>
+<p>Sparkamatic, I&rsquo;m hangin' tight like a fanatic </p>
 <p>You trapped me once and I thought that </p>
 <p>You might have it </p>
 <p>So step down and lend me your ear </p>
@@ -363,7 +363,7 @@ Now, have the function choose to encrypt under ECB 1/2 the time, and under CBC t
     text <span style="color:#f92672">=</span> PKCS7_pad(plaintext, len(key))
     <span style="color:#66d9ef">return</span> cipher<span style="color:#f92672">.</span>encrypt(PKCS7_pad(text, len(key)))
 </code></pre></div><p>The second AES Mode is the <strong>CBC</strong> (<strong>Cipher Block Chaining</strong>) Mode. Each block of plaintext is XORed with the previous ciphertext block before being encrypted. This way, each ciphertext block depends on all plaintext blocks processed up to that point. To make each message unique, an <strong>Initialization Vector</strong> must be used in the first block.</p>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_2/2_image.png" alt="&ldquo;CBC_encryption&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_2/2_image.png" alt="">
 <em>AES CBC Encryption.</em></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">AES_CBC_encrypt</span>(plaintext: bytes, IV: bytes, key: bytes) <span style="color:#f92672">-&gt;</span> bytes:
     <span style="color:#e6db74">&#34;&#34;&#34;
@@ -535,7 +535,7 @@ deciphered <span style="color:#f92672">=</span> break_AES_ECB(keysize, AES128)
 <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Given base64 encoded string was:</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">{}&#34;</span><span style="color:#f92672">.</span>format(deciphered<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#34;utf-8&#34;</span>)<span style="color:#f92672">.</span>strip(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)))
 </code></pre></div><p>Key size used for the given ciphertext is 16</p>
 <p>Given base64 encoded string was:</p>
-<p>Rollin&rsquo; in my 5.0</p>
+<p>Rollin' in my 5.0</p>
 <p>With my rag-top down so my hair can blow</p>
 <p>The girlies on standby waving just to say hi</p>
 <p>Did you stop? No, I just drove by</p>
@@ -731,7 +731,7 @@ byte_text <span style="color:#f92672">=</span> break_AES_ECB_harder(keysize, AES
 Random blocks:  12
 Number of bytes of padding required:  4
 Deciphered string:</p>
-<p>Rollin&rsquo; in my 5.0</p>
+<p>Rollin' in my 5.0</p>
 <p>With my rag-top down so my hair can blow</p>
 <p>The girlies on standby waving just to say hi</p>
 <p>Did you stop? No, I just drove by</p>
@@ -771,7 +771,7 @@ target_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&
 <p>Generate a random AES key.<br>
 Combine your padding code and CBC code to write two functions.<br>
 The first function should take an arbitrary input string, prepend the string:<br>
-<strong>&ldquo;comment1=cooking%20MCs;userdata=&rdquo;</strong><br>
+<strong>&ldquo;comment1=cooking%20MCs;userdata=&quot;</strong><br>
 .. and append the string:<br>
 <strong>&quot;;comment2=%20like%20a%20pound%20of%20bacon&rdquo;</strong><br>
 The function should quote out the &ldquo;;&rdquo; and &ldquo;=&rdquo; characters.<br>
@@ -889,7 +889,7 @@ AES_CBC_decrypt(modified_ciphertext, IV, random_key)
 </code></pre></div><p>Prefix length:  32
 Random blocks:  3
 Number of bytes of padding required:  7</p>
-<p>b&rsquo;comment1&quot;=&quot;cooking%20MCs&rdquo;;&ldquo;userd\t\xc2\xaf\xc3\x8c\xc2\x8a\xc3\xa6\xc3\x9e\xc2\x94\xc3\x989;\xc2\x97\xc3\xa3\xc2\xb1s#\xc2\x94;admin=true;&quot;;&ldquo;comment2&quot;=&rdquo;%20like%20a%20pound%20of%20bacon\x06\x06\x06\x06\x06\x06&rsquo;</p>
+<p>b&rsquo;comment1&quot;=&ldquo;cooking%20MCs&rdquo;;&ldquo;userd\t\xc2\xaf\xc3\x8c\xc2\x8a\xc3\xa6\xc3\x9e\xc2\x94\xc3\x989;\xc2\x97\xc3\xa3\xc2\xb1s#\xc2\x94;admin=true;&quot;;&ldquo;comment2&rdquo;=&quot;%20like%20a%20pound%20of%20bacon\x06\x06\x06\x06\x06\x06'</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">test(decryptor(modified_ciphertext, IV, random_key) <span style="color:#f92672">==</span> True)
 </code></pre></div>
 

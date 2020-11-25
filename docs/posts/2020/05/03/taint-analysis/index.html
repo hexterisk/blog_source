@@ -134,9 +134,9 @@
 
             <div class="post-content">
                 <p><strong>Taint Analysis</strong> is a program analysis technique that allows you to determine the influence that a selected program state has on other parts of the program state. Taint any data that a program receives from the network, track that data, and raise an alert if it affects the program counter. If an operation uses the value of some tainted object, say <em>X</em>, to derive a value for another, say <em>Y</em>, then object <em>Y</em> becomes tainted. Object <em>X</em> tainted the object <em>Y</em>. Taint Analysis can be classified into two types.</p>
-<h3 id="static-taint-analysis">Static Taint Analysis</h3>
+<h2 id="static-taint-analysis">Static Taint Analysis</h2>
 <p>The advantage of using static analysis is the fact that it provides better code coverage than dynamic analysis. On the other hand, the principal disadvantage of the static analysis is that it&rsquo;s not as accurate than the dynamic analysis - It cannot access the runtime information for example. We can&rsquo;t retrieve registers or memory values.</p>
-<h3 id="dynamic-taint-analysis">Dynamic Taint Analysis</h3>
+<h2 id="dynamic-taint-analysis">Dynamic Taint Analysis</h2>
 <p><strong>DTA (Dynamic Taint Analysis)</strong>, also called <strong>DFT</strong> (<strong>Data Flow Tracking)</strong>, <strong>Taint Tracking</strong>,</p>
 <ul>
 <li>Indicate a control-flow hijacking attack.</li>
@@ -164,10 +164,10 @@
 <h3 id="taint-granularity">Taint Granularity</h3>
 <p>The unit of information by which a DTA system tracks taint. An important factor influencing its accuracy.</p>
 <p>For example, taking white bytes as untainted and grey ones as tainted,</p>
-<p><img src="https://hexterisk.github.io/blog/Taint_Analysis/image.png" alt="&ldquo;bit&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Taint_Analysis/image.png" alt="">
 <em>Bit-Granularity.</em></p>
 <p>All the bits in the first operand are tainted, while no bits are tainted in the second operand. Since this is a bitwise AND operation, if an attacker controls only the first input operand, then the only bit positions in the output that they can affect are those where the second operand has a 1. All other output bits will always be set to 0. Thus, only that one output bit is tainted.</p>
-<p><img src="https://hexterisk.github.io/blog/Taint_Analysis/1_image.png" alt="&ldquo;byte&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Taint_Analysis/1_image.png" alt="">
 <em>Byte-Granularity.</em></p>
 <p>Byte-Granularity DTA system can’t consider each bit individually, the whole output is marked as tainted. The system simply sees a tainted input byte and a nonzero second operand and therefore concludes that an attacker could affect the output operand.</p>
 <h3 id="taint-colors">Taint Colors</h3>
@@ -175,23 +175,23 @@
 <p>It may seem possible to store 255 different colors in 1 byte of taint information since a byte can store 255 distinct nonzero values. However, that approach doesn’t allow for different colors to mix. Without the ability to mix colors, distinguishing between taint flows when two taint flows run together is impossible: if a value is affected by two different taint sources, each with their own color, it&rsquo;s not possible to record both colors in the affected value’s taint information. To support mixing colors, a dedicated bit per taint color is required. For instance, for 1 byte of taint information, the colors 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, and 0x80 can be supported. Then, if a particular value is tainted by both the colors 0x01 and 0x02, the combined taint information for this value is 0x03, which is the bitwise OR of the two colors.</p>
 <h3 id="taint-propagation-policies">Taint Propagation Policies</h3>
 <p>The taint policy of a DTA system describes how the system propagates taint and how it merges taint colors if multiple taint flows run together.</p>
-<p><img src="https://hexterisk.github.io/blog/Taint_Analysis/2_image.png" alt="&ldquo;propagation&rdquo;"></p>
-<p>Taint Propagation Examples for a Byte-Granularity DTA System with Two Colors, Red (R) and Blue (B).</p>
+<p><img src="https://hexterisk.github.io/blog/Taint_Analysis/2_image.png" alt="">
+<em>Taint Propagation Examples for a Byte-Granularity DTA System with Two Colors, Red (R) and Blue (B).</em></p>
 <h3 id="overtainting-and-undertainting">Overtainting and Undertainting</h3>
 <p><strong>Undertainting</strong> occurs when a value isn’t tainted even though it “should be,” which means that an attacker can get away with influencing that value without being noticed.</p>
 <p><strong>Overtainting</strong> means that values end up tainted even though they “shouldn’t be.” This results in false positives, such as alerts when there is no actual attack in progress.</p>
 <p>They can be a result of the taint policy or the way control dependencies are handled.</p>
 <h3 id="control-dependencies">Control Dependencies</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C">var <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">var <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
 <span style="color:#66d9ef">while</span>(cond<span style="color:#f92672">--</span>) var<span style="color:#f92672">++</span>;
 </code></pre></div><p>An attacker who controls the loop condition cond can determine the value of <em>var</em>. This is called a <strong>control dependency</strong>. While the attacker can control var through <em>cond</em>, there’s no explicit data flow between the two variables.</p>
 <h3 id="shadow-memory">Shadow Memory</h3>
 <p>Region of virtual memory allocated by the DTA system to keep track of the taint status of the rest of the memory. Typically, DTA systems also allocate a special structure in memory where they keep track of taint information for CPU registers. The structure of the shadow memory differs depending on the taint granularity and how many taint colors are supported.</p>
-<p><img src="https://hexterisk.github.io/blog/Taint_Analysis/3_image.png" alt="&ldquo;shadow&rdquo;"></p>
-<p>Shadow memory with byte-granularity and 1, 8, or 32 colors per byte.</p>
-<h5 id="bitmap-based-shadow-memory">Bitmap-Based Shadow Memory</h5>
+<p><img src="https://hexterisk.github.io/blog/Taint_Analysis/3_image.png" alt="">
+<em>Shadow memory with byte-granularity and 1, 8, or 32 colors per byte.</em></p>
+<h4 id="bitmap-based-shadow-memory">Bitmap-Based Shadow Memory</h4>
 <p><strong>Bitmap</strong> ➊ stores a single bit of taint information per byte of virtual memory, so it can represent only one color: each byte of memory is either tainted or untainted. Bytes A–D are represented by the bits 1101, meaning that bytes A, B, and D are tainted, while byte C is not.</p>
-<h5 id="multicolor-shadow-memory">Multicolor Shadow Memory</h5>
+<h4 id="multicolor-shadow-memory">Multicolor Shadow Memory</h4>
 <p>➋ supports eight colors and uses 1 byte of shadow memory per byte of virtual memory. Again, bytes A, B, and D are tainted (with colors 0x01, 0x04, and 0x20, respectively), while byte C is untainted. To store taint for every virtual memory byte in a process, an unoptimized eight-color shadow memory must be as large as that process’s entire virtual memory space. The final shadow memory type supports 32 colors ➌. Bytes A, B, and D are tainted with the colors 0x01000000, 0x00800000, and 0x00000200, respectively, while byte C is untainted. This requires 4 bytes of shadow memory per memory byte, which is quite a hefty memory overhead.</p>
 <p>There’s usually no need to store shadow bytes for the memory area where the shadow memory itself is allocated, so omit shadow bytes for that memory area. Even so, without further optimizations, the shadow memory still requires half of the virtual memory. This can be reduced further by dynamically allocating shadow memory only for the parts of virtual memory that are actually in use (on the stack or heap), at the cost of some extra runtime overhead. Moreover, virtual memory pages that are not writable can never be tainted, all of those to the same “zeroed-out” shadow memory page can be safely mapped. With these optimizations, multicolor DTA becomes manageable, though it still requires a lot of memory.</p>
 

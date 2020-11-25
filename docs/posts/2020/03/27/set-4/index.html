@@ -275,7 +275,7 @@ Modify the message (you are now the attacker):<br>
 <strong>C_1, C_2, C_3 -&gt; C_1, 0, C_1</strong><br>
 Decrypt the message (you are now the receiver) and raise the appropriate error if high-ASCII is found.<br>
 As the attacker, recovering the plaintext from the error, extract the key:<br>
-<strong>P&rsquo;_1 XOR P&rsquo;_3</strong></p>
+<strong>P'_1 XOR P'_3</strong></p>
 </blockquote>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Imports</span>
 <span style="color:#f92672">import</span> os
@@ -317,7 +317,7 @@ append_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&
 <li>Compute the key as K = P¹ ⊕ C¹.</li>
 </ol>
 <p>Now, since the oracle checks the output for ASCII compliance, and in fact does send us the supposedly decrypted bytes when it&rsquo;s non-ASCII compliant, we can thus receive the key as it gets decrypted. If the decrypted bytes happens to pass the ASCII check, pick a different cipher block to begin with.</p>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_4/image.png" alt="&ldquo;CBC_decryption&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_4/image.png" alt="">
 <em>AES CBC Decryption (3 blocks).</em></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">keysize <span style="color:#f92672">=</span> <span style="color:#ae81ff">16</span>
 random_key <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>urandom(keysize)
@@ -501,7 +501,7 @@ key <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>u
     <span style="color:#66d9ef">return</span> False
 </code></pre></div><p>From the implementation, we know that the value returned from SHA1 is <em>(H0 &laquo; 128) | (H1 &laquo; 96) | (H2 &laquo; 64) | (H3 &laquo; 32) | H4</em>.</p>
 <p>The output can therefore be dissolved back into <em>H0</em>, <em>H1</em>, <em>H2</em>, <em>H3</em>, and <em>H4</em>. These values are then used to instantiate a new SHA-1 oracle, and this new oracle can resume computation from this point on.</p>
-<p>Now, when we get the hash <em>h</em> for a message <em>m</em>, we can compute the padding <em>p</em> applied to it. Let&rsquo;s assume that we know <em>m</em> and we want to compute has for a message <em>m&rsquo;</em>. A padding <em>p&rsquo;</em> will be in order. The final message comes out to be <em>m||p||m'||p&rsquo;</em>. Since <em>m||p</em> is already 512 bits, <em>m'||p&rsquo;</em> will be computed in it&rsquo;s own block. But wait, what if we already have the intermediary state between the blocks of <em>m||p</em> and <em>m'||p&rsquo;</em> ? We could just resume the computation of <em>m'||p&rsquo;</em> and just ignore the <em>m||p</em>. Well we do have the intermediary state. It&rsquo;s the hash of <em>m||p</em>. Therefore, we could just use the hash of any random message, and use it&rsquo;s value to sign any message we want to, and it would have a valid MAC. The implications of this are major. It makes forgery really easy and straight forward. </p>
+<p>Now, when we get the hash <em>h</em> for a message <em>m</em>, we can compute the padding <em>p</em> applied to it. Let&rsquo;s assume that we know <em>m</em> and we want to compute has for a message <em>m'</em>. A padding <em>p'</em> will be in order. The final message comes out to be <em>m||p||m'||p'</em>. Since <em>m||p</em> is already 512 bits, <em>m'||p'</em> will be computed in it&rsquo;s own block. But wait, what if we already have the intermediary state between the blocks of <em>m||p</em> and <em>m'||p'</em> ? We could just resume the computation of <em>m'||p'</em> and just ignore the <em>m||p</em>. Well we do have the intermediary state. It&rsquo;s the hash of <em>m||p</em>. Therefore, we could just use the hash of any random message, and use it&rsquo;s value to sign any message we want to, and it would have a valid MAC. The implications of this are major. It makes forgery really easy and straight forward. </p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sha1_length_extension_attack</span>(message: bytes, original_md: bytes, payload: bytes) <span style="color:#f92672">-&gt;</span> (bytes, bytes):
     <span style="color:#e6db74">&#34;&#34;&#34;
 </span><span style="color:#e6db74">    Perform the SHA1 length extension attack.
@@ -772,7 +772,7 @@ response <span style="color:#f92672">=</span> app<span style="color:#f92672">.</
 <span style="color:#66d9ef">print</span>(response)
 </code></pre></div><p><code>&lt;Storage {'status': 500, 'headers': {}, 'header_items': [], 'data': b'500'}&gt;</code><br>
 <code>&lt;Storage {'status': 200, 'headers': {}, 'header_items': [], 'data': b'200'}&gt;</code></p>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_4/1_image.png" alt="&ldquo;timing_attack&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_4/1_image.png" alt="">
 <em>Classical timing attack.</em></p>
 <p>It&rsquo;s a classical timing attack. We brute force all the bytes of the hash by judging the response time. Every byte check causes some delay. If for some byte the response comes back with a little more delay than all others, then it&rsquo;s clear that this byte triggered the byte check for the next byte, and thus this byte was guessed correctly. Slowly the whole signature is built this way.</p>
 <p>The function produces a 160-bit (20-byte) hash value known as a message digest, typically rendered as a hexadecimal number, 40 digits long.</p>

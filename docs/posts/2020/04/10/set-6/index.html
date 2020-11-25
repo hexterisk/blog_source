@@ -162,10 +162,10 @@ This turns out to be trivially breakable:</p>
 <li>Let N and E be the public modulus and exponent respectively</li>
 <li>Let S be a random number &gt; 1 mod N. Doesn&rsquo;t matter what.</li>
 <li>Now:<br>
-<strong>C&rsquo; = ((S**E mod N) C) mod N</strong></li>
-<li>Submit C&rsquo;, which appears totally different from C, to the server, recovering P&rsquo;, which appears totally different from P</li>
+<strong>C' = ((S**E mod N) C) mod N</strong></li>
+<li>Submit C', which appears totally different from C, to the server, recovering P', which appears totally different from P</li>
 <li>Now: <br>
-<strong>P = P&rsquo; / S mod N</strong></li>
+<strong>P = P' / S mod N</strong></li>
 </ul>
 <p>Oops!<br>
 Implement that attack.</p>
@@ -952,14 +952,14 @@ Set yourself up the way you did in #47, but this time generate a 768 bit modulus
 To make the attack work with a realistic RSA keypair, you need to reproduce step 2b from the paper, and your implementation of Step 3 needs to handle multiple ranges.<br>
 The full Bleichenbacher attack works basically like this:</p>
 <ul>
-<li>Starting from the smallest &rsquo;s&rsquo; that could possibly produce a plaintext bigger than 2B, iteratively search for an &rsquo;s&rsquo; that produces a conformant plaintext.</li>
+<li>Starting from the smallest &rsquo;s' that could possibly produce a plaintext bigger than 2B, iteratively search for an &rsquo;s' that produces a conformant plaintext.</li>
 <li>For our known &lsquo;s1&rsquo; and &lsquo;n&rsquo;, solve m1=m0s1-rn (again: just a definition of modular multiplication) for &lsquo;r&rsquo;, the number of times we&rsquo;ve wrapped the modulus.</li>
 <li>&lsquo;m0&rsquo; and &lsquo;m1&rsquo; are unknowns, but we know both are conformant PKCS#1v1.5 plaintexts, and so are between [2B,3B].</li>
 <li>We substitute the known bounds for both, leaving only &lsquo;r&rsquo; free, and solve for a range of possible &lsquo;r&rsquo; values. This range should be small!</li>
 <li>Solve m1=m0s1-rn again but this time for &lsquo;m0&rsquo;, plugging in each value of &lsquo;r&rsquo; we generated in the last step. This gives us new intervals to work with. Rule out any interval that is outside 2B,3B.</li>
-<li>Repeat the process for successively higher values of &rsquo;s&rsquo;. Eventually, this process will get us down to just one interval, whereupon we&rsquo;re back to exercise #47.</li>
+<li>Repeat the process for successively higher values of &rsquo;s'. Eventually, this process will get us down to just one interval, whereupon we&rsquo;re back to exercise #47.</li>
 </ul>
-<p>What happens when we get down to one interval is, we stop blindly incrementing &rsquo;s&rsquo;; instead, we start rapidly growing &lsquo;r&rsquo; and backing it out to &rsquo;s&rsquo; values by solving m1=m0s1-rn for &rsquo;s&rsquo; instead of &lsquo;r&rsquo; or &lsquo;m0&rsquo;. So much algebra! Make your teenage son do it for you! <em>Note: does not work well in practice</em></p>
+<p>What happens when we get down to one interval is, we stop blindly incrementing &rsquo;s'; instead, we start rapidly growing &lsquo;r&rsquo; and backing it out to &rsquo;s' values by solving m1=m0s1-rn for &rsquo;s' instead of &lsquo;r&rsquo; or &lsquo;m0&rsquo;. So much algebra! Make your teenage son do it for you! <em>Note: does not work well in practice</em></p>
 </blockquote>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Imports</span>
 <span style="color:#f92672">import</span> os

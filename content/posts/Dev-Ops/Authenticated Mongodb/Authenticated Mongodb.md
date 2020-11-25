@@ -20,7 +20,7 @@ There are two ways to setup an authenticated mongo server container.
 
 ### Setup the container
 
-!["pulling_image"](/Authenticated_Mongodb/1_image.png)
+![](/Authenticated_Mongodb/1_image.png)
 _Pulling the mongo docker image from dockerhub as it doesn't exist on server/local machine._
 
 Create a directory for the database to be stored in on the server/local machine.
@@ -34,7 +34,7 @@ Run the mongo container and attach it to a non-conventional port so as to make i
 *   Maps the container's 27017 port (where the mongo server is running) to the server/local machine's _CUSTOM\_PORT_.
 *   Maps the _**/data/db**_ directory inside the container to server/local machine's _**~/db**_ directory.
 
-!["init_container"](/Authenticated_Mongodb/2_image.png)
+![](/Authenticated_Mongodb/2_image.png)
 _The container we just initialised._
 
 ### Creating admin user
@@ -43,27 +43,27 @@ Spawn a mongo shell through a shell inside the container and create the user man
 
 `docker exec -it CONTAINER_NAME/CONTAINER_ID bash`
 
-!["mongo_shell"](/Authenticated_Mongodb/3_image.png)
+![](/Authenticated_Mongodb/3_image.png)
 _Spawning mongo shell._
 
-!["user_create"](/Authenticated_Mongodb/7_image.png)
+![](/Authenticated_Mongodb/7_image.png)
 _Creating user through mongo shell._
 
 Restart the container with _**auth**_ flag this time.
 
 `docker stop CONTAINER_NAME/CONTAINER_ID`
 
-!["docker_stop"](/Authenticated_Mongodb/11_image.png)
+![](/Authenticated_Mongodb/11_image.png)
 _Stopping the container using container ID._
 
 This error implies that the port specified is already locked by another process (the initial container in this case).
 
-!["docker_error"](/Authenticated_Mongodb/8_image.png)
+![](/Authenticated_Mongodb/8_image.png)
 _Port pre-occupied by the initial container._
 
 `docker run -d -p CUSTOM_PORT:27017 -v ~/db:/data/db mongo mongod --auth`
 
-!["restart_auth"](/Authenticated_Mongodb/10_image.png)
+![](/Authenticated_Mongodb/10_image.png)
 _Restarting the container with the _auth_ flag._
 
 ⇨  **New users can be created in the same way.**
@@ -135,7 +135,7 @@ echo "Mongo users created."
 
 `docker-compose up`
 
-!["user_created"](/Authenticated_Mongodb/15_image.png)
+![](/Authenticated_Mongodb/15_image.png)
 _Executing the above command gives a lot of output. Similar output will be present at the part where new users are being setup._
 
 ## Connecting to the Mongo container
@@ -146,14 +146,14 @@ Container's IP Address can be found out by:
 
 `docker inspect --format '{{ .NetworkSettings.IPAddress }}' CONTAINER_NAME/CONTAINER_ID`
 
-!["ipaddr"](/Authenticated_Mongodb/13_image.png)
+![](/Authenticated_Mongodb/13_image.png)
 _Output gives the container's IPAddress._
 
 If the output is empty, simply run:
 
 `docker inspect CONTAINER_NAME/CONTAINER___ID`
 
-!["ipaddr_inspect"](/Authenticated_Mongodb/14_image.png)
+![](/Authenticated_Mongodb/14_image.png)
 _The last part of the command's output._
 
 and search for the _IPAddress_ field in the output.
@@ -162,5 +162,5 @@ Then simply connect to the instance by passing the username, password, IPAddress
 
 `mongo -u USERNAME -p PASSWORD IPAddress/DATABASE_NAME`
 
-!["connected"](/Authenticated_Mongodb/12_image.png)
+![](/Authenticated_Mongodb/12_image.png)
 _Connect to the container._

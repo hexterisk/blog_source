@@ -16,11 +16,11 @@ categories: ["basic-binary-analysis"]
 
 Memory for functions, local variables, and flow control is stored in the stack.
 
-### Stack Layout
+## Stack Layout
 
 The stack grows from higher addresses to lower addresses. This behavior can be categorized as _growing downwards_ or _allocation in a top-down manner_. Therefore, top of the stack is actually the lower-most address being used by the stack at that moment.
 
-![why do structure's data members memory allocated from lower to ...](/Stack_and_it's_Frames/1Yz9K.gif)
+![](/Stack_and_it's_Frames/1Yz9K.gif)
 _Stack growing downwards._
 
 Each time a function call is performed, a new **Stack Frame** is generated. A function maintains its own stack frame until it returns, at which time the caller’s stack frame is restored and execution is transferred back to the calling function.
@@ -38,7 +38,7 @@ When a function is called, the flow of code execution is transferred to a it's m
 
 **Function Epilogue** is executed when the function tries to return. It consists of a few lines of code that are executed right at the end of the function so as to restore the stack and registers to the state they were in before the function is called.
 
-##### Calling Conventions for x86:
+#### Calling Conventions for x86:
 
 The x86 architecture requires all function arguments to be pushed on the stack before the function is called.
 
@@ -56,7 +56,7 @@ Function Epilogue:
 ```
  The `leave` instruction can be used in place of the first two instructions because it sets `ESP` to equal `EBP` and pops `EBP` off the stack.
 
-##### Calling Conventions for x64:
+#### Calling Conventions for x64:
 
 The x64 architecture requires the first six function arguments to be set in registers in the following order: `RDI`, `RSI`, `RDX`, `RCX`, `R8`, and `R9`; the remaining are pushed on the stack from right to left.
 
@@ -91,7 +91,7 @@ The only differences between the architectures x86 and x64 we are concerned with
 
 Since these differences have been tended to more or less, the following material is in reference to the x86 architecture since it's much more elaborate.
 
-### Flow of Control:
+## Flow of Control:
 
 1.  Arguments are placed on the stack using `push` instructions.
 2.  The function is called using `call memory_location`. This causes the current instruction address (that is, the contents of the `EIP` register) to be pushed onto the stack. This address will be used to return to the main code when the function is finished. When the function begins, `EIP` is set to _memory\_location_ (the start of the function).
@@ -101,9 +101,9 @@ Since these differences have been tended to more or less, the following material
 6.  The function returns by calling the `ret` instruction. This pops the return address off the stack and into `EIP`, so that the program will continue executing from where the original call was made.
 7.  The stack is adjusted to remove the arguments that were sent, unless they’ll be used again later.
 
-### Stack and Frame Analysis
+## Stack and Frame Analysis
 
-!["stack_frame"](/Stack_and_it's_Frames/1_image.png)
+![](/Stack_and_it's_Frames/1_image.png)
 _Individual stack frame (notice how addresses go from higher to lower from bottom to top)._
 
 *   `ESP` would point to the top of the stack, which is the memory address `0x12F02C`.

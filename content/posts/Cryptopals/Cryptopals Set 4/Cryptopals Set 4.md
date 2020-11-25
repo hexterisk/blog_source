@@ -248,7 +248,7 @@ Therefore, the attack is crafted as follows:
 
 Now, since the oracle checks the output for ASCII compliance, and in fact does send us the supposedly decrypted bytes when it's non-ASCII compliant, we can thus receive the key as it gets decrypted. If the decrypted bytes happens to pass the ASCII check, pick a different cipher block to begin with.
 
-!["CBC_decryption"](/Cryptopals_Set_4/image.png)
+![](/Cryptopals_Set_4/image.png)
 _AES CBC Decryption (3 blocks)._
 
 ```python
@@ -794,7 +794,7 @@ print(response)
 `<Storage {'status': 500, 'headers': {}, 'header_items': [], 'data': b'500'}>`  
 `<Storage {'status': 200, 'headers': {}, 'header_items': [], 'data': b'200'}>`
 
-!["timing_attack"](/Cryptopals_Set_4/1_image.png)
+![](/Cryptopals_Set_4/1_image.png)
 _Classical timing attack._
 
 It's a classical timing attack. We brute force all the bytes of the hash by judging the response time. Every byte check causes some delay. If for some byte the response comes back with a little more delay than all others, then it's clear that this byte triggered the byte check for the next byte, and thus this byte was guessed correctly. Slowly the whole signature is built this way.

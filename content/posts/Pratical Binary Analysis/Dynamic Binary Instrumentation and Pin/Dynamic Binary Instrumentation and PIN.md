@@ -16,35 +16,35 @@ categories: ["practical-binary-analysis"]
 
 We will skip over Source Instrumentation since it requires source code of the application, which is pretty rare in real world scenarios.
 
-### Instrumentation Code
+## Instrumentation Code
 
 The technique requires injecting **Instrumentation Code** into a running binary. DBI Frameworks introduce a layer between the OS and the application, making this injected code completely transparent to the application we inject it in. We simply add hooks to parts of interest. These hooks intercept the instruction execution and transfers control to the instrumentation code, thus we can observe and modify the instructions of the program being instrumented, as it executes.
 
-### Code Coverage
+## Code Coverage
 
 High code coverage will most definitely require running the binary a lot of times. Since different types of input will trigger different paths of the binary, this section could particularly benefit from the help of fuzzers.
 
-### Granularity
+## Granularity
 
 There are different levels at which we can apply instrumentation.
 
-##### BBL: Basic Block
+### BBL: Basic Block
 
 Sequence of instructions that is always entered at the top and exited at the bottom by a fall through and/or taken branch. If Pin detects a jump to an instruction in the middle of a bbl, it will create a new bbl beginning at the target.
 
-##### TRACE: Trace
+### TRACE: Trace
 
 Sequence of instructions that is always entered at the top and may have multiple exits. If Pin detects a jump to an instruction in the middle of a trace, it will create a new trace beginning at the target.
 
-##### IMG: Image of the Binary
+### IMG: Image of the Binary
 
 Image instrumentation lets the Pintool inspect and instrument an entire image, IMG, when it is first loaded. A Pintool can walk the sections(SEC) of the image, the routines(RTN) of a section, and the instructions(INS) of a routine.
 
-### Performance
+## Performance
 
 The impact/overhead on performance/runtime of the binary is dependent on many factors, but it will most definitely depend on the granularity of instrumentation, as well as the tasks performed by the instrumentation code. The execution will be delayed between each hook, for as long as the instrumentation code does its job.
 
-### Use cases
+## Use cases
 
 *   Profiling for compiler optimization/performance profiling.
     *   Instruction profiling
@@ -63,7 +63,7 @@ The impact/overhead on performance/runtime of the binary is dependent on many fa
 
 Pin is an instrumentation engine created by Intel. It comes packed with a JIT for x86 and x86\_64.
 
-!["arch"](/Dynamic_Binary_Instrumentation_and_Pin/image.png)
+![](/Dynamic_Binary_Instrumentation_and_Pin/image.png)
 _Architecture overview._
 
 Visit [https://software.intel.com/sites/landingpage/pintool/docs/81205/Pin/html/index.html](https://software.intel.com/sites/landingpage/pintool/docs/81205/Pin/html/index.html) for the documentation.
@@ -76,19 +76,28 @@ It allows us to build instrumentation programs, or analysis tools, known as **Pi
 
 Pin has two modes:
 
-##### JIT Mode
+#### JIT Mode
 
 *   Pin creates a modified copy of the application on-the-fly.
 *   Original code never executes. The only code ever executed is the generated code.
 *   The original code is only used for reference.
 *   When generating code, Pin gives the user an opportunity to inject their own code (instrumentation).
 
-##### Probe Mode
+#### Probe Mode
 
 *   A method of using Pin to wrap or replace application functions with functions in the tool.
 *   A jump instruction (probe), which redirects the flow of control to the replacement function is placed at the start of the specified function.
 *   The bytes being overwritten are relocated, so that Pin can provide the replacement function with the address of the first relocated byte. This enables the replacement function to call the replaced (original) function.
 *   Probes can only be placed on RTN boundaries.
+
+### Injection Process
+
+![](/Dynamic_Binary_Instrumentation_and_Pin/2_image.png)
+_Injection process._
+
+Pin's injection procedure.
+
+Firstly, a 32 bit script (not shown in the figure) is executed with the necessary parameters (pin -t Pintool -- program), which determines the correct version of Pin (pinbin) for the current platform and prepares the system for its execution (e. g. sets the necessary environment variables). The spawned pinbin process can be seen in (a) on the left. The injection process involves a fork of pinbin to a new process (1), followed by a fork of the same process (2). The second process then exits (3) and leaves the original pinbin executable with its grandchild process, effectively a daemon, to continue running. Next as seen in (b), the newly created daemon process, called **injector**, utilises the Unix ptrace API (4) to obtain control of its parent’s execution, pinbin (injectee) which awaits that by issuing a PTRACE\_TRACEME request. The **injectee** then calls execve(program, argv, envp) (5) which preserves the original Process Identifier (PID) but the text, data, BSS, and stack of the calling process are overwritten by that of the program loaded. After that, the injector pauses the execution of the injectee and loads the essential Pin components (pinbin, libraries, Pintool) into the address space of the newly started program which will be instrumented (6), illustrated in (c). Before detaching and exiting (8), the injector passes the control of the instrumented program to the new copy of Pin, residing in injectee’s memory (d). After the Pintool is initialised, Pin creates the initial context and starts jitting the application at its entry point (7). By default, the parent process and its grandchild are respectively injectee and injector, however, these roles can be switched by setting the `-injection` child option when starting Pin.
 
 ### Setup
 
@@ -380,13 +389,13 @@ Iterations: 250
 
 Since ASLR is on, the base address would be different. So we verify the offsets by looking at the disassembly.
 
-!["looper0"](/Dynamic_Binary_Instrumentation_and_Pin/2020-06-22-022324-screenshot.png)
-_looper0_
+![](/Dynamic_Binary_Instrumentation_and_Pin/2020-06-22-022324-screenshot.png)
+_"looper0" function._
 
 Notice the `jge` instrunction at the offset 0x1186.
 
-!["looper1"](/Dynamic_Binary_Instrumentation_and_Pin/2020-06-22-022329-screenshot.png)
-_looper1_
+![](/Dynamic_Binary_Instrumentation_and_Pin/2020-06-22-022329-screenshot.png)
+_"looper1" function._
 
 Notice the `jge` instruction at the offset 0x11B6.
 

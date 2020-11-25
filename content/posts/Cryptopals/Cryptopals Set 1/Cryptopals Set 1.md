@@ -35,7 +35,7 @@ It is preferable over the standard binary that computers store at the low level 
 *   Readability: Hexadecimal in it's set uses digits that overlap with the common base-10 counting system and therefore it's easier to read and write.
 *   Higher information density: Any number between 0 and 255 can be represented using 2 hex digits, while binary would require 8 digits for the same. This poses a problem as numbers start to get bigger.
 
-!["representations"](/Cryptopals_Set_1/4_image.png)
+![](/Cryptopals_Set_1/4_image.png)
 _Each purple tick is when a new digit is added when representing numbers._
 
 It is preferable over the standard decimal representation that we generally use because binary and decimal never align. However, binary and hex do in fact align every 4 binary digits. This implies that a hexadecimal digit can be represented by 4 binary digits. The main reason for this is the fact that binary is a base 2 system, and therefore is compatible with any system with the specification 2ⁿ (hex is 2⁴).
@@ -80,7 +80,7 @@ base64_byte_string = b64encode(byte_string)
 > ... should produce:  
 > **746865206b696420646f6e277420706c6179**
 
-!["xor"](/Cryptopals_Set_1/5_image.png)
+![](/Cryptopals_Set_1/5_image.png)
 _The functionality is as the name suggests, ‘exclusive OR’: A ⊕ B returns true if and only if exactly one of A and B is true._
 
 This could also be said to be telling the difference between the two:  
@@ -147,7 +147,7 @@ assert result == target_string
 
 **Monoalphabetic Cipher** is a substitution cipher in which for a given key, the cipher alphabet for each plain alphabet is fixed throughout the encryption process.
 
-!["xor_shift"](/Cryptopals_Set_1/6_image.png)
+![](/Cryptopals_Set_1/6_image.png)
 _Replace each plaintext letter with a different one a fixed number of places down the alphabet._
   
 For example, if 'A' is encrypted as 'D', for any number of occurrence in that plaintext, 'A' will always get encrypted to 'D'.
@@ -201,7 +201,7 @@ For instance, given a section of English language, some letters are common, whil
 When trying to decrypt a cipher text based on a substitution cipher, we can use a frequency analysis to help identify the most recurring letters in a cipher text and hence make hypothesis of what these letters have been encoded as.  
 This will help us decrypt some of the letters in the text. We can then recognise patterns/words in the partly decoded text to identify more substitutions.
 
-!["frequency_distribution"](/Cryptopals_Set_1/7_image.png)
+![](/Cryptopals_Set_1/7_image.png)
 _Frequency distribution._
 
 We can then use the property A ⊕ ( B ⊕ A ) = B, and xor the encrypted string with the key drawn from hypothesis (from the frequency analysis) to get the original message back.
@@ -329,7 +329,7 @@ plaintext
 
 **Polyalphabetic Cipher** is a substitution cipher in which the cipher alphabet for the plain alphabet may be different at different places during the encryption process.
 
-!["vignere_square"](/Cryptopals_Set_1/8_image.png)
+![](/Cryptopals_Set_1/8_image.png)
 _Vigenère square._
 
 **Vigenère Cipher** uses a Vigenère square or Vigenère table, having the alphabets written out 26 times in different rows, each alphabet shifted cyclically to the left compared to the previous alphabet, corresponding to the 26 possible Caesar ciphers.  
@@ -474,7 +474,7 @@ cipher_block_size = len(cipher_blocks[0])
 Brute force the key, one letter at a time.  
 A repeating key means that the letters at a fixed interval will be xored with the same value, that is, for a 4 byte key, a letter at every 4th position will be xored with the same letter of the key.
 
-!["block_bytes"](/Cryptopals_Set_1/1_image.png)
+![](/Cryptopals_Set_1/1_image.png)
 _Blocks of bytes at set intervals._
 
 ```python
@@ -597,7 +597,7 @@ test(True)
 > Decrypt it. You know the key, after all.  
 > Easiest way: use OpenSSL::Cipher and give it AES-128-ECB as the cipher.
 
-!["AES_ECB_decryption"](/Cryptopals_Set_1/2_image.png)
+![](/Cryptopals_Set_1/2_image.png)
 _AES ECB Decryption._
 
 **AES** stands for **Advanced Encryption Standard**.  
@@ -652,7 +652,7 @@ b"I'm back and I'm ringin' the bell \nA rockin' on the mike while the fly girls 
 > Detect it.  
 > Remember that the problem with ECB is that it is stateless and deterministic; the same 16 byte plaintext block will always produce the same 16 byte ciphertext.
 
-!["diffusion"](/Cryptopals_Set_1/3_image.png)
+![](/Cryptopals_Set_1/3_image.png)
 _Lack of diffusion: structure can still be made out after encryption._
 
 Detection can be done by taking advantage of a disadvantage of this method.  

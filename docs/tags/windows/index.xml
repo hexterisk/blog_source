@@ -6,11 +6,7 @@
     <description>Recent content in windows on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Tue, 04 Aug 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://hexterisk.github.io/blog/tags/windows/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 04 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://hexterisk.github.io/blog/tags/windows/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Classification of Malwares through Dynamic Analysis</title>
       <link>https://hexterisk.github.io/blog/posts/2020/08/04/classification-of-malwares-through-dynamic-analysis/</link>
@@ -66,7 +62,7 @@ $ strace ./ctf show_me_the_flag ➊ execve(&amp;#34;./ctf&amp;#34;, [&amp;#34;./
       <pubDate>Fri, 06 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.github.io/blog/posts/2020/03/06/the-pe-format/</guid>
-      <description>PE is a modified version of the Common Object File Format (COFF), thus also referred to as PE/COFF. The 64-bit version of PE is called PE32+. The structure is defined in WinNT.h, which is included in the Microsoft Windows Software Developer Kit.  PE32+ binary structure
+      <description>PE is a modified version of the Common Object File Format (COFF), thus also referred to as PE/COFF. The 64-bit version of PE is called PE32+. The structure is defined in WinNT.h, which is included in the Microsoft Windows Software Developer Kit.  PE32+ binary structure.
  An MS-DOS header is included for backward compatibility. Thus it can also be interpreted as an MS-DOS binary. The main function of the MS-DOS header is to describe how to load and execute an MS-DOS stub, which comes right after the MSDOS header.</description>
     </item>
     

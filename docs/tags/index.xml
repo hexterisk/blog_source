@@ -6,10 +6,60 @@
     <description>Recent content in Tags on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Tue, 04 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 22 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://hexterisk.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>cnn</title>
+      <link>https://hexterisk.github.io/blog/tags/cnn/</link>
+      <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/tags/cnn/</guid>
+      <description></description>
+    </item>
     
-	<atom:link href="https://hexterisk.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>flow</title>
+      <link>https://hexterisk.github.io/blog/tags/flow/</link>
+      <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/tags/flow/</guid>
+      <description></description>
+    </item>
     
+    <item>
+      <title>machine-learning</title>
+      <link>https://hexterisk.github.io/blog/tags/machine-learning/</link>
+      <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/tags/machine-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>malwares</title>
+      <link>https://hexterisk.github.io/blog/tags/malwares/</link>
+      <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/tags/malwares/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>network</title>
+      <link>https://hexterisk.github.io/blog/tags/network/</link>
+      <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/tags/network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>traffic</title>
+      <link>https://hexterisk.github.io/blog/tags/traffic/</link>
+      <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/tags/traffic/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>api-calls</title>
@@ -30,24 +80,6 @@
     </item>
     
     <item>
-      <title>machine-learning</title>
-      <link>https://hexterisk.github.io/blog/tags/machine-learning/</link>
-      <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/tags/machine-learning/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>malwares</title>
-      <link>https://hexterisk.github.io/blog/tags/malwares/</link>
-      <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/tags/malwares/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>pe</title>
       <link>https://hexterisk.github.io/blog/tags/pe/</link>
       <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
@@ -62,42 +94,6 @@
       <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>https://hexterisk.github.io/blog/tags/registry/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>signature</title>
-      <link>https://hexterisk.github.io/blog/tags/signature/</link>
-      <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/tags/signature/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>windows</title>
-      <link>https://hexterisk.github.io/blog/tags/windows/</link>
-      <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/tags/windows/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>headers</title>
-      <link>https://hexterisk.github.io/blog/tags/headers/</link>
-      <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/tags/headers/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>images</title>
-      <link>https://hexterisk.github.io/blog/tags/images/</link>
-      <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/tags/images/</guid>
       <description></description>
     </item>
     

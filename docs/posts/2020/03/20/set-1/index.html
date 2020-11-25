@@ -176,7 +176,7 @@ You&rsquo;ll need to use this code for the rest of the exercises.</p>
 <li>Readability: Hexadecimal in it&rsquo;s set uses digits that overlap with the common base-10 counting system and therefore it&rsquo;s easier to read and write.</li>
 <li>Higher information density: Any number between 0 and 255 can be represented using 2 hex digits, while binary would require 8 digits for the same. This poses a problem as numbers start to get bigger.</li>
 </ul>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/4_image.png" alt="&ldquo;representations&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/4_image.png" alt="">
 <em>Each purple tick is when a new digit is added when representing numbers.</em></p>
 <p>It is preferable over the standard decimal representation that we generally use because binary and decimal never align. However, binary and hex do in fact align every 4 binary digits. This implies that a hexadecimal digit can be represented by 4 binary digits. The main reason for this is the fact that binary is a base 2 system, and therefore is compatible with any system with the specification 2ⁿ (hex is 2⁴).</p>
 <h5 id="base64">Base64</h5>
@@ -207,7 +207,7 @@ If your function works properly, then when you feed it the string:<br>
 &hellip; should produce:<br>
 <strong>746865206b696420646f6e277420706c6179</strong></p>
 </blockquote>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/5_image.png" alt="&ldquo;xor&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/5_image.png" alt="">
 <em>The functionality is as the name suggests, ‘exclusive OR’: A ⊕ B returns true if and only if exactly one of A and B is true.</em></p>
 <p>This could also be said to be telling the difference between the two:<br>
 A ⊕ B = ‘where the bits differ’. This clearly implies that A ⊕ A = 0 (byte A does not differ from itself in any bit), and,<br>
@@ -251,7 +251,7 @@ key_byte_string <span style="color:#f92672">=</span> bytes<span style="color:#f9
 You can do this by hand. But don&rsquo;t: write code to do it for you. How? Devise some method for &ldquo;scoring&rdquo; a piece of English plaintext. Character frequency is a good metric. Evaluate each output and choose the one with the best score.</p>
 </blockquote>
 <p><strong>Monoalphabetic Cipher</strong> is a substitution cipher in which for a given key, the cipher alphabet for each plain alphabet is fixed throughout the encryption process.</p>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/6_image.png" alt="&ldquo;xor_shift&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/6_image.png" alt="">
 <em>Replace each plaintext letter with a different one a fixed number of places down the alphabet.</em></p>
 <p>For example, if &lsquo;A&rsquo; is encrypted as &lsquo;D&rsquo;, for any number of occurrence in that plaintext, &lsquo;A&rsquo; will always get encrypted to &lsquo;D&rsquo;.</p>
 <p><strong>Single-byte Xor</strong>, as the name suggests, is when a string is xored with a single byte throughout.<br>
@@ -291,7 +291,7 @@ It is based on the fact that, in any given piece of text, certain letters and co
 For instance, given a section of English language, some letters are common, while some letters are not as frequently used.</p>
 <p>When trying to decrypt a cipher text based on a substitution cipher, we can use a frequency analysis to help identify the most recurring letters in a cipher text and hence make hypothesis of what these letters have been encoded as.<br>
 This will help us decrypt some of the letters in the text. We can then recognise patterns/words in the partly decoded text to identify more substitutions.</p>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/7_image.png" alt="&ldquo;frequency_distribution&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/7_image.png" alt="">
 <em>Frequency distribution.</em></p>
 <p>We can then use the property A ⊕ ( B ⊕ A ) = B, and xor the encrypted string with the key drawn from hypothesis (from the frequency analysis) to get the original message back.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">calculate_score</span>(text: str) <span style="color:#f92672">-&gt;</span> float:
@@ -393,7 +393,7 @@ It should come out to:<br>
 I promise, we aren&rsquo;t wasting your time with this.</p>
 </blockquote>
 <p><strong>Polyalphabetic Cipher</strong> is a substitution cipher in which the cipher alphabet for the plain alphabet may be different at different places during the encryption process.</p>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/8_image.png" alt="&ldquo;vignere_square&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/8_image.png" alt="">
 <em>Vigenère square.</em></p>
 <p><strong>Vigenère Cipher</strong> uses a Vigenère square or Vigenère table, having the alphabets written out 26 times in different rows, each alphabet shifted cyclically to the left compared to the previous alphabet, corresponding to the 26 possible Caesar ciphers.<br>
 At different points in the encryption process, the cipher uses a different alphabet from one of the rows. The alphabet used at each point depends on a repeating keyword.</p>
@@ -503,7 +503,7 @@ cipher_blocks<span style="color:#f92672">.</span>pop()
 cipher_block_size <span style="color:#f92672">=</span> len(cipher_blocks[<span style="color:#ae81ff">0</span>])
 </code></pre></div><p>Brute force the key, one letter at a time.<br>
 A repeating key means that the letters at a fixed interval will be xored with the same value, that is, for a 4 byte key, a letter at every 4th position will be xored with the same letter of the key.</p>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/1_image.png" alt="&ldquo;block_bytes&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/1_image.png" alt="">
 <em>Blocks of bytes at set intervals.</em></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
 <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, cipher_block_size):
@@ -522,15 +522,15 @@ key
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plaintext <span style="color:#f92672">=</span> repeated_xor(byte_data, key<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#34;utf-8&#34;</span>)
 <span style="color:#66d9ef">print</span>(plaintext<span style="color:#f92672">.</span>strip(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>))
 </code></pre></div><p>I&rsquo;m back and I&rsquo;m ringin&rsquo; the bell 
-A rockin&rsquo; on the mike while the fly girls yell 
+A rockin' on the mike while the fly girls yell 
 In ecstasy in the back of me 
-Well that&rsquo;s my DJ Deshay cuttin&rsquo; all them Z&rsquo;s 
-Hittin&rsquo; hard and the girlies goin&rsquo; crazy 
+Well that&rsquo;s my DJ Deshay cuttin' all them Z&rsquo;s 
+Hittin' hard and the girlies goin' crazy 
 Vanilla&rsquo;s on the mike, man I&rsquo;m not lazy.</p>
-<p>I&rsquo;m lettin&rsquo; my drug kick in 
+<p>I&rsquo;m lettin' my drug kick in 
 It controls my mouth and I begin 
 To just let it flow, let my concepts go 
-My posse&rsquo;s to the side yellin&rsquo;, Go Vanilla Go!</p>
+My posse&rsquo;s to the side yellin', Go Vanilla Go!</p>
 <p>Smooth &lsquo;cause that&rsquo;s the way I will be 
 And if you don&rsquo;t give a damn, then 
 Why you starin&rsquo; at me 
@@ -538,8 +538,8 @@ So get off &lsquo;cause I control the stage
 There&rsquo;s no dissin&rsquo; allowed 
 I&rsquo;m in my own phase 
 The girlies sa y they love me and that is ok 
-And I can dance better than any kid n&rsquo; play</p>
-<p>Stage 2 &ndash; Yea the one ya&rsquo; wanna listen to 
+And I can dance better than any kid n' play</p>
+<p>Stage 2 &ndash; Yea the one ya' wanna listen to 
 It&rsquo;s off my head so let the beat play through 
 So I can funk it up and make it sound good 
 1-2-3 Yo &ndash; Knock on some wood 
@@ -548,25 +548,25 @@ Supercalafragilisticexpialidocious
 I&rsquo;m an effect and that you can bet 
 I can take a fly girl and make her wet.</p>
 <p>I&rsquo;m like Samson &ndash; Samson to Delilah 
-There&rsquo;s no denyin&rsquo;, You can try to hang 
-But you&rsquo;ll keep tryin&rsquo; to get my style 
+There&rsquo;s no denyin', You can try to hang 
+But you&rsquo;ll keep tryin' to get my style 
 Over and over, practice makes perfect 
 But not if you&rsquo;re a loafer.</p>
 <p>You&rsquo;ll get nowhere, no place, no time, no girls 
 Soon &ndash; Oh my God, homebody, you probably eat 
 Spaghetti with a spoon! Come on and say it!</p>
-<p>VIP. Vanilla Ice yep, yep, I&rsquo;m comin&rsquo; hard like a rhino 
+<p>VIP. Vanilla Ice yep, yep, I&rsquo;m comin' hard like a rhino 
 Intoxicating so you stagger like a wino 
-So punks stop trying and girl stop cryin&rsquo; 
-Vanilla Ice is sellin&rsquo; and you people are buyin&rsquo; 
+So punks stop trying and girl stop cryin' 
+Vanilla Ice is sellin' and you people are buyin' 
 &lsquo;Cause why the freaks are jockin&rsquo; like Crazy Glue 
-Movin&rsquo; and groovin&rsquo; trying to sing along 
-All through the ghetto groovin&rsquo; this here song 
+Movin' and groovin' trying to sing along 
+All through the ghetto groovin' this here song 
 Now you&rsquo;re amazed by the VIP posse.</p>
-<p>Steppin&rsquo; so hard like a German Nazi 
-Startled by the bases hittin&rsquo; ground 
-There&rsquo;s no trippin&rsquo; on mine, I&rsquo;m just gettin&rsquo; down 
-Sparkamatic, I&rsquo;m hangin&rsquo; tight like a fanatic 
+<p>Steppin' so hard like a German Nazi 
+Startled by the bases hittin' ground 
+There&rsquo;s no trippin' on mine, I&rsquo;m just gettin' down 
+Sparkamatic, I&rsquo;m hangin' tight like a fanatic 
 You trapped me once and I thought that 
 You might have it 
 So step down and lend me your ear 
@@ -604,7 +604,7 @@ Play that funky music</p>
 Decrypt it. You know the key, after all.<br>
 Easiest way: use OpenSSL::Cipher and give it AES-128-ECB as the cipher.</p>
 </blockquote>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/2_image.png" alt="&ldquo;AES_ECB_decryption&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/2_image.png" alt="">
 <em>AES ECB Decryption.</em></p>
 <p><strong>AES</strong> stands for <strong>Advanced Encryption Standard</strong>.<br>
 The simplest of the encryption modes of AES is the  <strong>ECB</strong> (<strong>Electronic Codebook</strong>) mode. mode.
@@ -629,7 +629,7 @@ byte_text <span style="color:#f92672">=</span> AES_ECB_decrypt(byte_data, key)
 
 <span style="color:#75715e">#last 4 rubbish bytes is pkcs7 padding of \x04</span>
 byte_text
-</code></pre></div><p>b&quot;I&rsquo;m back and I&rsquo;m ringin&rsquo; the bell \nA rockin&rsquo; on the mike while the fly girls yell \nIn ecstasy in the back of me \nWell that&rsquo;s my DJ Deshay cuttin&rsquo; all them Z&rsquo;s \nHittin&rsquo; hard and the girlies goin&rsquo; crazy \nVanilla&rsquo;s on the mike, man I&rsquo;m not lazy. \n\nI&rsquo;m lettin&rsquo; my drug kick in \nIt controls my mouth and I begin \nTo just let it flow, let my concepts go \nMy posse&rsquo;s to the side yellin&rsquo;, Go Vanilla Go! \n\nSmooth &lsquo;cause that&rsquo;s the way I will be \nAnd if you don&rsquo;t give a damn, then \nWhy you starin&rsquo; at me \nSo get off &lsquo;cause I control the stage \nThere&rsquo;s no dissin&rsquo; allowed \nI&rsquo;m in my own phase \nThe girlies sa y they love me and that is ok \nAnd I can dance better than any kid n&rsquo; play \n\nStage 2 &ndash; Yea the one ya&rsquo; wanna listen to \nIt&rsquo;s off my head so let the beat play through \nSo I can funk it up and make it sound good \n1-2-3 Yo &ndash; Knock on some wood \nFor good luck, I like my rhymes atrocious \nSupercalafragilisticexpialidocious \nI&rsquo;m an effect and that you can bet \nI can take a fly girl and make her wet. \n\nI&rsquo;m like Samson &ndash; Samson to Delilah \nThere&rsquo;s no denyin&rsquo;, You can try to hang \nBut you&rsquo;ll keep tryin&rsquo; to get my style \nOver and over, practice makes perfect \nBut not if you&rsquo;re a loafer. \n\nYou&rsquo;ll get nowhere, no place, no time, no girls \nSoon &ndash; Oh my God, homebody, you probably eat \nSpaghetti with a spoon! Come on and say it! \n\nVIP. Vanilla Ice yep, yep, I&rsquo;m comin&rsquo; hard like a rhino \nIntoxicating so you stagger like a wino \nSo punks stop trying and girl stop cryin&rsquo; \nVanilla Ice is sellin&rsquo; and you people are buyin&rsquo; \n&rsquo;Cause why the freaks are jockin&rsquo; like Crazy Glue \nMovin&rsquo; and groovin&rsquo; trying to sing along \nAll through the ghetto groovin&rsquo; this here song \nNow you&rsquo;re amazed by the VIP posse. \n\nSteppin&rsquo; so hard like a German Nazi \nStartled by the bases hittin&rsquo; ground \nThere&rsquo;s no trippin&rsquo; on mine, I&rsquo;m just gettin&rsquo; down \nSparkamatic, I&rsquo;m hangin&rsquo; tight like a fanatic \nYou trapped me once and I thought that \nYou might have it \nSo step down and lend me your ear \n'89 in my time! You, &lsquo;90 is my year. \n\nYou&rsquo;re weakenin&rsquo; fast, YO! and I can tell it \nYour body&rsquo;s gettin&rsquo; hot, so, so I can smell it \nSo don&rsquo;t be mad and don&rsquo;t be sad \n&rsquo;Cause the lyrics belong to ICE, You can call me Dad \nYou&rsquo;re pitchin&rsquo; a fit, so step back and endure \nLet the witch doctor, Ice, do the dance to cure \nSo come up close and don&rsquo;t be square \nYou wanna battle me &ndash; Anytime, anywhere \n\nYou thought that I was weak, Boy, you&rsquo;re dead wrong \nSo come on, everybody and sing this song \n\nSay &ndash; Play that funky music Say, go white boy, go white boy go \nplay that funky music Go white boy, go white boy, go \nLay down and boogie and play that funky music till you die. \n\nPlay that funky music Come on, Come on, let me hear \nPlay that funky music white boy you say it, say it \nPlay that funky music A little louder now \nPlay that funky music, white boy Come on, Come on, Come on \nPlay that funky music \n\x04\x04\x04\x04&rdquo;</p>
+</code></pre></div><p>b&quot;I&rsquo;m back and I&rsquo;m ringin' the bell \nA rockin' on the mike while the fly girls yell \nIn ecstasy in the back of me \nWell that&rsquo;s my DJ Deshay cuttin' all them Z&rsquo;s \nHittin' hard and the girlies goin' crazy \nVanilla&rsquo;s on the mike, man I&rsquo;m not lazy. \n\nI&rsquo;m lettin' my drug kick in \nIt controls my mouth and I begin \nTo just let it flow, let my concepts go \nMy posse&rsquo;s to the side yellin', Go Vanilla Go! \n\nSmooth &lsquo;cause that&rsquo;s the way I will be \nAnd if you don&rsquo;t give a damn, then \nWhy you starin&rsquo; at me \nSo get off &lsquo;cause I control the stage \nThere&rsquo;s no dissin&rsquo; allowed \nI&rsquo;m in my own phase \nThe girlies sa y they love me and that is ok \nAnd I can dance better than any kid n' play \n\nStage 2 &ndash; Yea the one ya' wanna listen to \nIt&rsquo;s off my head so let the beat play through \nSo I can funk it up and make it sound good \n1-2-3 Yo &ndash; Knock on some wood \nFor good luck, I like my rhymes atrocious \nSupercalafragilisticexpialidocious \nI&rsquo;m an effect and that you can bet \nI can take a fly girl and make her wet. \n\nI&rsquo;m like Samson &ndash; Samson to Delilah \nThere&rsquo;s no denyin', You can try to hang \nBut you&rsquo;ll keep tryin' to get my style \nOver and over, practice makes perfect \nBut not if you&rsquo;re a loafer. \n\nYou&rsquo;ll get nowhere, no place, no time, no girls \nSoon &ndash; Oh my God, homebody, you probably eat \nSpaghetti with a spoon! Come on and say it! \n\nVIP. Vanilla Ice yep, yep, I&rsquo;m comin' hard like a rhino \nIntoxicating so you stagger like a wino \nSo punks stop trying and girl stop cryin' \nVanilla Ice is sellin' and you people are buyin' \n&rsquo;Cause why the freaks are jockin' like Crazy Glue \nMovin' and groovin' trying to sing along \nAll through the ghetto groovin' this here song \nNow you&rsquo;re amazed by the VIP posse. \n\nSteppin' so hard like a German Nazi \nStartled by the bases hittin' ground \nThere&rsquo;s no trippin' on mine, I&rsquo;m just gettin' down \nSparkamatic, I&rsquo;m hangin' tight like a fanatic \nYou trapped me once and I thought that \nYou might have it \nSo step down and lend me your ear \n'89 in my time! You, &lsquo;90 is my year. \n\nYou&rsquo;re weakenin&rsquo; fast, YO! and I can tell it \nYour body&rsquo;s gettin' hot, so, so I can smell it \nSo don&rsquo;t be mad and don&rsquo;t be sad \n&rsquo;Cause the lyrics belong to ICE, You can call me Dad \nYou&rsquo;re pitchin' a fit, so step back and endure \nLet the witch doctor, Ice, do the dance to cure \nSo come up close and don&rsquo;t be square \nYou wanna battle me &ndash; Anytime, anywhere \n\nYou thought that I was weak, Boy, you&rsquo;re dead wrong \nSo come on, everybody and sing this song \n\nSay &ndash; Play that funky music Say, go white boy, go white boy go \nplay that funky music Go white boy, go white boy, go \nLay down and boogie and play that funky music till you die. \n\nPlay that funky music Come on, Come on, let me hear \nPlay that funky music white boy you say it, say it \nPlay that funky music A little louder now \nPlay that funky music, white boy Come on, Come on, Come on \nPlay that funky music \n\x04\x04\x04\x04&quot;</p>
 
 
 <div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
@@ -643,7 +643,7 @@ One of them has been encrypted with ECB.<br>
 Detect it.<br>
 Remember that the problem with ECB is that it is stateless and deterministic; the same 16 byte plaintext block will always produce the same 16 byte ciphertext.</p>
 </blockquote>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/3_image.png" alt="&ldquo;diffusion&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/3_image.png" alt="">
 <em>Lack of diffusion: structure can still be made out after encryption.</em></p>
 <p>Detection can be done by taking advantage of a disadvantage of this method.<br>
 The disadvantage is the lack of diffusion. Because ECB encrypts identical plaintext blocks into identical ciphertext blocks, it does not hide data patterns well.</p>

@@ -14,11 +14,11 @@ categories: ["advanced-binary-analysis"]
 
 **Taint Analysis** is a program analysis technique that allows you to determine the influence that a selected program state has on other parts of the program state. Taint any data that a program receives from the network, track that data, and raise an alert if it affects the program counter. If an operation uses the value of some tainted object, say _X_, to derive a value for another, say _Y_, then object _Y_ becomes tainted. Object _X_ tainted the object _Y_. Taint Analysis can be classified into two types.
 
-### Static Taint Analysis
+## Static Taint Analysis
 
 The advantage of using static analysis is the fact that it provides better code coverage than dynamic analysis. On the other hand, the principal disadvantage of the static analysis is that it's not as accurate than the dynamic analysis - It cannot access the runtime information for example. We can't retrieve registers or memory values.
 
-### Dynamic Taint Analysis
+## Dynamic Taint Analysis
 
 **DTA (Dynamic Taint Analysis)**, also called **DFT** (**Data Flow Tracking)**, **Taint Tracking**,
 
@@ -60,12 +60,12 @@ The unit of information by which a DTA system tracks taint. An important factor 
 
 For example, taking white bytes as untainted and grey ones as tainted,
 
-!["bit"](/Taint_Analysis/image.png)
+![](/Taint_Analysis/image.png)
 _Bit-Granularity._
 
 All the bits in the first operand are tainted, while no bits are tainted in the second operand. Since this is a bitwise AND operation, if an attacker controls only the first input operand, then the only bit positions in the output that they can affect are those where the second operand has a 1. All other output bits will always be set to 0. Thus, only that one output bit is tainted.
 
-!["byte"](/Taint_Analysis/1_image.png)
+![](/Taint_Analysis/1_image.png)
 _Byte-Granularity._
 
 Byte-Granularity DTA system can’t consider each bit individually, the whole output is marked as tainted. The system simply sees a tainted input byte and a nonzero second operand and therefore concludes that an attacker could affect the output operand.
@@ -80,9 +80,8 @@ It may seem possible to store 255 different colors in 1 byte of taint informatio
 
 The taint policy of a DTA system describes how the system propagates taint and how it merges taint colors if multiple taint flows run together.
 
-!["propagation"](/Taint_Analysis/2_image.png)
-
-Taint Propagation Examples for a Byte-Granularity DTA System with Two Colors, Red (R) and Blue (B).
+![](/Taint_Analysis/2_image.png)
+_Taint Propagation Examples for a Byte-Granularity DTA System with Two Colors, Red (R) and Blue (B)._
 
 ### Overtainting and Undertainting
 
@@ -94,7 +93,7 @@ They can be a result of the taint policy or the way control dependencies are han
 
 ### Control Dependencies
 
-```C
+```c
 var = 0;
 while(cond--) var++;
 ```
@@ -105,15 +104,14 @@ An attacker who controls the loop condition cond can determine the value of _var
 
 Region of virtual memory allocated by the DTA system to keep track of the taint status of the rest of the memory. Typically, DTA systems also allocate a special structure in memory where they keep track of taint information for CPU registers. The structure of the shadow memory differs depending on the taint granularity and how many taint colors are supported.
 
-!["shadow"](/Taint_Analysis/3_image.png)
+![](/Taint_Analysis/3_image.png)
+_Shadow memory with byte-granularity and 1, 8, or 32 colors per byte._
 
-Shadow memory with byte-granularity and 1, 8, or 32 colors per byte.
-
-##### Bitmap-Based Shadow Memory
+#### Bitmap-Based Shadow Memory
 
 **Bitmap** ➊ stores a single bit of taint information per byte of virtual memory, so it can represent only one color: each byte of memory is either tainted or untainted. Bytes A–D are represented by the bits 1101, meaning that bytes A, B, and D are tainted, while byte C is not.
 
-##### Multicolor Shadow Memory
+#### Multicolor Shadow Memory
 
 ➋ supports eight colors and uses 1 byte of shadow memory per byte of virtual memory. Again, bytes A, B, and D are tainted (with colors 0x01, 0x04, and 0x20, respectively), while byte C is untainted. To store taint for every virtual memory byte in a process, an unoptimized eight-color shadow memory must be as large as that process’s entire virtual memory space. The final shadow memory type supports 32 colors ➌. Bytes A, B, and D are tainted with the colors 0x01000000, 0x00800000, and 0x00000200, respectively, while byte C is untainted. This requires 4 bytes of shadow memory per memory byte, which is quite a hefty memory overhead.
 

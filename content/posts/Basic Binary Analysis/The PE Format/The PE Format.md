@@ -16,8 +16,8 @@ categories: ["basic-binary-analysis"]
 *   The 64-bit version of PE is called **PE32+.**
 *   The structure is defined in **WinNT.h**, which is included in the **Microsoft Windows Software Developer Kit**.
 
-![64-bit_pe_structure](/The_PE_Format/image.png)
-_PE32+ binary structure_
+![](/The_PE_Format/image.png)
+_PE32+ binary structure._
 
 *   An **MS-DOS header** is included for backward compatibility. Thus it can also be interpreted as an MS-DOS binary.
 *   The main function of the MS-DOS header is to describe how to load and execute an **MS-DOS stub**, which comes right after the MSDOS header. This stub is usually just a small MS-DOS program, which is run instead of the main program when the user executes a PE binary in MSDOS. The MS-DOS stub program typically prints a string like “This program cannot be run in DOS mode” and then exits. However, in principle, it can be a full-fledged MS-DOS version of the program.

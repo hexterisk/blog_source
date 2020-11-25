@@ -136,32 +136,32 @@
                 <p>The main aim of <strong>Binary Obfuscation</strong> is to hinder the process of static analysis of a binary. </p>
 <p>Renaming the <strong>symbols</strong>(variables and functions) of a binary implies that the clues as to what data a variable holds or what task a function performs that could be obtained from their names, are lost. This makes it a little harder for the analysts to keep a track of all the symbols without documenting them. </p>
 <p>Moreover, some obfuscation techniques specifically target automated tools, rendering their outputs practically unusable. For example, careful modification of some binary instructions can cause automated disassemblers to fail, while it executes just the same as the original instructions.</p>
-<h3 id="junk-code-insertion">Junk Code Insertion</h3>
+<h2 id="junk-code-insertion">Junk Code Insertion</h2>
 <p>The actual instruction is hidden among a bunch of other instructions. While the actual instruction to be executed might be trivial, these “other” instructions seem to be performing something pretty complicated, yet essentially do zero work.</p>
 <p>Such instructions when closely analysed, can easily be segregated into typically useless, and can be changed to <em>nop</em> so it&rsquo;s easier to look at the bigger picture, or simpler to look at when revisiting this part of the binary.</p>
-<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/cc5ac2e806cd2b62.gif" alt="Junk insertion">
+<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/cc5ac2e806cd2b62.gif" alt="">
 <em>Junk Code Insertion technique.</em></p>
-<h3 id="metamorphic-code">Metamorphic Code</h3>
+<h2 id="metamorphic-code">Metamorphic Code</h2>
 <p>The actual instruction is expanded into a series of instruction that essentially give the same result. The effectiveness depends on the creativity of how complex can a simple instruction be made to look.</p>
-<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/efa49547f45c2d7e.gif" alt="Metamorphic Code">
+<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/efa49547f45c2d7e.gif" alt="">
 <em>Metamorphic Code technique.</em></p>
-<h3 id="data-encoding">Data Encoding</h3>
+<h2 id="data-encoding">Data Encoding</h2>
 <p>Static data values are forced to be computed at run time instead of hard coding them. A value to be operated upon can be calculated through a number of arithmetic operations instead of straightaway including it in the code itself. This value is ephemeral, that is, it remains in the memory as long as it&rsquo;s needed and disappears right after. This entails extra work to be done at the time of analysis to decipher the values being operated upon, while it renders tools like <strong>strings</strong> useless.</p>
-<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/de138c9f51bad4b5.gif" alt="Data Encoding">
+<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/de138c9f51bad4b5.gif" alt="">
 <em>Data Encoding technique.</em></p>
-<h3 id="opaque-predicates">Opaque Predicates</h3>
+<h2 id="opaque-predicates">Opaque Predicates</h2>
 <p>Extra computational checks are added in place of trivial branching instructions that will always yield the same output. The flow of code execution, therefore, now include checks that aren&rsquo;t needed since the flow is set in code and is always going to be the same. This simply makes the code a lot more complicated than it actually is. The involvement of such computational instructions as well as presence of extra branches(that will never be taken) can hinder the analyst and confuse decompilers.</p>
-<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/2_image.png" alt="&ldquo;Opaque Predicates">
+<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/2_image.png" alt="">
 <em>Opaque Predicates technique.</em></p>
-<h3 id="splitting">Splitting</h3>
+<h2 id="splitting">Splitting</h2>
 <p>Blocks of codes are split into smaller blocks, with the addition of unnecessary jumps and calls, so as to make it difficult for the analyst to keep track of flow of code execution.</p>
-<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/1_image.png" alt="Splitting">
+<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/1_image.png" alt="">
 <em>Splitting technique.</em></p>
-<h3 id="control-flow-flattening">Control Flow Flattening</h3>
+<h2 id="control-flow-flattening">Control Flow Flattening</h2>
 <p>A simple flow of code execution is transformed into a <strong>state machine</strong>. A state of decision making(<strong>dispatch table</strong>) is introduced which keeps track of the current state of execution, updates the current state at every pass and transfers the execution to different branches based on the current state.</p>
-<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/350577af599d101d.gif" alt="Control Flow Flattening">
+<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/350577af599d101d.gif" alt="">
 <em>Control Flow Flattening technique.</em></p>
-<h3 id="polymorphic-code">Polymorphic Code</h3>
+<h2 id="polymorphic-code">Polymorphic Code</h2>
 <p>Code that has the ability to modify itself at every run(or even during the same run) and take different paths depending on it&rsquo;s current state, while achieving the same task every time. Even though this technique is tough to analyse, it requires parts of memory to be made writable and executable so as to be able to write it&rsquo;s own modified version in memory to be executed. This factor not only makes it detectable, but can even introduce vulnerabilities if not done</p>
 
             </div>

@@ -138,9 +138,9 @@ Stack Layout The stack grows from higher addresses to lower addresses."/>
             <div class="post-content">
                 <p><strong>Stack</strong> is a data structure, and means exactly what it&rsquo;s name says - a stack(of objects). It is mainly characterized by pushing and popping operations. You push items onto the stack, and then pop those items off. A stack is therefore a <strong>LIFO</strong>(last in, first out) structure. </p>
 <p>Memory for functions, local variables, and flow control is stored in the stack.</p>
-<h3 id="stack-layout">Stack Layout</h3>
+<h2 id="stack-layout">Stack Layout</h2>
 <p>The stack grows from higher addresses to lower addresses. This behavior can be categorized as <em>growing downwards</em> or <em>allocation in a top-down manner</em>. Therefore, top of the stack is actually the lower-most address being used by the stack at that moment.</p>
-<p><img src="https://hexterisk.github.io/blog/Stack_and_it's_Frames/1Yz9K.gif" alt="why do structure&rsquo;s data members memory allocated from lower to &hellip;">
+<p><img src="https://hexterisk.github.io/blog/Stack_and_it's_Frames/1Yz9K.gif" alt="">
 <em>Stack growing downwards.</em></p>
 <p>Each time a function call is performed, a new <strong>Stack Frame</strong> is generated. A function maintains its own stack frame until it returns, at which time the caller’s stack frame is restored and execution is transferred back to the calling function.</p>
 <p><img src="https://hexterisk.github.io/blog/Stack_and_it's_Frames/image.png" alt="&ldquo;stack&rdquo;">
@@ -150,7 +150,7 @@ Stack Layout The stack grows from higher addresses to lower addresses."/>
 <p>When a function is called, the flow of code execution is transferred to a it&rsquo;s memory location. This transfer of flow has to be setup neatly so that if need be(which generally is the case), the current memory location can be returned to without anything going awry.</p>
 <p><strong>Function Prologue</strong> is executed as soon as the function is called. It consists of a few lines of code that are executed right at the beginning of the function that prepares the stack and the registers for use within this function.</p>
 <p><strong>Function Epilogue</strong> is executed when the function tries to return. It consists of a few lines of code that are executed right at the end of the function so as to restore the stack and registers to the state they were in before the function is called.</p>
-<h5 id="calling-conventions-for-x86">Calling Conventions for x86:</h5>
+<h4 id="calling-conventions-for-x86">Calling Conventions for x86:</h4>
 <p>The x86 architecture requires all function arguments to be pushed on the stack before the function is called.</p>
 <p>Function Prologue:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nasm" data-lang="nasm">    <span style="color:#a6e22e">push</span>  ebp         <span style="color:#75715e">; Save the stack-frame base pointer (of the calling function).</span>
@@ -161,7 +161,7 @@ Stack Layout The stack grows from higher addresses to lower addresses."/>
     <span style="color:#a6e22e">pop</span>   ebp         <span style="color:#75715e">; Restore the calling function&#39;s stack frame.</span>
     <span style="color:#a6e22e">ret</span>               <span style="color:#75715e">; Return to the calling function.</span>
 </code></pre></div><p> The <code>leave</code> instruction can be used in place of the first two instructions because it sets <code>ESP</code> to equal <code>EBP</code> and pops <code>EBP</code> off the stack.</p>
-<h5 id="calling-conventions-for-x64">Calling Conventions for x64:</h5>
+<h4 id="calling-conventions-for-x64">Calling Conventions for x64:</h4>
 <p>The x64 architecture requires the first six function arguments to be set in registers in the following order: <code>RDI</code>, <code>RSI</code>, <code>RDX</code>, <code>RCX</code>, <code>R8</code>, and <code>R9</code>; the remaining are pushed on the stack from right to left.</p>
 <p>Disclaimer: Windows requires the first four function arguments to be set in registers in the following order: <code>RCX</code>, <code>RDX</code>, <code>R8</code>, and <code>R9</code>; the remaining are pushed on the stack from right to left.</p>
 <p>Function Prologue:</p>
@@ -187,7 +187,7 @@ Stack Layout The stack grows from higher addresses to lower addresses."/>
 <li>Address length (x86: 32 bit, x64: 64bit)</li>
 </ul>
 <p>Since these differences have been tended to more or less, the following material is in reference to the x86 architecture since it&rsquo;s much more elaborate.</p>
-<h3 id="flow-of-control">Flow of Control:</h3>
+<h2 id="flow-of-control">Flow of Control:</h2>
 <ol>
 <li>Arguments are placed on the stack using <code>push</code> instructions.</li>
 <li>The function is called using <code>call memory_location</code>. This causes the current instruction address (that is, the contents of the <code>EIP</code> register) to be pushed onto the stack. This address will be used to return to the main code when the function is finished. When the function begins, <code>EIP</code> is set to <em>memory_location</em> (the start of the function).</li>
@@ -197,8 +197,8 @@ Stack Layout The stack grows from higher addresses to lower addresses."/>
 <li>The function returns by calling the <code>ret</code> instruction. This pops the return address off the stack and into <code>EIP</code>, so that the program will continue executing from where the original call was made.</li>
 <li>The stack is adjusted to remove the arguments that were sent, unless they’ll be used again later.</li>
 </ol>
-<h3 id="stack-and-frame-analysis">Stack and Frame Analysis</h3>
-<p><img src="https://hexterisk.github.io/blog/Stack_and_it's_Frames/1_image.png" alt="&ldquo;stack_frame&rdquo;">
+<h2 id="stack-and-frame-analysis">Stack and Frame Analysis</h2>
+<p><img src="https://hexterisk.github.io/blog/Stack_and_it's_Frames/1_image.png" alt="">
 <em>Individual stack frame (notice how addresses go from higher to lower from bottom to top).</em></p>
 <ul>
 <li><code>ESP</code> would point to the top of the stack, which is the memory address <code>0x12F02C</code>.

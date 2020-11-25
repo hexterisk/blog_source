@@ -19,15 +19,15 @@ ELF binaries really consist of only four types of components: 
 3.  Sections
 4.  Section Headers, one per section (optional)
 
-!["binary_structure"](/The_ELF_Format/1_image.png)
-_64-bit ELF binary structure_
+![](/The_ELF_Format/1_image.png)
+_64-bit ELF binary structure._
 
 ## Executable Header
 
 *   Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata.
 *   Format of executable header: /usr/include/elf.h
 
-```C
+```c
 typedef struct {
 unsigned char e_ident[16]; /* Magic number and other info */
 uint16_t e_type; /* Object file type */
@@ -55,7 +55,7 @@ uint16_t e_shstrndx; /* Section header string table index */
 *   The section headers for all sections in the binary are contained in the **Section Header Table**. It is optional since it is intended to provide a view for the linker only. If absent, _**e\_shoff**_  is set to zero.
 *   Format of a section header: /usr/include/elf.h
 
-```C
+```c
 typedef struct {
 uint32_t sh_name; /* Section name (string tbl index) */
 uint32_t sh_type; /* Section type */
@@ -74,7 +74,7 @@ uint64_t sh_entsize; /* Entry size if section holds table */
 
 * Following sections are present:
 
-```C
+```c
 $ readelf --sections --wide a.out
 
 There are 31 section headers, starting at offset 0x19e8:
@@ -142,8 +142,8 @@ O (extra OS processing required) o (OS specific), p (processor specific)
 
 Many of the relocations are typically not done right away when the binary is loaded but are deferred until the first reference to the unresolved location is actually made. This is known as L**azy Binding**. It ensures that the dynamic linker never needlessly wastes time on relocations; it only performs those relocations that are truly needed at runtime.
 
-!["elf_format"](/The_ELF_Format/image.png)
-_Lazy Binding_
+![](/The_ELF_Format/image.png)
+_Lazy Binding._
 
 *   Linker can be forced to perform all relocations right away by exporting an environment variable called **LD\_BIND\_NOW**, done when the application calls for real-time performance guarantees.
 
@@ -160,7 +160,7 @@ Lazy binding in Linux ELF binaries is implemented with:
 
     * Calling a shared library function via the PLT (referred by _step num_)
 
-```C
+```c
 $ objdump -M intel --section .plt -d a.out
 
 a.out: file format elf64-x86-64
@@ -196,7 +196,7 @@ Disassembly of section .plt:
 *   The **Program Header Table** provides a **Segment** view of the binary, as opposed to the section view provided by the Section Header Table.
 *   Format of a program header: /usr/include/elf.h
 
-```C
+```c
 typedef struct {
 uint32_t p_type; /* Segment type */
 uint32_t p_flags; /* Segment flags */
@@ -209,7 +209,7 @@ uint64_t p_align; /* Segment alignment */
 } Elf64_Phdr;
 ```
 
-```C
+```c
 $ readelf --wide --segments a.out
 
 Elf file type is EXEC (Executable file)

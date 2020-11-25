@@ -5,8 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="author" content="map[name:hexterisk]">
-<meta name="description" content="##Static Disassembly
-When people say disassembly, they usually mean static disassembly, which involves extracting the instructions from a binary without executing it.
+<meta name="description" content="Static Disassembly When people say disassembly, they usually mean static disassembly, which involves extracting the instructions from a binary without executing it.
 Linear Disassembly Disassembly desynchronization due to inline data interpreted as code. The instruction where the disassembly resynchronizes is shaded gray.
  It iterates through all code segments in a binary, decoding all bytes consecutively and parsing them into a list of instructions. Many simple disassemblers, including objdump, use this approach." />
 <meta name="keywords" content="" />
@@ -43,8 +42,7 @@ Linear Disassembly Disassembly desynchronization due to inline data interpreted 
     <meta name="theme-color" content="#252627">
 
 <meta itemprop="name" content="Disassembly and Binary Analysis Fundamentals">
-<meta itemprop="description" content="##Static Disassembly
-When people say disassembly, they usually mean static disassembly, which involves extracting the instructions from a binary without executing it.
+<meta itemprop="description" content="Static Disassembly When people say disassembly, they usually mean static disassembly, which involves extracting the instructions from a binary without executing it.
 Linear Disassembly Disassembly desynchronization due to inline data interpreted as code. The instruction where the disassembly resynchronizes is shaded gray.
  It iterates through all code segments in a binary, decoding all bytes consecutively and parsing them into a list of instructions. Many simple disassemblers, including objdump, use this approach.">
 <meta itemprop="datePublished" content="2020-03-16T00:00:00+00:00" />
@@ -59,8 +57,7 @@ Linear Disassembly Disassembly desynchronization due to inline data interpreted 
 <meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
 
 <meta name="twitter:title" content="Disassembly and Binary Analysis Fundamentals"/>
-<meta name="twitter:description" content="##Static Disassembly
-When people say disassembly, they usually mean static disassembly, which involves extracting the instructions from a binary without executing it.
+<meta name="twitter:description" content="Static Disassembly When people say disassembly, they usually mean static disassembly, which involves extracting the instructions from a binary without executing it.
 Linear Disassembly Disassembly desynchronization due to inline data interpreted as code. The instruction where the disassembly resynchronizes is shaded gray.
  It iterates through all code segments in a binary, decoding all bytes consecutively and parsing them into a list of instructions. Many simple disassemblers, including objdump, use this approach."/>
 
@@ -142,11 +139,11 @@ Linear Disassembly Disassembly desynchronization due to inline data interpreted 
             
 
             <div class="post-content">
-                <p>##Static Disassembly</p>
+                <h2 id="static-disassembly">Static Disassembly</h2>
 <p>When people say disassembly, they usually mean static disassembly, which involves extracting the instructions from a binary without executing it.</p>
 <h3 id="linear-disassembly">Linear Disassembly</h3>
-<p><img src="https://hexterisk.github.io/blog/Disassembly_and_Binary_Analysis_Fundamentals/image.png" alt=""></p>
-<p>Disassembly desynchronization due to inline data interpreted as code. The instruction where the disassembly resynchronizes is shaded gray.</p>
+<p><img src="https://hexterisk.github.io/blog/Disassembly_and_Binary_Analysis_Fundamentals/image.png" alt="">
+<em>Disassembly desynchronization due to inline data interpreted as code. The instruction where the disassembly resynchronizes is shaded gray.</em></p>
 <ul>
 <li>It iterates through all code segments in a binary, decoding all bytes consecutively and parsing them into a list of instructions. Many simple disassemblers, including objdump, use this approach.</li>
 <li>The risk is that not all bytes may be instructions.
@@ -214,7 +211,7 @@ Linear Disassembly Disassembly desynchronization due to inline data interpreted 
 </ul>
 <h3 id="control-flow-graphs">Control Flow Graphs</h3>
 <p><img src="https://hexterisk.github.io/blog/Disassembly_and_Binary_Analysis_Fundamentals/1_image.png" alt="">
-<em>CFG as seen in IDA Pro</em></p>
+<em>CFG as seen in IDA Pro.</em></p>
 <ul>
 <li><strong>Control Flow Graphs</strong> (<strong>CFGs</strong>) offer a convenient graphical representation of the code structure, which makes it easy to understand a function’s structure.</li>
 <li>CFGs represent the code inside a function as a set of code blocks, called <strong>basic blocks</strong>, connected by <strong>branch edges</strong>, shown here as arrows. A basic block is a sequence of instructions, where the first instruction is the only entry point (the only instruction targeted by any jump in the binary), and the last instruction is the only exit point (the only instruction in the sequence that may jump to another basic block).</li>
@@ -248,7 +245,7 @@ Linear Disassembly Disassembly desynchronization due to inline data interpreted 
 <li>The trade-off of translating a complex instruction set like x86 into a simple language like REIL, VEX, or LLVM IR is that IR languages are far less concise. That’s an inherent result of expressing complex operations, including all side effects, with a limited number of simple instructions. This is generally not an issue for automated analyses, but it does tend to make intermediate representations hard to read for humans.</li>
 <li>Translation of the x86-64 instruction add rax,rdx into VEX IR:</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#960050;background-color:#1e0010">➊</span> IRSB {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#960050;background-color:#1e0010">➊</span> IRSB {
 <span style="color:#960050;background-color:#1e0010">➋</span> t0:Ity_I64 t1:Ity_I64 t2:Ity_I64 t3:Ity_I64
 <span style="color:#960050;background-color:#1e0010">➌</span> <span style="color:#ae81ff">00</span> <span style="color:#f92672">|</span> <span style="color:#f92672">------</span> IMark(<span style="color:#ae81ff">0x40339f</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">0</span>) <span style="color:#f92672">------</span>
 <span style="color:#960050;background-color:#1e0010">➍</span> <span style="color:#ae81ff">01</span> <span style="color:#f92672">|</span> t2 <span style="color:#f92672">=</span> GET:I64(rax)

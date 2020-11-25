@@ -16,7 +16,7 @@ categories: ["basic-binary-analysis"]
 
 **strace** can be used to investigate system call behavior. In some cases, you may want to attach strace to a running process. To do this, you need to use the -p pid option, where pid is the process ID of the process you want to attach to.
 
-```C
+```c
 $ strace ./ctf show_me_the_flag
 ➊ execve("./ctf", ["./ctf", "show_me_the_flag"], [/* 73 vars */]) = 0
 brk(NULL) = 0x1053000
@@ -108,7 +108,7 @@ When tracing a program from the start, strace includes all the system calls used
 
 **ltrace** can be used to investigate system call behavior.
 
-```C
+```c
 $ ltrace -i -C ./ctf show_me_the_flag
 ➊ [0x400fe9] __libc_start_main (0x400bc0, 2, 0x7ffc22f441e8, 0x4010c0 <unfinished ...>
 ➋ [0x400c44] __printf_chk (1, 0x401158, 0x7ffc22f4447f, 160checking 'show_me_the_flag') = 28
@@ -132,7 +132,7 @@ std::char_traits<char>, std::allocator<char> > const&)
 
 The first library call is \_\_libc\_start\_main ➊, which is called from the \_start function to transfer control to the program’s main function. Once main is started, its first library call prints the now familiar checking ... string to the screen ➋. The actual check turns out to be a string comparison, which is implemented using strcmp, and verifies that the argument given to ctf is equal to show\_me\_the\_flag ➌. If this is the case, ok is printed to the screen ➍. So far, this is mostly behavior you’ve seen before. But now you see something new: the RC4 cryptography is initialized through a call to rc4\_init, which is located in the library you extracted earlier ➎. After that, you see an assign to a C++ string, presumably initializing it with an encrypted message ➏. This message is then decrypted with a call to rc4\_decrypt ➐, and the decrypted message is assigned to a new C++ string ➑. Finally, there’s a call to getenv, which is a standard library function used to look up environment variables ➒. You can see that ctf expects an environment variable called GUESSME! The name of this variable may well be the string that was decrypted earlier. Let’s see whether ctf ’s behavior changes when you set a dummy value for the GUESSME environment variable as follows:
 
-```C
+```c
 $ GUESSME='foobar' ltrace -i -C ./ctf show_me_the_flag
 ...
 [0x400d53] getenv ("GUESSME") = "foobar"

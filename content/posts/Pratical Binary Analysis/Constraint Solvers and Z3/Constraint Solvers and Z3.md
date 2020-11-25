@@ -28,7 +28,7 @@ Assume a formula _𝑆ₚ(𝑥, 𝑦)_ which holds if and only if program _P(x)_
 
 Now, with the program represented as a formula, the solver can be versatile.
 
-##### Solver as an  **Interpreter**:
+### Solver as an  **Interpreter**:
 
 Given x, evaluate f(x).
 
@@ -36,7 +36,7 @@ Given x, evaluate f(x).
 
 ⇨ 𝑦 ↦ 6
 
-##### Solver as an  **Inverter**:
+### Solver as an  **Inverter**:
 
 Given f(x), find x.
 
@@ -58,18 +58,18 @@ These pre- and post-conditions are known as **Contracts**.
 
 Usually, these contracts are tested (that is, evaluated dynamically, during execution).
 
-!["exec"](/Constraint_Solvers_and_Z3/image.png)
-__Contracts tested during execution.__
+![](/Constraint_Solvers_and_Z3/image.png)
+_Contracts tested during execution._
 
 However, with solvers, we want to test these contracts statically, at design time.
 
-!["static"](/Constraint_Solvers_and_Z3/FireShot%20Capture%20210%20-%20%20-%20homes.cs.washington.edu.png)
-__Contracts tested during design with solvers.__
+![](/Constraint_Solvers_and_Z3/FireShot%20Capture%20210%20-%20%20-%20homes.cs.washington.edu.png)
+_Contracts tested during design with solvers._
 
 ## Verification Problem
 
-!["verify"](/Constraint_Solvers_and_Z3/1_FireShot%20Capture%20210%20-%20%20-%20homes.cs.washington.edu.png)
-__Verification with Constraint Solver.__
+![](/Constraint_Solvers_and_Z3/1_FireShot%20Capture%20210%20-%20%20-%20homes.cs.washington.edu.png)
+_Verification with Constraint Solver._
 
 The problem at hand is to basically translate preconditions, postconditions, loop conditions, and assertions into solver's formulae in order to determine/verify if all properties can hold.
 
@@ -95,8 +95,8 @@ Since 𝑆ₚ always holds, as we can always find 𝑦 given 𝑥,
 
 ⇨ ∃𝑥 . 𝑝𝑟𝑒(𝑥) ∧ 𝑆ₚ(𝑥, 𝑦) ∧ ¬ 𝑝𝑜𝑠𝑡(𝑥, 𝑦)
 
-!["predicate"](/Constraint_Solvers_and_Z3/2_FireShot%20Capture%20210%20-%20%20-%20homes.cs.washington.edu.png)
-__Passing the verification condition to the solver.__
+![](/Constraint_Solvers_and_Z3/2_FireShot%20Capture%20210%20-%20%20-%20homes.cs.washington.edu.png)
+_Passing the verification condition to the solver._
 
 ## SAT Solver
 
@@ -169,11 +169,11 @@ Taking up a serial validator, let's take a look at the binary's decompilation.
 
 We are looking at the decompilation to save ourselves the time and effort of reverse engineering, since the main focus is to demonstrate the usage of Z3 to resolve a serial check.
 
-!["main"](/Constraint_Solvers_and_Z3/2020-05-27-145823_1920x1080_scrot.png)
-_main function._
+![](/Constraint_Solvers_and_Z3/2020-05-27-145823_1920x1080_scrot.png)
+_"main" function._
 
-!["validate"](/Constraint_Solvers_and_Z3/2020-05-27-150139_1920x1080_scrot.png)
-_validate\_serial function._
+![](/Constraint_Solvers_and_Z3/2020-05-27-150139_1920x1080_scrot.png)
+_"validate\_serial" function._
 
 Examining the `validate_serial` function, it is clear that
 
@@ -188,7 +188,7 @@ Using the constraints and computations specified, we'll write a Z3 script to giv
 
 Read this [page](https://hexterisk.tech/Z3Py-Archive/Serial%20solver%20using%20Z3.html) implemented in this [IPython Notebook](https://github.com/hexterisk/Z3Py-Archive/blob/master/Serial%20solver%20using%20Z3.ipynb) to follow the solution for this problem.
 
-!["solution"](/Constraint_Solvers_and_Z3/2020-05-27-182912_1920x1080_scrot.png)
+![](/Constraint_Solvers_and_Z3/2020-05-27-182912_1920x1080_scrot.png)
 _Output._
 
 Credits for the guidance to Calle Svensson's talk "SMT in reverse engineering, for dummies" at SEC-T 0x09.

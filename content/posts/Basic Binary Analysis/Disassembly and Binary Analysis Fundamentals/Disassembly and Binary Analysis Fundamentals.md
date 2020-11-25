@@ -12,15 +12,14 @@ weight: 10
 categories: ["basic-binary-analysis"]
 ---
 
-##Static Disassembly
+## Static Disassembly
 
 When people say disassembly, they usually mean static disassembly, which involves extracting the instructions from a binary without executing it.
 
 ### Linear Disassembly
 
 ![](/Disassembly_and_Binary_Analysis_Fundamentals/image.png)
-
-Disassembly desynchronization due to inline data interpreted as code. The instruction where the disassembly resynchronizes is shaded gray.
+_Disassembly desynchronization due to inline data interpreted as code. The instruction where the disassembly resynchronizes is shaded gray._
 
 *   It iterates through all code segments in a binary, decoding all bytes consecutively and parsing them into a list of instructions. Many simple disassemblers, including objdump, use this approach.
 *   The risk is that not all bytes may be instructions.
@@ -73,7 +72,7 @@ Large unstructured heaps of disassembled instructions are nearly impossible to a
 ### Control Flow Graphs
 
 ![](/Disassembly_and_Binary_Analysis_Fundamentals/1_image.png)
-_CFG as seen in IDA Pro_
+_CFG as seen in IDA Pro._
 
 *   **Control Flow Graphs** (**CFGs**) offer a convenient graphical representation of the code structure, which makes it easy to understand a function’s structure.
 *   CFGs represent the code inside a function as a set of code blocks, called **basic blocks**, connected by **branch edges**, shown here as arrows. A basic block is a sequence of instructions, where the first instruction is the only entry point (the only instruction targeted by any jump in the binary), and the last instruction is the only exit point (the only instruction in the sequence that may jump to another basic block).
@@ -105,7 +104,7 @@ _CFGs and connections between functions (left) and the corresponding call graph 
 *   The trade-off of translating a complex instruction set like x86 into a simple language like REIL, VEX, or LLVM IR is that IR languages are far less concise. That’s an inherent result of expressing complex operations, including all side effects, with a limited number of simple instructions. This is generally not an issue for automated analyses, but it does tend to make intermediate representations hard to read for humans.
 *   Translation of the x86-64 instruction add rax,rdx into VEX IR:
 
-```C
+```c
 ➊ IRSB {
 ➋ t0:Ity_I64 t1:Ity_I64 t2:Ity_I64 t3:Ity_I64
 ➌ 00 | ------ IMark(0x40339f, 3, 0) ------

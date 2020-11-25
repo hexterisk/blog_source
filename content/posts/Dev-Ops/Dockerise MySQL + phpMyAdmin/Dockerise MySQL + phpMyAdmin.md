@@ -35,7 +35,7 @@ The approach that leads to instant deployment of the setup is to deploy containe
 
 This is the boiler plate config. More options like mounting volumes can be used as per requirement.
 
-##### Deploy Database
+### Deploy Database
 
 Run `docker run --name DB_CONTAINER_NAME -e MYSQL_ROOT_PASSWORD=PASSWORD -d mysql:latest`.
 
@@ -48,12 +48,12 @@ Run `docker run --name DB_CONTAINER_NAME -e MYSQL_ROOT_PASSWORD=PASSWORD -d mysq
 
 The container should deploy with no issues whatsoever. Run `docker ps` to verify.
 
-!["db"](/Dockerise_MySQL_+_phpMyAdmin/2020-07-17-200632-screenshot.png)
+![](/Dockerise_MySQL_+_phpMyAdmin/2020-07-17-200632-screenshot.png)
 _Sample output for database container._
 
 Following the screenshot, I deployed a MySQL container named _test\_sql\_container_ with the password _rootpassword_.
 
-##### Deploy phpMyAdmin
+### Deploy phpMyAdmin
 
 Run `docker run --name CONTAINER_NAME -d --link DB_CONTAINER_NAME:db -p PORT:80 phpmyadmin/phpmyadmin`.
 
@@ -64,7 +64,7 @@ Run `docker run --name CONTAINER_NAME -d --link DB_CONTAINER_NAME:db -p PORT:80 
 
 The container should deploy with no issues whatsoever. Run `docker ps` to verify.
 
-!["docker-up"](/Dockerise_MySQL_+_phpMyAdmin/2020-07-17-200743-screenshot.png)
+![](/Dockerise_MySQL_+_phpMyAdmin/2020-07-17-200743-screenshot.png)
 _Sample output for database and management tool containers._
 
 Following the screenshot, I deployed a phpMyAdmin container named _test\_myadmin\_container_ linked to a database container named _test\_sql\_container_ attached to port _8081_.
@@ -118,7 +118,7 @@ For the management panel container:
 
 Run `docker-compose up -d` to deploy the containers based on the docker-compose file.
 
-!["containers"](/Dockerise_MySQL_+_phpMyAdmin/2020-07-17-213248-screenshot.png)
+![](/Dockerise_MySQL_+_phpMyAdmin/2020-07-17-213248-screenshot.png)
 _Sample output._
 
 The containers have been deployed as follows. Modifications to the docker-compose file can be made as per requirement, use the sample file above to maintain consistency so that the right parameters receive the right

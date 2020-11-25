@@ -151,7 +151,7 @@ The age long discussion of MySQL versus MariaDB is something that an average dev
 <h2 id="instant-approach">Instant Approach</h2>
 <p>The approach that leads to instant deployment of the setup is to deploy containers from the command-line itself.</p>
 <p>This is the boiler plate config. More options like mounting volumes can be used as per requirement.</p>
-<h5 id="deploy-database">Deploy Database</h5>
+<h3 id="deploy-database">Deploy Database</h3>
 <p>Run <code>docker run --name DB_CONTAINER_NAME -e MYSQL_ROOT_PASSWORD=PASSWORD -d mysql:latest</code>.</p>
 <ul>
 <li>Pass the desired name for the container to the <code>--name</code> parameter. Replace <em>DB_CONTAINER_NAME</em> with the desired name.</li>
@@ -165,10 +165,10 @@ The age long discussion of MySQL versus MariaDB is something that an average dev
 <li>Username and password for any user(root included) cannot be the same, and neither of these can be equal to the root password.</li>
 </ul>
 <p>The container should deploy with no issues whatsoever. Run <code>docker ps</code> to verify.</p>
-<p><img src="https://hexterisk.github.io/blog/Dockerise_MySQL_+_phpMyAdmin/2020-07-17-200632-screenshot.png" alt="&ldquo;db&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Dockerise_MySQL_+_phpMyAdmin/2020-07-17-200632-screenshot.png" alt="">
 <em>Sample output for database container.</em></p>
 <p>Following the screenshot, I deployed a MySQL container named <em>test_sql_container</em> with the password <em>rootpassword</em>.</p>
-<h5 id="deploy-phpmyadmin">Deploy phpMyAdmin</h5>
+<h3 id="deploy-phpmyadmin">Deploy phpMyAdmin</h3>
 <p>Run <code>docker run --name CONTAINER_NAME -d --link DB_CONTAINER_NAME:db -p PORT:80 phpmyadmin/phpmyadmin</code>.</p>
 <ul>
 <li>Pass the desired name for the container to the <code>--name</code> parameter. Replace <em>CONTAINER_NAME</em> with the desired name.</li>
@@ -177,7 +177,7 @@ The age long discussion of MySQL versus MariaDB is something that an average dev
 <li>The <code>phpmyadmin/phpmyadmin</code> is the docker image as listed on docker hub.</li>
 </ul>
 <p>The container should deploy with no issues whatsoever. Run <code>docker ps</code> to verify.</p>
-<p><img src="https://hexterisk.github.io/blog/Dockerise_MySQL_+_phpMyAdmin/2020-07-17-200743-screenshot.png" alt="&ldquo;docker-up&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Dockerise_MySQL_+_phpMyAdmin/2020-07-17-200743-screenshot.png" alt="">
 <em>Sample output for database and management tool containers.</em></p>
 <p>Following the screenshot, I deployed a phpMyAdmin container named <em>test_myadmin_container</em> linked to a database container named <em>test_sql_container</em> attached to port <em>8081</em>.</p>
 <p>Login to phpMyAdmin page on <code>localhost:PORT</code> with <code>root:PASSWORD</code>(username: root and password: PASSWORD), where <em>PORT</em> is the port phpMyAdmin is bound to in the second stage, and the <em>PASSWORD</em> is the root password set in the first stage.</p>
@@ -185,27 +185,27 @@ The age long discussion of MySQL versus MariaDB is something that an average dev
 <p>DISCLAIMER: These containers are ephemeral and will not save any state since no volumes have been mounted. Any changes made will be lost when the container are closed. Checkout the documentation to see <a href="https://docs.docker.com/storage/volumes/">how to mount volumes</a> if you&rsquo;re not familiar with it.</p>
 <h2 id="composed-approach">Composed Approach</h2>
 <p>This approach involves writing a docker-compose file. The content will be as follows.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">version</span>: <span style="color:#e6db74">&#34;3.7&#34;</span>
-<span style="color:#66d9ef">services</span>:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#34;3.7&#34;</span>
+<span style="color:#f92672">services</span>:
 
-  <span style="color:#66d9ef">db-server</span>:
-    <span style="color:#66d9ef">image</span>: mysql:latest
-    <span style="color:#66d9ef">container_name</span>: test_sql_container
-    <span style="color:#66d9ef">restart</span>: always
-    <span style="color:#66d9ef">environment</span>:
-      <span style="color:#66d9ef">MYSQL_ROOT_PASSWORD</span>: secret
-    <span style="color:#66d9ef">ports</span>:
+  <span style="color:#f92672">db-server</span>:
+    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">mysql:latest</span>
+    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">test_sql_container</span>
+    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+    <span style="color:#f92672">environment</span>:
+      <span style="color:#f92672">MYSQL_ROOT_PASSWORD</span>: <span style="color:#ae81ff">secret</span>
+    <span style="color:#f92672">ports</span>:
       - <span style="color:#e6db74">&#34;3306:3306&#34;</span>
     
-  <span style="color:#66d9ef">phpmyadmin</span>:
-    <span style="color:#66d9ef">image</span>: phpmyadmin/phpmyadmin
-    <span style="color:#66d9ef">container_name</span>: test_myadmin_container
-    <span style="color:#66d9ef">restart</span>: always
-    <span style="color:#66d9ef">environment</span>:
-      <span style="color:#66d9ef">PMA_HOST</span>: db-server
-    <span style="color:#66d9ef">links</span>:
-      - db-server
-    <span style="color:#66d9ef">ports</span>:
+  <span style="color:#f92672">phpmyadmin</span>:
+    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">phpmyadmin/phpmyadmin</span>
+    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">test_myadmin_container</span>
+    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
+    <span style="color:#f92672">environment</span>:
+      <span style="color:#f92672">PMA_HOST</span>: <span style="color:#ae81ff">db-server</span>
+    <span style="color:#f92672">links</span>:
+      - <span style="color:#ae81ff">db-server</span>
+    <span style="color:#f92672">ports</span>:
       - <span style="color:#e6db74">&#34;8081:80&#34;</span>
 </code></pre></div><p>Apart from the common parameters such as the <code>image</code> and <code>container_name</code>, following things should be noticed.</p>
 <p>For the database container:</p>
@@ -219,7 +219,7 @@ The age long discussion of MySQL versus MariaDB is something that an average dev
 <li>The database service needs to be explicitly linked to the management panel container using the parameter <code>links</code>.</li>
 </ul>
 <p>Run <code>docker-compose up -d</code> to deploy the containers based on the docker-compose file.</p>
-<p><img src="https://hexterisk.github.io/blog/Dockerise_MySQL_+_phpMyAdmin/2020-07-17-213248-screenshot.png" alt="&ldquo;containers&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Dockerise_MySQL_+_phpMyAdmin/2020-07-17-213248-screenshot.png" alt="">
 <em>Sample output.</em></p>
 <p>The containers have been deployed as follows. Modifications to the docker-compose file can be made as per requirement, use the sample file above to maintain consistency so that the right parameters receive the right</p>
 

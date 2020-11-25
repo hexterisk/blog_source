@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cnn on Pwn the world.</title>
+    <link>https://hexterisk.github.io/blog/tags/cnn/</link>
+    <description>Recent content in cnn on Pwn the world.</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Sat, 22 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://hexterisk.github.io/blog/tags/cnn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Classification of Malware Traffic using CNNs</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/08/22/classification-of-malware-traffic-using-cnns/</link>
+      <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/08/22/classification-of-malware-traffic-using-cnns/</guid>
+      <description>Classification of malware traffic has been a hot topic ever since machine learning was introduced to the world of network security domain. There are a number of published researches that explore various techniques to extract features from the traffic and use it classification.
+The pre-machine learning era saw classification of traffic based on structured rule matching, DPI(Deep Packet Inspection) and Port Inspection being the most popular methods, which were typically rendered ineffective post-encryption.</description>
+    </item>
+    
+  </channel>
+</rss>

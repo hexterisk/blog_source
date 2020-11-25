@@ -14,7 +14,7 @@ categories: ["practical-binary-analysis"]
 
 **Dynamic Taint Analysis** is a technique used to discover what part of memory or register are controllable by the some data we are interested, such as the user input, at a given program state. This is done by marking the interested data. There on after, any piece of data that comes in contact with the tainted data by any means, like getting computed from the tainted data, is tainted too, thus spreading the taint throughout the execution.
 
-!["prop"](/Dynamic_Taint_Analysis_and_Pin/image.png)
+![](/Dynamic_Taint_Analysis_and_Pin/image.png)
 _Taint propogration._
 
 Regions of interest are:
@@ -25,11 +25,11 @@ Regions of interest are:
 
 Dynamic Taint Analysis requires a Dynamic Binary Instrumentation framework as a prerequisite. We'll use Intel Pin.
 
-# Shadow Memory
+## Shadow Memory
 
 It is the technique in which potentially every byte used by a program has a mirror byte during it's execution. These shadow bytes can be used to record information about their original counterparts, since these bytes are invisible to the program. We create a user shadow memory to mark all the addresses that can be tainted by the data in question.
 
-# Example
+## Example
 
 We'll need the help of a DBI to retrieve information before and after each function is called. We'll resort to using Pin to taint user input and track it through the execution of the binary.
 

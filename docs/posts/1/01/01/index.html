@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Bhanupratap Singh ">
+<meta name="description" content="Principles of Symbolic Execution Symbolic Execution, or symbex, is a software analysis technique that expresses program state in terms of logical formulas that you can automatically reason about to answer complex questions about a program’s behavior. Can automatically increase the code coverage of dynamic analyses by generating new inputs that lead to unexplored program paths. Apply it sparingly and carefully because of scalability issues.
+ Symbex executes (or emulates) an application with symbolic values." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://hexterisk.github.io/blog/posts/1/01/01/" />
+
+
+    <title>
+        
+            : Pwn the world.  — A noob&#39;s attempt at blogging.
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.c8585fd607292199b471f54e83f63f2c9c8b59a00490e9de2e0259cf4b706c23.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="">
+<meta itemprop="description" content="Principles of Symbolic Execution Symbolic Execution, or symbex, is a software analysis technique that expresses program state in terms of logical formulas that you can automatically reason about to answer complex questions about a program’s behavior. Can automatically increase the code coverage of dynamic analyses by generating new inputs that lead to unexplored program paths. Apply it sparingly and carefully because of scalability issues.
+ Symbex executes (or emulates) an application with symbolic values.">
+
+<meta itemprop="wordCount" content="2563">
+<meta itemprop="image" content="https://hexterisk.github.io/blog"/>
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
+
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="Principles of Symbolic Execution Symbolic Execution, or symbex, is a software analysis technique that expresses program state in terms of logical formulas that you can automatically reason about to answer complex questions about a program’s behavior. Can automatically increase the code coverage of dynamic analyses by generating new inputs that lead to unexplored program paths. Apply it sparingly and carefully because of scalability issues.
+ Symbex executes (or emulates) an application with symbolic values."/>
+
+
+
+
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$cd ~/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>13 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://hexterisk.github.io/blog/posts/1/01/01/"></a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <h1 id="principles-of-symbolic-execution">Principles of Symbolic Execution</h1>
+<p><strong>Symbolic Execution</strong>, or <strong>symbex</strong>, is a software analysis technique that expresses program state in terms of logical formulas that you can automatically reason about to answer complex questions about a program’s behavior. Can automatically increase the code coverage of dynamic analyses by generating new inputs that lead to unexplored program paths. Apply it sparingly and carefully because of scalability issues.</p>
+<ul>
+<li>Symbex executes (or emulates) an application with <strong>symbolic values.</strong>
+<ul>
+<li><strong>Symbolic values</strong> represent a domain covering possible concrete values, represented by symbols like <em>φ</em>.</li>
+</ul>
+</li>
+<li>Symbolic execution computes logical formulas over these symbols. These formulas represent the operations performed on the symbols during execution and describe limits for the range of values the symbols can represent.
+<ul>
+<li>Many symbex engines maintain the symbols and formulas as metadata in addition to concrete values rather than replacing the concrete values.</li>
+</ul>
+</li>
+<li>The collection of symbolic values and formulas that a symbex engine maintains is called the <strong>Symbolic State</strong>.</li>
+<li>Symbex engine computes two different kinds of formulas over these symbolic values: a set of <strong>symbolic expressions</strong> and a <strong>path constraint.</strong></li>
+</ul>
+<h2 id="symbolic-expressions">Symbolic Expressions</h2>
+<p>A symbolic expression (<em>φj</em> , with <em>j ∈ N)</em> corresponds either to a symbolic value <em>αi</em> or to some mathematical combination of symbolic expressions, such as <em>φ3 = φ1 + φ2</em>.</p>
+<ul>
+<li><strong>Symbolic Expression Store</strong> (<em>σ</em>) is the set of all the symbolic expressions used in the symbolic execution.</li>
+<li>Symbex maintains a mapping of variables (or in the case of binary symbex, registers and memory locations) to symbolic expression.</li>
+<li>I refer to the combination of the path constraint and all symbolic expressions and mappings as the <strong>symbolic state</strong>.</li>
+</ul>
+<h2 id="path-constraint">Path Constraint</h2>
+<p>A path constraint (π) encodes the limitations imposed on the symbolic expressions by the branches taken during execution. For instance, if the symbolic execution takes a branch if(x &lt; 5) and then another branch if(y &gt;= 4), where x and y are mapped to the symbolic expressions φ1 and φ2, respectively, the path constraint formula becomes φ1 &lt; 5 ∧ φ2 ≥ 4. </p>
+<ul>
+<li>Path constraints are sometimes referred to as <strong>Branch Constraints</strong>.</li>
+</ul>
+<p>A solution (possible concrete values) to a constraint which can lead the concrete execution of the program to the desired point is called a <strong>model</strong>. Models are computed automatically with a special program called a <strong>constraint solver</strong>, which is capable of solving for the symbolic values such that all constraints and symbolic expressions are satisfied. In some cases, the solver might also report that no solution exists, meaning that the path is unreachable. In general, it’s not feasible to cover all paths through a nontrivial program since the number of possible paths increases exponentially with the number of branches.</p>
+<p><img src="Principles%20of%20Symbolic%20Execution/image.png" alt=""></p>
+<p>Path constraints and symbolic state for all paths in the example function.</p>
+<pre><code>➊ 	x := int(argv[0]), y := int(argv[1])
+➋ 	z := x + y
+➌ 	if x &gt;= 5:
+        foo(x, y, z)
+        y := y + z
+        if y &lt; x: baz(x, y, z)
+        else: qux(x, y, z)
+➍ 	else: bar(x, y, z)
+</code></pre>
+<p>Step ➊ is reading <em>x</em> and <em>y</em> from user input.</p>
+<ul>
+<li>The path constraint <em>π</em> is initially set to <em>T</em>(tautology). This shows that no branches have yet been executed, so no constraints are imposed.</li>
+<li>Symbolic expression store <em>σ</em> is initially the empty set. After reading x, the symbex engine creates a new symbolic expression <em>φ1 = α1</em>, which corresponds to an unconstrained symbolic value that can represent any concrete value, and maps x to that expression. Reading y causes an analogous effect, mapping y to <em>φ2 = α2</em>.</li>
+</ul>
+<p>Step ➋ is computing <em>z = x + y.</em></p>
+<ul>
+<li>The symbex engine maps z to a new symbolic expression <em>φ3 = φ1 + φ2.</em></li>
+</ul>
+<p>Step ➌ checks conditional if(x &gt;= 5). </p>
+<ul>
+<li>The engine adds the branch constraint <em>φ1 ≥ 5</em> to <em>π</em> and continues the symbolic execution at the branch target, which is the call to foo.</li>
+<li>Because you’ve now reached a call to foo, you can solve the expressions and branch constraints to find concrete values for x and y that lead to this foo invocation.</li>
+<li><em>x</em> and <em>y</em> map to the symbolic expressions <em>φ1 = α1</em> and <em>φ2 = α2</em>, respectively, where <em>α1</em> and <em>α2</em> are the only symbolic values.</li>
+<li>Only one branch constraint exists: <em>φ1 ≥ 5</em>.</li>
+<li>Thus, a possible model to reach this call to foo is <em>α1 = 5 ∧ α2 = 0</em>.
+<ul>
+<li><em>α2</em> could take any value because it doesn’t occur in any of the symbolic expressions that appear in the path constraint.</li>
+</ul>
+</li>
+</ul>
+<p>Step ➍ takes the <em>else</em> case.</p>
+<ul>
+<li>To reach the call to bar instead, avoid the if(x &gt;= 5) branch by changing the path constraint <em>φ1 ≥ 5</em> to <em>φ1 &lt; 5</em> and ask the constraint solver for a new model.</li>
+<li>Thus, a possible model would be <em>α1 = 4 ∧ α2 = 0</em>.</li>
+</ul>
+<h2 id="variants">Variants</h2>
+<p><img src="Principles%20of%20Symbolic%20Execution/1_image.png" alt=""></p>
+<p>Symbolic execution design dimensions. </p>
+<h3 id="static-symbolic-execution-sse">Static Symbolic Execution (SSE)</h3>
+<ul>
+<li>Emulates part of a program, propagating symbolic state with each emulated instruction.</li>
+<li>Either analyzes all possible paths exhaustively or uses heuristics to decide which paths to traverse.</li>
+<li>Allows analyzing programs that can’t run on the system CPU, like analyzing ARM binaries on x86.</li>
+<li>Exploring both directions at every branch isn’t always possible because of scalability issues.
+<ul>
+<li>While heuristics can be used to limit the number of explored branches, it’s non-trivial to come up with effective heuristics that capture all the interesting paths.</li>
+<li>Forks off a new symbex instance at each branch to explore both directions in parallel.</li>
+</ul>
+</li>
+<li>Parts of an application’s behavior can be hard to model correctly with SSE, specifically when control flows outside the application to software components that the symbolic execution engine doesn’t control, such as the kernel or a library. Happens when a program issues a system call or library call, receives a signal, tries to read an environment variable, and so on.</li>
+</ul>
+<h4 id="effect-modeling">Effect Modeling</h4>
+<p>Models the effects of external interactions like system calls and library calls. These models are a sort of “summary” of the effects that a system or library call has on the symbolic state. Performance-wise, effect modeling is a relatively cheap solution. However, creating accurate models for all possible environment interactions—including with the network, the filesystem, and other processes—is a monumental task, which may involve creating a simulated symbolic filesystem, symbolic network stack, and so on. To make matters worse, the models have to be rewritten to simulate a different operating system or kernel. Models are therefore often incomplete or inaccurate in practice.</p>
+<h4 id="direct-external-interactions">Direct External Interactions</h4>
+<p>Instead of modeling the effects of a system call, the symbex engine may actually make the system call and incorporate the concrete return value and side effects into the symbolic state. Leads to problems when multiple paths that perform competing external interactions are explored in parallel. For instance, if multiple paths operate on the same physical file in parallel, this may lead to consistency issues if the changes conflict. Can be resolved by cloning the complete system state for each explored path, but that solution is extremely memory intensive. Moreover, because external software components cannot handle symbolic state, interacting directly with the environment means an expensive call to the constraint solver to compute suitable concrete values that can be passed to the system or library call that is being invoked.</p>
+<h3 id="dynamic-symbolic-execution-dse">Dynamic Symbolic Execution (DSE)</h3>
+<p>Known as <strong>Concolic Execution</strong>, as in “concrete symbolic execution” because this approach uses concrete state to drive the execution while maintaining symbolic state as metadata.</p>
+<ul>
+<li>Runs only one path at once, as determined by the concrete inputs. To explore different paths, it “flips” the path constraints and then uses the constraint solver to compute concrete inputs that lead to the alternative branch. These concrete inputs can be used to start a new concolic execution that explores the alternative path.</li>
+<li>Much more scalable since it doesn’t maintain multiple parallel execution states.</li>
+<li>External interactions are run concretely. This doesn’t lead to consistency issues because concolic execution doesn’t run different paths in parallel.</li>
+<li>Constraints it computes tend to involve fewer variables since it runs only a part at a time, making the constraints easier and far faster to solve.</li>
+<li>Code coverage achieved by concolic execution depends on the initial concrete inputs. Since concolic execution “flips” only a small number of branch constraints at once, it can take a long time to reach interesting paths if these are separated by many flips from the initial path.</li>
+<li>Less trivial to symbolically execute only part of a program, although it can be implemented by dynamically enabling or disabling the symbolic engine at runtime.</li>
+</ul>
+<h3 id="online-vs-offline">Online vs. Offline</h3>
+<p>Symbex engines that explore multiple program paths in parallel are called <strong>online</strong>, while engines that explore only one path at a time are called <strong>offline</strong>.</p>
+<ul>
+<li>Online symbex doesn’t execute the same instruction multiple times, thus making it efficient but making it memory-intensive to keep track of all states in parallel. In contrast, offline implementations often analyze the same chunk of code multiple times, having to run the entire program from the start for every program path.</li>
+<li>Online symbex attempt to keep the memory overhead to a minimum by merging identical parts of program states together, splitting them only when they diverge. This optimization is known as <strong>copy on write</strong> because it copies merged states when a write causes them to diverge, creating a fresh private copy of the state for the path issuing the write.</li>
+</ul>
+<h3 id="symbolic-state">Symbolic State</h3>
+<p>Engines provide the option of omitting symbolic state for some registers and memory locations.</p>
+<ul>
+<li>By tracking symbolic information only for the selected state while keeping the rest of the state concrete, size of the state and the complexity of the path constraints and symbolic expressions can be reduced. This approach is more memory efficient and faster because the constraints are easier to solve.</li>
+<li>The trade-off is choosing which state to make symbolic and which to make concrete only, and this decision is not always trivial. Choosing incorrectly may cause the symbex tool to report unexpected results.</li>
+<li>Pointers can be symbolic, meaning that their value is not concrete but partly undetermined. This introduces a difficult problem when memory loads or stores use a symbolic address.</li>
+</ul>
+<h4 id="fully-symbolic-memory">Fully Symbolic Memory</h4>
+<p>Solutions based on fully symbolic memory attempt to model all the possible outcomes of a memory load or store operation, forking the state into multiple copies to reflect each possible outcome of the memory operation. For instance, let’s suppose we’re reading from an array a using a symbolic index φi , with the constraint that φi &lt; 5. The state-forking approach would then fork the state into five copies: one for the situation where φi = 0 (so that a[0] is read), another one for φi = 1, and so on. Another way to achieve the same effect is to use constraints with if-then-else expressions supported by some constraint solvers. These expressions are analogous to if-then-else conditionals used in programming languages. In this approach, the same array read is modeled as a conditional constraint that evaluates to the symbolic expression of a[i] if φi = i. This approach suffers from state explosion or extremely complicated constraints if any memory accesses use unbounded addresses. These problems are more prevalent in binary-level symbex than source-level symbex because bounds information is not readily available in binaries.</p>
+<h4 id="address-concretization">Address Concretization</h4>
+<p>To avoid the state explosion of fully symbolic memory, unbounded symbolic addresses can be replaced with concrete ones.</p>
+<ul>
+<li>In concolic execution, the symbex engine can simply use the real concrete address.</li>
+<li>In static symbolic execution, the engine will have to use a heuristic to decide on a suitable concrete address.</li>
+</ul>
+<p>It reduces the state space and complexity of constraints considerably, but the downside is that it doesn’t fully capture all possible program behaviors, which may lead the symbex engine to miss some possible outcomes.</p>
+<h3 id="path-coverage">Path Coverage</h3>
+<p>Classic symbolic execution explores all program paths, forking off a new symbolic state at every branch. This approach doesn’t scale because the number of possible paths increases exponentially with the number of branches in the program; this is the well-known <strong>path explosion problem</strong>. In fact, the number of paths may be infinite if there are unbounded loops or recursive calls. For nontrivial programs, a different approach is required, such as using heuristics to decide which paths to explore. </p>
+<ul>
+<li>A common heuristic is <strong>DFS</strong> (<strong>Depth-First Search</strong>), which explores one complete program path entirely before moving on to another path, under the assumption that deeply nested code is likely more “interesting” than superficial code.</li>
+<li><strong>BFS</strong> (<strong>Breadth-First Search</strong>) does the opposite, exploring all paths in parallel but taking longer to reach deeply nested code.</li>
+</ul>
+<p>Concolic execution explores only one path at a time as driven by concrete inputs, but can also be combined with the heuristic path exploration approach or even with the approach of exploring all paths. The easiest way to explore multiple paths is to run the application repeatedly, each time with new inputs discovered by “flipping” branch constraints in the previous run. A more sophisticated approach is to take snapshots of the program state so that after exploring one path, the snapshot can restore the state to an earlier point in the execution and explore another path from there.</p>
+<h2 id="optimisation">Optimisation</h2>
+<h3 id="simplifying-constraints">Simplifying Constraints</h3>
+<p>Simplifying constraints as much as possible to keep usage of the constraint solver to an absolute minimum can reduce computation extensively since constraint solving is the most computationally expensive aspect of symbex. Thus, aim to reduce the complexity of the constraint solver’s task, thereby speeding up the symbolic execution, without significantly affecting the accuracy of the analysis.</p>
+<h4 id="limiting-the-number-of-symbolic-variables">Limiting the Number of Symbolic Variables</h4>
+<p>Simplifying constraints reduces the number of symbolic variables and make the rest of the program state concrete only. However, randomly concretizing state may result in wrong state to be concretized causing your symbex tool to miss possible solutions to the problem. Using a pre-processing pass that employs taint analysis and fuzzing to find inputs that cause dangerous effects, such as a corrupted return address, and then using symbex to find out whether there are any inputs that corrupt that return address such that it allows exploitation, can save a lot of computation. Using relatively cheap techniques such as DTA and fuzzing to find out whether there’s a potential vulnerability and using symbolic execution only in potentially vulnerable program paths to find out how to exploit that vulnerability in practice is a much more efficient approach.</p>
+<h4 id="limiting-the-number-of-symbolic-operations">Limiting the Number of Symbolic Operations</h4>
+<p>Symbolically execute only those instructions that are relevant. For instance, exploiting an indirect call through the rax register involve focusing on only the instructions that contribute to rax’s value. Thus, computing a backward slice to find the instructions contributing to rax and then symbolically emulating the instructions in the slice reduces number of symbolic operations in contrast to emulating all instructions.</p>
+<h4 id="simplifying-symbolic-memory">Simplifying Symbolic Memory</h4>
+<p>Full symbolic memory can cause an explosion in the number of states or the size of the constraints if there are any unbounded symbolic memory accesses. Impact of such memory accesses on constraint complexity can be reduced by concretizing them.</p>
+<h3 id="avoiding-the-constraint-solver">Avoiding the Constraint Solver</h3>
+<p>There are practical ways to limit the need for constraint solving in symbex tools, such as using pre-processing passes to find potentially interesting paths and inputs to explore with symbex and pinpoint the instructions affected by these inputs. This helps in avoiding needless constraint solver invocations for uninteresting paths or instructions. Symbex engines and constraint solvers may also cache the results of previously evaluated (sub)formulas, thereby avoiding the need to solve the same formula twice.</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2563 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>0001-01-01 05:53 &#43;0553</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/01/22/authenticated-mongodb-container/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Authenticated MongoDB Container</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            
+                <span><a href="https://hexterisk.github.io/blog">Bhanupratap Singh &copy; 2020</a></span>
+            
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content" style="margin-bottom: -0.8rem;">
+            <span><a style="text-decoration: none;" > .</a></span>
+        </div> 
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span><a style="text-decoration: none;" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></span>
+        </div> 
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

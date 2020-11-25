@@ -151,7 +151,7 @@
 <li>The <strong>dlfcn.h</strong> header is often included when writing libraries for use with LD_PRELOAD because it provides the <strong>dlsym</strong> function.</li>
 </ul>
 <h2 id="injecting-a-code-section">Injecting a Code Section</h2>
-<p><img src="https://hexterisk.github.io/blog/Simple_Code_Injection_Techniques_for_ELF/image.png" alt="&ldquo;code_injection&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Simple_Code_Injection_Techniques_for_ELF/image.png" alt="">
 <em>Replacing .note.ABI-tag with an injected code section.</em></p>
 <p>Step ➊ is to add a new section to an ELF binary, you first inject the bytes that the section will contain by appending them to the end of the binary. Next, you create a section header ➋ and a program header ➌ for the injected section. The program header table is usually located right after the executable header ➍, thus overwrite an existing program header instead of adding an extra one to prevent shifting of all the sections and headers that come after it.</p>
 <ul>

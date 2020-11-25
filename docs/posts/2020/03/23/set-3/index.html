@@ -256,10 +256,10 @@ b64_strings <span style="color:#f92672">=</span> [
         <span style="color:#66d9ef">return</span> True
     <span style="color:#66d9ef">else</span>:
         <span style="color:#66d9ef">return</span> False
-</code></pre></div><p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_3/image.png" alt="&ldquo;cbc_decryption&rdquo;">
+</code></pre></div><p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_3/image.png" alt="">
 <em>AES CBC Decryption.</em></p>
 <p>The philosophy for the padding attack stems from the design of the CBC encryption mechanism. The ciphertext from the previous block is xored with the intermediate state of the next block formed during it&rsquo;s decryption. Since we have control over the ciphertext, maybe we can manipulate the blocks in some way into giving us some sort of indication towards it&rsquo;s effectiveness.</p>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_3/1_image.png" alt="&ldquo;xor_pad&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_3/1_image.png" alt="">
 <em>Xoring the bytes to get valid padding.</em></p>
 <p>The idea of the padding oracle attack is as follows:</p>
 <p>We want to modify the last byte <code>X</code> of the second-to-last block so that the CBC decryption of the last block which has <code>?</code> as its content yields <code>0x01</code> instead. This of course works because CBC decrypts as: </p>
@@ -273,7 +273,7 @@ b64_strings <span style="color:#f92672">=</span> [
 <ol>
 <li>The IV remains as is until (length of the block - padding length). This is because these bytes aren&rsquo;t the focus yet, and could have any value for that matter.</li>
 <li>We then add our guessed byte. This is the one we think will get us the right padding.</li>
-<li>Followed by appending the bytes that would definitely generate the bytes corresponding to the padding length, since a block requiring a padding of N bytes is padding with the byte ‘\xN&rsquo; ( following the norms of PKCS7).</li>
+<li>Followed by appending the bytes that would definitely generate the bytes corresponding to the padding length, since a block requiring a padding of N bytes is padding with the byte ‘\xN' ( following the norms of PKCS7).</li>
 </ol>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">modify_block</span>(IV: bytes, guessed_byte: bytes, padding_len: int, found_plaintext: bytes) <span style="color:#f92672">-&gt;</span> bytes:
     <span style="color:#e6db74">&#34;&#34;&#34;
@@ -378,12 +378,12 @@ format=64 bit unsigned little endian nonce,<br>
 Instead of encrypting the plaintext, CTR mode encrypts a running counter, producing a 16 byte block of keystream, which is XOR&rsquo;d against the plaintext.<br>
 For instance, for the first 16 bytes of a message with these parameters:<br>
 <strong>keystream = AES(&ldquo;YELLOW SUBMARINE&rdquo;,</strong><br>
-<strong>&quot;\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00&rdquo;)</strong><br>
+<strong>&quot;\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00&quot;)</strong><br>
 &hellip; for the next 16 bytes:<br>
 <strong>keystream = AES(&ldquo;YELLOW SUBMARINE&rdquo;, &ldquo;\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00&rdquo;)</strong><br>
 &hellip; and then:<br>
 <strong>keystream = AES(&ldquo;YELLOW SUBMARINE&rdquo;,</strong><br>
-<strong>&quot;\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00&rdquo;)</strong><br>
+<strong>&quot;\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x00\x00\x00\x00\x00\x00&quot;)</strong><br>
 CTR mode does not require padding; when you run out of plaintext, you just stop XOR&rsquo;ing keystream and stop generating keystream.<br>
 Decryption is identical to encryption. Generate the same keystream, XOR, and recover the plaintext.<br>
 Decrypt the string at the top of this function, then use your CTR function to encrypt and decrypt other things.</p>
@@ -396,7 +396,7 @@ b64_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34
 key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;YELLOW SUBMARINE&#34;</span>
 nonce <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
 </code></pre></div><p>The third AES Mode is the <strong>CTR</strong> (<strong>Counter</strong>) Mode. It uses a keystream to encrypt/decrypt, turning block cipher into a stream cipher. </p>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_3/5_image.png" alt="&ldquo;AES_CTR">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_3/5_image.png" alt="">
 <em>Keystream blocks being generated.</em></p>
 <p>This keystream is generated block at a time, by appending a nonce value, and a counter that is being incremented at every call to it. The counter can be any function which produces a sequence which is guaranteed not to repeat for a long time, although an actual increment-by-one counter is the simplest and most popular.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">CTR_keystream_generator</span>(key: bytes, nonce: int) <span style="color:#f92672">-&gt;</span> bytes:
@@ -414,10 +414,10 @@ nonce <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
         keystream_block <span style="color:#f92672">=</span> AES_ECB_encrypt(nonce_bytes <span style="color:#f92672">+</span> counter_bytes, key)
         <span style="color:#66d9ef">yield</span> <span style="color:#f92672">from</span> keystream_block
         counter <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
-</code></pre></div><p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_3/2_image.png" alt="&ldquo;AES_CTR_encryption&rdquo;">
+</code></pre></div><p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_3/2_image.png" alt="">
 <em>AES CTR Encryption.</em></p>
 <p>The encryption process involves encrypting the keystream block with a different block cipher encrypting technique and xoring it with plaintext to generate ciphertext.</p>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_3/3_image.png" alt="&ldquo;AES_CTR_decryption&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_3/3_image.png" alt="">
 <em>AES CTR Decryption.</em></p>
 <p>The decryption process can be stated as a mirror of the encryption process. It again encrypts the keystream block with the same block cipher encrypting technique as was used during encryption, and then xoring the ciphertext with it to receive the plaintext back.</p>
 <p>It&rsquo;s clearly a play on one of the crucial properties of the xor operation: it&rsquo;s reversible.</p>
@@ -549,7 +549,7 @@ If you&rsquo;re writing in Python, Ruby, or (gah) PHP, your language is probably
 <span style="color:#f92672">import</span> time
 </code></pre></div><p>The <a href="https://stackedit.io/%5Bhttps://en.wikipedia.org/wiki/Mersenne_Twister%5D(https://en.wikipedia.org/wiki/Mersenne_Twister)">Mersenne Twister</a> is a pseudorandom number generator (PRNG). It is by far the most widely used general-purpose PRNG. It&rsquo;s name derives from the fact that its period length is chosen to be a <a href="https://stackedit.io/%5B%5Bhttps://en.wikipedia.org/wiki/Mersenne_prime%5D(https://en.wikipedia.org/wiki/Mersenne_prime)%5D(https://en.wikipedia.org/wiki/Mersenne_Twister)">Mersenne prime</a>.</p>
 <p>The implementation is derived from the pseudo-code on Wikipedia. Any of the above links can be used to study more on the topic.</p>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_3/4_image.png" alt="&ldquo;mersenne_twister&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_3/4_image.png" alt="">
 <em>Mersenne Twister.</em></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_lowest_bits</span>(n: int, number_of_bits: int) <span style="color:#f92672">-&gt;</span> int:
     <span style="color:#e6db74">&#34;&#34;&#34;

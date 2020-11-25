@@ -203,7 +203,7 @@ g <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
 </li>
 <li>Alice and Bob now share a secret (the number 18).</li>
 </ol>
-<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_5/1_image.png" alt="&ldquo;exchange&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_5/1_image.png" alt="">
 <em>The concept is that after all the computation involved, the two parties will end up with a common secret value.</em></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DiffieHellman</span>():
     <span style="color:#e6db74">&#34;&#34;&#34;
@@ -1050,8 +1050,8 @@ To decrypt RSA using a simple cube root, leave off the final modulus operation; 
 <p>The solution to this problem lies with the <a href="https://crypto.stanford.edu/pbc/notes/numbertheory/crt.html">Chinese Remainder Theorem</a>.</p>
 <p>We need the same plaintext encrypted with different public keys to recover the plaintext. According to the paper, for </p>
 <p><em>C¹ = m³ mod n¹</em>, <em>C² = m² mod n²</em> and <em>C³ = m³ mod n³</em>,</p>
-<p>    ⇨ <em>C&rsquo; = m³ mod n¹n²n³</em></p>
-<p>Therefore, if are able to calculate <em>C&rsquo;</em>, we can just cube root it to get the solution.</p>
+<p>    ⇨ <em>C' = m³ mod n¹n²n³</em></p>
+<p>Therefore, if are able to calculate <em>C'</em>, we can just cube root it to get the solution.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">RSA_Broadcast_Attack</span>(message: bytes, rsa0: object, rsa1: object, rsa2: object) <span style="color:#f92672">-&gt;</span> bytes:
     <span style="color:#e6db74">&#34;&#34;&#34;
 </span><span style="color:#e6db74">    Uses the Chinese Remainder Theorem (CRT) to break e=3 RSA given three ciphertexts of the same plaintext.

@@ -134,7 +134,7 @@
 
             <div class="post-content">
                 <p><strong>Dynamic Taint Analysis</strong> is a technique used to discover what part of memory or register are controllable by the some data we are interested, such as the user input, at a given program state. This is done by marking the interested data. There on after, any piece of data that comes in contact with the tainted data by any means, like getting computed from the tainted data, is tainted too, thus spreading the taint throughout the execution.</p>
-<p><img src="https://hexterisk.github.io/blog/Dynamic_Taint_Analysis_and_Pin/image.png" alt="&ldquo;prop&rdquo;">
+<p><img src="https://hexterisk.github.io/blog/Dynamic_Taint_Analysis_and_Pin/image.png" alt="">
 <em>Taint propogration.</em></p>
 <p>Regions of interest are:</p>
 <ul>
@@ -143,9 +143,9 @@
 <li>Taint Sinks: Program, or memory locations, where checks for tagged data can be made.</li>
 </ul>
 <p>Dynamic Taint Analysis requires a Dynamic Binary Instrumentation framework as a prerequisite. We&rsquo;ll use Intel Pin.</p>
-<h1 id="shadow-memory">Shadow Memory</h1>
+<h2 id="shadow-memory">Shadow Memory</h2>
 <p>It is the technique in which potentially every byte used by a program has a mirror byte during it&rsquo;s execution. These shadow bytes can be used to record information about their original counterparts, since these bytes are invisible to the program. We create a user shadow memory to mark all the addresses that can be tainted by the data in question.</p>
-<h1 id="example">Example</h1>
+<h2 id="example">Example</h2>
 <p>We&rsquo;ll need the help of a DBI to retrieve information before and after each function is called. We&rsquo;ll resort to using Pin to taint user input and track it through the execution of the binary.</p>
 <p>We&rsquo;ll write a simple C++ program that reads content from a file, sends it around two functions as transfers the data into different buffers and then prints the contents onto the console. The name of the source code file is <em>sample.cpp</em>.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// sample.cpp

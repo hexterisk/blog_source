@@ -1,0 +1,57 @@
+{
+	"formatVersion": 1,
+	"appVersion": "0.45.4",
+	"files": [
+		{
+			"isClone": false,
+			"noteId": "ebisNKXr0n3b",
+			"notePath": [
+				"ebisNKXr0n3b"
+			],
+			"title": "Sanitation",
+			"notePosition": 10,
+			"prefix": null,
+			"isExpanded": 1,
+			"type": "text",
+			"mime": "text/html",
+			"attributes": [
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "GcSSeiuMyHcS",
+					"isInheritable": false,
+					"position": 4
+				}
+			],
+			"format": "markdown",
+			"dataFileName": "Sanitation.md",
+			"dirFileName": "Sanitation",
+			"children": [
+				{
+					"isClone": false,
+					"noteId": "GcSSeiuMyHcS",
+					"notePath": [
+						"ebisNKXr0n3b",
+						"GcSSeiuMyHcS"
+					],
+					"title": "s.png",
+					"notePosition": 0,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/jpg",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "s.png",
+							"isInheritable": false,
+							"position": 1000
+						}
+					],
+					"dataFileName": "s.png"
+				}
+			]
+		}
+	]
+}

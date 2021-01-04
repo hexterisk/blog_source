@@ -6,7 +6,40 @@
     <description>Recent content on Pwn the world.</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Sat, 22 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://hexterisk.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 16 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://hexterisk.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Sanitation</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/09/16/sanitation/</link>
+      <pubDate>Wed, 16 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/09/16/sanitation/</guid>
+      <description>Sanitation Sanitation tools, or sanitizers, are a set of libraries that can directly observe and flag an incorrect behavior for a certain class of violation at runtime.
+Sanitizers are employed by instrumenting the source code. The compiled binary, therefore, essentially has certain tripwires that catch any invalid or incorrect behavior and reports it. The fact that it only brings about minimal performance overhead allows it to be coupled with fuzzing techniques, a powerful combination.</description>
+    </item>
+    
+    <item>
+      <title>Approaches</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/09/09/approaches/</link>
+      <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/09/09/approaches/</guid>
+      <description>Approaches Fuzzing can be segregated into different types based on the facet of the process we look from.
+Program Structure Knowledge of the internals of the target application directly results into maintaining a certain structure to the fuzzing process, which can result into achieving a higher code coverage in a shorter span of time. This results in a much more effective fuzzing exercise.
+Blackbox Fuzzing This approach involves the assumption that the target is a black box since we don&amp;rsquo;t have any knowledge of the internal behavior, source code or the implementation of the target application, hence the name.</description>
+    </item>
+    
+    <item>
+      <title>Introduction</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/09/05/introduction/</link>
+      <pubDate>Sat, 05 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/09/05/introduction/</guid>
+      <description>Introduction Fuzzing, or Fuzz Testing, is an automated software testing technique where a target application is placed in an execution environment. An input generation technique is employed to create unique and varying inputs(test cases) for the target. These new inputs are continuously sent to the target and the resultant behavior is observed.
+NOTE: the phrases “test cases” and “inputs” can be used interchangeably.
+Fuzzing cycle.
+Either the program will be able to handle the provided input just fine, or it will enter an invalid state of execution(mostly a crash) and you&amp;rsquo;ll have a bug report on your hand.</description>
+    </item>
+    
     <item>
       <title>Classification of Malware Traffic using CNNs</title>
       <link>https://hexterisk.github.io/blog/posts/2020/08/22/classification-of-malware-traffic-using-cnns/</link>
@@ -74,42 +107,6 @@ Instrumentation Code The technique requires injecting Instrumentation Code into 
       <guid>https://hexterisk.github.io/blog/posts/2020/05/26/source-code-instrumentation-and-llvm/</guid>
       <description>Source Code Instrumentation adds specific code meant for instrumentation/analysis, called Instrumentation Code, to the source files of the program under consideration. The source files are then compiled and executed. Since the instrumentation code is integrated into the binary itself, the output from the execution includes the dump of the instrumentation code which can then be used for further analysis and component testing.
 Intermediate Representations Representation of a program in a state that lies between the source code and the compiled binary(specifically, the assembly code).</description>
-    </item>
-    
-    <item>
-      <title>Symbolic Execution and Angr</title>
-      <link>https://hexterisk.github.io/blog/posts/2020/05/21/symbolic-execution-and-angr/</link>
-      <pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/posts/2020/05/21/symbolic-execution-and-angr/</guid>
-      <description>Symbolic Execution is mainly focused on converting a program made up of a concrete set of instructions into an equation-like format. This is achieved with two core components:
-Symbols Different values in a program(such as the user input) are substituted with Symbols(variables or placeholders). These symbols pertain to a domain full of values, allowing us to explore the program in a much more open form, basically “walking through the program” with a domain full of values(handled by any one of the constraint solving backends like Z3) instead of walking a fixed path due to a fixed hard-coded value/input.</description>
-    </item>
-    
-    <item>
-      <title>Constraint Solvers and Z3</title>
-      <link>https://hexterisk.github.io/blog/posts/2020/05/15/constraint-solvers-and-z3/</link>
-      <pubDate>Fri, 15 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/posts/2020/05/15/constraint-solvers-and-z3/</guid>
-      <description>A constraint solver must be versatile, that is, it should be able to act as an:
- Interpreter: Given the input, solve for the output of the equation. Inverter: Given the output, solve for the input of the equation. Synthesizer: Act as both Interpreter and Inverter.  Formulating Programs Assume a formula 𝑆ₚ(𝑥, 𝑦) which holds if and only if program P(x) outputs value y such that
-Program: f(𝑥) { return 𝑥 + 𝑥 }</description>
-    </item>
-    
-    <item>
-      <title>Serial 2</title>
-      <link>https://hexterisk.github.io/blog/posts/2020/05/09/serial-2/</link>
-      <pubDate>Sat, 09 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://hexterisk.github.io/blog/posts/2020/05/09/serial-2/</guid>
-      <description>Name: serial: 2 Date release: 27 Sep 2019 Author: sk4 Series: serial  Initial Discovery VMIP is the VM’s IP Address
-LHIP is the Local Host’s IP Address
-Compare the commands I ran, and the formats specified to check where you need to replace values according to your machine.
-IP Discovery Run sudo netdiscover.
-It detects online hosts by sending ARP requests.
-Output of netdiscover.
-192.168.1.10 happens to be the IP of the VM.</description>
     </item>
     
   </channel>

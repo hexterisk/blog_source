@@ -5,8 +5,237 @@
         <description>Recent content in Posts on Pwn the world.</description>
         <generator>Hugo -- gohugo.io</generator>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Sat, 22 Aug 2020 00:00:00 +0000</lastBuildDate>
+        <lastBuildDate>Wed, 16 Sep 2020 00:00:00 +0000</lastBuildDate>
         <atom:link href="https://hexterisk.github.io/blog/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Sanitation</title>
+            <link>https://hexterisk.github.io/blog/posts/2020/09/16/sanitation/</link>
+            <pubDate>Wed, 16 Sep 2020 00:00:00 +0000</pubDate>
+            
+            <guid>https://hexterisk.github.io/blog/posts/2020/09/16/sanitation/</guid>
+            <description>Sanitation Sanitation tools, or sanitizers, are a set of libraries that can directly observe and flag an incorrect behavior for a certain class of violation at runtime.
+Sanitizers are employed by instrumenting the source code. The compiled binary, therefore, essentially has certain tripwires that catch any invalid or incorrect behavior and reports it. The fact that it only brings about minimal performance overhead allows it to be coupled with fuzzing techniques, a powerful combination.</description>
+            <content type="html"><![CDATA[<h1 id="sanitation">Sanitation</h1>
+<p>Sanitation tools, or <a href="https://github.com/google/sanitizers">sanitizers</a>, are a set of libraries that can directly observe and flag an incorrect behavior for a certain class of violation at runtime.</p>
+<p>Sanitizers are employed by instrumenting the source code. The compiled binary, therefore, essentially has certain tripwires that catch any invalid or incorrect behavior and reports it. The fact that it only brings about minimal performance overhead allows it to be coupled with fuzzing techniques, a powerful combination.</p>
+<h2 id="input-sanitation">Input sanitation</h2>
+<p>Randomly generated test cases can cause crashes in situations where assumptions were made about the input, and/or proper filtering and cleaning of the input was not implemented.</p>
+<p>The assumptions can be of:</p>
+<ul>
+<li>Data type
+<ul>
+<li>For example, implemented integer operations on the input and not filtering out other input types, such as characters.</li>
+</ul>
+</li>
+<li>Data length
+<ul>
+<li>For example, input longer than the length of the allocated buffer is entered.</li>
+</ul>
+</li>
+<li>Data content
+<ul>
+<li>For example, Unicode data is provided as input where ASCII is expected.</li>
+</ul>
+</li>
+</ul>
+<p>Such bugs are generally low priority and can be avoided with proper documentation and good programming practices. Therefore, data sanitation is done on the randomly generated test cases to play along with such assumptions so that clean data can enter the application, to explore the more dangerous part.</p>
+<h2 id="address-sanitation">Address sanitation</h2>
+<p><strong>ASan</strong> detects use-after-frees, buffer overflows and stack-use-after-return.</p>
+<p>A shadow memory bitmap is created, where a single bit corresponds to a single byte of the actual memory. Operations corresponding to a memory access are instrumented and the areas neighboring the memory are tainted to check for any changes.</p>
+<p><img src="/Fuzzing_Sanitation/s.png" alt="">
+<em>ASan tainted the bytes surrounding ‘buf’.</em></p>
+<p>ASan is tracking the areas surrounding the buffers (red zones). Since the string being copied into the buffer is longer than the buffer size, some bytes are going to overflow into the surrounding memory areas. The surrounding memory area is invalid in this context, since we only have access to the memory reserved by the buffer. ASan will catch this and throw an error.</p>
+<h2 id="thread-sanitation">Thread sanitation</h2>
+<p><strong>TSan</strong> detects:</p>
+<ul>
+<li>Using/Calling a lock on <em>mutex</em> without initializing it.</li>
+<li>Thread leaks, like missing <em>pthread_join</em>.</li>
+<li>Unsafe calls in signal handlers, like <em>malloc</em>.</li>
+<li>Unlocking from the wrong thread.</li>
+<li>Data races.</li>
+</ul>
+<p>Thread sanitation can be implemented in two ways:</p>
+<ol>
+<li>Compile-time Instrumentation involves instrumenting:
+<ul>
+<li>All read/write operations.</li>
+<li>Function entry/exits.</li>
+<li>Atomic operations.</li>
+</ul>
+</li>
+<li>Run-time library:
+<ul>
+<li>Replaces <em>malloc</em>.</li>
+<li>Intercepts thread and synchronization management.</li>
+<li>Manages all read/write operations.</li>
+</ul>
+</li>
+</ol>
+<h2 id="memory-sanitation">Memory sanitation</h2>
+<p><strong>MSAN</strong> detects read operations on uninitialized memory.</p>
+<p>A bit-to-bit shadow memory map is created and uninitialized memory is tainted. A secondary shadow map may also be employed to keep track of the origin of a freshly allocated memory and propagated with the uninitialized memory. The origin can later be used to track the fault if an illegal operation on the memory is reported.</p>
+<p>Reporting all accesses to uninitialized memory will cause too many alerts. Therefore, errors are only reported on:</p>
+<ul>
+<li>Conditional branches.</li>
+<li>De-references.</li>
+<li>Syscall arguments.</li>
+</ul>
+<p>The following operations are allowed (as long as their result is not used):</p>
+<ul>
+<li>Read.</li>
+<li>Copy.</li>
+<li>Mathematical operations.</li>
+</ul>
+<h2 id="undefined-behavior-sanitation">Undefined Behavior sanitation</h2>
+<p><strong>UBSan</strong> detects any undefined behavior, mainly:</p>
+<ul>
+<li>Null/Misaligned pointers.</li>
+<li>Signed integer overflows.</li>
+<li>Conversion to, from, or between floating-point types which would overflow the destination.</li>
+</ul>
+<p>UBSan also checks for:</p>
+<ul>
+<li><strong>implicit-conversion</strong>: Checks for suspicious behavior of implicit conversions</li>
+<li><strong>integer</strong>: Checks for undefined or suspicious integer behavior (e.g. unsigned integer overflow)</li>
+<li><strong>nullability</strong>: Checks for null violation, e.g. passing null as a function parameter, assigning null to an lvalue, or returning null from a function.</li>
+<li><strong>local-bounds</strong>: It can catch cases missed by array-bounds.</li>
+</ul>
+<p>Citation: <a href="https://clang.llvm.org/docs/index.html">Clang docs</a>.</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Approaches</title>
+            <link>https://hexterisk.github.io/blog/posts/2020/09/09/approaches/</link>
+            <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
+            
+            <guid>https://hexterisk.github.io/blog/posts/2020/09/09/approaches/</guid>
+            <description>Approaches Fuzzing can be segregated into different types based on the facet of the process we look from.
+Program Structure Knowledge of the internals of the target application directly results into maintaining a certain structure to the fuzzing process, which can result into achieving a higher code coverage in a shorter span of time. This results in a much more effective fuzzing exercise.
+Blackbox Fuzzing This approach involves the assumption that the target is a black box since we don&amp;rsquo;t have any knowledge of the internal behavior, source code or the implementation of the target application, hence the name.</description>
+            <content type="html"><![CDATA[<h1 id="approaches">Approaches</h1>
+<p>Fuzzing can be segregated into different types based on the facet of the process we look from.</p>
+<h2 id="program-structure">Program Structure</h2>
+<p>Knowledge of the internals of the target application directly results into maintaining a certain structure to the fuzzing process, which can result into achieving a higher code coverage in a shorter span of time. This results in a much more effective fuzzing exercise.</p>
+<h3 id="blackbox-fuzzing">Blackbox Fuzzing</h3>
+<p>This approach involves the assumption that the target is a black box since we don&rsquo;t have any knowledge of the internal behavior, source code or the implementation of the target application, hence the name.</p>
+<p>Conceptually, blackbox fuzzing seems simple and straight up. We could simply loop an input generator and pass the generated test cases to the target application. However, the complexity of the fuzzing process increases with the complexity of the target application. Some examples are:</p>
+<ul>
+<li>Creating a harness for a GUI application to make sure input reaches the target as intended.</li>
+<li>Generating test cases that respect a certain input model, such as making sure that the mutated samples generated are all valid PDFs while fuzzing a PDF parser.</li>
+</ul>
+<p>It all depends on the target being fuzzed.</p>
+<p>Blackbox fuzzing is essentially employed when:</p>
+<ul>
+<li>Target is closed source, and no information is openly available about it.
+<ul>
+<li>Cannot guide the fuzzing process, and it&rsquo;s tough to capture any useful information from a fuzzing cycle since we don&rsquo;t know about the target&rsquo;s internals.</li>
+</ul>
+</li>
+<li>Target is non-deterministic (gives different outputs for the same input everytime).
+<ul>
+<li>Mutation of seed samples isn&rsquo;t based on results of previous iteration.</li>
+</ul>
+</li>
+<li>Target is slow.
+<ul>
+<li>Overhead from instrumentation and statistical analysis might push the fuzzing exercise towards infeasibility and bad efficiency.</li>
+</ul>
+</li>
+<li>Target is large.
+<ul>
+<li>Processing all the data from a fuzzing cycle becomes overly complex.</li>
+</ul>
+</li>
+</ul>
+<p>The process can be easily scaled since not much processing is required to generate inputs and can be easily parallelized.</p>
+<p>The downside of this technique is that it might only lead to the discovery of shallow bugs since the generated test cases do not evolve according to the output, and might fail to penetrate the target.</p>
+<p>For example, fuzzing a release version of an application with a proprietary application would require blackbox approach, since in most cases no information is provided about it&rsquo;s internals.</p>
+<h3 id="whitebox-fuzzing">Whitebox Fuzzing</h3>
+<p>This approach involves knowledge of the target&rsquo;s internals, the source code itself in most cases. This allows us to make use of techniques like:</p>
+<ol>
+<li>Source Code Instrumentation (putting code snippets at different locations in the source code to monitor the execution state).</li>
+<li>Symbolic Execution (analyzing constraints on inputs and conditional instructions).</li>
+<li>Taint Analysis (tracking the flow of a particular set of bytes).</li>
+</ol>
+<p>All these techniques help us in following the flow of execution of the binary for a given test case, which gives us an insight over how the target is reacting towards the test case. From all this data, it becomes easier to generate test cases that allow us to reach certain critical program locations quicker.</p>
+<p>However, all the aforementioned processes might add a significant overhead, which would in-turn slow the whole process down to an extent that blackbox fuzzing might become a more efficient solution.</p>
+<p>For example, a developer might employ the whitebox approach to fuzz their application for bugs in the development cycle itself.</p>
+<h3 id="greybox-fuzzing">Greybox Fuzzing</h3>
+<p>The objective of this approach is to combine the efficiency of the blackbox approach while maintaining the effectiveness of the whitebox approach. It uses lightweight instrumentation techniques, which adds considerable performance overhead, but provides enough feedback about the program to successfully generate evolved, valid inputs on every iteration of the fuzzing cycle.</p>
+<h2 id="input-generation">Input Generation</h2>
+<p>Test cases require to be constantly generated so that the fuzzing process doesn&rsquo;t halt. This generation can be done in different ways.</p>
+<h3 id="mutation-based">Mutation based</h3>
+<p>An existing corpus of seed files is taken, and new test cases are generated by mutating (modifying) the files in this corpus. Simple scripts can get the job done.</p>
+<p>The degree of mutation depends on the mutator. Some might introduce only a small change in the seed, like a couple of bytes or so, which creates a large corpus of similar test cases. Others might introduce changes so drastic that two generated test cases can&rsquo;t be claimed to have come from the same seed. Which mutator to use is generally dictated by the target application.</p>
+<p>The thing to note here is that this method does not respect the grammar of the file, that is, the random byte getting modified might belong to a format element, for example the ‘h’ in “<!-- raw HTML omitted -->”. This might cause an input to become invalid in cases where file format/grammar of the input is important.</p>
+<h3 id="template-based">Template based</h3>
+<p>The input is generated completely from scratch by a fuzzer that is aware of the input model, that is, adheres to a specified ruleset. It doesn&rsquo;t depend on a pre-existing corpus of seeds. For such a task, complex methods like machine learning models might need to be employed to provide effective test cases. For example, a machine learning model can be trained to generate varying PDFs for a PDF parser we might want to fuzz. With enough data, the model could learn the grammatical syntax of the PDF file format and produce test cases which are valid PDF files.</p>
+<h3 id="brute-force">Brute Force</h3>
+<p>Input generation is completely random.</p>
+<h3 id="coverage-guided">Coverage Guided</h3>
+<p>The fuzzing environment is set up in a way that allows us to record the parts of the program that are being covered by the input and mark the ones that trigger new path (interesting inputs). When a new path is discovered, mutation can be performed on that particular input to ensure that the new test cases cover at least that much ground. The code coverage graph is thus an increasing graph.</p>
+<p>For example, in the figure, once <em>input[0]</em> is found out to be &lsquo;<em>P&rsquo;</em>, mutation can be performed on the input that triggered this path to make sure this stage is always passed and that we are testing for the subsequent bytes.</p>
+<p><img src="/Fuzzing_Approaches/image.png" alt="">
+<em>Coverage guided fuzzing.</em></p>
+<h2 id="input-structure">Input Structure</h2>
+<p>Fuzzers are used to generate all sorts of test cases. Some test cases might be valid, while others not. A valid test case is the one which is accepted by the target application. The chances of a generated seed being valid is inversely proportional to the complexity of the valid input format.</p>
+<h3 id="smart-fuzzer">Smart Fuzzer</h3>
+<p>The class of fuzzers that recognizes the input model to make sure that most of the test cases generated are accepted. If the input model adheres to a certain file format, then the fuzzer would employ certain production rules to make sure that the test cases generated adhere to the required file format. If the input model can be represented as an <strong>AST</strong> (<strong>Abstract Syntax Tree</strong>), then the fuzzer would only employ transformations that randomly move complete set of nodes from one point to another.</p>
+<h3 id="dumb-fuzzer">Dumb Fuzzer</h3>
+<p>The class of fuzzers that do not require an input model and can be used to universally generate test cases for a wide variety of applications. However, their usability generally goes down with increasing input model complexity, since flipping random bytes would not care about maintaining a format in the generated test case.</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Introduction</title>
+            <link>https://hexterisk.github.io/blog/posts/2020/09/05/introduction/</link>
+            <pubDate>Sat, 05 Sep 2020 00:00:00 +0000</pubDate>
+            
+            <guid>https://hexterisk.github.io/blog/posts/2020/09/05/introduction/</guid>
+            <description>Introduction Fuzzing, or Fuzz Testing, is an automated software testing technique where a target application is placed in an execution environment. An input generation technique is employed to create unique and varying inputs(test cases) for the target. These new inputs are continuously sent to the target and the resultant behavior is observed.
+NOTE: the phrases “test cases” and “inputs” can be used interchangeably.
+Fuzzing cycle.
+Either the program will be able to handle the provided input just fine, or it will enter an invalid state of execution(mostly a crash) and you&amp;rsquo;ll have a bug report on your hand.</description>
+            <content type="html"><![CDATA[<h1 id="introduction">Introduction</h1>
+<p><strong>Fuzzing</strong>, or <strong>Fuzz Testing</strong>, is an automated software testing technique where a target application is placed in an execution environment. An input generation technique is employed to create unique and varying inputs(test cases) for the target. These new inputs are continuously sent to the target and the resultant behavior is observed.</p>
+<p>NOTE: the phrases “test cases” and “inputs” can be used interchangeably.</p>
+<p><img src="/Fuzzing_Introduction/a.png" alt="">
+<em>Fuzzing cycle.</em></p>
+<p>Either the program will be able to handle the provided input just fine, or it will enter an invalid state of execution(mostly a crash) and you&rsquo;ll have a bug report on your hand. It&rsquo;s a continuous, cyclic process.</p>
+<h4 id="advantages">Advantages</h4>
+<ol>
+<li>Faster than manual source code review.</li>
+<li>Computing resources are cheaper than a human.</li>
+<li>Can reveal bugs missed in audit.</li>
+<li>Could be run endlessly with the development cycle itself.</li>
+<li>Scalable and easy to manage.</li>
+</ol>
+<h4 id="disadvantages">Disadvantages</h4>
+<ol>
+<li>No guarantee for bugs.</li>
+<li>Chance of finding a bug decreases with the depth of the path of execution.</li>
+<li>Writing harnesses and preparing the environment of execution for the target can be complicated.</li>
+</ol>
+<p>The aim of fuzzing is to test the program under obscure and extreme cases. You should never replace unit, integration and system tests with fuzzing since the target still needs to be tested for cases with normal input. Instead, supplement the tests with fuzzing for the best results.</p>
+<p>Fuzzing can be resource intensive, while the resources might be constrained. In such cases, you need to find a balance between generating new test cases, executing the program, target constraints, performing sanitation and finding bugs. It&rsquo;s an optimization problem. The picture and the decision making gets clearer with the understanding of different forms of fuzzing and their uses cases.</p>
+<p>The target could be a binary, a kernel or even a protocol. The concept is versatile and adaptable to all scenarios, as long as it accepts an input.</p>
+<h2 id="bugs">Bugs</h2>
+<p>Generally, the types of bugs discovered by a fuzzing process are as follows:</p>
+<ul>
+<li>Memory management issues.</li>
+<li>Assertion violations.</li>
+<li>Incorrect null handling.</li>
+<li>Faulty exception handling.</li>
+<li>Deadlock states.</li>
+<li>Infinite loops.</li>
+<li>Undefined behaviors.</li>
+<li>Incorrect resource management.</li>
+</ul>
+<p>Some issues like deadlocks and assertion violations can be easily verified since the result of the bug is instantly visible, while some bugs like incorrect memory management may not be as prominent since they might not result in an invalidated state.</p>
+]]></content>
+        </item>
         
         <item>
             <title>Classification of Malware Traffic using CNNs</title>
@@ -8457,153 +8686,6 @@ echo <span style="color:#e6db74">&#34;Mongo users created.&#34;</span>
 <p><code>mongo -u USERNAME -p PASSWORD IPAddress/DATABASE_NAME</code></p>
 <p><img src="/Authenticated_Mongodb/12_image.png" alt="">
 <em>Connect to the container.</em></p>
-]]></content>
-        </item>
-        
-        <item>
-            <title></title>
-            <link>https://hexterisk.github.io/blog/posts/1/01/01/</link>
-            <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-            
-            <guid>https://hexterisk.github.io/blog/posts/1/01/01/</guid>
-            <description>Principles of Symbolic Execution Symbolic Execution, or symbex, is a software analysis technique that expresses program state in terms of logical formulas that you can automatically reason about to answer complex questions about a program’s behavior. Can automatically increase the code coverage of dynamic analyses by generating new inputs that lead to unexplored program paths. Apply it sparingly and carefully because of scalability issues.
- Symbex executes (or emulates) an application with symbolic values.</description>
-            <content type="html"><![CDATA[<h1 id="principles-of-symbolic-execution">Principles of Symbolic Execution</h1>
-<p><strong>Symbolic Execution</strong>, or <strong>symbex</strong>, is a software analysis technique that expresses program state in terms of logical formulas that you can automatically reason about to answer complex questions about a program’s behavior. Can automatically increase the code coverage of dynamic analyses by generating new inputs that lead to unexplored program paths. Apply it sparingly and carefully because of scalability issues.</p>
-<ul>
-<li>Symbex executes (or emulates) an application with <strong>symbolic values.</strong>
-<ul>
-<li><strong>Symbolic values</strong> represent a domain covering possible concrete values, represented by symbols like <em>φ</em>.</li>
-</ul>
-</li>
-<li>Symbolic execution computes logical formulas over these symbols. These formulas represent the operations performed on the symbols during execution and describe limits for the range of values the symbols can represent.
-<ul>
-<li>Many symbex engines maintain the symbols and formulas as metadata in addition to concrete values rather than replacing the concrete values.</li>
-</ul>
-</li>
-<li>The collection of symbolic values and formulas that a symbex engine maintains is called the <strong>Symbolic State</strong>.</li>
-<li>Symbex engine computes two different kinds of formulas over these symbolic values: a set of <strong>symbolic expressions</strong> and a <strong>path constraint.</strong></li>
-</ul>
-<h2 id="symbolic-expressions">Symbolic Expressions</h2>
-<p>A symbolic expression (<em>φj</em> , with <em>j ∈ N)</em> corresponds either to a symbolic value <em>αi</em> or to some mathematical combination of symbolic expressions, such as <em>φ3 = φ1 + φ2</em>.</p>
-<ul>
-<li><strong>Symbolic Expression Store</strong> (<em>σ</em>) is the set of all the symbolic expressions used in the symbolic execution.</li>
-<li>Symbex maintains a mapping of variables (or in the case of binary symbex, registers and memory locations) to symbolic expression.</li>
-<li>I refer to the combination of the path constraint and all symbolic expressions and mappings as the <strong>symbolic state</strong>.</li>
-</ul>
-<h2 id="path-constraint">Path Constraint</h2>
-<p>A path constraint (π) encodes the limitations imposed on the symbolic expressions by the branches taken during execution. For instance, if the symbolic execution takes a branch if(x &lt; 5) and then another branch if(y &gt;= 4), where x and y are mapped to the symbolic expressions φ1 and φ2, respectively, the path constraint formula becomes φ1 &lt; 5 ∧ φ2 ≥ 4. </p>
-<ul>
-<li>Path constraints are sometimes referred to as <strong>Branch Constraints</strong>.</li>
-</ul>
-<p>A solution (possible concrete values) to a constraint which can lead the concrete execution of the program to the desired point is called a <strong>model</strong>. Models are computed automatically with a special program called a <strong>constraint solver</strong>, which is capable of solving for the symbolic values such that all constraints and symbolic expressions are satisfied. In some cases, the solver might also report that no solution exists, meaning that the path is unreachable. In general, it’s not feasible to cover all paths through a nontrivial program since the number of possible paths increases exponentially with the number of branches.</p>
-<p><img src="Principles%20of%20Symbolic%20Execution/image.png" alt=""></p>
-<p>Path constraints and symbolic state for all paths in the example function.</p>
-<pre><code>➊ 	x := int(argv[0]), y := int(argv[1])
-➋ 	z := x + y
-➌ 	if x &gt;= 5:
-        foo(x, y, z)
-        y := y + z
-        if y &lt; x: baz(x, y, z)
-        else: qux(x, y, z)
-➍ 	else: bar(x, y, z)
-</code></pre>
-<p>Step ➊ is reading <em>x</em> and <em>y</em> from user input.</p>
-<ul>
-<li>The path constraint <em>π</em> is initially set to <em>T</em>(tautology). This shows that no branches have yet been executed, so no constraints are imposed.</li>
-<li>Symbolic expression store <em>σ</em> is initially the empty set. After reading x, the symbex engine creates a new symbolic expression <em>φ1 = α1</em>, which corresponds to an unconstrained symbolic value that can represent any concrete value, and maps x to that expression. Reading y causes an analogous effect, mapping y to <em>φ2 = α2</em>.</li>
-</ul>
-<p>Step ➋ is computing <em>z = x + y.</em></p>
-<ul>
-<li>The symbex engine maps z to a new symbolic expression <em>φ3 = φ1 + φ2.</em></li>
-</ul>
-<p>Step ➌ checks conditional if(x &gt;= 5). </p>
-<ul>
-<li>The engine adds the branch constraint <em>φ1 ≥ 5</em> to <em>π</em> and continues the symbolic execution at the branch target, which is the call to foo.</li>
-<li>Because you’ve now reached a call to foo, you can solve the expressions and branch constraints to find concrete values for x and y that lead to this foo invocation.</li>
-<li><em>x</em> and <em>y</em> map to the symbolic expressions <em>φ1 = α1</em> and <em>φ2 = α2</em>, respectively, where <em>α1</em> and <em>α2</em> are the only symbolic values.</li>
-<li>Only one branch constraint exists: <em>φ1 ≥ 5</em>.</li>
-<li>Thus, a possible model to reach this call to foo is <em>α1 = 5 ∧ α2 = 0</em>.
-<ul>
-<li><em>α2</em> could take any value because it doesn’t occur in any of the symbolic expressions that appear in the path constraint.</li>
-</ul>
-</li>
-</ul>
-<p>Step ➍ takes the <em>else</em> case.</p>
-<ul>
-<li>To reach the call to bar instead, avoid the if(x &gt;= 5) branch by changing the path constraint <em>φ1 ≥ 5</em> to <em>φ1 &lt; 5</em> and ask the constraint solver for a new model.</li>
-<li>Thus, a possible model would be <em>α1 = 4 ∧ α2 = 0</em>.</li>
-</ul>
-<h2 id="variants">Variants</h2>
-<p><img src="Principles%20of%20Symbolic%20Execution/1_image.png" alt=""></p>
-<p>Symbolic execution design dimensions. </p>
-<h3 id="static-symbolic-execution-sse">Static Symbolic Execution (SSE)</h3>
-<ul>
-<li>Emulates part of a program, propagating symbolic state with each emulated instruction.</li>
-<li>Either analyzes all possible paths exhaustively or uses heuristics to decide which paths to traverse.</li>
-<li>Allows analyzing programs that can’t run on the system CPU, like analyzing ARM binaries on x86.</li>
-<li>Exploring both directions at every branch isn’t always possible because of scalability issues.
-<ul>
-<li>While heuristics can be used to limit the number of explored branches, it’s non-trivial to come up with effective heuristics that capture all the interesting paths.</li>
-<li>Forks off a new symbex instance at each branch to explore both directions in parallel.</li>
-</ul>
-</li>
-<li>Parts of an application’s behavior can be hard to model correctly with SSE, specifically when control flows outside the application to software components that the symbolic execution engine doesn’t control, such as the kernel or a library. Happens when a program issues a system call or library call, receives a signal, tries to read an environment variable, and so on.</li>
-</ul>
-<h4 id="effect-modeling">Effect Modeling</h4>
-<p>Models the effects of external interactions like system calls and library calls. These models are a sort of “summary” of the effects that a system or library call has on the symbolic state. Performance-wise, effect modeling is a relatively cheap solution. However, creating accurate models for all possible environment interactions—including with the network, the filesystem, and other processes—is a monumental task, which may involve creating a simulated symbolic filesystem, symbolic network stack, and so on. To make matters worse, the models have to be rewritten to simulate a different operating system or kernel. Models are therefore often incomplete or inaccurate in practice.</p>
-<h4 id="direct-external-interactions">Direct External Interactions</h4>
-<p>Instead of modeling the effects of a system call, the symbex engine may actually make the system call and incorporate the concrete return value and side effects into the symbolic state. Leads to problems when multiple paths that perform competing external interactions are explored in parallel. For instance, if multiple paths operate on the same physical file in parallel, this may lead to consistency issues if the changes conflict. Can be resolved by cloning the complete system state for each explored path, but that solution is extremely memory intensive. Moreover, because external software components cannot handle symbolic state, interacting directly with the environment means an expensive call to the constraint solver to compute suitable concrete values that can be passed to the system or library call that is being invoked.</p>
-<h3 id="dynamic-symbolic-execution-dse">Dynamic Symbolic Execution (DSE)</h3>
-<p>Known as <strong>Concolic Execution</strong>, as in “concrete symbolic execution” because this approach uses concrete state to drive the execution while maintaining symbolic state as metadata.</p>
-<ul>
-<li>Runs only one path at once, as determined by the concrete inputs. To explore different paths, it “flips” the path constraints and then uses the constraint solver to compute concrete inputs that lead to the alternative branch. These concrete inputs can be used to start a new concolic execution that explores the alternative path.</li>
-<li>Much more scalable since it doesn’t maintain multiple parallel execution states.</li>
-<li>External interactions are run concretely. This doesn’t lead to consistency issues because concolic execution doesn’t run different paths in parallel.</li>
-<li>Constraints it computes tend to involve fewer variables since it runs only a part at a time, making the constraints easier and far faster to solve.</li>
-<li>Code coverage achieved by concolic execution depends on the initial concrete inputs. Since concolic execution “flips” only a small number of branch constraints at once, it can take a long time to reach interesting paths if these are separated by many flips from the initial path.</li>
-<li>Less trivial to symbolically execute only part of a program, although it can be implemented by dynamically enabling or disabling the symbolic engine at runtime.</li>
-</ul>
-<h3 id="online-vs-offline">Online vs. Offline</h3>
-<p>Symbex engines that explore multiple program paths in parallel are called <strong>online</strong>, while engines that explore only one path at a time are called <strong>offline</strong>.</p>
-<ul>
-<li>Online symbex doesn’t execute the same instruction multiple times, thus making it efficient but making it memory-intensive to keep track of all states in parallel. In contrast, offline implementations often analyze the same chunk of code multiple times, having to run the entire program from the start for every program path.</li>
-<li>Online symbex attempt to keep the memory overhead to a minimum by merging identical parts of program states together, splitting them only when they diverge. This optimization is known as <strong>copy on write</strong> because it copies merged states when a write causes them to diverge, creating a fresh private copy of the state for the path issuing the write.</li>
-</ul>
-<h3 id="symbolic-state">Symbolic State</h3>
-<p>Engines provide the option of omitting symbolic state for some registers and memory locations.</p>
-<ul>
-<li>By tracking symbolic information only for the selected state while keeping the rest of the state concrete, size of the state and the complexity of the path constraints and symbolic expressions can be reduced. This approach is more memory efficient and faster because the constraints are easier to solve.</li>
-<li>The trade-off is choosing which state to make symbolic and which to make concrete only, and this decision is not always trivial. Choosing incorrectly may cause the symbex tool to report unexpected results.</li>
-<li>Pointers can be symbolic, meaning that their value is not concrete but partly undetermined. This introduces a difficult problem when memory loads or stores use a symbolic address.</li>
-</ul>
-<h4 id="fully-symbolic-memory">Fully Symbolic Memory</h4>
-<p>Solutions based on fully symbolic memory attempt to model all the possible outcomes of a memory load or store operation, forking the state into multiple copies to reflect each possible outcome of the memory operation. For instance, let’s suppose we’re reading from an array a using a symbolic index φi , with the constraint that φi &lt; 5. The state-forking approach would then fork the state into five copies: one for the situation where φi = 0 (so that a[0] is read), another one for φi = 1, and so on. Another way to achieve the same effect is to use constraints with if-then-else expressions supported by some constraint solvers. These expressions are analogous to if-then-else conditionals used in programming languages. In this approach, the same array read is modeled as a conditional constraint that evaluates to the symbolic expression of a[i] if φi = i. This approach suffers from state explosion or extremely complicated constraints if any memory accesses use unbounded addresses. These problems are more prevalent in binary-level symbex than source-level symbex because bounds information is not readily available in binaries.</p>
-<h4 id="address-concretization">Address Concretization</h4>
-<p>To avoid the state explosion of fully symbolic memory, unbounded symbolic addresses can be replaced with concrete ones.</p>
-<ul>
-<li>In concolic execution, the symbex engine can simply use the real concrete address.</li>
-<li>In static symbolic execution, the engine will have to use a heuristic to decide on a suitable concrete address.</li>
-</ul>
-<p>It reduces the state space and complexity of constraints considerably, but the downside is that it doesn’t fully capture all possible program behaviors, which may lead the symbex engine to miss some possible outcomes.</p>
-<h3 id="path-coverage">Path Coverage</h3>
-<p>Classic symbolic execution explores all program paths, forking off a new symbolic state at every branch. This approach doesn’t scale because the number of possible paths increases exponentially with the number of branches in the program; this is the well-known <strong>path explosion problem</strong>. In fact, the number of paths may be infinite if there are unbounded loops or recursive calls. For nontrivial programs, a different approach is required, such as using heuristics to decide which paths to explore. </p>
-<ul>
-<li>A common heuristic is <strong>DFS</strong> (<strong>Depth-First Search</strong>), which explores one complete program path entirely before moving on to another path, under the assumption that deeply nested code is likely more “interesting” than superficial code.</li>
-<li><strong>BFS</strong> (<strong>Breadth-First Search</strong>) does the opposite, exploring all paths in parallel but taking longer to reach deeply nested code.</li>
-</ul>
-<p>Concolic execution explores only one path at a time as driven by concrete inputs, but can also be combined with the heuristic path exploration approach or even with the approach of exploring all paths. The easiest way to explore multiple paths is to run the application repeatedly, each time with new inputs discovered by “flipping” branch constraints in the previous run. A more sophisticated approach is to take snapshots of the program state so that after exploring one path, the snapshot can restore the state to an earlier point in the execution and explore another path from there.</p>
-<h2 id="optimisation">Optimisation</h2>
-<h3 id="simplifying-constraints">Simplifying Constraints</h3>
-<p>Simplifying constraints as much as possible to keep usage of the constraint solver to an absolute minimum can reduce computation extensively since constraint solving is the most computationally expensive aspect of symbex. Thus, aim to reduce the complexity of the constraint solver’s task, thereby speeding up the symbolic execution, without significantly affecting the accuracy of the analysis.</p>
-<h4 id="limiting-the-number-of-symbolic-variables">Limiting the Number of Symbolic Variables</h4>
-<p>Simplifying constraints reduces the number of symbolic variables and make the rest of the program state concrete only. However, randomly concretizing state may result in wrong state to be concretized causing your symbex tool to miss possible solutions to the problem. Using a pre-processing pass that employs taint analysis and fuzzing to find inputs that cause dangerous effects, such as a corrupted return address, and then using symbex to find out whether there are any inputs that corrupt that return address such that it allows exploitation, can save a lot of computation. Using relatively cheap techniques such as DTA and fuzzing to find out whether there’s a potential vulnerability and using symbolic execution only in potentially vulnerable program paths to find out how to exploit that vulnerability in practice is a much more efficient approach.</p>
-<h4 id="limiting-the-number-of-symbolic-operations">Limiting the Number of Symbolic Operations</h4>
-<p>Symbolically execute only those instructions that are relevant. For instance, exploiting an indirect call through the rax register involve focusing on only the instructions that contribute to rax’s value. Thus, computing a backward slice to find the instructions contributing to rax and then symbolically emulating the instructions in the slice reduces number of symbolic operations in contrast to emulating all instructions.</p>
-<h4 id="simplifying-symbolic-memory">Simplifying Symbolic Memory</h4>
-<p>Full symbolic memory can cause an explosion in the number of states or the size of the constraints if there are any unbounded symbolic memory accesses. Impact of such memory accesses on constraint complexity can be reduced by concretizing them.</p>
-<h3 id="avoiding-the-constraint-solver">Avoiding the Constraint Solver</h3>
-<p>There are practical ways to limit the need for constraint solving in symbex tools, such as using pre-processing passes to find potentially interesting paths and inputs to explore with symbex and pinpoint the instructions affected by these inputs. This helps in avoiding needless constraint solver invocations for uninteresting paths or instructions. Symbex engines and constraint solvers may also cache the results of previously evaluated (sub)formulas, thereby avoiding the need to solve the same formula twice.</p>
 ]]></content>
         </item>
         

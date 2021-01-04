@@ -1,0 +1,57 @@
+{
+	"formatVersion": 1,
+	"appVersion": "0.45.4",
+	"files": [
+		{
+			"isClone": false,
+			"noteId": "Ev1WQZJKcMUN",
+			"notePath": [
+				"Ev1WQZJKcMUN"
+			],
+			"title": "Approaches",
+			"notePosition": 30,
+			"prefix": null,
+			"isExpanded": 0,
+			"type": "text",
+			"mime": "text/html",
+			"attributes": [
+				{
+					"type": "relation",
+					"name": "imageLink",
+					"value": "TQmi9D2VY6ek",
+					"isInheritable": false,
+					"position": 2
+				}
+			],
+			"format": "markdown",
+			"dataFileName": "Approaches.md",
+			"dirFileName": "Approaches",
+			"children": [
+				{
+					"isClone": false,
+					"noteId": "TQmi9D2VY6ek",
+					"notePath": [
+						"Ev1WQZJKcMUN",
+						"TQmi9D2VY6ek"
+					],
+					"title": "image.png",
+					"notePosition": 0,
+					"prefix": null,
+					"isExpanded": 0,
+					"type": "image",
+					"mime": "image/jpg",
+					"attributes": [
+						{
+							"type": "label",
+							"name": "originalFileName",
+							"value": "image.png",
+							"isInheritable": false,
+							"position": 1000
+						}
+					],
+					"dataFileName": "image.png"
+				}
+			]
+		}
+	]
+}

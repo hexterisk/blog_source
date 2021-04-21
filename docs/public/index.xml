@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pwn the world.</title>
+    <link>https://hexterisk.github.io/blog/</link>
+    <description>Recent content on Pwn the world.</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Wed, 16 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://hexterisk.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Sanitation</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/09/16/sanitation/</link>
+      <pubDate>Wed, 16 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/09/16/sanitation/</guid>
+      <description>Sanitation tools, or sanitizers, are a set of libraries that can directly observe and flag an incorrect behavior for a certain class of violation at runtime.
+Sanitizers are employed by instrumenting the source code. The compiled binary, therefore, essentially has certain tripwires that catch any invalid or incorrect behavior and reports it. The fact that it only brings about minimal performance overhead allows it to be coupled with fuzzing techniques, a powerful combination.</description>
+    </item>
+    
+    <item>
+      <title>Approaches</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/09/09/approaches/</link>
+      <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/09/09/approaches/</guid>
+      <description>Fuzzing can be segregated into different types based on the facet of the process we look from.
+Program Structure Knowledge of the internals of the target application directly results into maintaining a certain structure to the fuzzing process, which can result into achieving a higher code coverage in a shorter span of time. This results in a much more effective fuzzing exercise.
+Blackbox Fuzzing This approach involves the assumption that the target is a black box since we don&amp;rsquo;t have any knowledge of the internal behavior, source code or the implementation of the target application, hence the name.</description>
+    </item>
+    
+    <item>
+      <title>Introduction</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/09/05/introduction/</link>
+      <pubDate>Sat, 05 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/09/05/introduction/</guid>
+      <description>Fuzzing, or Fuzz Testing, is an automated software testing technique where a target application is placed in an execution environment. An input generation technique is employed to create unique and varying inputs(test cases) for the target. These new inputs are continuously sent to the target and the resultant behavior is observed.
+NOTE: the phrases “test cases” and “inputs” can be used interchangeably.
+Fuzzing cycle.
+Either the program will be able to handle the provided input just fine, or it will enter an invalid state of execution(mostly a crash) and you&amp;rsquo;ll have a bug report on your hand.</description>
+    </item>
+    
+    <item>
+      <title>Classification of Malware Traffic using CNNs</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/08/22/classification-of-malware-traffic-using-cnns/</link>
+      <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/08/22/classification-of-malware-traffic-using-cnns/</guid>
+      <description>Classification of malware traffic has been a hot topic ever since machine learning was introduced to the world of network security domain. There are a number of published researches that explore various techniques to extract features from the traffic and use it classification.
+The pre-machine learning era saw classification of traffic based on structured rule matching, DPI(Deep Packet Inspection) and Port Inspection being the most popular methods, which were typically rendered ineffective post-encryption.</description>
+    </item>
+    
+    <item>
+      <title>Classification of Malwares through Dynamic Analysis</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/08/04/classification-of-malwares-through-dynamic-analysis/</link>
+      <pubDate>Tue, 04 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/08/04/classification-of-malwares-through-dynamic-analysis/</guid>
+      <description>Malwares come in many forms. Sometimes it&amp;rsquo;s a standalone binary whereas sometimes it&amp;rsquo;s a legitimate software having a malware inside it. Sometimes it&amp;rsquo;s a binary with malformed metadata and packed bytes to throw off the analyst whereas sometimes it acts as a downloader/launcher for a more malicious binary. Information extracted from static analysis can therefore be deemed unreliable and not as accurate when compared with information extracted from dynamic analysis.</description>
+    </item>
+    
+    <item>
+      <title>Classification of Malwares through Static Analysis</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/07/20/classification-of-malwares-through-static-analysis/</link>
+      <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/07/20/classification-of-malwares-through-static-analysis/</guid>
+      <description>Static analysis is the analysis of an executable file on a structural bases without executing it in controlled environment. It is the analysis of the executable&amp;rsquo;s static attributes such as different sections and memory characteristics.
+Therefore, static analysis of a PE allows extraction of a lot of metadata that can be useful in further analysis such as names of sections, imported DLLs and strings present which gives an early idea of the functions performed by the binary in question.</description>
+    </item>
+    
+    <item>
+      <title>Dockerise MySQL &#43; phpMyAdmin</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/07/02/dockerise-mysql-phpmyadmin/</link>
+      <pubDate>Thu, 02 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/07/02/dockerise-mysql-phpmyadmin/</guid>
+      <description>A common requirement in a large number of software projects is a relational database with an easy to use management tool. Considering how often a developer needs this, setting it up everytime from scratch can be a drag. However, with the advent of containerisation, we can have a setup off the ground in a couple of minutes, whether it&amp;rsquo;s a development or a production environment.
+The age long discussion of MySQL versus MariaDB is something that an average developer need not bother with unless their requirement is very specific.</description>
+    </item>
+    
+    <item>
+      <title>Dynamic Taint Analysis and Pin</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/06/12/dynamic-taint-analysis-and-pin/</link>
+      <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/06/12/dynamic-taint-analysis-and-pin/</guid>
+      <description>Dynamic Taint Analysis is a technique used to discover what part of memory or register are controllable by the some data we are interested, such as the user input, at a given program state. This is done by marking the interested data. There on after, any piece of data that comes in contact with the tainted data by any means, like getting computed from the tainted data, is tainted too, thus spreading the taint throughout the execution.</description>
+    </item>
+    
+    <item>
+      <title>Dynamic Binary Instrumentation and Pin</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/06/03/dynamic-binary-instrumentation-and-pin/</link>
+      <pubDate>Wed, 03 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/06/03/dynamic-binary-instrumentation-and-pin/</guid>
+      <description>Dynamic Binary Instrumentation is the process of monitoring or measuring a binary&amp;rsquo;s execution and its behavior, such as resource usage, during runtime. It allows us to focus on specific parts of a binary for various purposes such as vulnerability analysis, dynamic tainting and state analysis.
+We will skip over Source Instrumentation since it requires source code of the application, which is pretty rare in real world scenarios.
+Instrumentation Code The technique requires injecting Instrumentation Code into a running binary.</description>
+    </item>
+    
+    <item>
+      <title>Source Code Instrumentation and LLVM</title>
+      <link>https://hexterisk.github.io/blog/posts/2020/05/26/source-code-instrumentation-and-llvm/</link>
+      <pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://hexterisk.github.io/blog/posts/2020/05/26/source-code-instrumentation-and-llvm/</guid>
+      <description>Source Code Instrumentation adds specific code meant for instrumentation/analysis, called Instrumentation Code, to the source files of the program under consideration. The source files are then compiled and executed. Since the instrumentation code is integrated into the binary itself, the output from the execution includes the dump of the instrumentation code which can then be used for further analysis and component testing.
+Intermediate Representations Representation of a program in a state that lies between the source code and the compiled binary(specifically, the assembly code).</description>
+    </item>
+    
+  </channel>
+</rss>

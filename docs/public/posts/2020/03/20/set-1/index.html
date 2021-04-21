@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:hexterisk]">
+<meta name="description" content="Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
+Challenge 1: Convert hex to base64 Link
+ The string:
+49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f697 36f6e6f7573206d757368726f6f6d
+Should produce:
+SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t
+So go ahead and make that happen.
+You&amp;rsquo;ll need to use this code for the rest of the exercises.
+ Data, essentially raw bytes/binary (0, 1), can be represented in various forms and formats as required. These representations may be used for simply the presentation of data, or may be required by some protocol so as to prevent misinterpretation of data." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://hexterisk.github.io/blog/posts/2020/03/20/set-1/" />
+
+
+    <title>
+        
+            Set 1: Pwn the world.  — A noob&#39;s attempt at blogging.
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.d644853e3e89ab1ec568894a9a3df34b7e4e5bfd66060890b1e4297657fd91e8.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Set 1">
+<meta itemprop="description" content="Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
+Challenge 1: Convert hex to base64 Link
+ The string:
+49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f697 36f6e6f7573206d757368726f6f6d
+Should produce:
+SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t
+So go ahead and make that happen.
+You&rsquo;ll need to use this code for the rest of the exercises.
+ Data, essentially raw bytes/binary (0, 1), can be represented in various forms and formats as required. These representations may be used for simply the presentation of data, or may be required by some protocol so as to prevent misinterpretation of data."><meta itemprop="datePublished" content="2020-03-20T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-03-20T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="4045"><meta itemprop="image" content="https://hexterisk.github.io/blog"/>
+<meta itemprop="keywords" content="Matasano,cryptography,AES,ECB,xor,base64," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
+
+<meta name="twitter:title" content="Set 1"/>
+<meta name="twitter:description" content="Refer to this repository for solution scripts and the IPython Notebook pertaining to the explanations here.
+Challenge 1: Convert hex to base64 Link
+ The string:
+49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f697 36f6e6f7573206d757368726f6f6d
+Should produce:
+SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t
+So go ahead and make that happen.
+You&rsquo;ll need to use this code for the rest of the exercises.
+ Data, essentially raw bytes/binary (0, 1), can be represented in various forms and formats as required. These representations may be used for simply the presentation of data, or may be required by some protocol so as to prevent misinterpretation of data."/>
+
+
+
+    <meta property="article:section" content="Cryptopals" />
+
+
+
+    <meta property="article:published_time" content="2020-03-20 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$cd ~/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>19 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://hexterisk.github.io/blog/posts/2020/03/20/set-1/">Set 1</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <p>Refer to this <a href="https://github.com/hexterisk/cryptopals-solutions">repository</a> for solution scripts and the IPython Notebook pertaining to the explanations here.</p>
+<h3 id="challenge-1-convert-hex-to-base64">Challenge 1: Convert hex to base64</h3>
+<p><a href="https://cryptopals.com/sets/1/challenges/1">Link</a></p>
+<blockquote>
+<p>The string:<br>
+<strong>49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f697</strong>  <strong>36f6e6f7573206d757368726f6f6d</strong><br>
+Should produce:<br>
+<strong>SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t</strong><br>
+So go ahead and make that happen.<br>
+You&rsquo;ll need to use this code for the rest of the exercises.</p>
+</blockquote>
+<p>Data, essentially raw bytes/binary (0, 1), can be represented in various forms and formats as required. These representations may be used for simply the presentation of data, or may be required by some protocol so as to prevent misinterpretation of data.</p>
+<h6 id="hex">Hex</h6>
+<p>Hexadecimal is a representation format where the base for the numbers is 16. This implies that our notation consists of 16 digits (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, a, b, c, d, e and f), instead of the usual 10 that we use in our base 10 system.</p>
+<p>It is preferable over the standard binary that computers store at the low level because:</p>
+<ul>
+<li>Readability: Hexadecimal in it&rsquo;s set uses digits that overlap with the common base-10 counting system and therefore it&rsquo;s easier to read and write.</li>
+<li>Higher information density: Any number between 0 and 255 can be represented using 2 hex digits, while binary would require 8 digits for the same. This poses a problem as numbers start to get bigger.</li>
+</ul>
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/4_image.png" alt="">
+<em>Each purple tick is when a new digit is added when representing numbers.</em></p>
+<p>It is preferable over the standard decimal representation that we generally use because binary and decimal never align. However, binary and hex do in fact align every 4 binary digits. This implies that a hexadecimal digit can be represented by 4 binary digits. The main reason for this is the fact that binary is a base 2 system, and therefore is compatible with any system with the specification 2ⁿ (hex is 2⁴).</p>
+<h5 id="base64">Base64</h5>
+<p>An encoding scheme generally used when data needs to be transferred or stored, devised to support MIME (specifically embedding media assets inside textual assets such as HTML). Each base64 digit represents 6-bit of data, therefore a 24-bit data is represented by 4 base64 digits. Binary aligns with base64 since it is of the form 2ⁿ (base64 is 2⁶).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Imports</span>
+<span style="color:#f92672">from</span> base64 <span style="color:#f92672">import</span> b64encode
+
+<span style="color:#75715e"># Given</span>
+hex_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d&#34;</span>
+target_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t&#34;</span>
+</code></pre></div><p>Convert given hex string to bytes.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">byte_string <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(hex_string)
+</code></pre></div><p>Convert this byte string to a base64 encoded string.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">base64_byte_string <span style="color:#f92672">=</span> b64encode(byte_string)
+</code></pre></div>
+
+<div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
+
+
+<h3 id="challenge-2-fixed-xor">Challenge 2: Fixed XOR</h3>
+<p><a href="https://cryptopals.com/sets/1/challenges/2">Link</a></p>
+<blockquote>
+<p>Write a function that takes two equal-length buffers and produces their XOR combination.<br>
+If your function works properly, then when you feed it the string:<br>
+<strong>1c0111001f010100061a024b53535009181c</strong><br>
+&hellip; after hex decoding, and when XOR&rsquo;d against:<br>
+<strong>686974207468652062756c6c277320657965</strong><br>
+&hellip; should produce:<br>
+<strong>746865206b696420646f6e277420706c6179</strong></p>
+</blockquote>
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/5_image.png" alt="">
+<em>The functionality is as the name suggests, ‘exclusive OR’: A ⊕ B returns true if and only if exactly one of A and B is true.</em></p>
+<p>This could also be said to be telling the difference between the two:<br>
+A ⊕ B = ‘where the bits differ’. This clearly implies that A ⊕ A = 0 (byte A does not differ from itself in any bit), and,<br>
+A ⊕ 0 = A (byte A differs from 0 precisely in the bit positions that equal 1) and is also useful when thinking about toggling and encryption later on.</p>
+<p>In cryptography, the simple XOR cipher is a type of additive cipher, an encryption algorithm that operates according to the following properties:</p>
+<ul>
+<li>Commutative: A ⊕ B = B ⊕ A</li>
+<li>Associative: A ⊕ ( B ⊕ C ) = ( A ⊕ B ) ⊕ C</li>
+<li>Identity element: A ⊕ 0 = A</li>
+<li>Self-inverse: A ⊕ A = 0</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Imports</span>
+<span style="color:#f92672">from</span> base64 <span style="color:#f92672">import</span> b64encode
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Given</span>
+hex_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;1c0111001f010100061a024b53535009181c&#34;</span>
+key_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;686974207468652062756c6c277320657965&#34;</span>
+target_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;746865206b696420646f6e277420706c6179&#34;</span>
+</code></pre></div><p>Function to calculate the xor of two byte strings.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">xor_bytes</span>(enc1: bytes, enc2: bytes) <span style="color:#f92672">-&gt;</span> bytes:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    xor_bytes computes the xor of two byte strings and returns the final value.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    cipher <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">.</span>join([bytes(b1<span style="color:#f92672">^</span>b2 <span style="color:#66d9ef">for</span> b1, b2 <span style="color:#f92672">in</span> zip(enc1, enc2))])
+    <span style="color:#66d9ef">return</span> cipher
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">byte_string <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(hex_string)
+key_byte_string <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(key_string)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">result <span style="color:#f92672">=</span> xor_bytes(byte_string, key_byte_string)<span style="color:#f92672">.</span>hex()
+</code></pre></div><p>Verify the solution.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">assert</span> result <span style="color:#f92672">==</span> target_string
+</code></pre></div>
+
+<div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
+
+
+<h3 id="challenge-3-single-byte-xor-cipher">Challenge 3: Single-byte XOR cipher</h3>
+<p><a href="https://cryptopals.com/sets/1/challenges/3">Link</a></p>
+<blockquote>
+<p>The hex encoded string:<br>
+<strong>1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736</strong><br>
+&hellip; has been XOR&rsquo;d against a single character. Find the key, decrypt the message.<br>
+You can do this by hand. But don&rsquo;t: write code to do it for you. How? Devise some method for &ldquo;scoring&rdquo; a piece of English plaintext. Character frequency is a good metric. Evaluate each output and choose the one with the best score.</p>
+</blockquote>
+<p><strong>Monoalphabetic Cipher</strong> is a substitution cipher in which for a given key, the cipher alphabet for each plain alphabet is fixed throughout the encryption process.</p>
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/6_image.png" alt="">
+<em>Replace each plaintext letter with a different one a fixed number of places down the alphabet.</em></p>
+<p>For example, if &lsquo;A&rsquo; is encrypted as &lsquo;D&rsquo;, for any number of occurrence in that plaintext, &lsquo;A&rsquo; will always get encrypted to &lsquo;D&rsquo;.</p>
+<p><strong>Single-byte Xor</strong>, as the name suggests, is when a string is xored with a single byte throughout.<br>
+It&rsquo;s also known as Caesar cipher or shift cipher, it is one of the simplest and most widely known encryption techniques.<br>
+It is a type of substitution cipher in which each letter in the plaintext is replaced by a letter some fixed number of positions down the alphabet.<br>
+For example, with a left shift of 3, D would be replaced by A, E would become B, and so on.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Imports</span>
+<span style="color:#f92672">from</span> itertools <span style="color:#f92672">import</span> zip_longest
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Given</span>
+hex_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736&#34;</span>
+</code></pre></div><p>Use either of the functions to brute force the single byte xor key.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">single_byte_xor_letters</span>(ciphertext: bytes) <span style="color:#f92672">-&gt;</span> dict:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Performs xor between every possible key uptil 256 and returns the key that gives the most ascii characters.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    
+    ascii_text_chars <span style="color:#f92672">=</span> list(range(<span style="color:#ae81ff">97</span>, <span style="color:#ae81ff">122</span>)) <span style="color:#f92672">+</span> [<span style="color:#ae81ff">32</span>]
+    best_candidate <span style="color:#f92672">=</span> None
+    
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span><span style="color:#f92672">**</span><span style="color:#ae81ff">8</span>): <span style="color:#75715e"># for every possible key</span>
+        
+        <span style="color:#75715e"># converting the key from a number to a byte</span>
+        candidate_key <span style="color:#f92672">=</span> i<span style="color:#f92672">.</span>to_bytes(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;big&#34;</span>)
+        keystream <span style="color:#f92672">=</span> candidate_key<span style="color:#f92672">*</span>len(ciphertext)
+        
+        candidate_message <span style="color:#f92672">=</span> bytes([x<span style="color:#f92672">^</span>y <span style="color:#66d9ef">for</span> (x, y) <span style="color:#f92672">in</span> zip(ciphertext, keystream)])
+        nb_letters <span style="color:#f92672">=</span> sum([ x <span style="color:#f92672">in</span> ascii_text_chars <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> candidate_message])
+        
+        <span style="color:#75715e"># if the obtained message has more letters than any other candidate before</span>
+        <span style="color:#66d9ef">if</span> best_candidate <span style="color:#f92672">==</span> None <span style="color:#f92672">or</span> nb_letters <span style="color:#f92672">&gt;</span> best_candidate[<span style="color:#e6db74">&#34;nb_letters&#34;</span>]:
+            <span style="color:#75715e"># store the current key and message as our best candidate so far</span>
+            best_candidate <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;message&#34;</span>: candidate_message<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#34;utf-8&#34;</span>), <span style="color:#e6db74">&#34;nb_letters&#34;</span>: nb_letters, <span style="color:#e6db74">&#34;key&#34;</span>: candidate_key}
+    
+    <span style="color:#66d9ef">return</span> best_candidate
+</code></pre></div><p><strong>Frequency Analysis</strong> consists of counting the occurrence of each letter in a text.<br>
+It is based on the fact that, in any given piece of text, certain letters and combinations of letters occur with varying frequencies.<br>
+For instance, given a section of English language, some letters are common, while some letters are not as frequently used.</p>
+<p>When trying to decrypt a cipher text based on a substitution cipher, we can use a frequency analysis to help identify the most recurring letters in a cipher text and hence make hypothesis of what these letters have been encoded as.<br>
+This will help us decrypt some of the letters in the text. We can then recognise patterns/words in the partly decoded text to identify more substitutions.</p>
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/7_image.png" alt="">
+<em>Frequency distribution.</em></p>
+<p>We can then use the property A ⊕ ( B ⊕ A ) = B, and xor the encrypted string with the key drawn from hypothesis (from the frequency analysis) to get the original message back.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">calculate_score</span>(text: str) <span style="color:#f92672">-&gt;</span> float:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Calculates score of the given text based on a frequency chart of english alphabets.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    
+    <span style="color:#75715e"># Block for frequency analysis</span>
+    frequency_chart <span style="color:#f92672">=</span> {
+        <span style="color:#e6db74">&#39;E&#39;</span>: <span style="color:#ae81ff">12.70</span>, <span style="color:#e6db74">&#39;T&#39;</span>: <span style="color:#ae81ff">9.06</span>, <span style="color:#e6db74">&#39;A&#39;</span>: <span style="color:#ae81ff">8.17</span>, <span style="color:#e6db74">&#39;O&#39;</span>: <span style="color:#ae81ff">7.51</span>, <span style="color:#e6db74">&#39;I&#39;</span>: <span style="color:#ae81ff">6.97</span>, <span style="color:#e6db74">&#39;N&#39;</span>: <span style="color:#ae81ff">6.75</span>, <span style="color:#e6db74">&#39;S&#39;</span>: <span style="color:#ae81ff">6.33</span>, <span style="color:#e6db74">&#39;H&#39;</span>: <span style="color:#ae81ff">6.09</span>, 
+        <span style="color:#e6db74">&#39;R&#39;</span>: <span style="color:#ae81ff">5.99</span>, <span style="color:#e6db74">&#39;D&#39;</span>: <span style="color:#ae81ff">4.25</span>, <span style="color:#e6db74">&#39;L&#39;</span>: <span style="color:#ae81ff">4.03</span>, <span style="color:#e6db74">&#39;C&#39;</span>: <span style="color:#ae81ff">2.78</span>, <span style="color:#e6db74">&#39;U&#39;</span>: <span style="color:#ae81ff">2.76</span>, <span style="color:#e6db74">&#39;M&#39;</span>: <span style="color:#ae81ff">2.41</span>, <span style="color:#e6db74">&#39;W&#39;</span>: <span style="color:#ae81ff">2.36</span>, <span style="color:#e6db74">&#39;F&#39;</span>: <span style="color:#ae81ff">2.23</span>,
+        <span style="color:#e6db74">&#39;G&#39;</span>: <span style="color:#ae81ff">2.02</span>, <span style="color:#e6db74">&#39;Y&#39;</span>: <span style="color:#ae81ff">1.97</span>, <span style="color:#e6db74">&#39;P&#39;</span>: <span style="color:#ae81ff">1.93</span>, <span style="color:#e6db74">&#39;B&#39;</span>: <span style="color:#ae81ff">1.29</span>, <span style="color:#e6db74">&#39;V&#39;</span>: <span style="color:#ae81ff">0.98</span>, <span style="color:#e6db74">&#39;K&#39;</span>: <span style="color:#ae81ff">0.77</span>, <span style="color:#e6db74">&#39;J&#39;</span>: <span style="color:#ae81ff">0.15</span>,
+        <span style="color:#e6db74">&#39;X&#39;</span>: <span style="color:#ae81ff">0.15</span>, <span style="color:#e6db74">&#39;Q&#39;</span>: <span style="color:#ae81ff">0.10</span>, <span style="color:#e6db74">&#39;Z&#39;</span>: <span style="color:#ae81ff">0.07</span>, <span style="color:#e6db74">&#39; &#39;</span>: <span style="color:#ae81ff">35</span>
+    }
+    
+    score <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.0</span>
+    <span style="color:#66d9ef">for</span> letter <span style="color:#f92672">in</span> text<span style="color:#f92672">.</span>upper():
+        score <span style="color:#f92672">+=</span> frequency_chart<span style="color:#f92672">.</span>get(letter, <span style="color:#ae81ff">0</span>)
+    <span style="color:#66d9ef">return</span> score
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">single_byte_xor_score</span>(ciphertext: bytes) <span style="color:#f92672">-&gt;</span> dict:
+    max_score <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+    key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+    plaintext <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+    
+    <span style="color:#66d9ef">for</span> testkey <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">256</span>):
+        testtext <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+        <span style="color:#66d9ef">for</span> letter <span style="color:#f92672">in</span> ciphertext:
+            testtext <span style="color:#f92672">+=</span> chr(letter <span style="color:#f92672">^</span> testkey)
+        
+        cur_score <span style="color:#f92672">=</span> calculate_score(testtext)
+        <span style="color:#66d9ef">if</span> cur_score <span style="color:#f92672">&gt;</span> max_score:
+            max_score <span style="color:#f92672">=</span> cur_score
+            key <span style="color:#f92672">=</span> chr(testkey)
+            plaintext <span style="color:#f92672">=</span> testtext
+            
+    <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#34;score&#34;</span> : max_score, <span style="color:#e6db74">&#34;key&#34;</span> : key, <span style="color:#e6db74">&#34;message&#34;</span> : plaintext}
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">byte_string <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(hex_string)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Using scoring technique...&#34;</span>)
+single_byte_xor_score(byte_string)[<span style="color:#e6db74">&#39;message&#39;</span>]
+</code></pre></div><p>Using scoring technique&hellip;<br>
+&ldquo;Cooking MC&rsquo;s like a pound of bacon&rdquo;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Using ASCII counting technique...&#34;</span>)
+single_byte_xor_letters(byte_string)[<span style="color:#e6db74">&#39;message&#39;</span>]
+</code></pre></div><p>Using ASCII counting technique&hellip;<br>
+&ldquo;Cooking MC&rsquo;s like a pound of bacon&rdquo;</p>
+
+
+<div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
+
+
+<h3 id="challenge-4-detect-single-character-xor">Challenge 4: Detect single-character XOR</h3>
+<p><a href="https://cryptopals.com/sets/1/challenges/4">Link</a></p>
+<blockquote>
+<p>One of the 60-character strings in this <a href="https://cryptopals.com/static/challenge-data/4.txt">file</a> has been encrypted by single-character XOR.<br>
+Find it.<br>
+(Your code from #3 should help.)</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Given</span>
+inf <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;4.txt&#34;</span>, <span style="color:#e6db74">&#34;r&#34;</span>)
+hex_data <span style="color:#f92672">=</span> inf<span style="color:#f92672">.</span>read()
+
+<span style="color:#75715e"># Creates a list of lines taken from the file.</span>
+byte_strings <span style="color:#f92672">=</span> []
+<span style="color:#66d9ef">for</span> line <span style="color:#f92672">in</span> hex_data<span style="color:#f92672">.</span>split():
+    byte_line <span style="color:#f92672">=</span> bytes<span style="color:#f92672">.</span>fromhex(line)
+    byte_strings<span style="color:#f92672">.</span>append(byte_line)
+</code></pre></div><p>Same as before, only difference being that a list of encrypted strings are obtained from a file, and their scores are compared amongst them too.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plaintext <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+max_score <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+
+<span style="color:#75715e"># Runs the previous code against all lines in the file.</span>
+<span style="color:#66d9ef">for</span> line <span style="color:#f92672">in</span> byte_strings:
+    result <span style="color:#f92672">=</span> single_byte_xor_score(line)
+    cur_score <span style="color:#f92672">=</span> result[<span style="color:#e6db74">&#34;score&#34;</span>]
+    testtext <span style="color:#f92672">=</span> result[<span style="color:#e6db74">&#34;message&#34;</span>]
+    <span style="color:#66d9ef">if</span> cur_score <span style="color:#f92672">&gt;</span> max_score:
+        max_score <span style="color:#f92672">=</span> cur_score
+        plaintext <span style="color:#f92672">=</span> testtext
+
+plaintext
+</code></pre></div><p>&lsquo;Now that the party is jumping\n&rsquo;</p>
+
+
+<div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
+
+
+<h3 id="challenge-5-implement-repeating-key-xor">Challenge 5: Implement repeating-key XOR</h3>
+<p><a href="https://cryptopals.com/sets/1/challenges/5">Link</a></p>
+<blockquote>
+<p>Here is the opening stanza of an important work of the English language:<br>
+<strong>Burning &lsquo;em, if you ain&rsquo;t quick and nimble</strong><br>
+<strong>I go crazy when I hear a cymbal</strong><br>
+Encrypt it, under the key <strong>ICE</strong>, using repeating-key XOR.<br>
+In repeating-key XOR, you&rsquo;ll sequentially apply each byte of the key; the first byte of plaintext will be XOR&rsquo;d against I, the next C, the next E, then I again for the 4th byte, and so on.<br>
+It should come out to:<br>
+<strong>0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272</strong><br>
+<strong>a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f</strong> Encrypt a bunch of stuff using your repeating-key XOR function. Encrypt your mail. Encrypt your password file. Your .sig file. Get a feel for it.<br>
+I promise, we aren&rsquo;t wasting your time with this.</p>
+</blockquote>
+<p><strong>Polyalphabetic Cipher</strong> is a substitution cipher in which the cipher alphabet for the plain alphabet may be different at different places during the encryption process.</p>
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/8_image.png" alt="">
+<em>Vigenère square.</em></p>
+<p><strong>Vigenère Cipher</strong> uses a Vigenère square or Vigenère table, having the alphabets written out 26 times in different rows, each alphabet shifted cyclically to the left compared to the previous alphabet, corresponding to the 26 possible Caesar ciphers.<br>
+At different points in the encryption process, the cipher uses a different alphabet from one of the rows. The alphabet used at each point depends on a repeating keyword.</p>
+<p><strong>Repeating XOR Cipher</strong> is where the key is shorter than the message and the key is duplicated/repeated letter-for-letter in order to cover the whole message. Then each byte of the plain text is xored with each according byte of the key. It&rsquo;s a variant of Vigenère Cipher where the encryption is xor.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Given</span>
+plaintext <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Burning &#39;em, if you ain&#39;t quick and nimble</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">I go crazy when I hear a cymbal&#34;</span>
+key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ICE&#34;</span>
+target_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f&#34;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">repeated_xor</span>(text: bytes, key: bytes) <span style="color:#f92672">-&gt;</span> bytes:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Performs xor between given text and key. If the length is unequal, key repeats.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    quotient, remainder <span style="color:#f92672">=</span> divmod(len(text), len(key))
+    <span style="color:#66d9ef">return</span> bytes([x <span style="color:#f92672">^</span> y <span style="color:#66d9ef">for</span> x, y <span style="color:#f92672">in</span> zip(text, bytes(key <span style="color:#f92672">*</span> quotient <span style="color:#f92672">+</span> key[:remainder]))])
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">byte_string <span style="color:#f92672">=</span> plaintext<span style="color:#f92672">.</span>encode()
+bytekey <span style="color:#f92672">=</span> key<span style="color:#f92672">.</span>encode()
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">ciphertext <span style="color:#f92672">=</span> repeated_xor(byte_string, bytekey)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">assert</span> target_string <span style="color:#f92672">==</span> ciphertext<span style="color:#f92672">.</span>hex()
+</code></pre></div>
+
+<div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
+
+
+<h3 id="challenge-6-break-repeating-key-xor">Challenge 6: Break repeating-key XOR</h3>
+<p><a href="https://cryptopals.com/sets/1/challenges/6">Link</a></p>
+<blockquote>
+<p><a href="https://cryptopals.com/static/challenge-data/6.txt">There&rsquo;s a file</a> here. It&rsquo;s been base64&rsquo;d after being encrypted with repeating-key XOR.<br>
+Decrypt it.<br>
+Here&rsquo;s how:</p>
+</blockquote>
+<ol>
+<li>Let KEYSIZE be the guessed length of the key; try values from 2 to (say) 40.</li>
+<li>Write a function to compute the edit distance/Hamming distance between two strings. The Hamming distance is just the number of differing bits. The distance between:<br>
+<strong>this is a test</strong><br>
+and<br>
+<strong>wokka wokka!!!</strong><br>
+is 37. Make sure your code agrees before you proceed.</li>
+<li>For each KEYSIZE, take the first KEYSIZE worth of bytes, and the second KEYSIZE worth of bytes, and find the edit distance between them.<br>
+Normalize this result by dividing by KEYSIZE.</li>
+<li>The KEYSIZE with the smallest normalized edit distance is probably the key. You could proceed perhaps with the smallest 2-3 KEYSIZE values.<br>
+Or take 4 KEYSIZE blocks instead of 2 and average the distances.</li>
+<li>Now that you probably know the KEYSIZE: break the ciphertext into blocks of KEYSIZE length.</li>
+<li>Now transpose the blocks: make a block that is the first byte of every block, and a block that is the second byte of every block, and so on.</li>
+<li>Solve each block as if it was single-character XOR. You already have code to do this.</li>
+<li>For each block, the single-byte XOR key that produces the best looking histogram is the repeating-key XOR key byte for that block.<br>
+Put them together and you have the key.<br>
+This code is going to turn out to be surprisingly useful later on. Breaking repeating-key XOR (&ldquo;Vigenere&rdquo;) statistically is obviously an academic exercise, a &ldquo;Crypto 101&rdquo; thing. But more people &ldquo;know how&rdquo; to break it than can actually break it, and a similar technique breaks something much more important.</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Imports</span>
+<span style="color:#f92672">from</span> base64 <span style="color:#f92672">import</span> b64decode
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Given</span>
+inf <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;6.txt&#34;</span>, <span style="color:#e6db74">&#34;r&#34;</span>)
+b64_data <span style="color:#f92672">=</span> inf<span style="color:#f92672">.</span>read()
+
+byte_data <span style="color:#f92672">=</span> b64decode(b64_data)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">hamming_distance</span>(text1: bytes, text2: bytes) <span style="color:#f92672">-&gt;</span> int:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Calculates the Hamming Distance between the given byte strings.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    
+    distance <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+    
+    dec_list <span style="color:#f92672">=</span> [b1 <span style="color:#f92672">^</span> b2 <span style="color:#66d9ef">for</span> b1, b2 <span style="color:#f92672">in</span> zip(text1, text2)]
+    <span style="color:#66d9ef">for</span> decimal <span style="color:#f92672">in</span> dec_list:
+        distance <span style="color:#f92672">+=</span> bin(decimal)<span style="color:#f92672">.</span>count(<span style="color:#e6db74">&#34;1&#34;</span>)
+        
+    <span style="color:#66d9ef">if</span> len(text1) <span style="color:#f92672">&gt;</span> len(text2):
+        diff <span style="color:#f92672">=</span> len(text1) <span style="color:#f92672">-</span> len(text2)
+        text <span style="color:#f92672">=</span> text1
+    <span style="color:#66d9ef">else</span>:
+        diff <span style="color:#f92672">=</span> len(text2) <span style="color:#f92672">-</span> len(text1)
+        text <span style="color:#f92672">=</span> text2
+        
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, diff<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>):
+        distance <span style="color:#f92672">+=</span> bin(text[<span style="color:#f92672">-</span>i])<span style="color:#f92672">.</span>count(<span style="color:#e6db74">&#34;1&#34;</span>)
+        
+    <span style="color:#66d9ef">return</span> distance
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">break_repeated_xor_keysize</span>(ciphertext: bytes) <span style="color:#f92672">-&gt;</span> int:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Approximates the keysize based on the hamming distance between different blocks of ciphertexts.
+</span><span style="color:#e6db74">    Returns the keysize with least hamming distance between consecutive sets of ciphertext.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    
+    keysize <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+    min_distance <span style="color:#f92672">=</span> <span style="color:#ae81ff">100000</span>
+    <span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">41</span>):
+        edit_distance <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+        blocks <span style="color:#f92672">=</span> [ciphertext[i<span style="color:#f92672">*</span>key:(i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">*</span>key] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">4</span>)]
+        <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(blocks)):
+            <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(blocks)):
+                edit_distance <span style="color:#f92672">+=</span> hamming_distance(blocks[i], blocks[j])
+        
+        normalized_distance <span style="color:#f92672">=</span> edit_distance<span style="color:#f92672">/</span>key
+        
+        <span style="color:#66d9ef">if</span> normalized_distance <span style="color:#f92672">&lt;</span> min_distance:
+            min_distance <span style="color:#f92672">=</span> normalized_distance
+            keysize <span style="color:#f92672">=</span> key
+    
+    <span style="color:#66d9ef">return</span> keysize
+</code></pre></div><p>Creates blocks of ciphertext in preparation of brute forcing the xor keysize.
+When we have the key length, we can group together ciphertext bytes that share the same key byte.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">keysize <span style="color:#f92672">=</span> break_repeated_xor_keysize(byte_data)
+cipher_blocks <span style="color:#f92672">=</span> [byte_data[i:i<span style="color:#f92672">+</span>keysize] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(byte_data), keysize)]
+
+<span style="color:#75715e">#To remove the last block with less characters.</span>
+cipher_blocks<span style="color:#f92672">.</span>pop()
+cipher_block_size <span style="color:#f92672">=</span> len(cipher_blocks[<span style="color:#ae81ff">0</span>])
+</code></pre></div><p>Brute force the key, one letter at a time.<br>
+A repeating key means that the letters at a fixed interval will be xored with the same value, that is, for a 4 byte key, a letter at every 4th position will be xored with the same letter of the key.</p>
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/1_image.png" alt="">
+<em>Blocks of bytes at set intervals.</em></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, cipher_block_size):
+    single_xor_block <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;&#34;</span>
+    
+    <span style="color:#75715e"># Construct blocks out of a fixed index from all cipher blocks.</span>
+    <span style="color:#66d9ef">for</span> block <span style="color:#f92672">in</span> cipher_blocks:
+        single_xor_block <span style="color:#f92672">+=</span> (block[i])<span style="color:#f92672">.</span>to_bytes(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#34;big&#34;</span>)
+        
+    <span style="color:#75715e"># Apply frequency analysis to the block associated with this index.</span>
+    result <span style="color:#f92672">=</span> single_byte_xor_score(single_xor_block)
+    testkey <span style="color:#f92672">=</span> result[<span style="color:#e6db74">&#34;key&#34;</span>]
+    key <span style="color:#f92672">+=</span> testkey
+key
+</code></pre></div><p>&lsquo;Terminator X: Bring the noise&rsquo;</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">plaintext <span style="color:#f92672">=</span> repeated_xor(byte_data, key<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#34;utf-8&#34;</span>)
+<span style="color:#66d9ef">print</span>(plaintext<span style="color:#f92672">.</span>strip(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>))
+</code></pre></div><p>I&rsquo;m back and I&rsquo;m ringin&rsquo; the bell 
+A rockin' on the mike while the fly girls yell 
+In ecstasy in the back of me 
+Well that&rsquo;s my DJ Deshay cuttin' all them Z&rsquo;s 
+Hittin' hard and the girlies goin' crazy 
+Vanilla&rsquo;s on the mike, man I&rsquo;m not lazy.</p>
+<p>I&rsquo;m lettin' my drug kick in 
+It controls my mouth and I begin 
+To just let it flow, let my concepts go 
+My posse&rsquo;s to the side yellin', Go Vanilla Go!</p>
+<p>Smooth &lsquo;cause that&rsquo;s the way I will be 
+And if you don&rsquo;t give a damn, then 
+Why you starin&rsquo; at me 
+So get off &lsquo;cause I control the stage 
+There&rsquo;s no dissin&rsquo; allowed 
+I&rsquo;m in my own phase 
+The girlies sa y they love me and that is ok 
+And I can dance better than any kid n' play</p>
+<p>Stage 2 &ndash; Yea the one ya' wanna listen to 
+It&rsquo;s off my head so let the beat play through 
+So I can funk it up and make it sound good 
+1-2-3 Yo &ndash; Knock on some wood 
+For good luck, I like my rhymes atrocious 
+Supercalafragilisticexpialidocious 
+I&rsquo;m an effect and that you can bet 
+I can take a fly girl and make her wet.</p>
+<p>I&rsquo;m like Samson &ndash; Samson to Delilah 
+There&rsquo;s no denyin', You can try to hang 
+But you&rsquo;ll keep tryin' to get my style 
+Over and over, practice makes perfect 
+But not if you&rsquo;re a loafer.</p>
+<p>You&rsquo;ll get nowhere, no place, no time, no girls 
+Soon &ndash; Oh my God, homebody, you probably eat 
+Spaghetti with a spoon! Come on and say it!</p>
+<p>VIP. Vanilla Ice yep, yep, I&rsquo;m comin' hard like a rhino 
+Intoxicating so you stagger like a wino 
+So punks stop trying and girl stop cryin' 
+Vanilla Ice is sellin' and you people are buyin' 
+&lsquo;Cause why the freaks are jockin&rsquo; like Crazy Glue 
+Movin' and groovin' trying to sing along 
+All through the ghetto groovin' this here song 
+Now you&rsquo;re amazed by the VIP posse.</p>
+<p>Steppin' so hard like a German Nazi 
+Startled by the bases hittin' ground 
+There&rsquo;s no trippin' on mine, I&rsquo;m just gettin' down 
+Sparkamatic, I&rsquo;m hangin' tight like a fanatic 
+You trapped me once and I thought that 
+You might have it 
+So step down and lend me your ear 
+&lsquo;89 in my time! You, &lsquo;90 is my year.</p>
+<p>You&rsquo;re weakenin&rsquo; fast, YO! and I can tell it 
+Your body&rsquo;s gettin&rsquo; hot, so, so I can smell it 
+So don&rsquo;t be mad and don&rsquo;t be sad 
+&lsquo;Cause the lyrics belong to ICE, You can call me Dad 
+You&rsquo;re pitchin&rsquo; a fit, so step back and endure 
+Let the witch doctor, Ice, do the dance to cure 
+So come up close and don&rsquo;t be square 
+You wanna battle me &ndash; Anytime, anywhere</p>
+<p>You thought that I was weak, Boy, you&rsquo;re dead wrong 
+So come on, everybody and sing this song</p>
+<p>Say &ndash; Play that funky music Say, go white boy, go white boy go 
+play that funky music Go white boy, go white boy, go 
+Lay down and boogie and play that funky music till you die.</p>
+<p>Play that funky music Come on, Come on, let me hear 
+Play that funky music white boy you say it, say it 
+Play that funky music A little louder now 
+Play that funky music, white boy Come on, Come on, Come on 
+Play that funky music</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">test(True)
+</code></pre></div>
+
+<div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
+
+
+<h3 id="challenge-7-aes-in-ecb-mode">Challenge 7: AES in ECB mode</h3>
+<p><a href="https://cryptopals.com/sets/1/challenges/7">Link</a></p>
+<blockquote>
+<p>The Base64-encoded content in this file has been encrypted via AES-128 in ECB mode under the key<br>
+<strong>&ldquo;YELLOW SUBMARINE&rdquo;</strong>.<br>
+(case-sensitive, without the quotes; exactly 16 characters; I like &ldquo;YELLOW SUBMARINE&rdquo; because it&rsquo;s exactly 16 bytes long, and now you do too).<br>
+Decrypt it. You know the key, after all.<br>
+Easiest way: use OpenSSL::Cipher and give it AES-128-ECB as the cipher.</p>
+</blockquote>
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/2_image.png" alt="">
+<em>AES ECB Decryption.</em></p>
+<p><strong>AES</strong> stands for <strong>Advanced Encryption Standard</strong>.<br>
+The simplest of the encryption modes of AES is the  <strong>ECB</strong> (<strong>Electronic Codebook</strong>) mode. mode.
+The message is divided into blocks, and each block is encrypted separately.<br>
+The blocksize(same as the keysize) can be 128, 192 or 256 bits long.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Imports</span>
+<span style="color:#f92672">import</span> base64
+<span style="color:#f92672">from</span> Crypto.Cipher <span style="color:#f92672">import</span> AES
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Given</span>
+inf <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;7.txt&#34;</span>, <span style="color:#e6db74">&#34;r&#34;</span>)
+b64_data <span style="color:#f92672">=</span> inf<span style="color:#f92672">.</span>read()
+
+key <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;YELLOW SUBMARINE&#34;</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">AES_ECB_decrypt</span>(ciphertext: bytes, key: bytes) <span style="color:#f92672">-&gt;</span> bytes:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Decrypts a ciphertext encrypted with AES ECB Mode.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</span>new(key, AES<span style="color:#f92672">.</span>MODE_ECB)
+    <span style="color:#66d9ef">return</span> cipher<span style="color:#f92672">.</span>decrypt(ciphertext)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">byte_data <span style="color:#f92672">=</span> base64<span style="color:#f92672">.</span>b64decode(b64_data)
+byte_text <span style="color:#f92672">=</span> AES_ECB_decrypt(byte_data, key)
+
+<span style="color:#75715e">#last 4 rubbish bytes is pkcs7 padding of \x04</span>
+byte_text
+</code></pre></div><p>b&quot;I&rsquo;m back and I&rsquo;m ringin' the bell \nA rockin' on the mike while the fly girls yell \nIn ecstasy in the back of me \nWell that&rsquo;s my DJ Deshay cuttin' all them Z&rsquo;s \nHittin' hard and the girlies goin' crazy \nVanilla&rsquo;s on the mike, man I&rsquo;m not lazy. \n\nI&rsquo;m lettin' my drug kick in \nIt controls my mouth and I begin \nTo just let it flow, let my concepts go \nMy posse&rsquo;s to the side yellin', Go Vanilla Go! \n\nSmooth &lsquo;cause that&rsquo;s the way I will be \nAnd if you don&rsquo;t give a damn, then \nWhy you starin&rsquo; at me \nSo get off &lsquo;cause I control the stage \nThere&rsquo;s no dissin&rsquo; allowed \nI&rsquo;m in my own phase \nThe girlies sa y they love me and that is ok \nAnd I can dance better than any kid n' play \n\nStage 2 &ndash; Yea the one ya' wanna listen to \nIt&rsquo;s off my head so let the beat play through \nSo I can funk it up and make it sound good \n1-2-3 Yo &ndash; Knock on some wood \nFor good luck, I like my rhymes atrocious \nSupercalafragilisticexpialidocious \nI&rsquo;m an effect and that you can bet \nI can take a fly girl and make her wet. \n\nI&rsquo;m like Samson &ndash; Samson to Delilah \nThere&rsquo;s no denyin', You can try to hang \nBut you&rsquo;ll keep tryin' to get my style \nOver and over, practice makes perfect \nBut not if you&rsquo;re a loafer. \n\nYou&rsquo;ll get nowhere, no place, no time, no girls \nSoon &ndash; Oh my God, homebody, you probably eat \nSpaghetti with a spoon! Come on and say it! \n\nVIP. Vanilla Ice yep, yep, I&rsquo;m comin' hard like a rhino \nIntoxicating so you stagger like a wino \nSo punks stop trying and girl stop cryin' \nVanilla Ice is sellin' and you people are buyin' \n&rsquo;Cause why the freaks are jockin' like Crazy Glue \nMovin' and groovin' trying to sing along \nAll through the ghetto groovin' this here song \nNow you&rsquo;re amazed by the VIP posse. \n\nSteppin' so hard like a German Nazi \nStartled by the bases hittin' ground \nThere&rsquo;s no trippin' on mine, I&rsquo;m just gettin' down \nSparkamatic, I&rsquo;m hangin' tight like a fanatic \nYou trapped me once and I thought that \nYou might have it \nSo step down and lend me your ear \n'89 in my time! You, &lsquo;90 is my year. \n\nYou&rsquo;re weakenin&rsquo; fast, YO! and I can tell it \nYour body&rsquo;s gettin' hot, so, so I can smell it \nSo don&rsquo;t be mad and don&rsquo;t be sad \n&rsquo;Cause the lyrics belong to ICE, You can call me Dad \nYou&rsquo;re pitchin' a fit, so step back and endure \nLet the witch doctor, Ice, do the dance to cure \nSo come up close and don&rsquo;t be square \nYou wanna battle me &ndash; Anytime, anywhere \n\nYou thought that I was weak, Boy, you&rsquo;re dead wrong \nSo come on, everybody and sing this song \n\nSay &ndash; Play that funky music Say, go white boy, go white boy go \nplay that funky music Go white boy, go white boy, go \nLay down and boogie and play that funky music till you die. \n\nPlay that funky music Come on, Come on, let me hear \nPlay that funky music white boy you say it, say it \nPlay that funky music A little louder now \nPlay that funky music, white boy Come on, Come on, Come on \nPlay that funky music \n\x04\x04\x04\x04&quot;</p>
+
+
+<div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
+
+
+<h3 id="challenge-8-detect-aes-in-ecb-mode">Challenge 8: Detect AES in ECB mode</h3>
+<p><a href="https://cryptopals.com/sets/1/challenges/8">Link</a></p>
+<blockquote>
+<p><a href="https://cryptopals.com/static/challenge-data/8.txt">In this file</a> are a bunch of hex-encoded ciphertexts.<br>
+One of them has been encrypted with ECB.<br>
+Detect it.<br>
+Remember that the problem with ECB is that it is stateless and deterministic; the same 16 byte plaintext block will always produce the same 16 byte ciphertext.</p>
+</blockquote>
+<p><img src="https://hexterisk.github.io/blog/Cryptopals_Set_1/3_image.png" alt="">
+<em>Lack of diffusion: structure can still be made out after encryption.</em></p>
+<p>Detection can be done by taking advantage of a disadvantage of this method.<br>
+The disadvantage is the lack of diffusion. Because ECB encrypts identical plaintext blocks into identical ciphertext blocks, it does not hide data patterns well.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Imports</span>
+<span style="color:#f92672">from</span> base64 <span style="color:#f92672">import</span> b64decode
+<span style="color:#f92672">from</span> Crypto.Cipher <span style="color:#f92672">import</span> AES
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># Given</span>
+inf <span style="color:#f92672">=</span> open(<span style="color:#e6db74">&#34;8.txt&#34;</span>, <span style="color:#e6db74">&#34;r&#34;</span>)
+data <span style="color:#f92672">=</span> inf<span style="color:#f92672">.</span>read()
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">detect_AES_ECB</span>(ciphertext: bytes) <span style="color:#f92672">-&gt;</span> int:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Detect if the AES ECB encryption mode was used for creating the given ciphertexts.
+</span><span style="color:#e6db74">    Returns the maximum number of repititions occuring for any particular block.
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+    blocks <span style="color:#f92672">=</span> [ciphertext[i:i<span style="color:#f92672">+</span>AES<span style="color:#f92672">.</span>block_size] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, len(ciphertext), AES<span style="color:#f92672">.</span>block_size)]
+    <span style="color:#66d9ef">return</span> len(blocks)<span style="color:#f92672">-</span>len(set(blocks))
+</code></pre></div><p>Create a list of ciphertexts obtained from the file in byte format.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">hex_data <span style="color:#f92672">=</span> data<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>)
+ciphertext_list <span style="color:#f92672">=</span> [bytes<span style="color:#f92672">.</span>fromhex(line<span style="color:#f92672">.</span>strip()) <span style="color:#66d9ef">for</span> line <span style="color:#f92672">in</span> hex_data]
+</code></pre></div><p>Iterate over all the ciphertexts to find out the ciphertext with maximum repititions of a block.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">max_score <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+text_ECB <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+
+<span style="color:#66d9ef">for</span> cipher <span style="color:#f92672">in</span> ciphertext_list:
+    score <span style="color:#f92672">=</span> detect_AES_ECB(cipher)
+    <span style="color:#66d9ef">if</span> score <span style="color:#f92672">&gt;</span> max_score:
+        max_score <span style="color:#f92672">=</span> score
+        text_ECB <span style="color:#f92672">=</span> cipher
+        
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Number of repitions: {}&#34;</span><span style="color:#f92672">.</span>format(max_score))
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;ECB ciphered text index: {0}/{1}&#34;</span><span style="color:#f92672">.</span>format(ciphertext_list<span style="color:#f92672">.</span>index(text_ECB), len(ciphertext_list)))
+</code></pre></div><p>Number of repitions: 3
+ECB ciphered text index: 132/205</p>
+
+
+<div style="border:1px solid #c3e6cb;padding:.75rem 3rem;border-radius:.5rem;font-weight:bold;text-align: center;background-color:#d4edda;color:#155724;border-color:#c3e6cb;">Completed</div>
+
+
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/matasano">Matasano</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/cryptography">cryptography</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/aes">AES</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/ecb">ECB</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/xor">xor</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/base64">base64</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>4045 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-03-20 05:30 &#43;0530</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/03/21/set-2/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Set 2</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/03/19/simple-code-injection-techniques-for-elf/">
+                                <span class="button__text">Simple Code Injection Techniques for ELF</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content" style="margin-bottom: -0.8rem;">
+            <span><a style="text-decoration: none;"> .</a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span><a style="text-decoration: none;" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></span>
+        </div>
+    </div>
+</footer>
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.08ccaf9cef8b4e0ebd0b0158e66a7bfc0ddbb2194cdb0099e8814ddb89cc7628b27b1158846564e6e03d9ffc5f4d1bc7dfc274d359f9408d1c63d73a3f7332e9.js" integrity="sha512-CMyvnO&#43;LTg69CwFY5mp7/A3bshlM2wCZ6IFN24nMdiiyexFYhGVk5uA9n/xfTRvH38J001n5QI0cY9c6P3My6Q=="></script>
+
+
+
+    </body>
+</html>

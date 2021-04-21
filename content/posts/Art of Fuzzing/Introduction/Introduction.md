@@ -12,8 +12,6 @@ weight: 10
 categories: ["art-of-fuzzing"]
 ---
 
-# Introduction
-
 **Fuzzing**, or **Fuzz Testing**, is an automated software testing technique where a target application is placed in an execution environment. An input generation technique is employed to create unique and varying inputs(test cases) for the target. These new inputs are continuously sent to the target and the resultant behavior is observed.
 
 NOTE: the phrases “test cases” and “inputs” can be used interchangeably.

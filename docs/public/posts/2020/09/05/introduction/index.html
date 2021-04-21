@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:hexterisk]">
+<meta name="description" content="Fuzzing, or Fuzz Testing, is an automated software testing technique where a target application is placed in an execution environment. An input generation technique is employed to create unique and varying inputs(test cases) for the target. These new inputs are continuously sent to the target and the resultant behavior is observed.
+NOTE: the phrases “test cases” and “inputs” can be used interchangeably.
+Fuzzing cycle.
+Either the program will be able to handle the provided input just fine, or it will enter an invalid state of execution(mostly a crash) and you&amp;rsquo;ll have a bug report on your hand." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://hexterisk.github.io/blog/posts/2020/09/05/introduction/" />
+
+
+    <title>
+        
+            Introduction: Pwn the world.  — A noob&#39;s attempt at blogging.
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.d644853e3e89ab1ec568894a9a3df34b7e4e5bfd66060890b1e4297657fd91e8.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Introduction">
+<meta itemprop="description" content="Fuzzing, or Fuzz Testing, is an automated software testing technique where a target application is placed in an execution environment. An input generation technique is employed to create unique and varying inputs(test cases) for the target. These new inputs are continuously sent to the target and the resultant behavior is observed.
+NOTE: the phrases “test cases” and “inputs” can be used interchangeably.
+Fuzzing cycle.
+Either the program will be able to handle the provided input just fine, or it will enter an invalid state of execution(mostly a crash) and you&rsquo;ll have a bug report on your hand."><meta itemprop="datePublished" content="2020-09-05T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-09-05T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="379"><meta itemprop="image" content="https://hexterisk.github.io/blog"/>
+<meta itemprop="keywords" content="fuzzing,bugs,fuzz-testing,undefined-behavior,violation,deadlock," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
+
+<meta name="twitter:title" content="Introduction"/>
+<meta name="twitter:description" content="Fuzzing, or Fuzz Testing, is an automated software testing technique where a target application is placed in an execution environment. An input generation technique is employed to create unique and varying inputs(test cases) for the target. These new inputs are continuously sent to the target and the resultant behavior is observed.
+NOTE: the phrases “test cases” and “inputs” can be used interchangeably.
+Fuzzing cycle.
+Either the program will be able to handle the provided input just fine, or it will enter an invalid state of execution(mostly a crash) and you&rsquo;ll have a bug report on your hand."/>
+
+
+
+    <meta property="article:section" content="art-of-fuzzing" />
+
+
+
+    <meta property="article:published_time" content="2020-09-05 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$cd ~/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>2 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://hexterisk.github.io/blog/posts/2020/09/05/introduction/">Introduction</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <p><strong>Fuzzing</strong>, or <strong>Fuzz Testing</strong>, is an automated software testing technique where a target application is placed in an execution environment. An input generation technique is employed to create unique and varying inputs(test cases) for the target. These new inputs are continuously sent to the target and the resultant behavior is observed.</p>
+<p>NOTE: the phrases “test cases” and “inputs” can be used interchangeably.</p>
+<p><img src="https://hexterisk.github.io/blog/Fuzzing_Introduction/a.png" alt="">
+<em>Fuzzing cycle.</em></p>
+<p>Either the program will be able to handle the provided input just fine, or it will enter an invalid state of execution(mostly a crash) and you&rsquo;ll have a bug report on your hand. It&rsquo;s a continuous, cyclic process.</p>
+<h4 id="advantages">Advantages</h4>
+<ol>
+<li>Faster than manual source code review.</li>
+<li>Computing resources are cheaper than a human.</li>
+<li>Can reveal bugs missed in audit.</li>
+<li>Could be run endlessly with the development cycle itself.</li>
+<li>Scalable and easy to manage.</li>
+</ol>
+<h4 id="disadvantages">Disadvantages</h4>
+<ol>
+<li>No guarantee for bugs.</li>
+<li>Chance of finding a bug decreases with the depth of the path of execution.</li>
+<li>Writing harnesses and preparing the environment of execution for the target can be complicated.</li>
+</ol>
+<p>The aim of fuzzing is to test the program under obscure and extreme cases. You should never replace unit, integration and system tests with fuzzing since the target still needs to be tested for cases with normal input. Instead, supplement the tests with fuzzing for the best results.</p>
+<p>Fuzzing can be resource intensive, while the resources might be constrained. In such cases, you need to find a balance between generating new test cases, executing the program, target constraints, performing sanitation and finding bugs. It&rsquo;s an optimization problem. The picture and the decision making gets clearer with the understanding of different forms of fuzzing and their uses cases.</p>
+<p>The target could be a binary, a kernel or even a protocol. The concept is versatile and adaptable to all scenarios, as long as it accepts an input.</p>
+<h2 id="bugs">Bugs</h2>
+<p>Generally, the types of bugs discovered by a fuzzing process are as follows:</p>
+<ul>
+<li>Memory management issues.</li>
+<li>Assertion violations.</li>
+<li>Incorrect null handling.</li>
+<li>Faulty exception handling.</li>
+<li>Deadlock states.</li>
+<li>Infinite loops.</li>
+<li>Undefined behaviors.</li>
+<li>Incorrect resource management.</li>
+</ul>
+<p>Some issues like deadlocks and assertion violations can be easily verified since the result of the bug is instantly visible, while some bugs like incorrect memory management may not be as prominent since they might not result in an invalidated state.</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/fuzzing">fuzzing</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/bugs">bugs</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/fuzz-testing">fuzz-testing</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/undefined-behavior">undefined-behavior</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/violation">violation</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/deadlock">deadlock</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>379 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-09-05 05:30 &#43;0530</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/09/09/approaches/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Approaches</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/08/22/classification-of-malware-traffic-using-cnns/">
+                                <span class="button__text">Classification of Malware Traffic using CNNs</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content" style="margin-bottom: -0.8rem;">
+            <span><a style="text-decoration: none;"> .</a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span><a style="text-decoration: none;" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></span>
+        </div>
+    </div>
+</footer>
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.08ccaf9cef8b4e0ebd0b0158e66a7bfc0ddbb2194cdb0099e8814ddb89cc7628b27b1158846564e6e03d9ffc5f4d1bc7dfc274d359f9408d1c63d73a3f7332e9.js" integrity="sha512-CMyvnO&#43;LTg69CwFY5mp7/A3bshlM2wCZ6IFN24nMdiiyexFYhGVk5uA9n/xfTRvH38J001n5QI0cY9c6P3My6Q=="></script>
+
+
+
+    </body>
+</html>

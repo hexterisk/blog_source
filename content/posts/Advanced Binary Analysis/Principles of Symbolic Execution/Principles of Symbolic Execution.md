@@ -166,3 +166,5 @@ Full symbolic memory can cause an explosion in the number of states or the size 
 ### Avoiding the Constraint Solver
 
 There are practical ways to limit the need for constraint solving in symbex tools, such as using pre-processing passes to find potentially interesting paths and inputs to explore with symbex and pinpoint the instructions affected by these inputs. This helps in avoiding needless constraint solver invocations for uninteresting paths or instructions. Symbex engines and constraint solvers may also cache the results of previously evaluated (sub)formulas, thereby avoiding the need to solve the same formula twice.
+
+Citation: [Practical Binary Analysis](https://nostarch.com/binaryanalysis).

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:hexterisk]">
+<meta name="description" content="ELF binaries really consist of only four types of components:  Executable Header Program Headers (optional) Sections Section Headers, one per section (optional)  64-bit ELF binary structure.
+Executable Header  Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata. Format of executable header: /usr/include/elf.h  typedef struct { unsigned char e_ident[16]; /* Magic number and other info */ uint16_t e_type; /* Object file type */ uint16_t e_machine; /* Architecture */ uint32_t e_version; /* Object file version */ uint64_t e_entry; /* Entry point virtual address */ uint64_t e_phoff; /* Program header table file offset */ uint64_t e_shoff; /* Section header table file offset */ uint32_t e_flags; /* Processor-specific flags */ uint16_t e_ehsize; /* ELF header size in bytes */ uint16_t e_phentsize; /* Program header table entry size */ uint16_t e_phnum; /* Program header table entry count */ uint16_t e_shentsize; /* Section header table entry size */ uint16_t e_shnum; /* Section header table entry count */ uint16_t e_shstrndx; /* Section header string table index */ } Elf64_Ehdr; Section Headers  The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called Sections." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://hexterisk.github.io/blog/posts/2020/03/03/the-elf-format/" />
+
+
+    <title>
+        
+            The ELF Format: Pwn the world.  — A noob&#39;s attempt at blogging.
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.d644853e3e89ab1ec568894a9a3df34b7e4e5bfd66060890b1e4297657fd91e8.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="The ELF Format">
+<meta itemprop="description" content="ELF binaries really consist of only four types of components:  Executable Header Program Headers (optional) Sections Section Headers, one per section (optional)  64-bit ELF binary structure.
+Executable Header  Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata. Format of executable header: /usr/include/elf.h  typedef struct { unsigned char e_ident[16]; /* Magic number and other info */ uint16_t e_type; /* Object file type */ uint16_t e_machine; /* Architecture */ uint32_t e_version; /* Object file version */ uint64_t e_entry; /* Entry point virtual address */ uint64_t e_phoff; /* Program header table file offset */ uint64_t e_shoff; /* Section header table file offset */ uint32_t e_flags; /* Processor-specific flags */ uint16_t e_ehsize; /* ELF header size in bytes */ uint16_t e_phentsize; /* Program header table entry size */ uint16_t e_phnum; /* Program header table entry count */ uint16_t e_shentsize; /* Section header table entry size */ uint16_t e_shnum; /* Section header table entry count */ uint16_t e_shstrndx; /* Section header string table index */ } Elf64_Ehdr; Section Headers  The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called Sections."><meta itemprop="datePublished" content="2020-03-03T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-03-03T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="2690"><meta itemprop="image" content="https://hexterisk.github.io/blog"/>
+<meta itemprop="keywords" content="binary,rev,reversing,c,elf,headers,sections," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
+
+<meta name="twitter:title" content="The ELF Format"/>
+<meta name="twitter:description" content="ELF binaries really consist of only four types of components:  Executable Header Program Headers (optional) Sections Section Headers, one per section (optional)  64-bit ELF binary structure.
+Executable Header  Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata. Format of executable header: /usr/include/elf.h  typedef struct { unsigned char e_ident[16]; /* Magic number and other info */ uint16_t e_type; /* Object file type */ uint16_t e_machine; /* Architecture */ uint32_t e_version; /* Object file version */ uint64_t e_entry; /* Entry point virtual address */ uint64_t e_phoff; /* Program header table file offset */ uint64_t e_shoff; /* Section header table file offset */ uint32_t e_flags; /* Processor-specific flags */ uint16_t e_ehsize; /* ELF header size in bytes */ uint16_t e_phentsize; /* Program header table entry size */ uint16_t e_phnum; /* Program header table entry count */ uint16_t e_shentsize; /* Section header table entry size */ uint16_t e_shnum; /* Section header table entry count */ uint16_t e_shstrndx; /* Section header string table index */ } Elf64_Ehdr; Section Headers  The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called Sections."/>
+
+
+
+    <meta property="article:section" content="basic-binary-analysis" />
+
+
+
+    <meta property="article:published_time" content="2020-03-03 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$cd ~/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>13 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://hexterisk.github.io/blog/posts/2020/03/03/the-elf-format/">The ELF Format</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <p>ELF binaries really consist of only four types of components: </p>
+<ol>
+<li>Executable Header</li>
+<li>Program Headers (optional)</li>
+<li>Sections</li>
+<li>Section Headers, one per section (optional)</li>
+</ol>
+<p><img src="https://hexterisk.github.io/blog/The_ELF_Format/1_image.png" alt="">
+<em>64-bit ELF binary structure.</em></p>
+<h2 id="executable-header">Executable Header</h2>
+<ul>
+<li>Every ELF file starts with an executable header, which is just a structured series of bytes telling you that it’s an ELF file and other metadata.</li>
+<li>Format of executable header: /usr/include/elf.h</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> e_ident[<span style="color:#ae81ff">16</span>]; <span style="color:#75715e">/* Magic number and other info */</span>
+uint16_t e_type; <span style="color:#75715e">/* Object file type */</span>
+uint16_t e_machine; <span style="color:#75715e">/* Architecture */</span>
+uint32_t e_version; <span style="color:#75715e">/* Object file version */</span>
+uint64_t e_entry; <span style="color:#75715e">/* Entry point virtual address */</span>
+uint64_t e_phoff; <span style="color:#75715e">/* Program header table file offset */</span>
+uint64_t e_shoff; <span style="color:#75715e">/* Section header table file offset */</span>
+uint32_t e_flags; <span style="color:#75715e">/* Processor-specific flags */</span>
+uint16_t e_ehsize; <span style="color:#75715e">/* ELF header size in bytes */</span>
+uint16_t e_phentsize; <span style="color:#75715e">/* Program header table entry size */</span>
+uint16_t e_phnum; <span style="color:#75715e">/* Program header table entry count */</span>
+uint16_t e_shentsize; <span style="color:#75715e">/* Section header table entry size */</span>
+uint16_t e_shnum; <span style="color:#75715e">/* Section header table entry count */</span>
+uint16_t e_shstrndx; <span style="color:#75715e">/* Section header string table index */</span>
+} Elf64_Ehdr;
+</code></pre></div><h2 id="section-headers">Section Headers</h2>
+<ul>
+<li>The code and data in an ELF binary are logically divided into contiguous non-overlapping chunks called <strong>Sections</strong>. Sections don’t have any predetermined structure; instead, the structure of each section varies depending on the contents.</li>
+<li>Some sections contain data that isn’t needed for execution at all, such as symbolic or relocation information.</li>
+<li>Every section is described by a <strong>Section Header</strong>, which denotes the properties of the section and allows you to locate the bytes belonging to the section.</li>
+<li>Exists to provide convenient organisation for use to linker. Only used at link time.</li>
+<li>The section headers for all sections in the binary are contained in the <strong>Section Header Table</strong>. It is optional since it is intended to provide a view for the linker only. If absent, <em><strong>e_shoff</strong></em>  is set to zero.</li>
+<li>Format of a section header: /usr/include/elf.h</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+uint32_t sh_name; <span style="color:#75715e">/* Section name (string tbl index) */</span>
+uint32_t sh_type; <span style="color:#75715e">/* Section type */</span>
+uint64_t sh_flags; <span style="color:#75715e">/* Section flags */</span>
+uint64_t sh_addr; <span style="color:#75715e">/* Section virtual addr at execution */</span>
+uint64_t sh_offset; <span style="color:#75715e">/* Section file offset */</span>
+uint64_t sh_size; <span style="color:#75715e">/* Section size in bytes */</span>
+uint32_t sh_link; <span style="color:#75715e">/* Link to another section */</span>
+uint32_t sh_info; <span style="color:#75715e">/* Additional section information */</span>
+uint64_t sh_addralign; <span style="color:#75715e">/* Section alignment */</span>
+uint64_t sh_entsize; <span style="color:#75715e">/* Entry size if section holds table */</span>
+} Elf64_Shdr;
+</code></pre></div><h2 id="sections">Sections</h2>
+<ul>
+<li>Following sections are present:</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#960050;background-color:#1e0010">$</span> readelf <span style="color:#f92672">--</span>sections <span style="color:#f92672">--</span>wide a.out
+
+There are <span style="color:#ae81ff">31</span> section headers, starting at offset <span style="color:#ae81ff">0x19e8</span><span style="color:#f92672">:</span>
+Section Headers:
+[Nr] Name 				Type 		Address 		 Off 	Size   ES Flg Lk Inf Al
+[ <span style="color:#ae81ff">0</span>] 					NULL 		<span style="color:#ae81ff">0000000000000000</span> <span style="color:#ae81ff">000000</span> <span style="color:#ae81ff">000000</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>
+[ <span style="color:#ae81ff">1</span>] .interp 			PROGBITS 	<span style="color:#ae81ff">000000000040023</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">00023</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">00001</span>c <span style="color:#ae81ff">00</span> A   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>	 <span style="color:#ae81ff">1</span>
+[ <span style="color:#ae81ff">2</span>] .note.ABI<span style="color:#f92672">-</span>tag 		NOTE 		<span style="color:#ae81ff">0000000000400254</span> <span style="color:#ae81ff">000254</span> <span style="color:#ae81ff">000020</span> <span style="color:#ae81ff">00</span> A   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span> 	 <span style="color:#ae81ff">4</span>
+[ <span style="color:#ae81ff">3</span>] .note.gnu.build<span style="color:#f92672">-</span>id NOTE 		<span style="color:#ae81ff">0000000000400274</span> <span style="color:#ae81ff">000274</span> <span style="color:#ae81ff">000024</span> <span style="color:#ae81ff">00</span> A   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span> 	 <span style="color:#ae81ff">4</span>
+[ <span style="color:#ae81ff">4</span>] .gnu.hash 			GNU_HASH 	<span style="color:#ae81ff">00000000004002</span><span style="color:#ae81ff">98</span> <span style="color:#ae81ff">0002</span><span style="color:#ae81ff">98</span> <span style="color:#ae81ff">00001</span>c <span style="color:#ae81ff">00</span> A   <span style="color:#ae81ff">5</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">8</span>
+[ <span style="color:#ae81ff">5</span>] .dynsym 			DYNSYM 		<span style="color:#ae81ff">00000000004002</span>b8 <span style="color:#ae81ff">0002</span>b8 <span style="color:#ae81ff">000060</span> <span style="color:#ae81ff">18</span> A   <span style="color:#ae81ff">6</span>  <span style="color:#ae81ff">1</span>   <span style="color:#ae81ff">8</span>
+[ <span style="color:#ae81ff">6</span>] .dynstr 			STRTAB 		<span style="color:#ae81ff">000000000040031</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">00031</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">00003</span>d <span style="color:#ae81ff">00</span> A   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">1</span>
+[ <span style="color:#ae81ff">7</span>] .gnu.version 		VERSYM 		<span style="color:#ae81ff">0000000000400356</span> <span style="color:#ae81ff">000356</span> <span style="color:#ae81ff">00000</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">02</span> A   <span style="color:#ae81ff">5</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">2</span>
+[ <span style="color:#ae81ff">8</span>] .gnu.version_r 	VERNEED 	<span style="color:#ae81ff">0000000000400360</span> <span style="color:#ae81ff">000360</span> <span style="color:#ae81ff">000020</span> <span style="color:#ae81ff">00</span> A   <span style="color:#ae81ff">6</span>  <span style="color:#ae81ff">1</span>   <span style="color:#ae81ff">8</span>
+[ <span style="color:#ae81ff">9</span>] .rela.dyn 			RELA 		<span style="color:#ae81ff">00000000004003</span><span style="color:#ae81ff">80</span> <span style="color:#ae81ff">0003</span><span style="color:#ae81ff">80</span> <span style="color:#ae81ff">00001</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">18</span> A   <span style="color:#ae81ff">5</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">8</span>
+[<span style="color:#ae81ff">10</span>] .rela.plt 			RELA 		<span style="color:#ae81ff">00000000004003</span><span style="color:#ae81ff">98</span> <span style="color:#ae81ff">0003</span><span style="color:#ae81ff">98</span> <span style="color:#ae81ff">000030</span> <span style="color:#ae81ff">18</span> AI  <span style="color:#ae81ff">5</span>  <span style="color:#ae81ff">24</span>  <span style="color:#ae81ff">8</span>
+[<span style="color:#ae81ff">11</span>] .init 				PROGBITS 	<span style="color:#ae81ff">00000000004003</span>c8 <span style="color:#ae81ff">0003</span>c8 <span style="color:#ae81ff">00001</span>a <span style="color:#ae81ff">00</span> AX  <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">4</span>
+[<span style="color:#ae81ff">12</span>] .plt 				PROGBITS 	<span style="color:#ae81ff">00000000004003f</span><span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0003f</span><span style="color:#ae81ff">0</span> <span style="color:#ae81ff">000030</span> <span style="color:#ae81ff">10</span> AX  <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">16</span>
+[<span style="color:#ae81ff">13</span>] .plt.got 			PROGBITS 	<span style="color:#ae81ff">0000000000400420</span> <span style="color:#ae81ff">000420</span> <span style="color:#ae81ff">00000</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">00</span> AX  <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">8</span>
+[<span style="color:#ae81ff">14</span>] .text 				PROGBITS 	<span style="color:#ae81ff">0000000000400430</span> <span style="color:#ae81ff">000430</span> <span style="color:#ae81ff">0001</span><span style="color:#ae81ff">92</span> <span style="color:#ae81ff">00</span> AX  <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">16</span>
+[<span style="color:#ae81ff">15</span>] .fini 				PROGBITS 	<span style="color:#ae81ff">00000000004005</span>c4 <span style="color:#ae81ff">0005</span>c4 <span style="color:#ae81ff">00000</span><span style="color:#ae81ff">9</span> <span style="color:#ae81ff">00</span> AX  <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">4</span>
+[<span style="color:#ae81ff">16</span>] .rodata 			PROGBITS 	<span style="color:#ae81ff">00000000004005</span>d0 <span style="color:#ae81ff">0005</span>d0 <span style="color:#ae81ff">000011</span> <span style="color:#ae81ff">00</span> A   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">4</span>
+[<span style="color:#ae81ff">17</span>] .eh_frame_hdr 		PROGBITS 	<span style="color:#ae81ff">00000000004005e4</span> <span style="color:#ae81ff">0005e4</span> <span style="color:#ae81ff">000034</span> <span style="color:#ae81ff">00</span> A   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">4</span>
+[<span style="color:#ae81ff">18</span>] .eh_frame 			PROGBITS 	<span style="color:#ae81ff">000000000040061</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">00061</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">0000f</span><span style="color:#ae81ff">4</span> <span style="color:#ae81ff">00</span> A   <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">8</span>
+[<span style="color:#ae81ff">19</span>] .init_array 		INIT_ARRAY 	<span style="color:#ae81ff">0000000000600e10</span> <span style="color:#ae81ff">000e10</span> <span style="color:#ae81ff">00000</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">00</span> WA  <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">8</span>
+[<span style="color:#ae81ff">20</span>] .fini_array 		FINI_ARRAY 	<span style="color:#ae81ff">0000000000600e18</span> <span style="color:#ae81ff">000e18</span> <span style="color:#ae81ff">00000</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">00</span> WA  <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">8</span>
+[<span style="color:#ae81ff">21</span>] .jcr 				PROGBITS 	<span style="color:#ae81ff">0000000000600e20</span> <span style="color:#ae81ff">000e20</span> <span style="color:#ae81ff">00000</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">00</span> WA  <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">8</span>
+[<span style="color:#ae81ff">22</span>] .dynamic 			DYNAMIC 	<span style="color:#ae81ff">0000000000600e28</span> <span style="color:#ae81ff">000e28</span> <span style="color:#ae81ff">0001</span>d0 <span style="color:#ae81ff">10</span> WA  <span style="color:#ae81ff">6</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">8</span>
+[<span style="color:#ae81ff">23</span>] .got 				PROGBITS 	<span style="color:#ae81ff">0000000000600ff</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">000ff</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">00000</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">08</span> WA  <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">8</span>
+[<span style="color:#ae81ff">24</span>] .got.plt 			PROGBITS 	<span style="color:#ae81ff">0000000000601000</span> <span style="color:#ae81ff">001000</span> <span style="color:#ae81ff">00002</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">08</span> WA  <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">8</span>
+[<span style="color:#ae81ff">25</span>] .data 				PROGBITS 	<span style="color:#ae81ff">000000000060102</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">00102</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">000010</span> <span style="color:#ae81ff">00</span> WA  <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">8</span>
+[<span style="color:#ae81ff">26</span>] .bss 				NOBITS 		<span style="color:#ae81ff">000000000060103</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">00103</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">00000</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">00</span> WA  <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">1</span>
+[<span style="color:#ae81ff">27</span>] .comment 			PROGBITS 	<span style="color:#ae81ff">0000000000000000</span> <span style="color:#ae81ff">00103</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">000034</span> <span style="color:#ae81ff">01</span> MS  <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">1</span>
+[<span style="color:#ae81ff">28</span>] .shstrtab 			STRTAB 		<span style="color:#ae81ff">0000000000000000</span> <span style="color:#ae81ff">001</span><span style="color:#ae81ff">8</span>da <span style="color:#ae81ff">00010</span>c <span style="color:#ae81ff">00</span> 	  <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">1</span>
+[<span style="color:#ae81ff">29</span>] .symtab 			SYMTAB 		<span style="color:#ae81ff">0000000000000000</span> <span style="color:#ae81ff">001070</span> <span style="color:#ae81ff">00064</span><span style="color:#ae81ff">8</span> <span style="color:#ae81ff">18</span>	  <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">47</span>  <span style="color:#ae81ff">8</span>
+[<span style="color:#ae81ff">30</span>] .strtab 			STRTAB 		<span style="color:#ae81ff">0000000000000000</span> <span style="color:#ae81ff">0016</span>b8 <span style="color:#ae81ff">000222</span> <span style="color:#ae81ff">00</span> 	  <span style="color:#ae81ff">0</span>  <span style="color:#ae81ff">0</span>   <span style="color:#ae81ff">1</span>
+Key to Flags:
+W (write), A (alloc), X (execute), M (merge), S (strings), l (large)
+I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)
+O (extra OS processing required) o (OS specific), p (processor specific)
+</code></pre></div><ul>
+<li>The <strong>.init</strong> section (index 11)  can be thought of as a constructor as it contains a single startup function that performs some crucial initialization needed to start the executable that the system executes before transferring control to the main function.</li>
+<li>The <strong>.fini</strong> section (index 15) is analogous to the .init section, except that it runs after the main program completes, essentially functioning as a kind of destructor.</li>
+<li>The <strong>.text</strong> section (index 14) is where the main code of the program resides. It contains a number of standard functions that perform initialization and finalization tasks, such as _start, register_tm_clones, and frame_dummy.</li>
+<li>The <strong>.init_array</strong> section contains an array of pointers to functions to use as constructors. Each of these functions is called in turn when the binary is initialized, before main is called. The .init_array is a data section that can contain as many function pointers as you want, including pointers to your own custom constructors.</li>
+<li>The <strong>.fini_array</strong> is analogous to .init_array, except that .fini_array contains pointers to destructors.
+<ul>
+<li>In gcc, you can mark functions in your C source files as constructors by decorating them with __attribute__((constructor)). </li>
+<li>The pointers contained in .init_array and .fini_array are easy to change, making them convenient places to insert hooks that add initialization or finalization code to the binary to modify its behavior. </li>
+<li>The binaries produced by older gcc versions may contain sections called <strong>.ctors</strong> and <strong>.dtors</strong> instead of .init_array and .fini_array.</li>
+</ul>
+</li>
+<li>The default values of initialized variables are stored in the <strong>.data</strong> section, which is marked as writable since the values of variables may change at runtime.</li>
+<li>The <strong>.rodata</strong> section, which stands for “read-only data,” is dedicated to storing constant values. Because it stores constant values, .rodata is not writable.</li>
+<li>The <strong>.bss</strong> section reserves space for uninitialized variables. The name historically stands for <em>block started by symbol</em>, referring to the reserving of blocks of memory for (symbolic) variables. Unlike .rodata and .data, which have type SHT_PROGBITS, the .bss section has type SHT_NOBITS because .bss doesn’t occupy any bytes in the binary as it exists on disk, it’s simply a directive to allocate a properly sized block of memory for uninitialized variables when setting up an execution environment for the binary. Typically, variables that live in .bss are zero initialized, and the section is marked as writable.</li>
+<li>The <strong>.symtab</strong> section contains a symbol table, which is a table of <em><strong>Elf64_Sym</strong></em> structures, each of which associates a symbolic name with a piece of code or data elsewhere in the binary, such as a function or variable.</li>
+<li>The actual strings containing the symbolic names are located in the <strong>.strtab</strong> section. These strings are pointed to by the Elf64_Sym structures. 
+<ul>
+<li>In the stripped binaries the .symtab and .strtab tables are removed.</li>
+</ul>
+</li>
+<li>The <strong>.dynsym</strong> and <strong>.dynstr</strong> sections are analogous to .symtab and .strtab, except that they contain symbols and strings needed for dynamic linking rather than static linking. Because the information in these sections is needed during dynamic linking, they cannot be stripped.
+<ul>
+<li>The static symbol table has section type SHT_SYMTAB, while the dynamic symbol table has type SHT_DYNSYM. This makes it easy for tools like strip to recognize which symbol tables can be safely removed when stripping a binary and which cannot.</li>
+</ul>
+</li>
+<li><strong>.rel.*</strong> and <strong>.rela.*</strong> sections are of type SHT_RELA, meaning that they contain information used by the linker to perform relocations with each entry detailing a particular address where a relocation needs to be applied, as well as instructions on how to resolve the particular value that needs to be plugged in at this address. What all relocation types have in common is that they specify an offset at which to apply the relocation. There are two most common types of dynamic linking:
+<ul>
+<li>GLOB_DAT(Global data) : This relocation has its offset in .got section. This type of relocation is used to compute the address of a data symbol and plug it into the correct offset in .got.</li>
+<li>JUMP_SLO(Jump Slots) : This relocation has its offset in the .got.plt section and represent slots where the addresses of library functions can be plugged in.</li>
+</ul>
+</li>
+<li>The <strong>.dynamic</strong> section functions as a “road map” for the operating system and dynamic linker when loading and setting up an ELF binary for execution. The .dynamic section contains a table of <em><strong>Elf64_Dyn</strong></em> structures, also referred to as tags. There are different types of tags, each of which comes with an associated value. Tags of type DT_NEEDED inform the dynamic linker about dependencies of the executable. The DT_VERNEED and DT_VERNEEDNUM tags specify the starting address and number of entries of the version dependency table, which indicates the expected version of the various dependencies of the executable. In addition to listing dependencies, the .dynamic section also contains pointers to other important information required by the dynamic linker (for instance, the dynamic string table, dynamic symbol table, .got.plt section, and dynamic relocation section pointed to by tags of type DT_STRTAB, DT_SYMTAB, DT_PLTGOT, and DT_RELA, respectively).</li>
+</ul>
+<h3 id="lazy-binding">Lazy Binding</h3>
+<p>Many of the relocations are typically not done right away when the binary is loaded but are deferred until the first reference to the unresolved location is actually made. This is known as L<strong>azy Binding</strong>. It ensures that the dynamic linker never needlessly wastes time on relocations; it only performs those relocations that are truly needed at runtime.</p>
+<p><img src="https://hexterisk.github.io/blog/The_ELF_Format/image.png" alt="">
+<em>Lazy Binding.</em></p>
+<ul>
+<li>Linker can be forced to perform all relocations right away by exporting an environment variable called <strong>LD_BIND_NOW</strong>, done when the application calls for real-time performance guarantees.</li>
+</ul>
+<p>Lazy binding in Linux ELF binaries is implemented with:</p>
+<ul>
+<li><strong>Global Offset Table</strong> (<strong>.got section</strong>).
+<ul>
+<li>Data section.</li>
+<li>ELF binaries often contain a separate GOT section called <strong>.got.plt</strong> for use in conjunction with .plt in the lazy binding process. Relocations are of type <strong>R_386_JUMP_SLOT</strong>, which implies that they are branch relocations.</li>
+<li>The <strong>.got</strong> section is for relocations regarding global variables, all of type <strong>R_386_GLOB_DAT</strong>.</li>
+</ul>
+</li>
+<li><strong>Procedure Linkage Table</strong> (<strong>.plt section</strong>)
+<ul>
+<li>
+<p>Code section that contains executable code.</p>
+</li>
+<li>
+<p>The <strong>.plt</strong> section contain the actual stubs to lookup the addresses in .got.plt section.</p>
+</li>
+<li>
+<p>The <strong>.plt.got</strong> is an alternative PLT that uses read-only .got entries instead of .got.plt entries. It’s used if you enable the <em>ld</em> option <em>-z</em> <em>now</em> at compile time, telling ld that you want to use <em><strong>now binding.</strong></em> This has the same effect as LD_BIND_NOW=1, but by informing ld at compile time, you allow it to place GOT entries in .got for enhanced security and use 8-byte .plt.got entries instead of larger 16-byte .plt entries.</p>
+</li>
+<li>
+<p>Calling a shared library function via the PLT (referred by <em>step num</em>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#960050;background-color:#1e0010">$</span> objdump <span style="color:#f92672">-</span>M intel <span style="color:#f92672">--</span>section .plt <span style="color:#f92672">-</span>d a.out
+
+a.out: file format elf64<span style="color:#f92672">-</span>x86<span style="color:#f92672">-</span><span style="color:#ae81ff">64</span>
+Disassembly of section .plt:
+
+<span style="color:#960050;background-color:#1e0010">➊</span> <span style="color:#ae81ff">00000000004003f</span><span style="color:#ae81ff">0</span> <span style="color:#f92672">&lt;</span>puts<span style="color:#960050;background-color:#1e0010">@</span>plt<span style="color:#f92672">-</span><span style="color:#ae81ff">0x10</span><span style="color:#f92672">&gt;:</span>
+<span style="color:#ae81ff">4003f</span><span style="color:#ae81ff">0</span><span style="color:#f92672">:</span> push QWORD PTR [rip<span style="color:#f92672">+</span><span style="color:#ae81ff">0x200c12</span>] 
+<span style="color:#75715e"># 601008 &lt;_GLOBAL_OFFSET_TABLE_+0x8&gt;
+</span><span style="color:#75715e"></span><span style="color:#ae81ff">4003f</span><span style="color:#ae81ff">6</span><span style="color:#f92672">:</span> jmp QWORD PTR [rip<span style="color:#f92672">+</span><span style="color:#ae81ff">0x200c14</span>] 
+<span style="color:#75715e"># 601010 &lt;_GLOBAL_OFFSET_TABLE_+0x10&gt;
+</span><span style="color:#75715e"></span><span style="color:#ae81ff">4003f</span>c: nop DWORD PTR [rax<span style="color:#f92672">+</span><span style="color:#ae81ff">0x0</span>]
+
+<span style="color:#960050;background-color:#1e0010">➋</span> <span style="color:#ae81ff">0000000000400400</span> <span style="color:#f92672">&lt;</span>puts<span style="color:#960050;background-color:#1e0010">@</span>plt<span style="color:#f92672">&gt;:</span>
+<span style="color:#ae81ff">400400</span><span style="color:#f92672">:</span> jmp QWORD PTR [rip<span style="color:#f92672">+</span><span style="color:#ae81ff">0x200c12</span>] 
+<span style="color:#75715e"># 601018 &lt;_GLOBAL_OFFSET_TABLE_+0x18&gt;
+</span><span style="color:#75715e"></span><span style="color:#ae81ff">400406</span><span style="color:#f92672">:</span> push <span style="color:#960050;background-color:#1e0010">➌</span><span style="color:#ae81ff">0x0</span>
+<span style="color:#ae81ff">40040</span>b: jmp <span style="color:#ae81ff">4003f</span><span style="color:#ae81ff">0</span> <span style="color:#f92672">&lt;</span>_init<span style="color:#f92672">+</span><span style="color:#ae81ff">0x28</span><span style="color:#f92672">&gt;</span>
+
+<span style="color:#960050;background-color:#1e0010">➍</span> <span style="color:#ae81ff">0000000000400410</span> <span style="color:#f92672">&lt;</span>__libc_start_main<span style="color:#960050;background-color:#1e0010">@</span>plt<span style="color:#f92672">&gt;:</span>
+<span style="color:#ae81ff">400410</span><span style="color:#f92672">:</span> jmp QWORD PTR [rip<span style="color:#f92672">+</span><span style="color:#ae81ff">0x200c0a</span>] 
+<span style="color:#75715e"># 601020 &lt;_GLOBAL_OFFSET_TABLE_+0x20&gt;
+</span><span style="color:#75715e"></span><span style="color:#ae81ff">400416</span><span style="color:#f92672">:</span> push <span style="color:#960050;background-color:#1e0010">➎</span><span style="color:#ae81ff">0x1</span>
+<span style="color:#ae81ff">40041</span>b: jmp <span style="color:#ae81ff">4003f</span><span style="color:#ae81ff">0</span> <span style="color:#f92672">&lt;</span>_init<span style="color:#f92672">+</span><span style="color:#ae81ff">0x28</span><span style="color:#f92672">&gt;</span>
+</code></pre></div><ul>
+<li>First call to a library function (say puts) sends it to it&rsquo;s plt entry (➋puts@plt). There it experiences a jump (step ➋) to an address which initially is the address of the next instruction (➌), thus jumping back (step ➌). The push instruction pushes an integer onto the stack which serves as an index/identifier for the current function stub. It then encounters another jump (step ➍) which sends it to the <strong>default stub (<strong>➊</strong>)</strong>, which pushes another identifier (taken from GOT) and jumps, indirectly through GOT, to the dynamic linker (step ➎). Using the identifiers pushed by the PLT stubs, the dynamic linker figures out that it should resolve the address of puts and should do so on behalf of the main executable loaded into the process. This last bit is important because there may be multiple libraries loaded in the same process as well, each with their own PLT and GOT. The dynamic linker then looks up the address at which the puts function is located and plugs the address of that function into the GOT entry associated with puts@plt. The GOT entry now no longer points back into the PLT stub, as it did initially, but now points to the actual address of puts. At this point, the lazy binding process is complete. Finally, the dynamic linker satisfies the original intention of calling puts by transferring control to it. For any subsequent calls to puts@plt, the GOT entry already contains the appropriate (patched) address of puts so that the jump at the start of the PLT stub goes directly to puts without involving the dynamic linker (step ➏).</li>
+<li>zGOT has been incorporated because:
+<ul>
+<li>GOT is a data section and thus it’s okay for it to be writable. Therefore it makes sense to have the additional layer of indirection through the GOT since this extra layer of indirection allows you to avoid creating writable code sections (leaving PLT read-only). While an attacker may still succeed in changing the addresses in the GOT, this attack model is a lot less powerful than the ability to inject arbitrary code.</li>
+<li>A dynamic library will have only exist in a single physical copy while it will likely be mapped to multiple completely different virtual address for each process. Thus you can’t patch addresses resolved on behalf of a library directly into the code because the address would work only in the context of one process and break the others. Patching them into the GOT instead does work because each process has its own private copy of the GOT.</li>
+</ul>
+</li>
+</ul>
+<h2 id="program-headers">Program Headers</h2>
+<ul>
+<li>The <strong>Program Header Table</strong> provides a <strong>Segment</strong> view of the binary, as opposed to the section view provided by the Section Header Table.</li>
+<li>Format of a program header: /usr/include/elf.h</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+uint32_t p_type; <span style="color:#75715e">/* Segment type */</span>
+uint32_t p_flags; <span style="color:#75715e">/* Segment flags */</span>
+uint64_t p_offset; <span style="color:#75715e">/* Segment file offset */</span>
+uint64_t p_vaddr; <span style="color:#75715e">/* Segment virtual address */</span>
+uint64_t p_paddr; <span style="color:#75715e">/* Segment physical address */</span>
+uint64_t p_filesz; <span style="color:#75715e">/* Segment size in file */</span>
+uint64_t p_memsz; <span style="color:#75715e">/* Segment size in memory */</span>
+uint64_t p_align; <span style="color:#75715e">/* Segment alignment */</span>
+} Elf64_Phdr;
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#960050;background-color:#1e0010">$</span> readelf <span style="color:#f92672">--</span>wide <span style="color:#f92672">--</span>segments a.out
+
+Elf file type is EXEC (Executable file)
+Entry point <span style="color:#ae81ff">0x400430</span>
+There are <span style="color:#ae81ff">9</span> program headers, starting at offset <span style="color:#ae81ff">64</span>
+
+Program Headers:
+Type 			Offset 		VirtAddr 		   PhysAddr 		  FileSiz  MemSiz 	Flg Align
+PHDR			<span style="color:#ae81ff">0x000040</span> 	<span style="color:#ae81ff">0x0000000000400040</span> <span style="color:#ae81ff">0x0000000000400040</span> <span style="color:#ae81ff">0x0001f8</span> <span style="color:#ae81ff">0x0001f8</span> R E <span style="color:#ae81ff">0x8</span>
+INTERP			<span style="color:#ae81ff">0x000238</span> 	<span style="color:#ae81ff">0x0000000000400238</span> <span style="color:#ae81ff">0x0000000000400238</span> <span style="color:#ae81ff">0x00001c</span> <span style="color:#ae81ff">0x00001c</span> R 	<span style="color:#ae81ff">0x1</span>
+	[Requesting program interpreter: <span style="color:#f92672">/</span>lib64<span style="color:#f92672">/</span>ld<span style="color:#f92672">-</span>linux<span style="color:#f92672">-</span>x86<span style="color:#f92672">-</span><span style="color:#ae81ff">64.</span>so<span style="color:#ae81ff">.2</span>]
+LOAD 			<span style="color:#ae81ff">0x000000</span> 	<span style="color:#ae81ff">0x0000000000400000</span> <span style="color:#ae81ff">0x0000000000400000</span> <span style="color:#ae81ff">0x00070c</span> <span style="color:#ae81ff">0x00070c</span> R E <span style="color:#ae81ff">0x200000</span>
+LOAD 			<span style="color:#ae81ff">0x000e10</span> 	<span style="color:#ae81ff">0x0000000000600e10</span> <span style="color:#ae81ff">0x0000000000600e10</span> <span style="color:#ae81ff">0x000228</span> <span style="color:#ae81ff">0x000230</span> RW 	<span style="color:#ae81ff">0x200000</span>
+DYNAMIC 		<span style="color:#ae81ff">0x000e28</span> 	<span style="color:#ae81ff">0x0000000000600e28</span> <span style="color:#ae81ff">0x0000000000600e28</span> <span style="color:#ae81ff">0x0001d0</span> <span style="color:#ae81ff">0x0001d0</span> RW 	<span style="color:#ae81ff">0x8</span>
+NOTE 			<span style="color:#ae81ff">0x000254</span> 	<span style="color:#ae81ff">0x0000000000400254</span> <span style="color:#ae81ff">0x0000000000400254</span> <span style="color:#ae81ff">0x000044</span> <span style="color:#ae81ff">0x000044</span> R 	<span style="color:#ae81ff">0x4</span>
+GNU_EH_FRAME 	<span style="color:#ae81ff">0x0005e4</span> 	<span style="color:#ae81ff">0x00000000004005e4</span> <span style="color:#ae81ff">0x00000000004005e4</span> <span style="color:#ae81ff">0x000034</span> <span style="color:#ae81ff">0x000034</span> R 	<span style="color:#ae81ff">0x4</span>
+GNU_STACK 		<span style="color:#ae81ff">0x000000</span> 	<span style="color:#ae81ff">0x0000000000000000</span> <span style="color:#ae81ff">0x0000000000000000</span> <span style="color:#ae81ff">0x000000</span> <span style="color:#ae81ff">0x000000</span> RW 	<span style="color:#ae81ff">0x10</span>
+GNU_RELRO 		<span style="color:#ae81ff">0x000e10</span> 	<span style="color:#ae81ff">0x0000000000600e10</span> <span style="color:#ae81ff">0x0000000000600e10</span> <span style="color:#ae81ff">0x0001f0</span> <span style="color:#ae81ff">0x0001f0</span> R 	<span style="color:#ae81ff">0x1</span>
+
+<span style="color:#960050;background-color:#1e0010">➊</span> Section to Segment mapping:
+Segment Sections...
+	<span style="color:#ae81ff">00</span>
+	<span style="color:#ae81ff">01</span> .interp
+	<span style="color:#ae81ff">02</span> .interp .note.ABI<span style="color:#f92672">-</span>tag .note.gnu.build<span style="color:#f92672">-</span>id .gnu.hash .dynsym .dynstr .gnu.version .gnu.version_r .rela.dyn 
+	   .rela.plt .init .plt .plt.got .text .fini .rodata .eh_frame_hdr .eh_frame
+	<span style="color:#ae81ff">03</span> .init_array .fini_array .jcr .dynamic .got .got.plt .data .bss
+	<span style="color:#ae81ff">04</span> .dynamic
+	<span style="color:#ae81ff">05</span> .note.ABI<span style="color:#f92672">-</span>tag .note.gnu.build<span style="color:#f92672">-</span>id
+	<span style="color:#ae81ff">06</span> .eh_frame_hdr
+	<span style="color:#ae81ff">07</span>
+	<span style="color:#ae81ff">08</span> .init_array .fini_array .jcr .dynamic .got
+</code></pre></div><ul>
+<li>An ELF segment encompasses zero or more sections, essentially bundling these into a single chunk (➊). Since segments provide an execution view, they are needed only for executable ELF files and not for non-executable files such as relocatable objects.</li>
+</ul>
+<p>Citation: <a href="https://nostarch.com/binaryanalysis">Practical Binary Analysis</a>.</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/rev">rev</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/reversing">reversing</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/c">c</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/elf">elf</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/headers">headers</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/sections">sections</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2690 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-03-03 05:30 &#43;0530</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/03/06/the-pe-format/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">The PE Format</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/02/28/anatomy-of-a-binary/">
+                                <span class="button__text">Anatomy of a Binary</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content" style="margin-bottom: -0.8rem;">
+            <span><a style="text-decoration: none;"> .</a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span><a style="text-decoration: none;" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></span>
+        </div>
+    </div>
+</footer>
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.08ccaf9cef8b4e0ebd0b0158e66a7bfc0ddbb2194cdb0099e8814ddb89cc7628b27b1158846564e6e03d9ffc5f4d1bc7dfc274d359f9408d1c63d73a3f7332e9.js" integrity="sha512-CMyvnO&#43;LTg69CwFY5mp7/A3bshlM2wCZ6IFN24nMdiiyexFYhGVk5uA9n/xfTRvH38J001n5QI0cY9c6P3My6Q=="></script>
+
+
+
+    </body>
+</html>

@@ -12,8 +12,6 @@ weight: 10
 categories: ["art-of-fuzzing"]
 ---
 
-# Sanitation
-
 Sanitation tools, or [sanitizers](https://github.com/google/sanitizers), are a set of libraries that can directly observe and flag an incorrect behavior for a certain class of violation at runtime.
 
 Sanitizers are employed by instrumenting the source code. The compiled binary, therefore, essentially has certain tripwires that catch any invalid or incorrect behavior and reports it. The fact that it only brings about minimal performance overhead allows it to be coupled with fuzzing techniques, a powerful combination.

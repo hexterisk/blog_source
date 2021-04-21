@@ -211,3 +211,5 @@ $ readelf -p .interp a.out
 String dump of section '.interp':
 [ 0] /lib64/ld-linux-x86-64.so.2
 ```
+
+Citation: [Practical Binary Analysis](https://nostarch.com/binaryanalysis).

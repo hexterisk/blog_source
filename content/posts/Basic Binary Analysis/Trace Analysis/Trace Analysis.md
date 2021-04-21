@@ -153,3 +153,5 @@ std::char_traits<char>, std::allocator<char> > const&)
 ```
 
 After the call to getenv, ctf goes on to assign ➊ and decrypt ➋ another C++ string. Unfortunately, between the decryption and the moment that guess again is printed to the screen ➌, you don’t see any hints regarding the expected value of GUESSME. This tells you that the comparison of GUESSME to its expected value is implemented without the use of any library functions.
+
+Citation: [Practical Binary Analysis](https://nostarch.com/binaryanalysis).

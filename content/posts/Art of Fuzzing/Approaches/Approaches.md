@@ -12,7 +12,6 @@ weight: 10
 categories: ["art-of-fuzzing"]
 ---
 
-# Approaches
 Fuzzing can be segregated into different types based on the facet of the process we look from.
 
 ## Program Structure

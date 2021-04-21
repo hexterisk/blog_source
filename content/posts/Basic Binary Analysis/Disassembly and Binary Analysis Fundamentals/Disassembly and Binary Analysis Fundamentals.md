@@ -227,3 +227,5 @@ Optimized code is usually significantly harder to accurately disassemble (and th
 *   Compilers often merge small functions into the larger functions calling them, to avoid the cost of the call instruction; this merging is called **inlining.**
 *   Compilers often emit padding bytes between functions and basic blocks to align them at memory addresses where they can be most efficiently accessed. Interpreting these padding bytes as code can cause disassembly errors if the padding bytes aren’t valid instructions.
 *   Compilers may “unroll” loops to avoid the overhead of jumping to the next iteration. This hinders loop detection algorithms and decompilers, which try to find high-level constructs like while and for loops in the code.
+
+Citation: [Practical Binary Analysis](https://nostarch.com/binaryanalysis).

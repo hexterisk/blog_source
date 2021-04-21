@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:hexterisk]">
+<meta name="description" content="Source Code Instrumentation adds specific code meant for instrumentation/analysis, called Instrumentation Code, to the source files of the program under consideration. The source files are then compiled and executed. Since the instrumentation code is integrated into the binary itself, the output from the execution includes the dump of the instrumentation code which can then be used for further analysis and component testing.
+Intermediate Representations Representation of a program in a state that lies between the source code and the compiled binary(specifically, the assembly code)." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://hexterisk.github.io/blog/posts/2020/05/26/source-code-instrumentation-and-llvm/" />
+
+
+    <title>
+        
+            Source Code Instrumentation and LLVM: Pwn the world.  — A noob&#39;s attempt at blogging.
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.d644853e3e89ab1ec568894a9a3df34b7e4e5bfd66060890b1e4297657fd91e8.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Source Code Instrumentation and LLVM">
+<meta itemprop="description" content="Source Code Instrumentation adds specific code meant for instrumentation/analysis, called Instrumentation Code, to the source files of the program under consideration. The source files are then compiled and executed. Since the instrumentation code is integrated into the binary itself, the output from the execution includes the dump of the instrumentation code which can then be used for further analysis and component testing.
+Intermediate Representations Representation of a program in a state that lies between the source code and the compiled binary(specifically, the assembly code)."><meta itemprop="datePublished" content="2020-05-26T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-05-26T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="3471"><meta itemprop="image" content="https://hexterisk.github.io/blog"/>
+<meta itemprop="keywords" content="binary,source,instrument,llvm,ir,linear,tuple,stack,three address code," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
+
+<meta name="twitter:title" content="Source Code Instrumentation and LLVM"/>
+<meta name="twitter:description" content="Source Code Instrumentation adds specific code meant for instrumentation/analysis, called Instrumentation Code, to the source files of the program under consideration. The source files are then compiled and executed. Since the instrumentation code is integrated into the binary itself, the output from the execution includes the dump of the instrumentation code which can then be used for further analysis and component testing.
+Intermediate Representations Representation of a program in a state that lies between the source code and the compiled binary(specifically, the assembly code)."/>
+
+
+
+    <meta property="article:section" content="practical-binary-analysis" />
+
+
+
+    <meta property="article:published_time" content="2020-05-26 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$cd ~/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>17 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://hexterisk.github.io/blog/posts/2020/05/26/source-code-instrumentation-and-llvm/">Source Code Instrumentation and LLVM</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <p><strong>Source Code Instrumentation</strong> adds specific code meant for instrumentation/analysis, called <strong>Instrumentation Code</strong>, to the source files of the program under consideration. The source files are then compiled and executed. Since the instrumentation code is integrated into the binary itself, the output from the execution includes the dump of the instrumentation code which can then be used for further analysis and component testing.</p>
+<h2 id="intermediate-representations">Intermediate Representations</h2>
+<p>Representation of a program in a state that lies between the source code and the compiled binary(specifically, the assembly code). Compilers have a stage of intermediate code generation, where they natively generate IR of the source code.</p>
+<p>IR is then used to emit generic assembly code allowing us to use a single universal assembler that can handle the final translation of assembly to machine code for every language. Otherwise, a full native compiler would be required for different languages and different architecture machines.</p>
+<p>Moreover, it allows us to perform machine independent optimizations.</p>
+<p>Let&rsquo;s take a source code as an example.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">while</span> (x <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">*</span> y) {
+    x <span style="color:#f92672">=</span> y <span style="color:#f92672">/</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">&gt;&gt;</span> x;
+    <span style="color:#66d9ef">if</span> (y) print x <span style="color:#f92672">-</span> <span style="color:#ae81ff">3</span>;
+}
+</code></pre></div><p>It can be expressed in different IR formats.</p>
+<h3 id="structural">Structural</h3>
+<p>Graphically oriented format which is heavily used in source-to-source translations. A graph is formed showing different stages in different shapes along the flow of execution.</p>
+<p><img src="https://hexterisk.github.io/blog/Source_Code_Instrumentation_and_LLVM/irgraphexample.gif" alt="">
+<em>Semantic graph.</em></p>
+<h3 id="linear">Linear</h3>
+<p>Pseudo-code like format with varying levels of abstraction (such as sub types of Tuples). It&rsquo;s shown using simple and compact data structures and is easier to rearrange.</p>
+<h4 id="tuples">Tuples</h4>
+<p>Instruction-like entities consisting of an operator and zero to three arguments. Arguments can be literals, subroutine references, variables or temporaries.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// Stored form				   // Rendered form
+</span><span style="color:#75715e"></span>(JUMP, L2)                          <span style="color:#66d9ef">goto</span> L2
+(LABEL, L1)                    L1:
+(SHR, <span style="color:#ae81ff">3</span>, x, t0)                     t0 :<span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">&gt;&gt;</span> x
+(DIV, y, t0, t1)                    t1 :<span style="color:#f92672">=</span> y <span style="color:#f92672">/</span> t0
+(COPY, t1, x)                       x :<span style="color:#f92672">=</span> t1
+(JZ, y, L3)                         <span style="color:#66d9ef">if</span> y <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">goto</span> L3
+(SUB, x, <span style="color:#ae81ff">3</span>, t2)                     t2 :<span style="color:#f92672">=</span> x <span style="color:#f92672">-</span> <span style="color:#ae81ff">3</span>
+(PRINT, t2)                         print t2
+(LABEL, L3)                    L3:
+(LABEL, L2)                    L2:
+(MUL, <span style="color:#ae81ff">4</span>, y, t4)                     t4 :<span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">*</span> y
+(LT, x, t4, t5)                     x :<span style="color:#f92672">=</span> t4 <span style="color:#f92672">&lt;</span> t5
+(JNZ, t5, L1)                       <span style="color:#66d9ef">if</span> t5 <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">goto</span> L1
+</code></pre></div><p>Generally we recognize three levels of tuple sophistication. Let&rsquo;s take another source code as an example.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">double</span> a[<span style="color:#ae81ff">20</span>][<span style="color:#ae81ff">10</span>];
+.
+.
+.
+<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n; i <span style="color:#f92672">+=</span> di)
+    a[i][j<span style="color:#f92672">+</span><span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> j;
+</code></pre></div><h5 id="high-level">High-level</h5>
+<ul>
+<li>Keeps structure of source language program explicit.</li>
+<li>Source program can be reconstructed from it.</li>
+<li>Operands are semantic objects, including arrays and structs.</li>
+<li>No breaking down of array indexing computations.</li>
+<li>No thought of registers.</li>
+<li>No concern for runtime systems.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">(COPY, <span style="color:#ae81ff">0</span>, i)                        i :<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+(LABEL, L1)                    L1:
+(JGE, i, n, L2)                     <span style="color:#66d9ef">if</span> i <span style="color:#f92672">&gt;=</span> n <span style="color:#66d9ef">goto</span> L2
+(INDEX, a, i, t0)                   t0 :<span style="color:#f92672">=</span> a[i]
+(ADD, j, <span style="color:#ae81ff">2</span>, t1)                     t1 :<span style="color:#f92672">=</span> j <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>
+(INDEX, t0, t1, t2)                 t2 :<span style="color:#f92672">=</span> t0[t1]
+(COPY_TO_DEREF, j, t2)              <span style="color:#f92672">*</span>t2 :<span style="color:#f92672">=</span> j
+(INCJUMP, i, di, L1)                i <span style="color:#f92672">+=</span> di, <span style="color:#66d9ef">goto</span> L1
+(LABEL, L2)                    L2:
+</code></pre></div><h5 id="medium-level">Medium-level</h5>
+<ul>
+<li>Can be source or target oriented.</li>
+<li>Language and machine independent.</li>
+<li>Break down data structure references to deal only with simple ints and floats.</li>
+<li>Great for architecture-independent optimizations.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">(COPY, <span style="color:#ae81ff">0</span>, i)                        i :<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+(LABEL, L1)                    L1:
+(JGE, i, n, L2)                     <span style="color:#66d9ef">if</span> i <span style="color:#f92672">&gt;=</span> n <span style="color:#66d9ef">goto</span> L2
+(MUL, i, <span style="color:#ae81ff">80</span>, t0)                    t0 :<span style="color:#f92672">=</span> i <span style="color:#f92672">*</span> <span style="color:#ae81ff">80</span>
+(ADD, a, t0, t1)                    t1 :<span style="color:#f92672">=</span> a <span style="color:#f92672">+</span> t0
+(ADD, j, <span style="color:#ae81ff">2</span>, t2)                     t2 :<span style="color:#f92672">=</span> j <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>
+(MUL, t2, <span style="color:#ae81ff">8</span>, t3)                    t3 :<span style="color:#f92672">=</span> t2 <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>
+(ADD, t1, t3, t4)                   t4 :<span style="color:#f92672">=</span> t1 <span style="color:#f92672">+</span> t3
+(COPY_TO_DEREF, j, t4)              <span style="color:#f92672">*</span>t4 :<span style="color:#f92672">=</span> j
+(ADD, i, di, i)                     i :<span style="color:#f92672">=</span> i <span style="color:#f92672">+</span> di
+(JUMP, L1)                          <span style="color:#66d9ef">goto</span> L1
+(LABEL, L2)                    L2:
+</code></pre></div><h5 id="low-level">Low-level</h5>
+<ul>
+<li>Extremely close to machine architecture.</li>
+<li>Architecture dependent.</li>
+<li>Deviates from target language only in its inclusion of pseudo-operations and symbolic (virtual) registers.</li>
+<li>Intimately concerned with run-time storage management issues like stack frames and parameter passing mechanisms.</li>
+<li>For architecture dependent optimizations.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">(LDC, <span style="color:#ae81ff">0</span>, r0)                        r0 :<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+(LOAD, j, r1)                       r1 :<span style="color:#f92672">=</span> j
+(LOAD, n, r2)                       r2 :<span style="color:#f92672">=</span> n
+(LOAD, di, r3)                      r3 :<span style="color:#f92672">=</span> di
+(LOAD, a, r4)                       r4 :<span style="color:#f92672">=</span> a
+(LABEL, L1)                    L1:
+(JGE, r0, r2, L2)                   <span style="color:#66d9ef">if</span> r0 <span style="color:#f92672">&gt;=</span> r2 <span style="color:#66d9ef">goto</span> L2
+(MUL, r0, <span style="color:#ae81ff">80</span>, r5)                   r5 :<span style="color:#f92672">=</span> r0 <span style="color:#f92672">*</span> <span style="color:#ae81ff">80</span>
+(ADD, r4, r5, r6)                   r6 :<span style="color:#f92672">=</span> r4 <span style="color:#f92672">+</span> r5
+(ADD, r1, <span style="color:#ae81ff">2</span>, r7)                    r7 :<span style="color:#f92672">=</span> r1 <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>
+(MUL, r7, <span style="color:#ae81ff">8</span>, r8)                    r8 :<span style="color:#f92672">=</span> r7 <span style="color:#f92672">*</span> <span style="color:#ae81ff">8</span>
+(ADD, r6, r8, r9)                   r9 :<span style="color:#f92672">=</span> r6 <span style="color:#f92672">+</span> r8
+(TOFLOAT, r1, f0)                   f0 :<span style="color:#f92672">=</span> tofloat r1
+(STOREIND, f0, r9)                  <span style="color:#f92672">*</span>r9 :<span style="color:#f92672">=</span> f0
+(ADD, r0, r3, r0)                   r0 :<span style="color:#f92672">=</span> r0 <span style="color:#f92672">+</span> r3
+(JUMP, L1)                          <span style="color:#66d9ef">goto</span> L1
+(LABEL, L2)                    L2:
+</code></pre></div><h3 id="stack-code">Stack Code</h3>
+<p>Originally used for stack-based computers, and therefore use implicit names instead of explicit since explicit names take up space. It&rsquo;s simple to generate and execute.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">    <span style="color:#66d9ef">goto</span> L2
+L1:
+    load y
+    load_constant <span style="color:#ae81ff">3</span>
+    load x
+    shr
+    div
+    store x
+    load y
+    jump_if_zero L3
+    load x
+    load_constant <span style="color:#ae81ff">3</span>
+    sub
+    print
+L3:
+L2:
+    load x
+    load_constant <span style="color:#ae81ff">4</span>
+    load y
+    mul
+    less_than
+    jump_if_not_zero L1
+</code></pre></div><h4 id="three-address-code">Three Address Code</h4>
+<p>Has a compact form with proper names, resembling a general format for most machines.</p>
+<p>It has statements of the form:</p>
+<p><em>x ← y op z</em>,    where <em>op</em> is any operator and <em>(x, y, z)</em> are names.</p>
+<p>For example, the expression <em>z ← x - 2 * y</em> will be decomposed into:</p>
+<p><em>t ← 2 * y</em></p>
+<p><em>z ← x - t</em></p>
+<p>and then into assembly.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">load r1, y
+loadI r2, <span style="color:#ae81ff">2</span>
+mult r3, r2, r1
+load r4, x
+sub r5, r4, r3
+</code></pre></div><h3 id="hybrid">Hybrid</h3>
+<p>A combination of both, Graphs and Linear code.</p>
+<h4 id="control-flow-graph">Control Flow Graph</h4>
+<p>A graph whose nodes are basic blocks and whose edges are transitions between blocks.</p>
+<p>A <strong>Basic Block</strong> is a:</p>
+<ul>
+<li>maximal-length sequence of instructions that will execute in its entirety.</li>
+<li>maximal-length straight-line code block.</li>
+<li>maximal-length code block with only one entry and one exit.</li>
+</ul>
+<p>For example, the line code:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">     <span style="color:#66d9ef">goto</span> L2
+L1:
+     t0 :<span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span> <span style="color:#f92672">&gt;&gt;</span> x
+     t1 :<span style="color:#f92672">=</span> y <span style="color:#f92672">/</span> t0
+     x :<span style="color:#f92672">=</span> t1
+     <span style="color:#66d9ef">if</span> y <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">goto</span> L3
+     t2 :<span style="color:#f92672">=</span> x <span style="color:#f92672">-</span> <span style="color:#ae81ff">3</span>
+     print t2
+L3:
+L2:
+     t4 :<span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">*</span> y
+     x :<span style="color:#f92672">=</span> t4 <span style="color:#f92672">&lt;</span> t5
+     <span style="color:#66d9ef">if</span> t5 <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">goto</span> L1
+</code></pre></div><p>can be represented as a CFG as:</p>
+<p><img src="https://hexterisk.github.io/blog/Source_Code_Instrumentation_and_LLVM/controlgraphexample.gif" alt="">
+<em>Control flow graph.</em></p>
+<h4 id="static-single-assignment">Static Single Assignment</h4>
+<p>The idea with SSA is to define each name only once in a program. This is achieved by using φ-functions, or Euler&rsquo;s totient functions. These functions count positive integers upto a given integer <em>n</em>, that are relatively prime to <em>n</em>.</p>
+<p>It can generally be found in Fortran or C compilers.</p>
+<p>So, a pseudo-code of the form:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">x <span style="color:#960050;background-color:#1e0010">←</span> ...
+y <span style="color:#960050;background-color:#1e0010">←</span> ...
+<span style="color:#66d9ef">while</span> (x <span style="color:#f92672">&lt;</span> k)
+    x <span style="color:#960050;background-color:#1e0010">←</span> x <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+    y <span style="color:#960050;background-color:#1e0010">←</span> y <span style="color:#f92672">+</span> x
+</code></pre></div><p>can be represented in SSA as:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">    x0 <span style="color:#960050;background-color:#1e0010">←</span> ...
+    y0 <span style="color:#960050;background-color:#1e0010">←</span> ...
+    <span style="color:#66d9ef">if</span> (x0 <span style="color:#f92672">&gt;</span> k) <span style="color:#66d9ef">goto</span> next
+loop:    x1 <span style="color:#960050;background-color:#1e0010">←</span> <span style="color:#960050;background-color:#1e0010">φ</span>(x0,x2)
+         y1 <span style="color:#960050;background-color:#1e0010">←</span> <span style="color:#960050;background-color:#1e0010">φ</span>(y0,y2)
+         x2 <span style="color:#960050;background-color:#1e0010">←</span> x1 <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+         y2 <span style="color:#960050;background-color:#1e0010">←</span> y1 <span style="color:#f92672">+</span> x2
+         <span style="color:#66d9ef">if</span> (x2 <span style="color:#f92672">&lt;</span> k) <span style="color:#66d9ef">goto</span> loop
+next: ... 
+    
+    <span style="color:#75715e">// φ-function will determine which out of the parameters given to us were actually used to get there. So the first time the loop is ran, x1 will have the value of x0 while all the subsequent times, x1 will have the value of x2. Similar for y1.
+</span></code></pre></div><p>The primary benefit of this form is it&rsquo;s ability to simultaneously simplify and improve results of various compiler optimizations just by simplifying properties of the variables.</p>
+<h2 id="llvm">LLVM</h2>
+<p><strong>L</strong>ow <strong>L</strong>evel <strong>V</strong>irtual <strong>M</strong>achine is an IR. The main idea behind it was to get an interface to the compilation process so that optimizations to the binary could be applied then itself, rather than using JIT compilers to provide runtime optimizations. This was because these compilations by virtual machines(such as JVM) were online which meant that these optimizations had to be performed every time a certain piece of code ran. Thus, the heavy lifting task of optimization was moved from runtime to compile time.</p>
+<p>Use the following script to setup LLVM.</p>
+<p>Make sure you have the <strong>clang</strong> compiler installed.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone https://github.com/llvm/llvm-project.git
+cd llvm-project
+mkdir build
+cd build
+cmake -G <span style="color:#e6db74">&#34;Unix Makefiles&#34;</span> -DLLVM_TARGETS_TO_BUILD<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;X86&#34;</span> -DLLVM_TARGET_ARCH<span style="color:#f92672">=</span>X86 -DCMAKE_BUILD_TYPE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Release&#34;</span> -DLLVM_BUILD_EXAMPLES<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> -DCLANG_BUILD_EXAMPLES<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> ../llvm/
+cmake --build .
+</code></pre></div><p>The LLVM IR can be displayed in two formats. Let the source code be in a file named <em>SOURCEFILE.cpp</em>.</p>
+<ol>
+<li>Assembly Format
+<ul>
+<li>Use the tool <strong>clang</strong> to produce llvm IR.
+<ul>
+<li>Run <code>clang++ -S -emit-llvm SOURCEFILE.cpp</code> to produce the IR by the name <code>SOURCEFILE.ll</code>.</li>
+</ul>
+</li>
+<li>The <em>.ll</em> file is the LLVM IR in assembly format. It can be directly executed using a tool called <strong>llvm-lli</strong>. It&rsquo;s a JIT execution engine. Run <code>lli SOURCEFILE.ll</code> to execute it.</li>
+</ul>
+</li>
+<li>Bit-code Format
+<ul>
+<li>Use the tool <strong>llvm-as</strong> to produce bit-code format of the IR.
+<ul>
+<li>Run <code>llvm-as SOURCEFILE.ll</code> to produce the bit-code file by the name <code>SOURCEFILE.bc</code>.</li>
+</ul>
+</li>
+<li>This assembly format of the IR can be converted into <strong>bit-code</strong>, a <em>.bc</em> file which is the binary format of the IR using a tool called <strong>llvm-as</strong>. Run <code>lli SOURCEFILE.bc</code> to execute it.</li>
+<li>Use the tool <strong>llvm-dis</strong> to convert bit-code format to assembly format for a given IR.
+<ul>
+<li>Run <code>llvm-dis SOURCEFILE.bc</code> to produce the assembly format of IR from the bit-code file <code>SOURCEFILE.bc</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>The tool <strong>llc</strong>, a static compiler, can then be used to convert the IR, assembly as well as bit-code format, into assembly code. Run <code>llc SOURCEFILE.ll</code> or <code>llc SOURCEFILE.bc</code> to compile the format you have into assembly code.</p>
+<p>The tool <strong>opt</strong>, can be used to analyze and optimize the source code. It makes several passes over the code at various levels of granularity looking for opportunities to optimize it.</p>
+<ul>
+<li>Module Pass
+<ul>
+<li>Single source files presented as modules.</li>
+</ul>
+</li>
+<li>Call Graph Pass
+<ul>
+<li>Traverses the program bottom-up.</li>
+</ul>
+</li>
+<li>Function Pass
+<ul>
+<li>Runs over individual functions.</li>
+</ul>
+</li>
+<li>Basic Block Pass
+<ul>
+<li>Runs over a basic block at a time inside the functions/routines.</li>
+</ul>
+</li>
+<li>Immutable Pass
+<ul>
+<li>Simply provides information about the current configuration of the compiler. Not a regular type of pass.</li>
+</ul>
+</li>
+<li>Region Pass
+<ul>
+<li>Executes on each single-entry-single-exit code space.</li>
+</ul>
+</li>
+<li>Machine Function Pass
+<ul>
+<li>Executes on the machine-dependent representation of each LLVM function.</li>
+</ul>
+</li>
+<li>Loop Pass
+<ul>
+<li>Focuses on one loop at a time, independent of all the other loops.</li>
+</ul>
+</li>
+</ul>
+<p>The passes can achieve either of the two goals.</p>
+<ol>
+<li>Analysis Pass
+<ul>
+<li>Computes information that can be used by other passes.</li>
+</ul>
+</li>
+<li>Transform Pass
+<ul>
+<li>Mutates the program based on the information it has.</li>
+</ul>
+</li>
+</ol>
+<p>Let&rsquo;s take a sample code to observe the difference between <strong>pass by value</strong> and <strong>pass by pointers</strong> at the IR level.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// hello.cpp
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#include</span><span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">add</span>(<span style="color:#66d9ef">int</span> a, <span style="color:#66d9ef">int</span> b) {
+    <span style="color:#66d9ef">return</span> a<span style="color:#f92672">+</span>b;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">addptr</span>(<span style="color:#66d9ef">int</span><span style="color:#f92672">*</span> a, <span style="color:#66d9ef">int</span><span style="color:#f92672">*</span> b) {
+    <span style="color:#66d9ef">return</span> (<span style="color:#f92672">*</span>a)<span style="color:#f92672">+</span>(<span style="color:#f92672">*</span>b);
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+    <span style="color:#66d9ef">int</span> a <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>, b <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
+    printf(<span style="color:#e6db74">&#34;Hello world!</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    printf(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, add(a, b));
+    printf(<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, addptr(<span style="color:#f92672">&amp;</span>a, <span style="color:#f92672">&amp;</span>b));
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p>We get the IR to be</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">; ModuleID <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">&#39;</span>hello.cpp<span style="color:#960050;background-color:#1e0010">&#39;</span>
+source_filename <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello.cpp&#34;</span>
+target datalayout <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128&#34;</span>
+target triple <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;x86_64-pc-linux-gnu&#34;</span>
+
+<span style="color:#960050;background-color:#1e0010">@</span>.str <span style="color:#f92672">=</span> private unnamed_addr constant [<span style="color:#ae81ff">14</span> x i8] c<span style="color:#e6db74">&#34;Hello world!</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">A</span><span style="color:#ae81ff">\00</span><span style="color:#e6db74">&#34;</span>, align <span style="color:#ae81ff">1</span>
+<span style="color:#960050;background-color:#1e0010">@</span>.str<span style="color:#ae81ff">.1</span> <span style="color:#f92672">=</span> private unnamed_addr constant [<span style="color:#ae81ff">4</span> x i8] c<span style="color:#e6db74">&#34;%d</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">A</span><span style="color:#ae81ff">\00</span><span style="color:#e6db74">&#34;</span>, align <span style="color:#ae81ff">1</span>
+
+; Function Attrs: noinline nounwind optnone sspstrong uwtable
+define dso_local i32 <span style="color:#960050;background-color:#1e0010">@</span>_Z3addii(i32 <span style="color:#f92672">%</span><span style="color:#ae81ff">0</span>, i32 <span style="color:#f92672">%</span><span style="color:#ae81ff">1</span>) <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#ae81ff">0</span> {
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">=</span> alloca i32, align <span style="color:#ae81ff">4</span>
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">4</span> <span style="color:#f92672">=</span> alloca i32, align <span style="color:#ae81ff">4</span>
+  store i32 <span style="color:#f92672">%</span><span style="color:#ae81ff">0</span>, i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">3</span>, align <span style="color:#ae81ff">4</span>
+  store i32 <span style="color:#f92672">%</span><span style="color:#ae81ff">1</span>, i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">4</span>, align <span style="color:#ae81ff">4</span>
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">5</span> <span style="color:#f92672">=</span> load i32, i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">3</span>, align <span style="color:#ae81ff">4</span>
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">6</span> <span style="color:#f92672">=</span> load i32, i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">4</span>, align <span style="color:#ae81ff">4</span>
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">7</span> <span style="color:#f92672">=</span> add nsw i32 <span style="color:#f92672">%</span><span style="color:#ae81ff">5</span>, <span style="color:#f92672">%</span><span style="color:#ae81ff">6</span>
+  ret i32 <span style="color:#f92672">%</span><span style="color:#ae81ff">7</span>
+}
+
+; Function Attrs: noinline nounwind optnone sspstrong uwtable
+define dso_local i32 <span style="color:#960050;background-color:#1e0010">@</span>_Z6addptrPiS_(i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">0</span>, i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">1</span>) <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#ae81ff">0</span> {
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">=</span> alloca i32<span style="color:#f92672">*</span>, align <span style="color:#ae81ff">8</span>
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">4</span> <span style="color:#f92672">=</span> alloca i32<span style="color:#f92672">*</span>, align <span style="color:#ae81ff">8</span>
+  store i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">0</span>, i32<span style="color:#f92672">**</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">3</span>, align <span style="color:#ae81ff">8</span>
+  store i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">1</span>, i32<span style="color:#f92672">**</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">4</span>, align <span style="color:#ae81ff">8</span>
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">5</span> <span style="color:#f92672">=</span> load i32<span style="color:#f92672">*</span>, i32<span style="color:#f92672">**</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">3</span>, align <span style="color:#ae81ff">8</span>
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">6</span> <span style="color:#f92672">=</span> load i32, i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">5</span>, align <span style="color:#ae81ff">4</span>
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">7</span> <span style="color:#f92672">=</span> load i32<span style="color:#f92672">*</span>, i32<span style="color:#f92672">**</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">4</span>, align <span style="color:#ae81ff">8</span>
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">8</span> <span style="color:#f92672">=</span> load i32, i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">7</span>, align <span style="color:#ae81ff">4</span>
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">9</span> <span style="color:#f92672">=</span> add nsw i32 <span style="color:#f92672">%</span><span style="color:#ae81ff">6</span>, <span style="color:#f92672">%</span><span style="color:#ae81ff">8</span>
+  ret i32 <span style="color:#f92672">%</span><span style="color:#ae81ff">9</span>
+}
+
+; Function Attrs: noinline norecurse optnone sspstrong uwtable
+define dso_local i32 <span style="color:#960050;background-color:#1e0010">@</span>main() <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#ae81ff">1</span> {
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">=</span> alloca i32, align <span style="color:#ae81ff">4</span>
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">=</span> alloca i32, align <span style="color:#ae81ff">4</span>
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">=</span> alloca i32, align <span style="color:#ae81ff">4</span>
+  store i32 <span style="color:#ae81ff">0</span>, i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">1</span>, align <span style="color:#ae81ff">4</span>
+  store i32 <span style="color:#ae81ff">1</span>, i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">2</span>, align <span style="color:#ae81ff">4</span>
+  store i32 <span style="color:#ae81ff">2</span>, i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">3</span>, align <span style="color:#ae81ff">4</span>
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">4</span> <span style="color:#f92672">=</span> call i32 (i8<span style="color:#f92672">*</span>, ...) <span style="color:#960050;background-color:#1e0010">@</span>printf(i8<span style="color:#f92672">*</span> getelementptr inbounds ([<span style="color:#ae81ff">14</span> x i8], [<span style="color:#ae81ff">14</span> x i8]<span style="color:#f92672">*</span> <span style="color:#960050;background-color:#1e0010">@</span>.str, i64 <span style="color:#ae81ff">0</span>, i64 <span style="color:#ae81ff">0</span>))
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">5</span> <span style="color:#f92672">=</span> load i32, i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">2</span>, align <span style="color:#ae81ff">4</span>
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">6</span> <span style="color:#f92672">=</span> load i32, i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">3</span>, align <span style="color:#ae81ff">4</span>
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">7</span> <span style="color:#f92672">=</span> call i32 <span style="color:#960050;background-color:#1e0010">@</span>_Z3addii(i32 <span style="color:#f92672">%</span><span style="color:#ae81ff">5</span>, i32 <span style="color:#f92672">%</span><span style="color:#ae81ff">6</span>)
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">8</span> <span style="color:#f92672">=</span> call i32 (i8<span style="color:#f92672">*</span>, ...) <span style="color:#960050;background-color:#1e0010">@</span>printf(i8<span style="color:#f92672">*</span> getelementptr inbounds ([<span style="color:#ae81ff">4</span> x i8], [<span style="color:#ae81ff">4</span> x i8]<span style="color:#f92672">*</span> <span style="color:#960050;background-color:#1e0010">@</span>.str<span style="color:#ae81ff">.1</span>, i64 <span style="color:#ae81ff">0</span>, i64 <span style="color:#ae81ff">0</span>), i32 <span style="color:#f92672">%</span><span style="color:#ae81ff">7</span>)
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">9</span> <span style="color:#f92672">=</span> call i32 <span style="color:#960050;background-color:#1e0010">@</span>_Z6addptrPiS_(i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">2</span>, i32<span style="color:#f92672">*</span> <span style="color:#f92672">%</span><span style="color:#ae81ff">3</span>)
+  <span style="color:#f92672">%</span><span style="color:#ae81ff">10</span> <span style="color:#f92672">=</span> call i32 (i8<span style="color:#f92672">*</span>, ...) <span style="color:#960050;background-color:#1e0010">@</span>printf(i8<span style="color:#f92672">*</span> getelementptr inbounds ([<span style="color:#ae81ff">4</span> x i8], [<span style="color:#ae81ff">4</span> x i8]<span style="color:#f92672">*</span> <span style="color:#960050;background-color:#1e0010">@</span>.str<span style="color:#ae81ff">.1</span>, i64 <span style="color:#ae81ff">0</span>, i64 <span style="color:#ae81ff">0</span>), i32 <span style="color:#f92672">%</span><span style="color:#ae81ff">9</span>)
+  ret i32 <span style="color:#ae81ff">0</span>
+}
+
+declare i32 <span style="color:#960050;background-color:#1e0010">@</span>printf(i8<span style="color:#f92672">*</span>, ...) <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#ae81ff">2</span>
+
+attributes <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#ae81ff">0</span> <span style="color:#f92672">=</span> { noinline nounwind optnone sspstrong uwtable <span style="color:#e6db74">&#34;correctly-rounded-divide-sqrt-fp-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;disable-tail-calls&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;frame-pointer&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;all&#34;</span> <span style="color:#e6db74">&#34;less-precise-fpmad&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;min-legal-vector-width&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0&#34;</span> <span style="color:#e6db74">&#34;no-infs-fp-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;no-jump-tables&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;no-nans-fp-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;no-signed-zeros-fp-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;no-trapping-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;stack-protector-buffer-size&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;8&#34;</span> <span style="color:#e6db74">&#34;target-cpu&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;x86-64&#34;</span> <span style="color:#e6db74">&#34;target-features&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;+cx8,+fxsr,+mmx,+sse,+sse2,+x87&#34;</span> <span style="color:#e6db74">&#34;unsafe-fp-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;use-soft-float&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> }
+attributes <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">=</span> { noinline norecurse optnone sspstrong uwtable <span style="color:#e6db74">&#34;correctly-rounded-divide-sqrt-fp-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;disable-tail-calls&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;frame-pointer&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;all&#34;</span> <span style="color:#e6db74">&#34;less-precise-fpmad&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;min-legal-vector-width&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0&#34;</span> <span style="color:#e6db74">&#34;no-infs-fp-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;no-jump-tables&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;no-nans-fp-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;no-signed-zeros-fp-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;no-trapping-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;stack-protector-buffer-size&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;8&#34;</span> <span style="color:#e6db74">&#34;target-cpu&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;x86-64&#34;</span> <span style="color:#e6db74">&#34;target-features&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;+cx8,+fxsr,+mmx,+sse,+sse2,+x87&#34;</span> <span style="color:#e6db74">&#34;unsafe-fp-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;use-soft-float&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> }
+attributes <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">=</span> { <span style="color:#e6db74">&#34;correctly-rounded-divide-sqrt-fp-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;disable-tail-calls&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;frame-pointer&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;all&#34;</span> <span style="color:#e6db74">&#34;less-precise-fpmad&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;no-infs-fp-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;no-nans-fp-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;no-signed-zeros-fp-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;no-trapping-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;stack-protector-buffer-size&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;8&#34;</span> <span style="color:#e6db74">&#34;target-cpu&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;x86-64&#34;</span> <span style="color:#e6db74">&#34;target-features&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;+cx8,+fxsr,+mmx,+sse,+sse2,+x87&#34;</span> <span style="color:#e6db74">&#34;unsafe-fp-math&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#e6db74">&#34;use-soft-float&#34;</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span> }
+
+<span style="color:#f92672">!</span>llvm.module.flags <span style="color:#f92672">=</span> <span style="color:#f92672">!</span>{<span style="color:#f92672">!</span><span style="color:#ae81ff">0</span>, <span style="color:#f92672">!</span><span style="color:#ae81ff">1</span>, <span style="color:#f92672">!</span><span style="color:#ae81ff">2</span>}
+<span style="color:#f92672">!</span>llvm.ident <span style="color:#f92672">=</span> <span style="color:#f92672">!</span>{<span style="color:#f92672">!</span><span style="color:#ae81ff">3</span>}
+
+<span style="color:#f92672">!</span><span style="color:#ae81ff">0</span> <span style="color:#f92672">=</span> <span style="color:#f92672">!</span>{i32 <span style="color:#ae81ff">1</span>, <span style="color:#f92672">!</span><span style="color:#e6db74">&#34;wchar_size&#34;</span>, i32 <span style="color:#ae81ff">4</span>}
+<span style="color:#f92672">!</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">=</span> <span style="color:#f92672">!</span>{i32 <span style="color:#ae81ff">7</span>, <span style="color:#f92672">!</span><span style="color:#e6db74">&#34;PIC Level&#34;</span>, i32 <span style="color:#ae81ff">2</span>}
+<span style="color:#f92672">!</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">=</span> <span style="color:#f92672">!</span>{i32 <span style="color:#ae81ff">7</span>, <span style="color:#f92672">!</span><span style="color:#e6db74">&#34;PIE Level&#34;</span>, i32 <span style="color:#ae81ff">2</span>}
+<span style="color:#f92672">!</span><span style="color:#ae81ff">3</span> <span style="color:#f92672">=</span> <span style="color:#f92672">!</span>{<span style="color:#f92672">!</span><span style="color:#e6db74">&#34;clang version 10.0.0 &#34;</span>}
+</code></pre></div><p>The bitcode comes out gibberish, as expected, so I&rsquo;m not going to show the output of that here.</p>
+<p>Focusing on the IR of the source and ignoring all the meta data, we can see that an almost C like, straight up readable.</p>
+<p>The <code>main</code> function exists right in the middle of the output.</p>
+<ul>
+<li>Defined with a return type <code>i32</code>, which is quite clearly, a 32-bit int. It&rsquo;s not used much, except as the return values of system calls such as <code>printf</code>, <code>scanf</code> and <code>main</code>.</li>
+<li>The <code>alloca</code> instruction allocated memory on the stack, with an <em>align</em> parameter to align the allocation on a boundary.</li>
+<li>The <code>getelementptr</code> instruction gets the address of a subelement of an aggregates data structure(such as arrays and structs). It just calculates the address, which is then passed on as parameters to function calls.</li>
+</ul>
+<p>We can see three function calls, two to <code>printf</code> and one to <code>_Z3addii</code>. The first one is pretty clear but the second one seems like the name we used in the source code has been morphed. It has undergone mangling by the compiler. <strong>Name Mangling</strong> is the process of adding additional information to the name of a function so as to make sure two separate functions do not end up having the same name in the same namespace, causing a conflict. It&rsquo;s only done when two functions with same name exist when a C source file is being compiled, but it&rsquo;s always applied when a C++ source file is being compiled.</p>
+<p>The <code>add</code> function we defined isn&rsquo;t that complicated either. It performs <strong>pass by value</strong>.</p>
+<ul>
+<li>Uses the <code>alloca</code> instruction to allocate stack space for two integers.</li>
+<li>Uses the <code>store</code> instruction to map the value of the parameters we passed to the function onto the memory freshly allocated.</li>
+<li>The <code>i32*</code>s are the references( to the integers.</li>
+<li>Uses the load instruction to load the value of the parameters from the memory into local variables.</li>
+<li>Uses the <code>add nsw</code> instruction to add the two variables with a No Signed Wrap property(signed integers won&rsquo;t be wrapped around in case of an overflow during arithmetic operation).</li>
+</ul>
+<p>The <code>addptr</code> function performs <strong>pass by pointers</strong>.</p>
+<ul>
+<li>Same as before mostly except the extra instructions because of the use of pointers. The variables get the references to the arguments(which are addresses) passed.</li>
+<li>These variables are then stored onto the stack.</li>
+<li>The <code>i32**</code>s are the addresses.</li>
+<li>The four load instructions can be seen to dereferences values stored at the given addresses into integer variables.</li>
+<li>The addition is then performed on these integers and the result returned.</li>
+</ul>
+<h2 id="instrumentation">Instrumentation</h2>
+<p>We&rsquo;ll create a simple C++ program to instrument. </p>
+<p>Since printing statements is a cliché now, we&rsquo;ll do something different. Let&rsquo;s find loops and predict their number of iterations. It&rsquo;s a rudimentary approach full of loop holes, but works for naïve programs.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// loop.cpp
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+using namespace std;
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">looper0</span>(<span style="color:#66d9ef">int</span> low, <span style="color:#66d9ef">int</span> high) {
+    <span style="color:#66d9ef">int</span> i, sum <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">for</span>(i <span style="color:#f92672">=</span> low; i <span style="color:#f92672">&lt;</span> high; i<span style="color:#f92672">++</span>)
+        sum <span style="color:#f92672">+=</span> i;
+    <span style="color:#66d9ef">return</span> sum;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">looper1</span>(<span style="color:#66d9ef">int</span> low, <span style="color:#66d9ef">int</span> high) {
+    <span style="color:#66d9ef">int</span> i, sum <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">for</span>(i <span style="color:#f92672">=</span> low; i <span style="color:#f92672">&lt;</span> high; i<span style="color:#f92672">++</span>)
+        sum <span style="color:#f92672">+=</span> i;
+    <span style="color:#66d9ef">return</span> sum;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+{
+    <span style="color:#66d9ef">int</span> sum;
+    
+    sum <span style="color:#f92672">=</span> looper0(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">250</span>);
+    sum <span style="color:#f92672">+=</span> looper1(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">250</span>);
+    sum <span style="color:#f92672">+=</span> looper0(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">250</span>);
+    
+    std<span style="color:#f92672">::</span>cout<span style="color:#f92672">&lt;&lt;</span>sum<span style="color:#f92672">&lt;&lt;</span>endl;
+    
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p>Compile the file to IR by executing <code>clang++ -S -emit-llvm loop.cpp</code>.</p>
+<p>Make a directory named <em>CUSTOM_DIR</em> inside <em>PATH/llvm-project/llvm/lib/Transforms/</em>,    where PATH is the path of the folder where LLVM repository was cloned.</p>
+<p>Let&rsquo;s write a function pass to collect the target stats. Make a file inside the newly formed folder. Let&rsquo;s say it&rsquo;s named <em>CUSTOM_PASS.cpp</em>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// CUSTOM_PASS.cpp
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// PART 1
+</span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;llvm/IR/Function.h&#34;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;llvm/Pass.h&#34;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;llvm/Support/raw_ostream.h&#34;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// PART 2
+</span><span style="color:#75715e"></span>using namespace llvm;
+
+namespace {
+
+  <span style="color:#75715e">// PART 3
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">struct</span> PASS_NAME : public FunctionPass {
+  
+  	<span style="color:#75715e">// PART 4
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">char</span> ID; <span style="color:#75715e">// Pass identification, replacement for typeid
+</span><span style="color:#75715e"></span>    PASS_NAME() <span style="color:#f92672">:</span> FunctionPass(ID) {}
+
+	<span style="color:#75715e">// PART 5
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">bool</span> runOnFunction(Function <span style="color:#f92672">&amp;</span>F) override {
+      <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> basicBlockCount <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+      <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> instructionCount <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+
+      <span style="color:#66d9ef">for</span>(BasicBlock <span style="color:#f92672">&amp;</span>bb : F) {
+        <span style="color:#f92672">++</span>basicBlockCount;
+        <span style="color:#66d9ef">for</span>(Instruction <span style="color:#f92672">&amp;</span>i: bb){
+          <span style="color:#f92672">++</span>instructionCount;
+        }
+      }
+
+      errs() <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Function Name: &#34;</span>;
+      errs().write_escaped(F.getName()) <span style="color:#f92672">&lt;&lt;</span>  <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">   &#34;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Basic Blocks: &#34;</span> <span style="color:#f92672">&lt;&lt;</span> basicBlockCount
+                                        <span style="color:#f92672">&lt;&lt;</span>  <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">   &#34;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Instructions: &#34;</span> <span style="color:#f92672">&lt;&lt;</span> instructionCount <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+      <span style="color:#66d9ef">return</span> false;
+    }
+  };
+}
+
+<span style="color:#75715e">// PART 6
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">char</span> PASS_NAME<span style="color:#f92672">::</span>ID <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+
+<span style="color:#75715e">// PART 7
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> RegisterPass<span style="color:#f92672">&lt;</span>PASS_NAME<span style="color:#f92672">&gt;</span> X(<span style="color:#e6db74">&#34;PASS_NAME&#34;</span>, <span style="color:#e6db74">&#34;Custom Pass&#34;</span>);
+</code></pre></div><ul>
+<li>PART 1: The <em>include</em> statements. We include those particular header files because we&rsquo;re writing a <em>Pass</em>, on each <em>Function</em>, and we&rsquo;ll be printing the stats.</li>
+<li>PART 2: Declares the <em>namespace</em>. It is necessary since everything defined in the header files are in the llvm namespace. And then we start with an anonymous namespace block.</li>
+<li>PART 3: Declares our pass named <em>PASS_NAME</em>. Declares a subclass for the parent class named <em>FunctionPass</em>, which operates on every function defined.</li>
+<li>PART 4: Declares a unique pass identifier which is used by LLVM to identify the pass.</li>
+<li>PART 5: We overwrite the <em>runOnFunction</em> method from the parent class and write our code for instrumentation. The return value is the answer to the question “Does this code modify the original source code?”. If it does, return <em>true</em>, else return <em>false</em>.</li>
+<li>PART 6: The <em>ID</em> to our pass <em>PASS_NAME</em> is initialized.</li>
+<li>PART 7: Register the subclass we just created. The first argument is the name of the parameter we will provide to choose this pass, and the second argument is the name of the pass.</li>
+</ul>
+<p>Add a file named <strong>CMakeLists.txt</strong> to the same folder with the following content.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">add_llvm_library<span style="color:#f92672">(</span> LLVMCUSTOM_PASS MODULE
+  CUSTOM_PASS.cpp
+
+  PLUGIN_TOOL
+  opt
+  <span style="color:#f92672">)</span>
+</code></pre></div><p>The name <em>LLVMCustomPass</em> is the name of the module(shared object) that will be created on ‘making’ it, should be changed as wanted.</p>
+<p>The name CustomPass.cpp is the name of the source code file, should be changed according to what the name of the source file for your pass is.</p>
+<p>Add this folder to the <em>PATH/llvm-project/llvm/lib/Transforms/CMakeLists.txt</em>, that is, the <em>CMakeLists.txt</em> file that exists in our newly created directory&rsquo;s parent directory. This ensures that our new directory will be taken into account while building the binaries and the libraries next time.</p>
+<pre><code>add_subdirectory(CUSTOM_DIR)
+</code></pre><p>Then run <code>make</code> from <em>PATH/llvm-project/build/</em>.</p>
+<p>You&rsquo;ll see that a new file, <em>PATH/llvm-project/build/lib/LLVMCUSTOM_PASS.so</em> has been created. This is the module we&rsquo;ll use to instrument our target source code.</p>
+<p>Run <code>PATH/llvm-project/llvm/build/bin/opt -load PATH/llvm-project/build/lib/LLVMCUSTOM_PASS.so -PASS_NAME &lt; loop.ll</code> to see the output from the instrumentation.</p>
+<ul>
+<li><code>PATH/llvm-project/llvm/build/bin/opt</code> calls the aforementioned opt tool.</li>
+<li>-load is the parameter to provide the instrumentation module.</li>
+<li><code>PATH/llvm-project/build/lib/LLVMCUSTOM_PASS.so</code> is the instrumentation module we built.</li>
+<li><code>-PASS_NAME</code> is passed to ascertain the particular pass to be used.</li>
+<li><code>&lt;</code> is used to redirect input from a file.</li>
+<li><code>loop.ll</code> is the file with the assembly formatted IR.</li>
+</ul>
+<p>The output from the instrumentation module is as follows.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">Function Name: __cxx_global_var_init
+   Basic Blocks: <span style="color:#ae81ff">1</span>
+   Instructions: <span style="color:#ae81ff">3</span>
+Function Name: _Z7looper0ii
+   Basic Blocks: <span style="color:#ae81ff">5</span>
+   Instructions: <span style="color:#ae81ff">25</span>
+Function Name: _Z7looper1ii
+   Basic Blocks: <span style="color:#ae81ff">5</span>
+   Instructions: <span style="color:#ae81ff">25</span>
+Function Name: main
+   Basic Blocks: <span style="color:#ae81ff">1</span>
+   Instructions: <span style="color:#ae81ff">17</span>
+Function Name: _GLOBAL__sub_I_calc.cpp
+   Basic Blocks: <span style="color:#ae81ff">1</span>
+   Instructions: <span style="color:#ae81ff">2</span>
+</code></pre></div><p>And there we go. We get our stats on the basic blocks and instructions that exist in the IR assembly.</p>
+<p>To verify, we&rsquo;ll have to take a look at the call graphs of the functions.</p>
+<p>To generate the CFGs, run <code>PATH/llvm-project/llvm/build/bin/opt -dot-cfg loop.bc</code>. This will generate multiple <em>dot files</em> by the name of the functions. Use a utility like <strong>xdot</strong> or dotty to view them.</p>
+<p>As an example, let&rsquo;s checkout the CFG for the function <code>_Z7looper0ii</code>.</p>
+<p><img src="https://hexterisk.github.io/blog/Source_Code_Instrumentation_and_LLVM/2020-06-25-031857-screenshot.png" alt="">
+<em>CFG for the looper0 function.</em></p>
+<p>Counting the number of basic blocks and instructions, the output from our instrumentation checks out.</p>
+<p>Credits for the guidance to Mike Shah&rsquo;s talk “Intro to LLVM” at FOSDEM 18.</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/source">source</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/instrument">instrument</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/llvm">llvm</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/ir">ir</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/linear">linear</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/tuple">tuple</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/stack">stack</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/three-address-code">three address code</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>3471 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-05-26 05:30 &#43;0530</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/06/03/dynamic-binary-instrumentation-and-pin/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Dynamic Binary Instrumentation and Pin</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/05/21/symbolic-execution-and-angr/">
+                                <span class="button__text">Symbolic Execution and Angr</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content" style="margin-bottom: -0.8rem;">
+            <span><a style="text-decoration: none;"> .</a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span><a style="text-decoration: none;" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></span>
+        </div>
+    </div>
+</footer>
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.08ccaf9cef8b4e0ebd0b0158e66a7bfc0ddbb2194cdb0099e8814ddb89cc7628b27b1158846564e6e03d9ffc5f4d1bc7dfc274d359f9408d1c63d73a3f7332e9.js" integrity="sha512-CMyvnO&#43;LTg69CwFY5mp7/A3bshlM2wCZ6IFN24nMdiiyexFYhGVk5uA9n/xfTRvH38J001n5QI0cY9c6P3My6Q=="></script>
+
+
+
+    </body>
+</html>

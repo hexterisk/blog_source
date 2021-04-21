@@ -114,3 +114,5 @@ _Individual stack frame (notice how addresses go from higher to lower from botto
 *   `EBP` would be set to `0x12F03C` throughout the duration of the function, so that the local variables and arguments can be referenced using it.
 *   The arguments that are pushed onto the stack before the call are shown at the bottom of the stack frame.
 *   Next, it contains the return address that is put on the stack automatically by the call instruction. The `old EBP` is next on the stack; this is the EBP from the caller’s stack frame.
+
+Citation: [Practical Binary Analysis](https://nostarch.com/binaryanalysis).

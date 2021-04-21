@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:hexterisk]">
+<meta name="description" content="Sanitation tools, or sanitizers, are a set of libraries that can directly observe and flag an incorrect behavior for a certain class of violation at runtime.
+Sanitizers are employed by instrumenting the source code. The compiled binary, therefore, essentially has certain tripwires that catch any invalid or incorrect behavior and reports it. The fact that it only brings about minimal performance overhead allows it to be coupled with fuzzing techniques, a powerful combination." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://hexterisk.github.io/blog/posts/2020/09/16/sanitation/" />
+
+
+    <title>
+        
+            Sanitation: Pwn the world.  — A noob&#39;s attempt at blogging.
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.d644853e3e89ab1ec568894a9a3df34b7e4e5bfd66060890b1e4297657fd91e8.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Sanitation">
+<meta itemprop="description" content="Sanitation tools, or sanitizers, are a set of libraries that can directly observe and flag an incorrect behavior for a certain class of violation at runtime.
+Sanitizers are employed by instrumenting the source code. The compiled binary, therefore, essentially has certain tripwires that catch any invalid or incorrect behavior and reports it. The fact that it only brings about minimal performance overhead allows it to be coupled with fuzzing techniques, a powerful combination."><meta itemprop="datePublished" content="2020-09-16T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-09-16T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="574"><meta itemprop="image" content="https://hexterisk.github.io/blog"/>
+<meta itemprop="keywords" content="sanitizer,ASan,MSan,UBSan,address-sanitizer,memory-sanitizer,undefined-behavior-sanitizer,TSan,thread-sanitizer," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
+
+<meta name="twitter:title" content="Sanitation"/>
+<meta name="twitter:description" content="Sanitation tools, or sanitizers, are a set of libraries that can directly observe and flag an incorrect behavior for a certain class of violation at runtime.
+Sanitizers are employed by instrumenting the source code. The compiled binary, therefore, essentially has certain tripwires that catch any invalid or incorrect behavior and reports it. The fact that it only brings about minimal performance overhead allows it to be coupled with fuzzing techniques, a powerful combination."/>
+
+
+
+    <meta property="article:section" content="art-of-fuzzing" />
+
+
+
+    <meta property="article:published_time" content="2020-09-16 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$cd ~/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>3 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://hexterisk.github.io/blog/posts/2020/09/16/sanitation/">Sanitation</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <p>Sanitation tools, or <a href="https://github.com/google/sanitizers">sanitizers</a>, are a set of libraries that can directly observe and flag an incorrect behavior for a certain class of violation at runtime.</p>
+<p>Sanitizers are employed by instrumenting the source code. The compiled binary, therefore, essentially has certain tripwires that catch any invalid or incorrect behavior and reports it. The fact that it only brings about minimal performance overhead allows it to be coupled with fuzzing techniques, a powerful combination.</p>
+<h2 id="input-sanitation">Input sanitation</h2>
+<p>Randomly generated test cases can cause crashes in situations where assumptions were made about the input, and/or proper filtering and cleaning of the input was not implemented.</p>
+<p>The assumptions can be of:</p>
+<ul>
+<li>Data type
+<ul>
+<li>For example, implemented integer operations on the input and not filtering out other input types, such as characters.</li>
+</ul>
+</li>
+<li>Data length
+<ul>
+<li>For example, input longer than the length of the allocated buffer is entered.</li>
+</ul>
+</li>
+<li>Data content
+<ul>
+<li>For example, Unicode data is provided as input where ASCII is expected.</li>
+</ul>
+</li>
+</ul>
+<p>Such bugs are generally low priority and can be avoided with proper documentation and good programming practices. Therefore, data sanitation is done on the randomly generated test cases to play along with such assumptions so that clean data can enter the application, to explore the more dangerous part.</p>
+<h2 id="address-sanitation">Address sanitation</h2>
+<p><strong>ASan</strong> detects use-after-frees, buffer overflows and stack-use-after-return.</p>
+<p>A shadow memory bitmap is created, where a single bit corresponds to a single byte of the actual memory. Operations corresponding to a memory access are instrumented and the areas neighboring the memory are tainted to check for any changes.</p>
+<p><img src="https://hexterisk.github.io/blog/Fuzzing_Sanitation/s.png" alt="">
+<em>ASan tainted the bytes surrounding ‘buf’.</em></p>
+<p>ASan is tracking the areas surrounding the buffers (red zones). Since the string being copied into the buffer is longer than the buffer size, some bytes are going to overflow into the surrounding memory areas. The surrounding memory area is invalid in this context, since we only have access to the memory reserved by the buffer. ASan will catch this and throw an error.</p>
+<h2 id="thread-sanitation">Thread sanitation</h2>
+<p><strong>TSan</strong> detects:</p>
+<ul>
+<li>Using/Calling a lock on <em>mutex</em> without initializing it.</li>
+<li>Thread leaks, like missing <em>pthread_join</em>.</li>
+<li>Unsafe calls in signal handlers, like <em>malloc</em>.</li>
+<li>Unlocking from the wrong thread.</li>
+<li>Data races.</li>
+</ul>
+<p>Thread sanitation can be implemented in two ways:</p>
+<ol>
+<li>Compile-time Instrumentation involves instrumenting:
+<ul>
+<li>All read/write operations.</li>
+<li>Function entry/exits.</li>
+<li>Atomic operations.</li>
+</ul>
+</li>
+<li>Run-time library:
+<ul>
+<li>Replaces <em>malloc</em>.</li>
+<li>Intercepts thread and synchronization management.</li>
+<li>Manages all read/write operations.</li>
+</ul>
+</li>
+</ol>
+<h2 id="memory-sanitation">Memory sanitation</h2>
+<p><strong>MSAN</strong> detects read operations on uninitialized memory.</p>
+<p>A bit-to-bit shadow memory map is created and uninitialized memory is tainted. A secondary shadow map may also be employed to keep track of the origin of a freshly allocated memory and propagated with the uninitialized memory. The origin can later be used to track the fault if an illegal operation on the memory is reported.</p>
+<p>Reporting all accesses to uninitialized memory will cause too many alerts. Therefore, errors are only reported on:</p>
+<ul>
+<li>Conditional branches.</li>
+<li>De-references.</li>
+<li>Syscall arguments.</li>
+</ul>
+<p>The following operations are allowed (as long as their result is not used):</p>
+<ul>
+<li>Read.</li>
+<li>Copy.</li>
+<li>Mathematical operations.</li>
+</ul>
+<h2 id="undefined-behavior-sanitation">Undefined Behavior sanitation</h2>
+<p><strong>UBSan</strong> detects any undefined behavior, mainly:</p>
+<ul>
+<li>Null/Misaligned pointers.</li>
+<li>Signed integer overflows.</li>
+<li>Conversion to, from, or between floating-point types which would overflow the destination.</li>
+</ul>
+<p>UBSan also checks for:</p>
+<ul>
+<li><strong>implicit-conversion</strong>: Checks for suspicious behavior of implicit conversions</li>
+<li><strong>integer</strong>: Checks for undefined or suspicious integer behavior (e.g. unsigned integer overflow)</li>
+<li><strong>nullability</strong>: Checks for null violation, e.g. passing null as a function parameter, assigning null to an lvalue, or returning null from a function.</li>
+<li><strong>local-bounds</strong>: It can catch cases missed by array-bounds.</li>
+</ul>
+<p>Citation: <a href="https://clang.llvm.org/docs/index.html">Clang docs</a>.</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/sanitizer">sanitizer</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/asan">ASan</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/msan">MSan</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/ubsan">UBSan</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/address-sanitizer">address-sanitizer</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/memory-sanitizer">memory-sanitizer</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/undefined-behavior-sanitizer">undefined-behavior-sanitizer</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/tsan">TSan</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/thread-sanitizer">thread-sanitizer</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>574 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-09-16 05:30 &#43;0530</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/09/09/approaches/">
+                                <span class="button__text">Approaches</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content" style="margin-bottom: -0.8rem;">
+            <span><a style="text-decoration: none;"> .</a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span><a style="text-decoration: none;" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></span>
+        </div>
+    </div>
+</footer>
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.08ccaf9cef8b4e0ebd0b0158e66a7bfc0ddbb2194cdb0099e8814ddb89cc7628b27b1158846564e6e03d9ffc5f4d1bc7dfc274d359f9408d1c63d73a3f7332e9.js" integrity="sha512-CMyvnO&#43;LTg69CwFY5mp7/A3bshlM2wCZ6IFN24nMdiiyexFYhGVk5uA9n/xfTRvH38J001n5QI0cY9c6P3My6Q=="></script>
+
+
+
+    </body>
+</html>

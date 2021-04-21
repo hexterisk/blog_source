@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:hexterisk]">
+<meta name="description" content="Fuzzing can be segregated into different types based on the facet of the process we look from.
+Program Structure Knowledge of the internals of the target application directly results into maintaining a certain structure to the fuzzing process, which can result into achieving a higher code coverage in a shorter span of time. This results in a much more effective fuzzing exercise.
+Blackbox Fuzzing This approach involves the assumption that the target is a black box since we don&amp;rsquo;t have any knowledge of the internal behavior, source code or the implementation of the target application, hence the name." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://hexterisk.github.io/blog/posts/2020/09/09/approaches/" />
+
+
+    <title>
+        
+            Approaches: Pwn the world.  — A noob&#39;s attempt at blogging.
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.d644853e3e89ab1ec568894a9a3df34b7e4e5bfd66060890b1e4297657fd91e8.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Approaches">
+<meta itemprop="description" content="Fuzzing can be segregated into different types based on the facet of the process we look from.
+Program Structure Knowledge of the internals of the target application directly results into maintaining a certain structure to the fuzzing process, which can result into achieving a higher code coverage in a shorter span of time. This results in a much more effective fuzzing exercise.
+Blackbox Fuzzing This approach involves the assumption that the target is a black box since we don&rsquo;t have any knowledge of the internal behavior, source code or the implementation of the target application, hence the name."><meta itemprop="datePublished" content="2020-09-09T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-09-09T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1194"><meta itemprop="image" content="https://hexterisk.github.io/blog"/>
+<meta itemprop="keywords" content="fuzzing,blackbox,whitebox,greybox,dumb-fuzzer,smart-fuzzer,coverage-guided,mutator," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
+
+<meta name="twitter:title" content="Approaches"/>
+<meta name="twitter:description" content="Fuzzing can be segregated into different types based on the facet of the process we look from.
+Program Structure Knowledge of the internals of the target application directly results into maintaining a certain structure to the fuzzing process, which can result into achieving a higher code coverage in a shorter span of time. This results in a much more effective fuzzing exercise.
+Blackbox Fuzzing This approach involves the assumption that the target is a black box since we don&rsquo;t have any knowledge of the internal behavior, source code or the implementation of the target application, hence the name."/>
+
+
+
+    <meta property="article:section" content="art-of-fuzzing" />
+
+
+
+    <meta property="article:published_time" content="2020-09-09 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$cd ~/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>6 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://hexterisk.github.io/blog/posts/2020/09/09/approaches/">Approaches</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <p>Fuzzing can be segregated into different types based on the facet of the process we look from.</p>
+<h2 id="program-structure">Program Structure</h2>
+<p>Knowledge of the internals of the target application directly results into maintaining a certain structure to the fuzzing process, which can result into achieving a higher code coverage in a shorter span of time. This results in a much more effective fuzzing exercise.</p>
+<h3 id="blackbox-fuzzing">Blackbox Fuzzing</h3>
+<p>This approach involves the assumption that the target is a black box since we don&rsquo;t have any knowledge of the internal behavior, source code or the implementation of the target application, hence the name.</p>
+<p>Conceptually, blackbox fuzzing seems simple and straight up. We could simply loop an input generator and pass the generated test cases to the target application. However, the complexity of the fuzzing process increases with the complexity of the target application. Some examples are:</p>
+<ul>
+<li>Creating a harness for a GUI application to make sure input reaches the target as intended.</li>
+<li>Generating test cases that respect a certain input model, such as making sure that the mutated samples generated are all valid PDFs while fuzzing a PDF parser.</li>
+</ul>
+<p>It all depends on the target being fuzzed.</p>
+<p>Blackbox fuzzing is essentially employed when:</p>
+<ul>
+<li>Target is closed source, and no information is openly available about it.
+<ul>
+<li>Cannot guide the fuzzing process, and it&rsquo;s tough to capture any useful information from a fuzzing cycle since we don&rsquo;t know about the target&rsquo;s internals.</li>
+</ul>
+</li>
+<li>Target is non-deterministic (gives different outputs for the same input everytime).
+<ul>
+<li>Mutation of seed samples isn&rsquo;t based on results of previous iteration.</li>
+</ul>
+</li>
+<li>Target is slow.
+<ul>
+<li>Overhead from instrumentation and statistical analysis might push the fuzzing exercise towards infeasibility and bad efficiency.</li>
+</ul>
+</li>
+<li>Target is large.
+<ul>
+<li>Processing all the data from a fuzzing cycle becomes overly complex.</li>
+</ul>
+</li>
+</ul>
+<p>The process can be easily scaled since not much processing is required to generate inputs and can be easily parallelized.</p>
+<p>The downside of this technique is that it might only lead to the discovery of shallow bugs since the generated test cases do not evolve according to the output, and might fail to penetrate the target.</p>
+<p>For example, fuzzing a release version of an application with a proprietary application would require blackbox approach, since in most cases no information is provided about it&rsquo;s internals.</p>
+<h3 id="whitebox-fuzzing">Whitebox Fuzzing</h3>
+<p>This approach involves knowledge of the target&rsquo;s internals, the source code itself in most cases. This allows us to make use of techniques like:</p>
+<ol>
+<li>Source Code Instrumentation (putting code snippets at different locations in the source code to monitor the execution state).</li>
+<li>Symbolic Execution (analyzing constraints on inputs and conditional instructions).</li>
+<li>Taint Analysis (tracking the flow of a particular set of bytes).</li>
+</ol>
+<p>All these techniques help us in following the flow of execution of the binary for a given test case, which gives us an insight over how the target is reacting towards the test case. From all this data, it becomes easier to generate test cases that allow us to reach certain critical program locations quicker.</p>
+<p>However, all the aforementioned processes might add a significant overhead, which would in-turn slow the whole process down to an extent that blackbox fuzzing might become a more efficient solution.</p>
+<p>For example, a developer might employ the whitebox approach to fuzz their application for bugs in the development cycle itself.</p>
+<h3 id="greybox-fuzzing">Greybox Fuzzing</h3>
+<p>The objective of this approach is to combine the efficiency of the blackbox approach while maintaining the effectiveness of the whitebox approach. It uses lightweight instrumentation techniques, which adds considerable performance overhead, but provides enough feedback about the program to successfully generate evolved, valid inputs on every iteration of the fuzzing cycle.</p>
+<h2 id="input-generation">Input Generation</h2>
+<p>Test cases require to be constantly generated so that the fuzzing process doesn&rsquo;t halt. This generation can be done in different ways.</p>
+<h3 id="mutation-based">Mutation based</h3>
+<p>An existing corpus of seed files is taken, and new test cases are generated by mutating (modifying) the files in this corpus. Simple scripts can get the job done.</p>
+<p>The degree of mutation depends on the mutator. Some might introduce only a small change in the seed, like a couple of bytes or so, which creates a large corpus of similar test cases. Others might introduce changes so drastic that two generated test cases can&rsquo;t be claimed to have come from the same seed. Which mutator to use is generally dictated by the target application.</p>
+<p>The thing to note here is that this method does not respect the grammar of the file, that is, the random byte getting modified might belong to a format element, for example the ‘h’ in “<!-- raw HTML omitted -->”. This might cause an input to become invalid in cases where file format/grammar of the input is important.</p>
+<h3 id="template-based">Template based</h3>
+<p>The input is generated completely from scratch by a fuzzer that is aware of the input model, that is, adheres to a specified ruleset. It doesn&rsquo;t depend on a pre-existing corpus of seeds. For such a task, complex methods like machine learning models might need to be employed to provide effective test cases. For example, a machine learning model can be trained to generate varying PDFs for a PDF parser we might want to fuzz. With enough data, the model could learn the grammatical syntax of the PDF file format and produce test cases which are valid PDF files.</p>
+<h3 id="brute-force">Brute Force</h3>
+<p>Input generation is completely random.</p>
+<h3 id="coverage-guided">Coverage Guided</h3>
+<p>The fuzzing environment is set up in a way that allows us to record the parts of the program that are being covered by the input and mark the ones that trigger new path (interesting inputs). When a new path is discovered, mutation can be performed on that particular input to ensure that the new test cases cover at least that much ground. The code coverage graph is thus an increasing graph.</p>
+<p>For example, in the figure, once <em>input[0]</em> is found out to be &lsquo;<em>P&rsquo;</em>, mutation can be performed on the input that triggered this path to make sure this stage is always passed and that we are testing for the subsequent bytes.</p>
+<p><img src="https://hexterisk.github.io/blog/Fuzzing_Approaches/image.png" alt="">
+<em>Coverage guided fuzzing.</em></p>
+<h2 id="input-structure">Input Structure</h2>
+<p>Fuzzers are used to generate all sorts of test cases. Some test cases might be valid, while others not. A valid test case is the one which is accepted by the target application. The chances of a generated seed being valid is inversely proportional to the complexity of the valid input format.</p>
+<h3 id="smart-fuzzer">Smart Fuzzer</h3>
+<p>The class of fuzzers that recognizes the input model to make sure that most of the test cases generated are accepted. If the input model adheres to a certain file format, then the fuzzer would employ certain production rules to make sure that the test cases generated adhere to the required file format. If the input model can be represented as an <strong>AST</strong> (<strong>Abstract Syntax Tree</strong>), then the fuzzer would only employ transformations that randomly move complete set of nodes from one point to another.</p>
+<h3 id="dumb-fuzzer">Dumb Fuzzer</h3>
+<p>The class of fuzzers that do not require an input model and can be used to universally generate test cases for a wide variety of applications. However, their usability generally goes down with increasing input model complexity, since flipping random bytes would not care about maintaining a format in the generated test case.</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/fuzzing">fuzzing</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/blackbox">blackbox</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/whitebox">whitebox</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/greybox">greybox</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/dumb-fuzzer">dumb-fuzzer</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/smart-fuzzer">smart-fuzzer</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/coverage-guided">coverage-guided</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/mutator">mutator</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1194 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-09-09 05:30 &#43;0530</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/09/16/sanitation/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Sanitation</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/09/05/introduction/">
+                                <span class="button__text">Introduction</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content" style="margin-bottom: -0.8rem;">
+            <span><a style="text-decoration: none;"> .</a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span><a style="text-decoration: none;" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></span>
+        </div>
+    </div>
+</footer>
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.08ccaf9cef8b4e0ebd0b0158e66a7bfc0ddbb2194cdb0099e8814ddb89cc7628b27b1158846564e6e03d9ffc5f4d1bc7dfc274d359f9408d1c63d73a3f7332e9.js" integrity="sha512-CMyvnO&#43;LTg69CwFY5mp7/A3bshlM2wCZ6IFN24nMdiiyexFYhGVk5uA9n/xfTRvH38J001n5QI0cY9c6P3My6Q=="></script>
+
+
+
+    </body>
+</html>

@@ -51,3 +51,5 @@ Many of the sections in PE files are directly comparable to ELF sections, often 
 *   When the loader resolves dependencies, it writes the resolved addresses into the **Import Address Table** (**IAT**). Similar to the Global Offset Table in ELF, the IAT is simply a table of resolved pointers with one slot per pointer.
     *   The IAT is also part of the .idata section, and it initially contains pointers to the names or identifying numbers of the symbols to be imported.
     *   The dynamic loader then replaces these pointers with pointers to the actual imported functions or variables. A call to a library function is then implemented as a call to a _**thunk**_ for that function, which is nothing more than an indirect jump through the IAT slot for the function.
+
+Citation: [Practical Binary Analysis](https://nostarch.com/binaryanalysis).

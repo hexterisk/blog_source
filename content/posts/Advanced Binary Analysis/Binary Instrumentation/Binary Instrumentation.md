@@ -92,3 +92,5 @@ This instrumented and JIT-compiled code now executes in the code cache until the
 
 *   The JIT compiler in a DBI engine doesn’t translate the code into a different language; it compiles from native machine code to native machine code. It’s only necessary to instrument and JIT-compile code the first time it’s executed.
 *   DBI engines like Pin and DynamoRIO reduce runtime overhead by rewriting control-flow instructions when possible, so they jump directly to the next block in the code cache without mediation by the DBI engine. When that’s not possible (for example, for indirect calls), the rewritten instructions return control to the DBI engine so that it can prepare and start the next code chunk. While most instructions run natively in the code cache, the DBI engine may emulate some instructions instead of running them directly. For example, Pin does this for system calls like execve that require special handling by the DBI engine.
+
+Citation: [Practical Binary Analysis](https://nostarch.com/binaryanalysis).

@@ -244,3 +244,5 @@ Segment Sections...
 ```
 
 *   An ELF segment encompasses zero or more sections, essentially bundling these into a single chunk (➊). Since segments provide an execution view, they are needed only for executable ELF files and not for non-executable files such as relocatable objects.
+
+Citation: [Practical Binary Analysis](https://nostarch.com/binaryanalysis).

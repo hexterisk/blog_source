@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="map[name:hexterisk]">
+<meta name="description" content="The main aim of Binary Obfuscation is to hinder the process of static analysis of a binary. Renaming the symbols(variables and functions) of a binary implies that the clues as to what data a variable holds or what task a function performs that could be obtained from their names, are lost. This makes it a little harder for the analysts to keep a track of all the symbols without documenting them." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://hexterisk.github.io/blog/posts/2020/04/28/binary-obfuscation/" />
+
+
+    <title>
+        
+            Binary Obfuscation: Pwn the world.  — A noob&#39;s attempt at blogging.
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://hexterisk.github.io/blog/main.min.d644853e3e89ab1ec568894a9a3df34b7e4e5bfd66060890b1e4297657fd91e8.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://hexterisk.github.io/blog/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://hexterisk.github.io/blog/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://hexterisk.github.io/blog/favicon-16x16.png">
+    <link rel="manifest" href="https://hexterisk.github.io/blog/site.webmanifest">
+    <link rel="mask-icon" href="https://hexterisk.github.io/blog/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://hexterisk.github.io/blog/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Binary Obfuscation">
+<meta itemprop="description" content="The main aim of Binary Obfuscation is to hinder the process of static analysis of a binary. Renaming the symbols(variables and functions) of a binary implies that the clues as to what data a variable holds or what task a function performs that could be obtained from their names, are lost. This makes it a little harder for the analysts to keep a track of all the symbols without documenting them."><meta itemprop="datePublished" content="2020-04-28T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-04-28T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="585"><meta itemprop="image" content="https://hexterisk.github.io/blog"/>
+<meta itemprop="keywords" content="binary,rev,reversing,obfuscation," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hexterisk.github.io/blog"/>
+
+<meta name="twitter:title" content="Binary Obfuscation"/>
+<meta name="twitter:description" content="The main aim of Binary Obfuscation is to hinder the process of static analysis of a binary. Renaming the symbols(variables and functions) of a binary implies that the clues as to what data a variable holds or what task a function performs that could be obtained from their names, are lost. This makes it a little harder for the analysts to keep a track of all the symbols without documenting them."/>
+
+
+
+    <meta property="article:section" content="advanced-binary-analysis" />
+
+
+
+    <meta property="article:published_time" content="2020-04-28 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://hexterisk.github.io/blog/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$cd ~/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://hexterisk.github.io/blog/about/">About</a></li><li><a href="https://hexterisk.github.io/blog/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>3 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://hexterisk.github.io/blog/posts/2020/04/28/binary-obfuscation/">Binary Obfuscation</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <p>The main aim of <strong>Binary Obfuscation</strong> is to hinder the process of static analysis of a binary. </p>
+<p>Renaming the <strong>symbols</strong>(variables and functions) of a binary implies that the clues as to what data a variable holds or what task a function performs that could be obtained from their names, are lost. This makes it a little harder for the analysts to keep a track of all the symbols without documenting them. </p>
+<p>Moreover, some obfuscation techniques specifically target automated tools, rendering their outputs practically unusable. For example, careful modification of some binary instructions can cause automated disassemblers to fail, while it executes just the same as the original instructions.</p>
+<h2 id="junk-code-insertion">Junk Code Insertion</h2>
+<p>The actual instruction is hidden among a bunch of other instructions. While the actual instruction to be executed might be trivial, these “other” instructions seem to be performing something pretty complicated, yet essentially do zero work.</p>
+<p>Such instructions when closely analysed, can easily be segregated into typically useless, and can be changed to <em>nop</em> so it&rsquo;s easier to look at the bigger picture, or simpler to look at when revisiting this part of the binary.</p>
+<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/cc5ac2e806cd2b62.gif" alt="">
+<em>Junk Code Insertion technique.</em></p>
+<h2 id="metamorphic-code">Metamorphic Code</h2>
+<p>The actual instruction is expanded into a series of instruction that essentially give the same result. The effectiveness depends on the creativity of how complex can a simple instruction be made to look.</p>
+<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/efa49547f45c2d7e.gif" alt="">
+<em>Metamorphic Code technique.</em></p>
+<h2 id="data-encoding">Data Encoding</h2>
+<p>Static data values are forced to be computed at run time instead of hard coding them. A value to be operated upon can be calculated through a number of arithmetic operations instead of straightaway including it in the code itself. This value is ephemeral, that is, it remains in the memory as long as it&rsquo;s needed and disappears right after. This entails extra work to be done at the time of analysis to decipher the values being operated upon, while it renders tools like <strong>strings</strong> useless.</p>
+<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/de138c9f51bad4b5.gif" alt="">
+<em>Data Encoding technique.</em></p>
+<h2 id="opaque-predicates">Opaque Predicates</h2>
+<p>Extra computational checks are added in place of trivial branching instructions that will always yield the same output. The flow of code execution, therefore, now include checks that aren&rsquo;t needed since the flow is set in code and is always going to be the same. This simply makes the code a lot more complicated than it actually is. The involvement of such computational instructions as well as presence of extra branches(that will never be taken) can hinder the analyst and confuse decompilers.</p>
+<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/2_image.png" alt="">
+<em>Opaque Predicates technique.</em></p>
+<h2 id="splitting">Splitting</h2>
+<p>Blocks of codes are split into smaller blocks, with the addition of unnecessary jumps and calls, so as to make it difficult for the analyst to keep track of flow of code execution.</p>
+<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/1_image.png" alt="">
+<em>Splitting technique.</em></p>
+<h2 id="control-flow-flattening">Control Flow Flattening</h2>
+<p>A simple flow of code execution is transformed into a <strong>state machine</strong>. A state of decision making(<strong>dispatch table</strong>) is introduced which keeps track of the current state of execution, updates the current state at every pass and transfers the execution to different branches based on the current state.</p>
+<p><img src="https://hexterisk.github.io/blog/Binary_Obfuscation/350577af599d101d.gif" alt="">
+<em>Control Flow Flattening technique.</em></p>
+<h2 id="polymorphic-code">Polymorphic Code</h2>
+<p>Code that has the ability to modify itself at every run(or even during the same run) and take different paths depending on it&rsquo;s current state, while achieving the same task every time. Even though this technique is tough to analyse, it requires parts of memory to be made writable and executable so as to be able to write it&rsquo;s own modified version in memory to be executed. This factor not only makes it detectable, but can even introduce vulnerabilities if not done</p>
+<p>Citation: <a href="https://nostarch.com/binaryanalysis">Practical Binary Analysis</a>.</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+                <p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://hexterisk.github.io/blog/tags/binary">binary</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/rev">rev</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/reversing">reversing</a></span><span class="tag"><a href="https://hexterisk.github.io/blog/tags/obfuscation">obfuscation</a></span>
+                </p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>585 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-04-28 05:30 &#43;0530</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/05/03/taint-analysis/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Taint Analysis</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://hexterisk.github.io/blog/posts/2020/04/25/binary-instrumentation/">
+                                <span class="button__text">Binary Instrumentation</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content" style="margin-bottom: -0.8rem;">
+            <span><a style="text-decoration: none;"> .</a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span><a style="text-decoration: none;" style="font-size: 1.4rem; margin-bottom: -1.0rem;">..:</a></span>
+        </div>
+    </div>
+</footer>
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://hexterisk.github.io/blog/bundle.min.08ccaf9cef8b4e0ebd0b0158e66a7bfc0ddbb2194cdb0099e8814ddb89cc7628b27b1158846564e6e03d9ffc5f4d1bc7dfc274d359f9408d1c63d73a3f7332e9.js" integrity="sha512-CMyvnO&#43;LTg69CwFY5mp7/A3bshlM2wCZ6IFN24nMdiiyexFYhGVk5uA9n/xfTRvH38J001n5QI0cY9c6P3My6Q=="></script>
+
+
+
+    </body>
+</html>

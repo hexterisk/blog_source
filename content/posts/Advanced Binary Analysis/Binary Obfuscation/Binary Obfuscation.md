@@ -65,3 +65,5 @@ _Control Flow Flattening technique._
 ## Polymorphic Code
 
 Code that has the ability to modify itself at every run(or even during the same run) and take different paths depending on it's current state, while achieving the same task every time. Even though this technique is tough to analyse, it requires parts of memory to be made writable and executable so as to be able to write it's own modified version in memory to be executed. This factor not only makes it detectable, but can even introduce vulnerabilities if not done 
+
+Citation: [Practical Binary Analysis](https://nostarch.com/binaryanalysis).
